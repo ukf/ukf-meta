@@ -154,7 +154,8 @@
 			<xsl:apply-templates select="md:ContactPerson"/>
 
 			<!-- AssertionConsumerServiceURL elements -->
-			<xsl:apply-templates select="md:SPSSODescriptor/md:AssertionConsumerService"/>
+			<xsl:apply-templates
+				select="md:SPSSODescriptor/md:AssertionConsumerService[@Binding='urn:oasis:names:tc:SAML:1.0:profiles:browser-post']"/>
 
 			<!-- AttributeRequester elements -->
 			<xsl:apply-templates select="md:SPSSODescriptor/md:KeyDescriptor/ds:KeyInfo/ds:KeyName"/>
