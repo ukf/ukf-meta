@@ -8,7 +8,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v13_to_v12_sites.xsl,v 1.7 2005/03/23 08:23:18 iay Exp $
+	$Id: v13_to_v12_sites.xsl,v 1.8 2005/03/23 08:58:42 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -23,7 +23,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.7 2005/03/23 08:23:18 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.8 2005/03/23 08:58:42 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -85,14 +85,8 @@
 			-->
 			<xsl:apply-templates select="text()|comment()"/>
 
-			<!--
-				Alias elements
-				
-				For OriginSite, just take the OrganizationDisplayName to avoid problems with duplicated
-				Alias elements in the WAYF.
-			-->
-			<!-- <xsl:apply-templates select="md:Organization/md:OrganizationName"/> -->
-			<xsl:apply-templates select="md:Organization/md:OrganizationDisplayName"/>
+			<!-- 	Alias elements -->
+			<xsl:apply-templates select="md:Organization"/>
 
 			<!-- Contact elements -->
 			<xsl:apply-templates select="md:ContactPerson"/>
@@ -171,16 +165,8 @@
 			-->
 			<xsl:apply-templates select="text()|comment()"/>
 
-			<!--
-				Alias elements
-				
-				This will cause duplication if the OrganizationName and the OrganizationDisplayName
-				are the same.  If this turns out to be a problem, we could probably do some minimal cleanup
-				under the assumption that there are only one of each.  Alternatively, we could just assume
-				they are the same and ignore one or the other.
-			-->
-			<xsl:apply-templates select="md:Organization/md:OrganizationName"/>
-			<xsl:apply-templates select="md:Organization/md:OrganizationDisplayName"/>
+			<!-- 	Alias elements -->
+			<xsl:apply-templates select="md:Organization"/>
 
 			<!-- Contact elements -->
 			<xsl:apply-templates select="md:ContactPerson"/>
@@ -208,6 +194,27 @@
 		<AttributeRequester Name="{.}"/>
 	</xsl:template>
 	
+	<!--
+		Map Organization to a sequence of Alias elements.
+
+		The common case is that there are exactly one of each of OrganizationName and
+		OrganizationDisplayName, and that they are equal.  In that case, just convert the
+		OrganizationDisplayName into an Alias.  Otherwise, convert them all.
+	-->
+	<xsl:template match="md:Organization">
+		<xsl:param name="nName" select="count(md:OrganizationName)"/>
+		<xsl:param name="nDisp" select="count(md:OrganizationDisplayName)"/>
+		<xsl:choose>
+			<xsl:when test="$nName=1 and $nDisp=1 and md:OrganizationName = md:OrganizationDisplayName">
+				<xsl:apply-templates select="md:OrganizationDisplayName"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="md:OrganizationName"/>
+				<xsl:apply-templates select="md:OrganizationDisplayName"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<!--
 		Map OrganizationName or OrganizationDisplayName to Alias
 	-->
