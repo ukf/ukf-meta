@@ -8,7 +8,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v13_to_v12_sites.xsl,v 1.8 2005/03/23 08:58:42 iay Exp $
+	$Id: v13_to_v12_sites.xsl,v 1.9 2005/03/23 17:40:48 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -23,7 +23,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.8 2005/03/23 08:58:42 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.9 2005/03/23 17:40:48 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -41,6 +41,11 @@
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
+	<!--
+		Selectively strip empty text nodes from the input.
+	-->
+	<xsl:strip-space elements="md:EntityDescriptor"/>
+	
 	<!--
 		Map EntitiesDescriptor to SiteGroup
 	-->
