@@ -87,10 +87,10 @@
 				Domain elements
 				
 				These may come from Scope elements under either of two md elements.  We pass
-				through both: this will often result in duplication, but that isn't harmful.
+				through only the ones from the AttributeAuthorityDescriptor as we know that 1.2
+				sites don't have scopes associated with the SSO.
 			-->
 			<xsl:apply-templates select="md:AttributeAuthorityDescriptor/md:Extensions/shibmeta:Scope"/>
-			<xsl:apply-templates select="md:IDPSSODescriptor/md:Extensions/shibmeta:Scope"/>
 
 		</OriginSite>
 	</xsl:template>
