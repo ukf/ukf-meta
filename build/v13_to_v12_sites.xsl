@@ -197,12 +197,31 @@
 
 	<!--
 		Map Contact to ContactPerson
+		
+		Cope with:
+			* absence of optional EmailAddress
+			* malformed EmailAddress (no mailto:)
+			* mixtures of GivenName and SurName
 	-->
 	<xsl:template match="md:ContactPerson">
 		<Contact Type="{@contactType}">
-			<xsl:if test="md:EmailAddress">
-				<xsl:attribute name="Email"><xsl:value-of select="substring-after(md:EmailAddress, 'mailto:')"/></xsl:attribute>
-			</xsl:if>
+			<!-- Email attribute -->
+			<xsl:choose>
+				<xsl:when test="starts-with(md:EmailAddress, 'mailto:')">
+					<xsl:attribute name="Email">
+						<xsl:value-of select="substring-after(md:EmailAddress, 'mailto:')"/>
+					</xsl:attribute>
+				</xsl:when>
+				<xsl:when test="md:EmailAddress">
+					<xsl:attribute name="Email">
+						<xsl:value-of select="md:EmailAddress"/>
+					</xsl:attribute>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- omit Email attribute if in doubt -->
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- Name attribute -->
 			<xsl:choose>
 				<xsl:when test="md:GivenName and md:SurName">
 					<xsl:attribute name="Name"><xsl:value-of select="concat(md:GivenName, ' ', md:SurName)"/></xsl:attribute>
