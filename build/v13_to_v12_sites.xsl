@@ -8,7 +8,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v13_to_v12_sites.xsl,v 1.10 2005/03/23 17:51:04 iay Exp $
+	$Id: v13_to_v12_sites.xsl,v 1.11 2005/03/23 18:09:58 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -23,7 +23,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.10 2005/03/23 17:51:04 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.11 2005/03/23 18:09:58 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -83,11 +83,11 @@
 			<xsl:apply-templates select="md:IDPSSODescriptor/@errorURL"/>
 
 			<!--
-				Copy through comments and text blocks at the start of the output element.
+				Copy through all comments at the start of the output element.
 				This means we don't lose comments, but there is no way to guarantee they will
 				come out "in the right place".
 			-->
-			<xsl:apply-templates select="text()|comment()"/>
+			<xsl:apply-templates select="descendant::comment()"/>
 
 			<!-- 	Alias elements -->
 			<xsl:apply-templates select="md:Organization"/>
@@ -163,11 +163,11 @@
 			<xsl:apply-templates select="md:SPSSODescriptor/@errorURL"/>
 
 			<!--
-				Copy through comments and text blocks at the start of the output element.
+				Copy through all comments at the start of the output element.
 				This means we don't lose comments, but there is no way to guarantee they will
 				come out "in the right place".
 			-->
-			<xsl:apply-templates select="text()|comment()"/>
+			<xsl:apply-templates select="descendant::comment()"/>
 
 			<!-- 	Alias elements -->
 			<xsl:apply-templates select="md:Organization"/>
