@@ -8,7 +8,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v13_to_v12_sites.xsl,v 1.9 2005/03/23 17:40:48 iay Exp $
+	$Id: v13_to_v12_sites.xsl,v 1.10 2005/03/23 17:51:04 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -17,13 +17,13 @@
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="urn:mace:shibboleth:1.0"
-	exclude-result-prefixes="shibmeta md">
+	exclude-result-prefixes="shibmeta md ds">
 
 	<!--
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.9 2005/03/23 17:40:48 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.10 2005/03/23 17:51:04 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -52,8 +52,7 @@
 	<xsl:template match="md:EntitiesDescriptor">
 		<SiteGroup Name="{@Name}">
 			<xsl:attribute name="xsi:schemaLocation">
-				<xsl:text>urn:mace:shibboleth:1.0 shibboleth.xsd </xsl:text>
-				<xsl:text>http://www.w3.org/2000/09/xmldsig# xmldsig-core-schema.xsd</xsl:text>
+				<xsl:text>urn:mace:shibboleth:1.0 shibboleth.xsd</xsl:text>
 			</xsl:attribute>
 			<!--
 				Pass through text blocks and comments, and interesting elements.
