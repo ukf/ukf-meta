@@ -39,9 +39,21 @@
 	</xsl:template>
 
 	<!--
+		Map EntityDescriptor to whichever of OriginSite and/or DestinationSite apply.
+	-->
+	<xsl:template match="md:EntityDescriptor">
+		<xsl:if test="md:IDPSSODescriptor">
+			<xsl:call-template name="OriginSite"/>
+		</xsl:if>
+		<xsl:if test="md:SPSSODescriptor">
+			<xsl:call-template name="DestinationSite"/>
+		</xsl:if>
+	</xsl:template>
+
+	<!--
 		Map appropriate EntityDescriptor to OriginSite
 	-->
-	<xsl:template match="md:EntityDescriptor[md:IDPSSODescriptor]">
+	<xsl:template name="OriginSite">
 		<OriginSite Name="{@entityID}">
 			<!-- ErrorURL attribute -->
 			<xsl:apply-templates select="md:IDPSSODescriptor/@errorURL"/>
@@ -127,7 +139,7 @@
 	<!--
 		Map appropriate EntityDescriptor to DestinationSite
 	-->
-	<xsl:template match="md:EntityDescriptor[md:SPSSODescriptor]">
+	<xsl:template name="DestinationSite">
 		<DestinationSite Name="{@entityID}">
 			<!-- ErrorURL attribute -->
 			<xsl:apply-templates select="md:SPSSODescriptor/@errorURL"/>
