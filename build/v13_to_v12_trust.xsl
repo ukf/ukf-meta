@@ -8,7 +8,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v13_to_v12_trust.xsl,v 1.1 2005/04/05 12:44:52 iay Exp $
+	$Id: v13_to_v12_trust.xsl,v 1.2 2005/04/05 16:20:18 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -23,7 +23,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v13_to_v12_trust.xsl,v 1.1 2005/04/05 12:44:52 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v13_to_v12_trust.xsl,v 1.2 2005/04/05 16:20:18 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -51,19 +51,12 @@
 		Extract a KeyAuthority extension from an EntitiesDescriptor or EntityDescriptor.
 	-->
 	<xsl:template match="md:EntitiesDescriptor | md:EntityDescriptor">
+	
+		<!-- extract KeyAuthority metadata, if any -->
 		<xsl:if test="md:Extensions/shibmeta:KeyAuthority/ds:KeyInfo">
-			<KeyAuthority>
-				<!-- copy across VerifyDepth attribute if present -->
-				<xsl:apply-templates select="md:Extensions/shibmeta:KeyAuthority/@VerifyDepth"/>
-
-				<!-- generate KeyName -->
-				<ds:KeyName>
-					<xsl:value-of select="@Name"/>
-				</ds:KeyName>
-
-				<!-- copy across KeyInfo elements -->
-				<xsl:copy-of select="md:Extensions/shibmeta:KeyAuthority/ds:KeyInfo"/>
-			</KeyAuthority>
+			<xsl:apply-templates select="md:Extensions/shibmeta:KeyAuthority">
+				<xsl:with-param name="name" select="@Name"/>
+			</xsl:apply-templates>
 		</xsl:if>
 
 		<!-- proceed to nested EntitiesDescriptor and EntityDescriptor elements -->
@@ -71,10 +64,51 @@
 	</xsl:template>
 
 	<!--
+		Map shibmeta:KeyAuthority to trust:KeyAuthority
+	-->
+	<xsl:template match="shibmeta:KeyAuthority">
+		<xsl:param name="name"/>
+		<KeyAuthority>
+			<!-- copy across VerifyDepth attribute if present -->
+			<xsl:apply-templates select="@VerifyDepth"/>
+
+			<!-- generate KeyName -->
+			<ds:KeyName>
+				<xsl:value-of select="$name"/>
+			</ds:KeyName>
+
+			<!-- generate single output KeyInfo element -->
+			<ds:KeyInfo>
+				<!-- extract the insides of all KeyInfo elements in the input -->
+				<xsl:apply-templates select="text() | comment() | ds:KeyInfo/* | ds:KeyInfo/comment() | ds:KeyInfo/text()"/>
+			</ds:KeyInfo>
+		</KeyAuthority>
+	</xsl:template>
+
+	<!--
+		Generic recursive copy for ds:* elements.
+		
+		This works better than an xsl:copy-of because it does not copy across spurious
+		namespace nodes.
+	-->
+	<xsl:template match="ds:*">
+		<xsl:element name="{name()}">
+			<xsl:apply-templates select="ds:* | text() | comment() | @*"/>
+		</xsl:element>
+	</xsl:template>
+
+	<!--
 		By default, copy referenced attributes through unchanged.
 	-->
 	<xsl:template match="@*">
 		<xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
+	</xsl:template>
+
+	<!--
+		By default, copy comments and text nodes through to the output unchanged.
+	-->
+	<xsl:template match="text()|comment()">
+		<xsl:copy/>
 	</xsl:template>
 
 </xsl:stylesheet>
