@@ -8,7 +8,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v13_to_v12_sites.xsl,v 1.6 2005/03/17 11:31:04 iay Exp $
+	$Id: v13_to_v12_sites.xsl,v 1.7 2005/03/23 08:23:18 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -23,7 +23,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.6 2005/03/17 11:31:04 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v13_to_v12_sites.xsl,v 1.7 2005/03/23 08:23:18 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -212,7 +212,12 @@
 		Map OrganizationName or OrganizationDisplayName to Alias
 	-->
 	<xsl:template match="md:OrganizationName|md:OrganizationDisplayName">
-		<Alias xml:lang="{@xml:lang}"><xsl:value-of select="."/></Alias>
+		<Alias>
+			<xsl:if test="@xml:lang != 'en'">
+				<xsl:apply-templates select="@xml:lang"/>
+			</xsl:if>
+			<xsl:value-of select="."/>
+		</Alias>
 	</xsl:template>
 
 	<!--
