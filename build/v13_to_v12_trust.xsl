@@ -8,7 +8,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v13_to_v12_trust.xsl,v 1.2 2005/04/05 16:20:18 iay Exp $
+	$Id: v13_to_v12_trust.xsl,v 1.3 2005/04/08 13:46:23 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -23,7 +23,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v13_to_v12_trust.xsl,v 1.2 2005/04/05 16:20:18 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v13_to_v12_trust.xsl,v 1.3 2005/04/08 13:46:23 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -48,9 +48,9 @@
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
 	<!--
-		Extract a KeyAuthority extension from an EntitiesDescriptor or EntityDescriptor.
+		Extract a KeyAuthority extension from an EntitiesDescriptor.
 	-->
-	<xsl:template match="md:EntitiesDescriptor | md:EntityDescriptor">
+	<xsl:template match="md:EntitiesDescriptor">
 	
 		<!-- extract KeyAuthority metadata, if any -->
 		<xsl:if test="md:Extensions/shibmeta:KeyAuthority/ds:KeyInfo">
@@ -61,6 +61,18 @@
 
 		<!-- proceed to nested EntitiesDescriptor and EntityDescriptor elements -->
 		<xsl:apply-templates select="md:EntitiesDescriptor | md:EntityDescriptor"/>
+	</xsl:template>
+
+	<!--
+		Extract a KeyAuthority extension from an EntityDescriptor.
+	-->
+	<xsl:template match="md:EntityDescriptor">
+		<!-- extract KeyAuthority metadata, if any -->
+		<xsl:if test="md:Extensions/shibmeta:KeyAuthority/ds:KeyInfo">
+			<xsl:apply-templates select="md:Extensions/shibmeta:KeyAuthority">
+				<xsl:with-param name="name" select="@entityID"/>
+			</xsl:apply-templates>
+		</xsl:if>
 	</xsl:template>
 
 	<!--
