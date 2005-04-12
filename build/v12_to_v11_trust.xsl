@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	v12_to_v11.xsl
+	v12_to_v11_trust.xsl
 	
-	XSL stylesheet converting a Shibboleth 1.2 sites metadata file into the equivalent for
+	XSL stylesheet converting a Shibboleth 1.2 trust metadata file into the equivalent for
 	Shibboleth 1.1.
 
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v12_to_v11.xsl,v 1.4 2005/04/12 10:21:26 iay Exp $
+	$Id: v12_to_v11_trust.xsl,v 1.1 2005/04/12 10:21:35 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:shibb10="urn:mace:shibboleth:1.0"
+	xmlns:trust10="urn:mace:shibboleth:trust:1.0"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-	exclude-result-prefixes="shibb10">
+	xmlns="urn:mace:shibboleth:1.0"
+	exclude-result-prefixes="shibb10 trust10">
 	
 	<!--
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v12_to_v11.xsl,v 1.4 2005/04/12 10:21:26 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v12_to_v11_trust.xsl,v 1.1 2005/04/12 10:21:35 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -37,13 +39,34 @@
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
+	<!--trust10:Trust is the root element for the trust file.  Process it by changing the default namespace used and recursing.-->
+	<xsl:template match="trust10:Trust">
+		<Trust>
+			<!-- <xsl:apply-templates select="@*"/> -->
+			<xsl:apply-templates/>
+		</Trust>
+	</xsl:template>
+
+	<!--trust10:KeyAuthority appears in the trust file, and needs its namespace changing.  After that, we need to reorder its nested elements a little.-->
+	<xsl:template match="trust10:KeyAuthority">
+		<KeyAuthority>
+			<xsl:apply-templates select="ds:KeyInfo"/>
+			<Subject>
+				<xsl:value-of select="ds:KeyName"/>
+			</Subject>
+		</KeyAuthority>
+	</xsl:template>
+
 	<!--
-		shibb10:SiteGroup is the root element for the sites file.  Process it by copying across everything except DestinationSite elements.
+		Generic recursive copy for ds:* elements.
+		
+		This works better than an xsl:copy-of because it does not copy across spurious
+		namespace nodes.
 	-->
-	<xsl:template match="shibb10:SiteGroup">
-		<xsl:copy>
-			<xsl:apply-templates select="@Name|text()|comment()|shibb10:OriginSite"/>
-		</xsl:copy>
+	<xsl:template match="ds:*">
+		<xsl:element name="{name()}">
+			<xsl:apply-templates select="ds:* | text() | comment() | @*"/>
+		</xsl:element>
 	</xsl:template>
 
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
