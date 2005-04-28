@@ -7,19 +7,20 @@
 
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: v12_to_v11.xsl,v 1.4 2005/04/12 10:21:26 iay Exp $
+	$Id: v12_to_v11.xsl,v 1.5 2005/04/28 12:46:53 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:shibb10="urn:mace:shibboleth:1.0"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	exclude-result-prefixes="shibb10">
 	
 	<!--
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v12_to_v11.xsl,v 1.4 2005/04/12 10:21:26 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: v12_to_v11.xsl,v 1.5 2005/04/28 12:46:53 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -42,6 +43,9 @@
 	-->
 	<xsl:template match="shibb10:SiteGroup">
 		<xsl:copy>
+			<xsl:attribute name="xsi:schemaLocation">
+				<xsl:text>urn:mace:shibboleth:1.0 shibboleth.xsd</xsl:text>
+			</xsl:attribute>
 			<xsl:apply-templates select="@Name|text()|comment()|shibb10:OriginSite"/>
 		</xsl:copy>
 	</xsl:template>
