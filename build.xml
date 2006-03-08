@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="process">
+    
+	<property name="remote.host" value="bodach.ucs.ed.ac.uk"/>
+	<property name="remote.user" value="shibb"/>
+	<property name="remote.dir" value="shibb12/apache/sites/sdss/fed"/>
+	<property name="remote.loc" value="${remote.user}@${remote.host}:${remote.dir}"/>
+
+	<property name="master.file" value="sdss-sites-13-unsigned.xml"/>
+	
+	<property name="xml.dir" value="xml"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="build.dir" value="build"/>
+	<property name="endorsed.dir" value="endorsed"/>
+	<property name="xalan.dir" value="xalan-j_2_6_0"/>
+
+	<!--
+		Standard processing: sign, then verify.
+	-->
+	<target name="process" depends="generate, sign">
+		<echo>Processing complete.</echo>
+	</target>
+
+	<!--
+		Acquire the remote password.
+	-->
+	<target name="get.remote.pass" unless="remote.pass">
+		<input addproperty="remote.pass">
+			Please enter the password for ${remote.user} on ${remote.host}:
+		</input>
+	</target>
+
+	<!--
+		Pull the master file from the remote machine.  We don't normally do this, as
+		the usual procedure is to overwrite the master file from an e-mail message.
+	-->
+	<target name="pull" depends="get.remote.pass">
+		<scp failonerror="true" password="${remote.pass}"
+			remoteFile="${remote.loc}/${master.file}"
+			todir="${xml.dir}"/>
+	</target>
+	
+	<!--
+		Push all XML files to the remote machine.
+	-->
+	<target name="push" depends="get.remote.pass">
+		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc}">
+			<fileset dir="${xml.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</scp>
+	</target>
+
+	<!--
+		Generate unsigned metadata.
+	-->
+	<target name="generate" depends="gen.shibb.1.2, gen.shibb.1.1">
+		<echo>Generated unsigned metadata.</echo>
+	</target>
+
+	<!--
+		Macro to run the Xalan XSLT engine, taking files from pre-defined
+		locations.
+	-->
+	<macrodef name="XALAN">
+		<attribute name="i"/>
+		<attribute name="o"/>
+		<attribute name="x"/>
+		<sequential>
+			<java fork="true" failonerror="true" classname="org.apache.xalan.xslt.Process">
+				<classpath location="${xalan.dir}/bin/xalan.jar"/>
+				<arg value="-IN"/>
+				<arg value="${xml.dir}/@{i}"/>
+				<arg value="-OUT"/>
+				<arg value="${xml.dir}/@{o}"/>
+				<arg value="-XSL"/>
+				<arg value="${build.dir}/@{x}"/>
+			</java>
+		</sequential>
+	</macrodef>
+
+	<target name="gen.shibb.1.2">
+		<echo>Generating unsigned V1.2 metadata.</echo>
+		<XALAN x="v13_to_v12_sites.xsl" i="${master.file}" o="sdss-sites-unsigned.xml"/>
+		<XALAN x="v13_to_v12_trust.xsl" i="${master.file}" o="sdss-trust-unsigned.xml"/>
+	</target>
+	
+	<target name="gen.shibb.1.1" depends="gen.shibb.1.2">
+		<echo>Generating unsigned V1.1 metadata.</echo>
+		<XALAN x="v12_to_v11.xsl" i="sdss-sites-unsigned.xml" o="sdss-sites-11-unsigned.xml"/>
+		<XALAN x="v12_to_v11_trust.xsl" i="sdss-trust-unsigned.xml" o="sdss-trust-11-unsigned.xml"/>
+	</target>
+	
+	<!--
+		Acquire the keystore password.
+	-->
+	<target name="get.keystore.pass" unless="keystore.pass">
+		<input addproperty="keystore.pass">
+			Please enter the password for the SDSS keystore:
+		</input>
+	</target>
+
+	<!--
+		Macro to run the metadatatool application with appropriate defaults.
+	-->
+	<macrodef name="MDT">
+		<attribute name="i"/>
+		<attribute name="o"/>
+		<element name="args" optional="yes"/>
+		<sequential>
+			<java classname="edu.internet2.middleware.shibboleth.utils.MetadataTool"
+				fork="true" failonerror="true">
+				<classpath>
+					<fileset dir="${lib.dir}">
+						<include name="**/*.jar"/>
+					</fileset>
+				</classpath>
+				<jvmarg value="-Djava.endorsed.dirs=endorsed"/>
+				<!--
+				<jvmarg value="-Dlog4j.configuration=log4j.properties"/>
+				-->
+				<args/>
+				<arg value="--keystore"/>
+				<arg value="${build.dir}/sdss.jks"/>
+				<arg value="--alias"/>
+				<arg value="sdss"/>
+				<arg value="--in"/>
+				<arg value="${xml.dir}/@{i}"/>
+				<arg value="--out"/>
+				<arg value="${xml.dir}/@{o}"/>
+			</java>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="SIGN">
+		<attribute name="i"/>
+		<attribute name="o"/>
+		<sequential>
+			<MDT i="@{i}" o="@{o}">
+				<args>
+					<arg value="--sign"/>
+					<arg value="--password"/>
+					<arg value="${keystore.pass}"/>
+				</args>
+			</MDT>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="VFY">
+		<attribute name="i"/>
+		<sequential>
+			<MDT i="@{i}" o="temp.xml"/>
+			<touch file="${xml.dir}/temp.xml"/>
+			<delete file="${xml.dir}/temp.xml" quiet="true"/>
+		</sequential>
+	</macrodef>
+		
+	<!--
+		Sign the various metadata files.
+	-->
+	<target name="sign" depends="sign.shibb.1.3, sign.shibb.1.2, sign.shibb.1.1">
+		<echo>Generated signed metadata.</echo>
+	</target>
+	
+	<target name="sign.shibb.1.3" depends="get.keystore.pass">
+		<echo>Signing Shibboleth 1.3 metadata.</echo>
+		<SIGN i="sdss-sites-13-unsigned.xml" o="sdss-sites-13.xml"/>
+	</target>
+
+	<target name="sign.shibb.1.2" depends="get.keystore.pass">
+		<echo>Signing Shibboleth 1.2 metadata.</echo>
+		<SIGN i="sdss-sites-unsigned.xml" o="sdss-sites.xml"/>
+		<SIGN i="sdss-trust-unsigned.xml" o="sdss-trust.xml"/>
+	</target>
+
+	<target name="sign.shibb.1.1" depends="get.keystore.pass">
+		<echo>Signing Shibboleth 1.1 metadata.</echo>
+		<SIGN i="sdss-sites-11-unsigned.xml" o="sdss-sites-11.xml"/>
+		<SIGN i="sdss-trust-11-unsigned.xml" o="sdss-trust-11.xml"/>
+	</target>
+	
+	<!--
+		Verify the signed metadata files.
+	-->
+	<target name="verify" depends="verify.shibb.1.3, verify.shibb.1.2, verify.shibb.1.1">
+		<echo>Verified signed metadata.</echo>
+	</target>
+
+	<target name="verify.shibb.1.3">
+		<echo>Verifying signed Shibboleth 1.3 metadata.</echo>
+		<VFY i="sdss-sites-13.xml"/>
+	</target>
+	
+	<target name="verify.shibb.1.2">
+		<echo>Verifying signed Shibboleth 1.2 metadata.</echo>
+		<VFY i="sdss-sites.xml"/>
+		<VFY i="sdss-trust.xml"/>
+	</target>
+	
+	<target name="verify.shibb.1.1">
+		<echo>Verifying signed Shibboleth 1.1 metadata.</echo>
+		<VFY i="sdss-sites-11.xml"/>
+		<VFY i="sdss-trust-11.xml"/>
+	</target>
+	
+</project>
