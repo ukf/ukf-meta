@@ -11,14 +11,16 @@
 	
 	<property name="xml.dir" value="xml"/>
 	<property name="lib.dir" value="lib"/>
-	<property name="build.dir" value="build"/>
+	<property name="build.dir" value="${basedir}/build"/>
 	<property name="endorsed.dir" value="endorsed"/>
 	<property name="xalan.dir" value="xalan-j_2_6_0"/>
+	
+	<property name="known.hosts" value="${build.dir}/known_hosts"/>
 
 	<!--
-		Standard processing: sign, then verify.
+		Standard processing: generate, sign, then verify.
 	-->
-	<target name="process" depends="generate, sign">
+	<target name="process" depends="generate, sign, verify">
 		<echo>Processing complete.</echo>
 	</target>
 
@@ -36,16 +38,20 @@
 		the usual procedure is to overwrite the master file from an e-mail message.
 	-->
 	<target name="pull" depends="get.remote.pass">
+		<echoproperties></echoproperties>
 		<scp failonerror="true" password="${remote.pass}"
 			remoteFile="${remote.loc}/${master.file}"
-			todir="${xml.dir}"/>
+			todir="${xml.dir}"
+			knownhosts="${known.hosts}"
+		/>
 	</target>
 	
 	<!--
 		Push all XML files to the remote machine.
 	-->
 	<target name="push" depends="get.remote.pass">
-		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc}">
+		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc}"
+				knownhosts="${known.hosts}">
 			<fileset dir="${xml.dir}">
 				<include name="**/*.xml"/>
 			</fileset>
