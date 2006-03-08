@@ -38,7 +38,6 @@
 		the usual procedure is to overwrite the master file from an e-mail message.
 	-->
 	<target name="pull" depends="get.remote.pass">
-		<echoproperties></echoproperties>
 		<scp failonerror="true" password="${remote.pass}"
 			remoteFile="${remote.loc}/${master.file}"
 			todir="${xml.dir}"
