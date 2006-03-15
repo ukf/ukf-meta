@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-open(XML,"../sdss-sites-13.xml") || die "could not open input file";
+open(XML,"../xml/sdss-metadata-unsigned.xml") || die "could not open input file";
 
 while (<XML>) {
     if (/<EmailAddress>mailto:(.*)<\/EmailAddress>/) {
