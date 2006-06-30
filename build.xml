@@ -30,6 +30,8 @@
 	[14]				== sdss-trust
 	[15]			sdss-trust-11-unsigned
 	[16]				sdss-trust-11
+	[17]		sdss-wayf-unsigned.xml
+	[18]			sdss-wayf.xml
  
 	In the above list, indentation implies the creation hierarchy and "=="
 	implies creation by copying.  The numbers in brackets are duplicated
@@ -96,7 +98,7 @@
 	<!--
 		Generate unsigned metadata.
 	-->
-	<target name="generate" depends="gen.shibb.1.3, gen.shibb.1.2, gen.shibb.1.1">
+	<target name="generate" depends="gen.shibb.1.3, gen.shibb.1.2, gen.shibb.1.1, gen.wayf">
 		<echo>Generated unsigned metadata.</echo>
 	</target>
 
@@ -150,6 +152,12 @@
 		<XALAN x="v12_to_v11.xsl" i="sdss-sites-12-unsigned.xml" o="sdss-sites-11-unsigned.xml"/>
 		<!-- [15] -->
 		<XALAN x="v12_to_v11_trust.xsl" i="sdss-trust-12-unsigned.xml" o="sdss-trust-11-unsigned.xml"/>
+	</target>
+	
+	<target name="gen.wayf">
+		<echo>Generating unsigned WAYF metadata.</echo>
+		<!-- [17] -->
+		<XALAN x="master_to_wayf.xsl" i="sdss-metadata-unsigned.xml" o="sdss-wayf-unsigned.xml"/>
 	</target>
 	
 	<!--
@@ -219,7 +227,7 @@
 	<!--
 		Sign the various metadata files.
 	-->
-	<target name="sign" depends="sign.shibb.1.3, sign.shibb.1.2, sign.shibb.1.1">
+	<target name="sign" depends="sign.shibb.1.3, sign.shibb.1.2, sign.shibb.1.1, sign.wayf">
 		<echo>Generated signed metadata.</echo>
 	</target>
 	
@@ -254,10 +262,16 @@
 		<SIGN i="sdss-trust-11-unsigned.xml" o="sdss-trust-11.xml"/>
 	</target>
 	
+	<target name="sign.wayf">
+		<echo>Signing WAYF metadata.</echo>
+		<!-- [18] -->
+		<SIGN i="sdss-wayf-unsigned.xml" o="sdss-wayf.xml"/>
+	</target>
+	
 	<!--
 		Verify the signed metadata files.
 	-->
-	<target name="verify" depends="verify.shibb.1.3, verify.shibb.1.2, verify.shibb.1.1">
+	<target name="verify" depends="verify.shibb.1.3, verify.shibb.1.2, verify.shibb.1.1, verify.wayf">
 		<echo>Verified signed metadata.</echo>
 	</target>
 
@@ -279,6 +293,11 @@
 		<echo>Verifying signed Shibboleth 1.1 metadata.</echo>
 		<VFY i="sdss-sites-11.xml"/>
 		<VFY i="sdss-trust-11.xml"/>
+	</target>
+	
+	<target name="verify.wayf">
+		<echo>Verifying signed WAYF metadata.</echo>
+		<VFY i="sdss-wayf.xml"/>
 	</target>
 	
 </project>
