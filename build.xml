@@ -22,20 +22,17 @@
 	[6]				== sdss-sites-unsigned
 	[7]				sdss-sites-12
 	[8]					== sdss-sites
-	[9]				sdss-sites-11-unsigned
-	[10]				sdss-sites-11
 	[11]		sdss-trust-12-unsigned
 	[12]			== sdss-trust-unsigned
 	[13]			sdss-trust-12
 	[14]				== sdss-trust
-	[15]			sdss-trust-11-unsigned
-	[16]				sdss-trust-11
 	[17]		sdss-wayf-unsigned.xml
 	[18]			sdss-wayf.xml
  
 	In the above list, indentation implies the creation hierarchy and "=="
 	implies creation by copying.  The numbers in brackets are duplicated
-	in the script where the file in question is created.
+	in the script where the file in question is created.  Some numbers are
+	missing because some old format files are no longer being generated.
 -->
 <project default="process">
     
@@ -98,7 +95,7 @@
 	<!--
 		Generate unsigned metadata.
 	-->
-	<target name="generate" depends="gen.shibb.1.3, gen.shibb.1.2, gen.shibb.1.1, gen.wayf">
+	<target name="generate" depends="gen.shibb.1.3, gen.shibb.1.2, gen.wayf">
 		<echo>Generated unsigned metadata.</echo>
 	</target>
 
@@ -144,14 +141,6 @@
 		<!-- [12] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-trust-12-unsigned.xml"
 			tofile="${xml.dir}/sdss-trust-unsigned.xml"/>
-	</target>
-	
-	<target name="gen.shibb.1.1" depends="gen.shibb.1.2">
-		<echo>Generating unsigned V1.1 metadata.</echo>
-		<!-- [9] -->
-		<XALAN x="v12_to_v11.xsl" i="sdss-sites-12-unsigned.xml" o="sdss-sites-11-unsigned.xml"/>
-		<!-- [15] -->
-		<XALAN x="v12_to_v11_trust.xsl" i="sdss-trust-12-unsigned.xml" o="sdss-trust-11-unsigned.xml"/>
 	</target>
 	
 	<target name="gen.wayf">
@@ -227,7 +216,7 @@
 	<!--
 		Sign the various metadata files.
 	-->
-	<target name="sign" depends="sign.shibb.1.3, sign.shibb.1.2, sign.shibb.1.1, sign.wayf">
+	<target name="sign" depends="sign.shibb.1.3, sign.shibb.1.2, sign.wayf">
 		<echo>Generated signed metadata.</echo>
 	</target>
 	
@@ -254,14 +243,6 @@
 			tofile="${xml.dir}/sdss-trust.xml"/>
 	</target>
 
-	<target name="sign.shibb.1.1">
-		<echo>Signing Shibboleth 1.1 metadata.</echo>
-		<!-- [10] -->
-		<SIGN i="sdss-sites-11-unsigned.xml" o="sdss-sites-11.xml"/>
-		<!-- [16] -->
-		<SIGN i="sdss-trust-11-unsigned.xml" o="sdss-trust-11.xml"/>
-	</target>
-	
 	<target name="sign.wayf">
 		<echo>Signing WAYF metadata.</echo>
 		<!-- [18] -->
@@ -271,7 +252,7 @@
 	<!--
 		Verify the signed metadata files.
 	-->
-	<target name="verify" depends="verify.shibb.1.3, verify.shibb.1.2, verify.shibb.1.1, verify.wayf">
+	<target name="verify" depends="verify.shibb.1.3, verify.shibb.1.2, verify.wayf">
 		<echo>Verified signed metadata.</echo>
 	</target>
 
@@ -287,12 +268,6 @@
 		<VFY i="sdss-trust-12.xml"/>
 		<VFY i="sdss-sites.xml"/>
 		<VFY i="sdss-trust.xml"/>
-	</target>
-	
-	<target name="verify.shibb.1.1">
-		<echo>Verifying signed Shibboleth 1.1 metadata.</echo>
-		<VFY i="sdss-sites-11.xml"/>
-		<VFY i="sdss-trust-11.xml"/>
 	</target>
 	
 	<target name="verify.wayf">
