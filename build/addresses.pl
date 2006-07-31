@@ -23,7 +23,10 @@ close EXTRAS;
 #
 # Load addresses from the metadata.
 #
-open(XML,"../xml/sdss-metadata-unsigned.xml") || die "could not open input file";
+# Exclude support addresses using some XSLT magic.
+#
+#open(XML,"../xml/sdss-metadata-unsigned.xml") || die "could not open input file";
+open(XML,"java -cp ../xalan-j_2_6_0/bin/xalan.jar org.apache.xalan.xslt.Process -IN ../xml/sdss-metadata-unsigned.xml -XSL extract_addresses.xsl|") || die "could not open input file";
 while (<XML>) {
 	if (/<EmailAddress>(mailto:)?(.*)<\/EmailAddress>/) {
 		$metadata{$2} = 1;
