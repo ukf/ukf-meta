@@ -14,20 +14,21 @@
 	  
 	The files involved are:
 	
-	[1]		sdss-metadata-unsigned
-	[2]			== sdss-sites-13-unsigned
-	[3]			sdss-metadata
-	[4]				== sdss-sites-13
-	[5]			sdss-sites-12-unsigned
-	[6]				== sdss-sites-unsigned
-	[7]				sdss-sites-12
-	[8]					== sdss-sites
-	[11]		sdss-trust-12-unsigned
-	[12]			== sdss-trust-unsigned
-	[13]			sdss-trust-12
-	[14]				== sdss-trust
-	[17]		sdss-wayf-unsigned.xml
-	[18]			sdss-wayf.xml
+	[0]		master [+entity fragment files]
+	[1]			sdss-metadata-unsigned
+	[2]				== sdss-sites-13-unsigned
+	[3]				sdss-metadata
+	[4]					== sdss-sites-13
+	[5]				sdss-sites-12-unsigned
+	[6]					== sdss-sites-unsigned
+	[7]					sdss-sites-12
+	[8]						== sdss-sites
+	[11]			sdss-trust-12-unsigned
+	[12]				== sdss-trust-unsigned
+	[13]				sdss-trust-12
+	[14]					== sdss-trust
+	[17]			sdss-wayf-unsigned.xml
+	[18]				sdss-wayf.xml
  
 	In the above list, indentation implies the creation hierarchy and "=="
 	implies creation by copying.  The numbers in brackets are duplicated
@@ -36,18 +37,45 @@
 -->
 <project default="process">
     
+	<!--
+		Accessing the remote system.
+	-->
 	<property name="remote.host" value="bodach.ucs.ed.ac.uk"/>
 	<property name="remote.user" value="shibb"/>
 	<property name="remote.dir" value="shibb12/apache/sites/sdss/fed"/>
 	<property name="remote.loc" value="${remote.user}@${remote.host}:${remote.dir}"/>
 
-	<property name="master.file" value="sdss-metadata-unsigned.xml"/>
-	
-	<property name="xml.dir" value="xml"/>
-	<property name="lib.dir" value="lib"/>
+	<!--
+		Local specialised directories.
+	-->
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="endorsed.dir" value="endorsed"/>
+	<property name="entities.dir" value="entities"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="templates.dir" value="templates"/>
 	<property name="xalan.dir" value="xalan-j_2_6_0"/>
+	<property name="xml.dir" value="xml"/>
+
+	<!--
+		The entities file contains the individual entity fragment files
+		concatenated together and enclosed in an <Entities> element.
+	-->
+	<property name="entities.file.dir" value="${xml.dir}"/>
+	<property name="entities.file.name" value="entities.xml"/>
+	<property name="entities.file" value="${entities.file.dir}/${entities.file.name}"/>
+
+	<!--
+		The master file contains the trust fabric, and optionally some entities
+		which have not yet been broken out into separate fragment files.
+	-->
+	<property name="master.file.dir" value="${xml.dir}"/>
+	<property name="master.file.name" value="master.xml"/>
+	<property name="master.file" value="${master.file.dir}/${master.file.name}"/>
+	
+	<!--
+		Files within the XML directory.
+	-->
+	<property name="sdss.master.file" value="sdss-metadata-unsigned.xml"/>
 	
 	<property name="known.hosts" value="${build.dir}/known_hosts"/>
 
@@ -70,9 +98,11 @@
 	<!--
 		Pull the master file from the remote machine.  We don't normally do this, as
 		the usual procedure is to overwrite the master file from an e-mail message.
+		
+		*** TODO *** now, we also need to pull the individual entity fragment files.
 	-->
 	<target name="pull" depends="get.remote.pass">
-		<!-- [1] -->
+		<!-- [0] -->
 		<scp failonerror="true" password="${remote.pass}"
 			remoteFile="${remote.loc}/${master.file}"
 			todir="${xml.dir}"
@@ -81,7 +111,7 @@
 	</target>
 	
 	<!--
-		Push all XML files to the remote machine.
+		Push all generated XML files, and entity fragment files, to the remote machine.
 	-->
 	<target name="push" depends="get.remote.pass">
 		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc}"
@@ -90,12 +120,18 @@
 				<include name="**/*.xml"/>
 			</fileset>
 		</scp>
+		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc}/entities"
+				knownhosts="${known.hosts}">
+			<fileset dir="${entities.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</scp>
 	</target>
 
 	<!--
 		Generate unsigned metadata.
 	-->
-	<target name="generate" depends="gen.shibb.1.3, gen.shibb.1.2, gen.wayf">
+	<target name="generate" depends="gen.master.sdss, gen.shibb.1.3, gen.shibb.1.2, gen.wayf">
 		<echo>Generated unsigned metadata.</echo>
 	</target>
 
@@ -120,23 +156,55 @@
 		</sequential>
 	</macrodef>
 
+	<!--
+		gen.entities
+		
+		Concatenates the (potentially many) entity fragment files together into a single file
+		wrapping the entities in an <Entities> element.  This can then be dragged in by the document
+		function in XSLT.
+	-->
+	<target name="gen.entities">
+		<echo>Composing entity fragment files.</echo>
+		<concat destfile="${entities.file}" append="no" force="yes" fixlastline="yes">
+			<header filtering="no">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#10;&lt;Entities&gt;&#10;</header>
+			<fileset dir="${entities.dir}" includes="uk*.xml"/>
+			<footer>&lt;/Entities&gt;&#10;</footer>
+			<filterchain>
+				<replaceregex pattern="&lt;\?[xX][mM][lL] .*&gt;" />
+			</filterchain>
+		</concat>
+	</target>
+	
+	<!--
+		gen.master.sdss
+		
+		Generate the master file for the SDSS federation from the ultimate master
+		plus the composed entity fragment files.
+	-->
+	<target name="gen.master.sdss" depends="gen.entities">
+		<echo>Generating unsigned SDSS master file.</echo>
+		<!-- [1] -->
+		<XALAN x="master_sdss.xsl" i="${master.file.name}"
+			o="${sdss.master.file}" />
+	</target>
+	
 	<target name="gen.shibb.1.3">
 		<echo>Generating unsigned V1.3 metadata.</echo>
 		<!-- [2] -->
-		<copy overwrite="yes" file="${xml.dir}/${master.file}"
+		<copy overwrite="yes" file="${xml.dir}/${sdss.master.file}"
 			tofile="${xml.dir}/sdss-sites-13-unsigned.xml"/>
 	</target>
 
 	<target name="gen.shibb.1.2">
 		<echo>Generating unsigned V1.2 metadata.</echo>
 		<!-- [5] -->
-		<XALAN x="v13_to_v12_sites.xsl" i="${master.file}"
+		<XALAN x="v13_to_v12_sites.xsl" i="${sdss.master.file}"
 			o="sdss-sites-12-unsigned.xml"/>
 		<!-- [6] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-sites-12-unsigned.xml"
 			tofile="${xml.dir}/sdss-sites-unsigned.xml"/>
 		<!-- [11] -->
-		<XALAN x="v13_to_v12_trust.xsl" i="${master.file}"
+		<XALAN x="v13_to_v12_trust.xsl" i="${sdss.master.file}"
 			o="sdss-trust-12-unsigned.xml"/>
 		<!-- [12] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-trust-12-unsigned.xml"
@@ -223,7 +291,7 @@
 	<target name="sign.shibb.1.3">
 		<echo>Signing Shibboleth 1.3 metadata.</echo>
 		<!-- [3] -->
-		<SIGN i="${master.file}" o="sdss-metadata.xml"/>
+		<SIGN i="${sdss.master.file}" o="sdss-metadata.xml"/>
 		<!-- [4] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-metadata.xml"
 			tofile="${xml.dir}/sdss-sites-13.xml"/>
