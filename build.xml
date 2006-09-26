@@ -41,8 +41,10 @@
 		Accessing the remote system.
 	-->
 	<property name="remote.host" value="bodach.ucs.ed.ac.uk"/>
-	<property name="remote.user" value="shibb"/>
-	<property name="remote.dir" value="shibb12/apache/sites/sdss/fed"/>
+	<property name="remote.user" value="sdssweb"/>
+	<property name="remote.dir" value="dev/fed"/>
+	<!-- <property name="remote.user" value="shibb"/> -->
+	<!-- <property name="remote.dir" value="shibb12/apache/sites/sdss/fed"/> -->
 	<property name="remote.loc" value="${remote.user}@${remote.host}:${remote.dir}"/>
 
 	<!--
