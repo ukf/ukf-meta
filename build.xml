@@ -29,6 +29,7 @@
 	[14]					== sdss-trust
 	[17]			sdss-wayf-unsigned.xml
 	[18]				sdss-wayf.xml
+	[19]		ukfederation-metadata-unsigned.xml
  
 	In the above list, indentation implies the creation hierarchy and "=="
 	implies creation by copying.  The numbers in brackets are duplicated
@@ -78,6 +79,7 @@
 		Files within the XML directory.
 	-->
 	<property name="sdss.master.file" value="sdss-metadata-unsigned.xml"/>
+	<property name="uk.master.file" value="ukfederation-metadata-unsigned.xml"/>
 	
 	<property name="known.hosts" value="${build.dir}/known_hosts"/>
 
@@ -133,7 +135,7 @@
 	<!--
 		Generate unsigned metadata.
 	-->
-	<target name="generate" depends="gen.master.sdss, gen.shibb.1.3, gen.shibb.1.2, gen.wayf">
+	<target name="generate" depends="gen.master.sdss, gen.master.uk, gen.shibb.1.3, gen.shibb.1.2, gen.wayf">
 		<echo>Generated unsigned metadata.</echo>
 	</target>
 
@@ -175,6 +177,16 @@
 				<replaceregex pattern="&lt;\?[xX][mM][lL] .*&gt;" />
 			</filterchain>
 		</concat>
+	</target>
+	
+	<!--
+		gen.master.uk
+	-->
+	<target name="gen.master.uk" depends="gen.entities">
+		<echo>Generating unsigned UK master file.</echo>
+		<!-- [19] -->
+		<XALAN x="master_ukfederation.xsl" i="${master.file.name}"
+			o="${uk.master.file}" />
 	</target>
 	
 	<!--
