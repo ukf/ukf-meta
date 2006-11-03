@@ -10,7 +10,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: master_sdss.xsl,v 1.1 2006/09/14 11:03:00 iay Exp $
+	$Id: master_sdss.xsl,v 1.2 2006/11/03 16:22:58 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -26,7 +26,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: master_sdss.xsl,v 1.1 2006/09/14 11:03:00 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: master_sdss.xsl,v 1.2 2006/11/03 16:22:58 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -61,6 +61,13 @@
 		Drop any explicit xsi:schemaLocation attributes from imported entity fragments.
 	-->
 	<xsl:template match="@xsi:schemaLocation[parent::md:EntityDescriptor]">
+		<!-- nothing -->
+	</xsl:template>
+	
+	<!--
+		Drop any dummy entities.
+	-->
+	<xsl:template match="md:EntityDescriptor[@entityID='dummy']">
 		<!-- nothing -->
 	</xsl:template>
 	
