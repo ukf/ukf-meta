@@ -10,7 +10,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: master_sdss.xsl,v 1.3 2006/11/07 20:36:31 iay Exp $
+	$Id: master_sdss.xsl,v 1.4 2006/11/15 16:10:06 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -26,7 +26,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: master_sdss.xsl,v 1.3 2006/11/07 20:36:31 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: master_sdss.xsl,v 1.4 2006/11/15 16:10:06 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -71,6 +71,13 @@
 		Drop any dummy entities.
 	-->
 	<xsl:template match="md:EntityDescriptor[@entityID='dummy']">
+		<!-- nothing -->
+	</xsl:template>
+	
+	<!--
+		Drop any entities defined after the UK Federation went live.
+	-->
+	<xsl:template match="md:EntityDescriptor[number(substring-after(@ID, 'uk'))>=1000]">
 		<!-- nothing -->
 	</xsl:template>
 	
