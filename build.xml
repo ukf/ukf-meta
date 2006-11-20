@@ -124,16 +124,35 @@
 		Push all generated XML files, and entity fragment files, to the remote machine.
 	-->
 	<target name="push" depends="get.remote.pass">
-		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}"
-				knownhosts="${known.hosts}">
-			<fileset dir="${xml.dir}">
-				<include name="**/*.xml"/>
-			</fileset>
-		</scp>
+		<!--
+			Push federation fragment files.
+		-->
+		<echo>Pushing entity fragment files.</echo>
 		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}/entities"
 				knownhosts="${known.hosts}">
 			<fileset dir="${entities.dir}">
-				<include name="**/*.xml"/>
+				<include name="*.xml"/>
+			</fileset>
+		</scp>
+		<!--
+			Push metadata files for the SDSS Federation.
+		-->
+		<echo>Pushing SDSS Federation metadata files.</echo>
+		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}"
+				knownhosts="${known.hosts}">
+			<fileset dir="${xml.dir}">
+				<include name="*.xml"/>
+				<exclude name="ukfederation-*.xml"/>
+			</fileset>
+		</scp>
+		<!--
+			Push metadata files for the UK Federation.
+		-->
+		<echo>Pushing UK Federation metadata files.</echo>
+		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.uk}"
+				knownhosts="${known.hosts}">
+			<fileset dir="${xml.dir}">
+				<include name="ukfederation-*.xml"/>
 			</fileset>
 		</scp>
 	</target>
