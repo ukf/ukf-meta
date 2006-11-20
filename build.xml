@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-	Federation metadata signing process for the SDSS federation.
+	Federation metadata signing process for the SDSS and UK federations.
 	
-	* "ant pull" fetches the master file from the remote site, and
-	  requires the remote site password.
-	  
 	* "ant process" generates the other files from the master file, and
 	  signs as appropriate.  Requires the keystore password.
 	  
@@ -30,6 +27,13 @@
 	[17]			sdss-wayf-unsigned.xml
 	[18]				sdss-wayf.xml
 	[19]		ukfederation-metadata-unsigned.xml
+	[20]			ukfederation-metadata.xml
+	[21]			ukfederation-sites-12-unsigned.xml
+	[22]				ukfederation-sites-12.xml
+	[23]			ukfederation-trust-12-unsigned.xml
+	[24]				ukfederation-trust-12.xml
+	[25]			ukfederation-wayf-unsigned.xml
+	[26]				ukfederation-wayf.xml
  
 	In the above list, indentation implies the creation hierarchy and "=="
 	implies creation by copying.  The numbers in brackets are duplicated
@@ -43,10 +47,10 @@
 	-->
 	<property name="remote.host" value="bodach.ucs.ed.ac.uk"/>
 	<property name="remote.user" value="sdssweb"/>
-	<property name="remote.dir" value="dev/fed"/>
-	<!-- <property name="remote.user" value="shibb"/> -->
-	<!-- <property name="remote.dir" value="shibb12/apache/sites/sdss/fed"/> -->
-	<property name="remote.loc" value="${remote.user}@${remote.host}:${remote.dir}"/>
+	<property name="remote.dir.sdss" value="dev/fed"/>
+	<property name="remote.loc.sdss" value="${remote.user}@${remote.host}:${remote.dir.sdss}"/>
+	<property name="remote.dir.uk" value="metadata"/>
+	<property name="remote.loc.uk" value="${remote.user}@${remote.host}:${remote.dir.uk}"/>
 
 	<!--
 		Local specialised directories.
@@ -76,6 +80,23 @@
 	<property name="master.file" value="${master.file.dir}/${master.file.name}"/>
 	
 	<!--
+		Keystore files and key aliases.
+		
+		Each federation has a keystore for signing, and a second for verification.
+		Each of these keystores has a location and a key alias to use.
+	-->
+	<property name="keystore.sdss.loc" value="/Volumes/UK_KEYS"/>
+	<property name="keystore.sdss.sign.loc" value="${keystore.sdss.loc}/sdss-sign.jks"/>
+	<property name="keystore.sdss.sign.alias" value="sdss"/>
+	<property name="keystore.sdss.vfy.loc" value="${keystore.sdss.loc}/sdss.jks"/>
+	<property name="keystore.sdss.vfy.alias" value="sdss"/>
+	<property name="keystore.uk.loc" value="/Volumes/UK_KEYS"/>
+	<property name="keystore.uk.sign.loc" value="${keystore.uk.loc}/ukfederation-sign.jks"/>
+	<property name="keystore.uk.sign.alias" value="ukfederation"/>
+	<property name="keystore.uk.vfy.loc" value="${keystore.uk.loc}/ukfederation.jks"/>
+	<property name="keystore.uk.vfy.alias" value="ukfederation"/>
+	
+	<!--
 		Files within the XML directory.
 	-->
 	<property name="sdss.master.file" value="sdss-metadata-unsigned.xml"/>
@@ -100,31 +121,16 @@
 	</target>
 
 	<!--
-		Pull the master file from the remote machine.  We don't normally do this, as
-		the usual procedure is to overwrite the master file from an e-mail message.
-		
-		*** TODO *** now, we also need to pull the individual entity fragment files.
-	-->
-	<target name="pull" depends="get.remote.pass">
-		<!-- [0] -->
-		<scp failonerror="true" password="${remote.pass}"
-			remoteFile="${remote.loc}/${master.file}"
-			todir="${xml.dir}"
-			knownhosts="${known.hosts}"
-		/>
-	</target>
-	
-	<!--
 		Push all generated XML files, and entity fragment files, to the remote machine.
 	-->
 	<target name="push" depends="get.remote.pass">
-		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc}"
+		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}"
 				knownhosts="${known.hosts}">
 			<fileset dir="${xml.dir}">
 				<include name="**/*.xml"/>
 			</fileset>
 		</scp>
-		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc}/entities"
+		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}/entities"
 				knownhosts="${known.hosts}">
 			<fileset dir="${entities.dir}">
 				<include name="**/*.xml"/>
@@ -244,8 +250,10 @@
 		Macro to run the metadatatool application with appropriate defaults.
 	-->
 	<macrodef name="MDT">
-		<attribute name="i"/>
-		<attribute name="o"/>
+		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+		<attribute name="o"/><!-- output file, assumed to be in the XML directory -->
+		<attribute name="keystore"/><!-- keystore file location -->
+		<attribute name="alias"/><!-- alias of key to use -->
 		<element name="args" optional="yes"/>
 		<sequential>
 			<java classname="edu.internet2.middleware.shibboleth.utils.MetadataTool"
@@ -261,9 +269,9 @@
 				-->
 				<args/>
 				<arg value="--keystore"/>
-				<arg value="${build.dir}/sdss.jks"/>
+				<arg value="@{keystore}"/>
 				<arg value="--alias"/>
-				<arg value="sdss"/>
+				<arg value="@{alias}"/>
 				<arg value="--in"/>
 				<arg value="${xml.dir}/@{i}"/>
 				<arg value="--out"/>
@@ -272,11 +280,11 @@
 		</sequential>
 	</macrodef>
 	
-	<macrodef name="SIGN">
+	<macrodef name="SIGN.sdss">
 		<attribute name="i"/>
 		<attribute name="o"/>
 		<sequential>
-			<MDT i="@{i}" o="@{o}">
+			<MDT i="@{i}" o="@{o}" keystore="${keystore.sdss.sign.loc}" alias="${keystore.sdss.sign.alias}">
 				<args>
 					<arg value="--sign"/>
 					<arg value="--password"/>
@@ -286,10 +294,33 @@
 		</sequential>
 	</macrodef>
 	
-	<macrodef name="VFY">
+	<macrodef name="VFY.sdss">
 		<attribute name="i"/>
 		<sequential>
-			<MDT i="@{i}" o="temp.xml"/>
+			<MDT i="@{i}" o="temp.xml" keystore="${keystore.sdss.vfy.loc}" alias="${keystore.sdss.vfy.alias}"/>
+			<touch file="${xml.dir}/temp.xml"/>
+			<delete file="${xml.dir}/temp.xml" quiet="true"/>
+		</sequential>
+	</macrodef>
+		
+	<macrodef name="SIGN.uk">
+		<attribute name="i"/>
+		<attribute name="o"/>
+		<sequential>
+			<MDT i="@{i}" o="@{o}" keystore="${keystore.uk.sign.loc}" alias="${keystore.uk.sign.alias}">
+				<args>
+					<arg value="--sign"/>
+					<arg value="--password"/>
+					<arg value="${keystore.pass}"/>
+				</args>
+			</MDT>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="VFY.uk">
+		<attribute name="i"/>
+		<sequential>
+			<MDT i="@{i}" o="temp.xml" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
 			<touch file="${xml.dir}/temp.xml"/>
 			<delete file="${xml.dir}/temp.xml" quiet="true"/>
 		</sequential>
@@ -305,7 +336,7 @@
 	<target name="sign.shibb.1.3">
 		<echo>Signing Shibboleth 1.3 metadata.</echo>
 		<!-- [3] -->
-		<SIGN i="${sdss.master.file}" o="sdss-metadata.xml"/>
+		<SIGN.sdss i="${sdss.master.file}" o="sdss-metadata.xml"/>
 		<!-- [4] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-metadata.xml"
 			tofile="${xml.dir}/sdss-sites-13.xml"/>
@@ -314,12 +345,12 @@
 	<target name="sign.shibb.1.2">
 		<echo>Signing Shibboleth 1.2 metadata.</echo>
 		<!-- [7] -->
-		<SIGN i="sdss-sites-12-unsigned.xml" o="sdss-sites-12.xml"/>
+		<SIGN.sdss i="sdss-sites-12-unsigned.xml" o="sdss-sites-12.xml"/>
 		<!-- [8] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-sites-12.xml"
 			tofile="${xml.dir}/sdss-sites.xml"/>
 		<!-- [13] -->
-		<SIGN i="sdss-trust-12-unsigned.xml" o="sdss-trust-12.xml"/>
+		<SIGN.sdss i="sdss-trust-12-unsigned.xml" o="sdss-trust-12.xml"/>
 		<!-- [14] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-trust-12.xml"
 			tofile="${xml.dir}/sdss-trust.xml"/>
@@ -328,7 +359,7 @@
 	<target name="sign.wayf">
 		<echo>Signing WAYF metadata.</echo>
 		<!-- [18] -->
-		<SIGN i="sdss-wayf-unsigned.xml" o="sdss-wayf.xml"/>
+		<SIGN.sdss i="sdss-wayf-unsigned.xml" o="sdss-wayf.xml"/>
 	</target>
 	
 	<!--
@@ -340,21 +371,21 @@
 
 	<target name="verify.shibb.1.3">
 		<echo>Verifying signed Shibboleth 1.3 metadata.</echo>
-		<VFY i="sdss-metadata.xml"/>
-		<VFY i="sdss-sites-13.xml"/>
+		<VFY.sdss i="sdss-metadata.xml"/>
+		<VFY.sdss i="sdss-sites-13.xml"/>
 	</target>
 	
 	<target name="verify.shibb.1.2">
 		<echo>Verifying signed Shibboleth 1.2 metadata.</echo>
-		<VFY i="sdss-sites-12.xml"/>
-		<VFY i="sdss-trust-12.xml"/>
-		<VFY i="sdss-sites.xml"/>
-		<VFY i="sdss-trust.xml"/>
+		<VFY.sdss i="sdss-sites-12.xml"/>
+		<VFY.sdss i="sdss-trust-12.xml"/>
+		<VFY.sdss i="sdss-sites.xml"/>
+		<VFY.sdss i="sdss-trust.xml"/>
 	</target>
 	
 	<target name="verify.wayf">
 		<echo>Verifying signed WAYF metadata.</echo>
-		<VFY i="sdss-wayf.xml"/>
+		<VFY.sdss i="sdss-wayf.xml"/>
 	</target>
 	
 </project>
