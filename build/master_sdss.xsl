@@ -10,7 +10,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: master_sdss.xsl,v 1.4 2006/11/15 16:10:06 iay Exp $
+	$Id: master_sdss.xsl,v 1.5 2006/11/22 22:21:10 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -19,14 +19,15 @@
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
+	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-	exclude-result-prefixes="wayf">
+	exclude-result-prefixes="wayf uklabel">
 
 	<!--
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: master_sdss.xsl,v 1.4 2006/11/15 16:10:06 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: master_sdss.xsl,v 1.5 2006/11/22 22:21:10 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -77,8 +78,26 @@
 	<!--
 		Drop any entities defined after the UK Federation went live.
 	-->
-	<xsl:template match="md:EntityDescriptor[number(substring-after(@ID, 'uk'))>=1000]">
+	<xsl:template match="md:EntityDescriptor[number(substring-after(@ID, 'uk'))>=200]">
 		<!-- nothing -->
+	</xsl:template>
+	
+	<!--
+		Drop UK Federation SDSS policy labels; not relevant to SDSS Federation users.
+	-->
+	<xsl:template match="md:EntityDescriptor/md:Extensions">
+		<xsl:variable name="otherExtensions" select="*[local-name()!='SDSSPolicy']"/>
+		<xsl:choose>
+			<xsl:when test="count($otherExtensions)=0">
+				<!-- nothing -->
+			</xsl:when>
+			<xsl:otherwise>
+				<Extensions>
+					<xsl:apply-templates
+						select="text()|comment()|*[local-name()!='SDSSPolicy']"/>
+				</Extensions>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
