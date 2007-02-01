@@ -146,6 +146,7 @@
 				knownhosts="${known.hosts}">
 			<fileset dir="${xml.dir}">
 				<include name="*.xml"/>
+				<include name="ukfederation-members.xsd"/>
 				<exclude name="ukfederation-*.xml"/>
 				<exclude name="entities.xml"/>
 				<exclude name="sdss-wayf-unsigned.xml"/>
