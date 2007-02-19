@@ -10,7 +10,7 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: master_ukfederation.xsl,v 1.3 2006/11/07 20:36:31 iay Exp $
+	$Id: master_ukfederation.xsl,v 1.4 2007/02/19 15:38:46 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -19,6 +19,7 @@
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
+	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	exclude-result-prefixes="wayf">
 
@@ -26,7 +27,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: master_ukfederation.xsl,v 1.3 2006/11/07 20:36:31 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id: master_ukfederation.xsl,v 1.4 2007/02/19 15:38:46 iay Exp $</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
@@ -78,6 +79,13 @@
 		Drop any dummy entities.
 	-->
 	<xsl:template match="md:EntityDescriptor[@entityID='dummy']">
+		<!-- nothing -->
+	</xsl:template>
+	
+	<!--
+		Drop any deleted entities.
+	-->
+	<xsl:template match="md:EntityDescriptor[md:Extensions/uklabel:DeletedEntity]">
 		<!-- nothing -->
 	</xsl:template>
 	
