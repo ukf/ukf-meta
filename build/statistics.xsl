@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.2 2007/02/28 17:12:57 iay Exp $
+    $Id: statistics.xsl,v 1.3 2007/02/28 18:13:45 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -22,7 +22,8 @@
     xmlns:math="http://exslt.org/math"
     xmlns:date="http://exslt.org/dates-and-times"
     xmlns:dyn="http://exslt.org/dynamic"
-    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf uklabel math date dyn"
+    xmlns:set="http://exslt.org/sets"
+    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf uklabel math date dyn set"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
@@ -54,6 +55,10 @@
         <xsl:variable name="sdssPolicyCount"
             select="count($entities[md:Extensions/uklabel:SDSSPolicy])"/>
         
+        <xsl:variable name="memberEntities"
+            select="dyn:closure($members/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
+        <xsl:variable name="nonMemberEntities"
+            select="set:difference($entities, $memberEntities)"/>
         <xsl:variable name="memberEntityCount"
             select="dyn:sum($memberNames, 'count($entities[md:Organization/md:OrganizationName = current()])')"/>
         <xsl:variable name="nonMemberEntityCount"
@@ -196,6 +201,27 @@
                         </xsl:for-each>
                     </ul>
                 </xsl:if>
+                
+                <h2>Orphan Entities</h2>
+                <p>
+                    There are <xsl:value-of select="$nonMemberEntityCount"/> entities
+                    (<xsl:value-of select="format-number($nonMemberEntityCount div $entityCount, '0.0%')"/>
+                    of the total) that don't appear to
+                    have <code>OrganizationName</code> values corresponding to the registered names of
+                    federation members.  This may be because of typographical errors or simply because the
+                    entities belong to SDSS Federation members in transition.  The list is sorted alphabetically
+                    by <code>OrganizationName</code>.
+                    <ul>
+                        <xsl:for-each select="$nonMemberEntities">
+                            <xsl:sort select="md:Organization/md:OrganizationName"/>
+                            <li>
+                                <xsl:value-of select="md:Organization/md:OrganizationName"/>:
+                                <code><xsl:value-of select="@entityID"/></code>
+                                (<xsl:value-of select="@ID"/>)
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </p>
             </body>
         </html>
     </xsl:template>
