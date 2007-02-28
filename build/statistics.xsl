@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.1 2007/02/28 15:18:01 iay Exp $
+    $Id: statistics.xsl,v 1.2 2007/02/28 17:12:57 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -72,7 +72,7 @@
                 <p>Number of members: <xsl:value-of select="$memberCount"/></p>
                 <p>The following table shows, for each federation member, the number of entities
                 which appear to belong to that member.  To appear in this value, the entity's
-                <code>OrganizationDisplayName</code> must <em>exactly</em> match the
+                <code>OrganizationName</code> must <em>exactly</em> match the
                 member's registered formal name.</p>
                 <table border="1" cellspacing="2" cellpadding="4">
                     <tr>
@@ -137,6 +137,65 @@
                     </li>
                 </ul>
                 
+                <h2>Shibboleth 1.2 Entities</h2>
+                <xsl:variable name="sps12"
+                    select="$sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="idps12"
+                    select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="entities12Count"
+                    select="count($sps12) + count($idps12)"/>
+                <p>There are <xsl:value-of select="$entities12Count"/> entities in the metadata that look like they might still
+                be running Shibboleth 1.2.  This is <xsl:value-of select="format-number($entities12Count div $entityCount, '0.0%')"/>
+                of all entities.</p>
+                
+                <h3>Identity Providers</h3>
+                <p>The following <xsl:value-of select="count($idps12)"/> identity providers look like they might be
+                running Shibboleth 1.2 because they have at least one <code>SingleSignOnService/@Location</code>
+                containing <code>"/HS"</code>.
+                    This is <xsl:value-of select="format-number(count($idps12) div $idpCount, '0.0%')"/>
+                    of all identity providers.</p>
+                <ul>
+                    <xsl:for-each select="$idps12">
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <code><xsl:value-of select="@entityID"/></code>:
+                            <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
+                        </li>
+                    </xsl:for-each>
+                </ul>
+                
+                <h3>Service Providers</h3>
+                <p>The following <xsl:value-of select="count($sps12)"/> service providers look like they might be
+                    running Shibboleth 1.2 because they have at least one <code>AssertionConsumerService/@Location</code>
+                    containing <code>"Shibboleth.shire"</code>.
+                    This is <xsl:value-of select="format-number(count($sps12) div $spCount, '0.0%')"/>
+                    of all service providers.</p>
+                <ul>
+                    <xsl:for-each select="$sps12">
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <code><xsl:value-of select="@entityID"/></code>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+                <xsl:variable name="mixedVersionSps"
+                    select="$sps12/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="mixedVersionSpCount" select="count($mixedVersionSps)"/>
+                <xsl:if test="$mixedVersionSpCount != 0">
+                    <p>On the other hand, the following <xsl:value-of select="$mixedVersionSpCount"/> entities also sport
+                        1.3-style <code>AssertionConsumerService/@Location</code> elements
+                        containing <code>"Shibboleth.sso"</code>.  These may therefore be in transition, or
+                        simply need a metadata update to remove the old <code>@Location</code>:
+                    </p>
+                    <ul>
+                        <xsl:for-each select="$mixedVersionSps">
+                            <li>
+                                <xsl:value-of select="@ID"/>:
+                                <code><xsl:value-of select="@entityID"/></code>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
             </body>
         </html>
     </xsl:template>
