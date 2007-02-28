@@ -111,7 +111,7 @@
 	<!--
 		Standard processing: generate, sign, then verify.
 	-->
-	<target name="process" depends="get.keystore.pass, generate, sign, verify">
+	<target name="process" depends="get.keystore.pass, generate, sign, verify, stats.uk">
 		<echo>Processing complete.</echo>
 	</target>
 
@@ -150,6 +150,7 @@
 				<exclude name="ukfederation-*.xml"/>
 				<exclude name="entities.xml"/>
 				<exclude name="sdss-wayf-unsigned.xml"/>
+				<include name="ukfederation-stats.html"/>
 			</fileset>
 		</scp>
 		<!--
@@ -506,6 +507,17 @@
 	<target name="verify.uk.wayf">
 		<echo>Verifying signed UK WAYF metadata.</echo>
 		<VFY.uk i="ukfederation-wayf.xml"/>
+	</target>
+	
+	<!--
+		Statistics generation
+	-->
+	<target name="stats.uk">
+		<echo>Generating UK Federation statistics</echo>
+		<XALAN
+			i="ukfederation-metadata-unsigned.xml"
+			o="ukfederation-stats.html"
+			x="statistics.xsl"/>
 	</target>
 	
 </project>
