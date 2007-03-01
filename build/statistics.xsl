@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.3 2007/02/28 18:13:45 iay Exp $
+    $Id: statistics.xsl,v 1.4 2007/03/01 09:01:12 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -64,6 +64,18 @@
         <xsl:variable name="nonMemberEntityCount"
             select="$entityCount - $memberEntityCount"/>
         
+        <xsl:variable name="artifactIdps"
+            select="$idps[md:IDPSSODescriptor/md:ArtifactResolutionService]"/>
+        <xsl:variable name="artifactIdpCount" select="count($artifactIdps)"/>
+        <xsl:variable name="artifactSps"
+            select="$sps[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:1.0:profiles:artifact-01']"/>
+        <xsl:variable name="artifactSpCount" select="count($artifactSps)"/>
+        <xsl:variable name="artifactEntities" select="$artifactIdps | $artifactSps"/>
+        <xsl:variable name="artifactEntityCount" select="count($artifactEntities)"/>
+        
+        <xsl:variable name="embeddedX509Entities" select="$entities[descendant::ds:X509Data]"/>
+        <xsl:variable name="embeddedX509EntityCount" select="count($embeddedX509Entities)"/>
+        
         <html>
             <head>
                 <title>UK Federation metadata statistics</title>
@@ -72,8 +84,15 @@
                 <h1>UK Federation metadata statistics</h1>
                 <p>This document is regenerated each time the UK Federation metadata is altered.</p>
                 <p>This version was created at <xsl:value-of select="$now"/>.</p>
+                <p>Contents:</p>
+                <ul>
+                    <li><p><a href="#members">Member Statistics</a></p></li>
+                    <li><p><a href="#entities">Entity Statistics</a></p></li>
+                    <li><p><a href="#shibb12">Shibboleth 1.2 Entities</a></p></li>
+                    <li><p><a href="#orphans">Orphan Entities</a></p></li>
+                </ul>
                 
-                <h2>Member Statistics</h2>
+                <h2><a name="members">Member Statistics</a></h2>
                 <p>Number of members: <xsl:value-of select="$memberCount"/></p>
                 <p>The following table shows, for each federation member, the number of entities
                 which appear to belong to that member.  To appear in this value, the entity's
@@ -97,8 +116,8 @@
                     may simply have misspelled
                     <code>OrganizationName</code> values.</p>
 
-                <h2>Entity Statistics</h2>
-                <p>Total entities: <xsl:value-of select="$entityCount"/></p>
+                <h2><a name="entities">Entity Statistics</a></h2>
+                <p>Total entities: <xsl:value-of select="$entityCount"/>.  This breaks down into:</p>
                 <ul>
                     <li>
                         <p>Identity providers: <xsl:value-of select="$idpCount"/></p>
@@ -111,21 +130,50 @@
                     </li>
                 </ul>
                 
-                <p>
-                    Of the <xsl:value-of select="$entityCount"/> entities,
-                <xsl:value-of select="$memberEntityCount"/>
-                (<xsl:value-of select="format-number($memberEntityCount div $entityCount, '0.0%')"/>)
-                are labelled as being owned by full
-                federation members.  This is an undercount, as the label is not applied
-                in the case of members transitioning from the SDSS Federation until
-                the entity's metadata has been fully verified with the member.</p>
+                <p>Of the <xsl:value-of select="$entityCount"/> entities:</p>
+                <ul>
+                    <li>
+                        <p>
+                            <xsl:value-of select="$memberEntityCount"/>
+                            (<xsl:value-of select="format-number($memberEntityCount div $entityCount, '0.0%')"/>)
+                            are labelled as being owned by full
+                            federation members.  This is an undercount, as the label is not applied
+                            in the case of members transitioning from the SDSS Federation until
+                            the entity's metadata has been fully verified with the member.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <xsl:value-of select="$sdssPolicyCount"/>
+                            (<xsl:value-of select="format-number($sdssPolicyCount div $entityCount, '0.0%')"/>)
+                            are labelled as having been owned by organisations asserting that they would
+                            follow the SDSS Federation policy.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <xsl:value-of select="$artifactEntityCount"/>
+                            (<xsl:value-of select="format-number($artifactEntityCount div $entityCount, '0.0%')"/>)
+                            support the Browser/Artifact profile.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <xsl:value-of select="$embeddedX509EntityCount"/>
+                            (<xsl:value-of select="format-number($embeddedX509EntityCount div $entityCount, '0.0%')"/>)
+                            <xsl:choose>
+                                <xsl:when test="$embeddedX509EntityCount = 1">
+                                    has
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    have
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            at least one embedded <code>ds:X509Data</code> element providing explicit key material.
+                        </p>
+                    </li>
+                </ul>
 
-                <p>Of the <xsl:value-of select="$entityCount"/> entities,
-                <xsl:value-of select="$sdssPolicyCount"/>
-                (<xsl:value-of select="format-number($sdssPolicyCount div $entityCount, '0.0%')"/>)
-                are labelled as having been owned by organisations asserting that they would
-                follow the SDSS Federation policy.</p>
-                
                 <h3>Identity Providers</h3>
                 <p>There are <xsl:value-of select="$idpCount"/> identity providers,
                 including <xsl:value-of select="$dualEntityCount"/>
@@ -140,9 +188,29 @@
                         <p>Asserting user accountability: <xsl:value-of select="$accountableCount"/>
                         (<xsl:value-of select="format-number($accountableCount div $idpCount, '0.0%')"/>).</p>
                     </li>
+                    <li>
+                        <p>
+                            Support Browser/Artifact: <xsl:value-of select="$artifactIdpCount"/>
+                            (<xsl:value-of select="format-number($artifactIdpCount div $idpCount, '0.0%')"/>).
+                        </p>
+                    </li>
                 </ul>
                 
-                <h2>Shibboleth 1.2 Entities</h2>
+                <h3>Service Providers</h3>
+                <p>There are <xsl:value-of select="$spCount"/> service providers,
+                    including <xsl:value-of select="$dualEntityCount"/>
+                    dual-nature entities (both identity and service providers in one).</p>
+                <p>Of these:</p>
+                <ul>
+                    <li>
+                        <p>
+                            Support Browser/Artifact: <xsl:value-of select="$artifactSpCount"/>
+                            (<xsl:value-of select="format-number($artifactSpCount div $idpCount, '0.0%')"/>).
+                        </p>
+                    </li>
+                </ul>
+                
+                <h2><a name="shibb12">Shibboleth 1.2 Entities</a></h2>
                 <xsl:variable name="sps12"
                     select="$sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="idps12"
@@ -202,7 +270,7 @@
                     </ul>
                 </xsl:if>
                 
-                <h2>Orphan Entities</h2>
+                <h2><a name="orphans">Orphan Entities</a></h2>
                 <p>
                     There are <xsl:value-of select="$nonMemberEntityCount"/> entities
                     (<xsl:value-of select="format-number($nonMemberEntityCount div $entityCount, '0.0%')"/>
