@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.5 2007/03/02 13:32:49 iay Exp $
+    $Id: statistics.xsl,v 1.6 2007/03/07 16:03:52 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -90,6 +90,7 @@
                     <li><p><a href="#entities">Entity Statistics</a></p></li>
                     <li><p><a href="#shibb12">Shibboleth 1.2 Entities</a></p></li>
                     <li><p><a href="#orphans">Orphan Entities</a></p></li>
+                    <li><p><a href="#bymember">Entities by Member</a></p></li>
                     <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
                 </ul>
                 
@@ -104,7 +105,7 @@
                         <th align="left">Member</th>
                         <th>Entities</th>
                     </tr>
-                    <xsl:apply-templates select="$members">
+                    <xsl:apply-templates select="$members" mode="count">
                         <xsl:with-param name="entities" select="$entities"/>
                     </xsl:apply-templates>
                 </table>
@@ -292,6 +293,13 @@
                     </ul>
                 </p>
                 
+                <h2><a name="bymember">Entities by Member</a></h2>
+                <ul>
+                    <xsl:apply-templates select="$members" mode="enumerate">
+                        <xsl:with-param name="entities" select="$entities"/>
+                    </xsl:apply-templates>
+                </ul>
+                
                 <h2><a name="keyedEntities">Entities with Embedded Key Material</a></h2>
                 <ul>
                     <xsl:for-each select="$embeddedX509Entities">
@@ -305,7 +313,7 @@
         </html>
     </xsl:template>
     
-    <xsl:template match="members:Member">
+    <xsl:template match="members:Member" mode="count">
         <xsl:param name="entities"/>
         <xsl:variable name="myName" select="string(md:OrganizationName)"/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
@@ -322,6 +330,25 @@
                 </xsl:choose>
             </td>
         </tr>
+    </xsl:template>
+    
+    <xsl:template match="members:Member" mode="enumerate">
+        <xsl:param name="entities"/>
+        <xsl:variable name="myName" select="string(md:OrganizationName)"/>
+        <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
+        <xsl:if test="count($matched) != 0">
+            <li>
+                <p><xsl:value-of select="$myName"/>:</p>
+                <ul>
+                    <xsl:for-each select="$matched">
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <code><xsl:value-of select="@entityID"/></code>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+            </li>
+        </xsl:if>
     </xsl:template>
     
 </xsl:stylesheet>
