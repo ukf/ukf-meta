@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.6 2007/03/07 16:03:52 iay Exp $
+    $Id: statistics.xsl,v 1.7 2007/03/07 18:29:50 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -50,7 +50,7 @@
         <xsl:variable name="concealedCount" select="count($idps[md:Extensions/wayf:HideFromWAYF])"/>
         <xsl:variable name="accountableCount"
             select="count($idps[md:Extensions/uklabel:AccountableUsers])"/>
-        <xsl:variable name="memberEntityCount"
+        <xsl:variable name="federationMemberEntityCount"
             select="count($entities[md:Extensions/uklabel:UKFederationMember])"/>
         <xsl:variable name="sdssPolicyCount"
             select="count($entities[md:Extensions/uklabel:SDSSPolicy])"/>
@@ -136,8 +136,8 @@
                 <ul>
                     <li>
                         <p>
-                            <xsl:value-of select="$memberEntityCount"/>
-                            (<xsl:value-of select="format-number($memberEntityCount div $entityCount, '0.0%')"/>)
+                            <xsl:value-of select="$federationMemberEntityCount"/>
+                            (<xsl:value-of select="format-number($federationMemberEntityCount div $entityCount, '0.0%')"/>)
                             are labelled as being owned by full
                             federation members.  This is an undercount, as the label is not applied
                             in the case of members transitioning from the SDSS Federation until
