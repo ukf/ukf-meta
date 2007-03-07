@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.7 2007/03/07 18:29:50 iay Exp $
+    $Id: statistics.xsl,v 1.8 2007/03/07 21:41:05 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -46,6 +46,8 @@
         <xsl:variable name="spCount" select="count($sps)"/>
         <xsl:variable name="dualEntities" select="$entities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
         <xsl:variable name="dualEntityCount" select="count($dualEntities)"/>
+        <xsl:variable name="exampleEntities" select="$entities[contains(md:Organization/md:OrganizationURL, 'example')]"/>
+        <xsl:variable name="exampleEntityCount" select="count($exampleEntities)"/>
         
         <xsl:variable name="concealedCount" select="count($idps[md:Extensions/wayf:HideFromWAYF])"/>
         <xsl:variable name="accountableCount"
@@ -172,6 +174,21 @@
                                 </xsl:otherwise>
                             </xsl:choose>
                             at least one embedded <code>ds:X509Data</code> element providing explicit key material.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <xsl:value-of select="$exampleEntityCount"/>
+                            (<xsl:value-of select="format-number($exampleEntityCount div $entityCount, '0.0%')"/>)
+                            <xsl:choose>
+                                <xsl:when test="$exampleEntityCount = 1">
+                                    has
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    have
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            legacy "example" <code>OrganizationURL</code> elements.
                         </p>
                     </li>
                 </ul>
