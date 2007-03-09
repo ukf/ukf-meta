@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.8 2007/03/07 21:41:05 iay Exp $
+    $Id: statistics.xsl,v 1.9 2007/03/09 10:56:26 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -90,7 +90,7 @@
                 <ul>
                     <li><p><a href="#members">Member Statistics</a></p></li>
                     <li><p><a href="#entities">Entity Statistics</a></p></li>
-                    <li><p><a href="#shibb12">Shibboleth 1.2 Entities</a></p></li>
+                    <li><p><a href="#bySoftware">Entities by Software</a></p></li>
                     <li><p><a href="#orphans">Orphan Entities</a></p></li>
                     <li><p><a href="#bymember">Entities by Member</a></p></li>
                     <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
@@ -229,18 +229,33 @@
                     </li>
                 </ul>
                 
-                <h2><a name="shibb12">Shibboleth 1.2 Entities</a></h2>
+                <h2><a name="bySoftware">Entities by Software</a></h2>
+                
+                <xsl:variable name="sps13"
+                    select="$sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="idps13"
+                    select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/shibboleth-idp/SSO')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="entities13" select="$sps13 | $idps13"/>
+                <xsl:variable name="entities13Count" select="count($entities13)"/>
+                <h3>Shibboleth 1.3</h3>
+                <p>
+                    There are <xsl:value-of select="$entities13Count"/> entities in the metadata that look like they are probably
+                    running Shibboleth 1.2.  This is <xsl:value-of select="format-number($entities13Count div $entityCount, '0.0%')"/>
+                    of all entities.
+                </p>
+                
                 <xsl:variable name="sps12"
                     select="$sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="idps12"
                     select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="entities12Count"
-                    select="count($sps12) + count($idps12)"/>
+                <xsl:variable name="entities12" select="$idps12 | $sps12"/>
+                <xsl:variable name="entities12Count" select="count($entities12)"/>
+                <h3>Shibboleth 1.2</h3>
                 <p>There are <xsl:value-of select="$entities12Count"/> entities in the metadata that look like they might still
                 be running Shibboleth 1.2.  This is <xsl:value-of select="format-number($entities12Count div $entityCount, '0.0%')"/>
                 of all entities.</p>
                 
-                <h3>Identity Providers</h3>
+                <h4>Shibboleth 1.2 Identity Providers</h4>
                 <p>The following <xsl:value-of select="count($idps12)"/> identity providers look like they might be
                 running Shibboleth 1.2 because they have at least one <code>SingleSignOnService/@Location</code>
                 containing <code>"/HS"</code>.
@@ -256,7 +271,7 @@
                     </xsl:for-each>
                 </ul>
                 
-                <h3>Service Providers</h3>
+                <h4>Shibboleth 1.2 Service Providers</h4>
                 <p>The following <xsl:value-of select="count($sps12)"/> service providers look like they might be
                     running Shibboleth 1.2 because they have at least one <code>AssertionConsumerService/@Location</code>
                     containing <code>"Shibboleth.shire"</code>.
@@ -288,6 +303,45 @@
                         </xsl:for-each>
                     </ul>
                 </xsl:if>
+                
+                <xsl:variable name="athensImEntities"
+                    select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/origin/hs')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="athensImEntityCount" select="count($athensImEntities)"/>
+                <h3>AthensIM Entities</h3>
+                <p>
+                    There are <xsl:value-of select="$athensImEntityCount"/> entities in the metadata that
+                    appear to be running AthensIM identity provider software.
+                    This is <xsl:value-of select="format-number($athensImEntityCount div $entityCount, '0.0%')"/>
+                    of all entities, or <xsl:value-of select="format-number($athensImEntityCount div $idpCount, '0.0%')"/>
+                    of identity providers.
+                </p>
+                <ul>
+                    <xsl:for-each select="$athensImEntities">
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <code><xsl:value-of select="@entityID"/></code>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+                
+                <xsl:variable name="knownSoftwareEntities" select="$entities12 | $entities13 | $athensImEntities"/>
+                <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
+                <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
+                <h3>Unknown Software</h3>
+                <p>
+                    There are <xsl:value-of select="$unknownSoftwareEntityCount"/> entities in the metadata that
+                    don't meet any patterns I recognise.
+                    This is <xsl:value-of select="format-number($unknownSoftwareEntityCount div $entityCount, '0.0%')"/>
+                    of all entities.
+                </p>
+                <ul>
+                    <xsl:for-each select="$unknownSoftwareEntities">
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <code><xsl:value-of select="@entityID"/></code>
+                        </li>
+                    </xsl:for-each>
+                </ul>
                 
                 <h2><a name="orphans">Orphan Entities</a></h2>
                 <p>
