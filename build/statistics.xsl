@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.9 2007/03/09 10:56:26 iay Exp $
+    $Id: statistics.xsl,v 1.10 2007/03/09 11:36:07 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -240,7 +240,7 @@
                 <h3>Shibboleth 1.3</h3>
                 <p>
                     There are <xsl:value-of select="$entities13Count"/> entities in the metadata that look like they are probably
-                    running Shibboleth 1.2.  This is <xsl:value-of select="format-number($entities13Count div $entityCount, '0.0%')"/>
+                    running Shibboleth 1.3.  This is <xsl:value-of select="format-number($entities13Count div $entityCount, '0.0%')"/>
                     of all entities.
                 </p>
                 
