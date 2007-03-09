@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.10 2007/03/09 11:36:07 iay Exp $
+    $Id: statistics.xsl,v 1.11 2007/03/09 18:17:49 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -230,11 +230,31 @@
                 </ul>
                 
                 <h2><a name="bySoftware">Entities by Software</a></h2>
+
+                <!--
+                    This is a list of identity providers that we *know* are running 1.3, even though they
+                    may not look like it.
+                -->
+                <xsl:variable name="known13idps" select="
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shib.ncl.ac.uk'] |
+                    $entities[@entityID='https://typekey.sdss.ac.uk/shibboleth'] |
+                    $entities[@entityID='https://typekey.iay.org.uk/shibboleth']                    
+                    "/>
+                
+                <!--
+                    This is a list of service providers that we *know* are running 1.3, even though they
+                    may not look like it.
+                -->
+                <xsl:variable name="known13sps" select="
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk']
+                    "/>
                 
                 <xsl:variable name="sps13"
-                    select="$sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
+                    select="$known13sps |
+                        $sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="idps13"
-                    select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/shibboleth-idp/SSO')]/ancestor::md:EntityDescriptor"/>
+                    select="$known13idps |
+                        $idps/descendant::md:SingleSignOnService[contains(@Location, '/shibboleth-idp/SSO')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="entities13" select="$sps13 | $idps13"/>
                 <xsl:variable name="entities13Count" select="count($entities13)"/>
                 <h3>Shibboleth 1.3</h3>
@@ -245,9 +265,13 @@
                 </p>
                 
                 <xsl:variable name="sps12"
-                    select="$sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor"/>
+                    select="set:difference(
+                        $sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor,
+                        $known13sps)"/>
                 <xsl:variable name="idps12"
-                    select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor"/>
+                    select="set:difference(
+                        $idps/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor,
+                        $known13idps)"/>
                 <xsl:variable name="entities12" select="$idps12 | $sps12"/>
                 <xsl:variable name="entities12Count" select="count($entities12)"/>
                 <h3>Shibboleth 1.2</h3>
