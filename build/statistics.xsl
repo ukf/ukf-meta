@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.11 2007/03/09 18:17:49 iay Exp $
+    $Id: statistics.xsl,v 1.12 2007/03/14 10:09:05 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -438,6 +438,7 @@
                     <xsl:for-each select="$matched">
                         <li>
                             <xsl:value-of select="@ID"/>:
+                            <xsl:if test="md:Extensions/uklabel:UKFederationMember">[M] </xsl:if>
                             <code><xsl:value-of select="@entityID"/></code>
                         </li>
                     </xsl:for-each>
