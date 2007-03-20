@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.14 2007/03/20 15:13:19 iay Exp $
+    $Id: statistics.xsl,v 1.15 2007/03/20 17:54:18 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -375,13 +375,71 @@
                     </ul>
                 </xsl:if>
                 
-                <xsl:variable name="knownSoftwareEntities" select="$entities12 | $entities13 | $athensImEntities"/>
+                <!--
+                    Guanxi entities.  Currently assumed to be identity providers only. 
+                -->
+                <xsl:variable name="knownGuanxiIdps" select="
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:uhi.ac.uk']
+                    "/>
+                <xsl:variable name="guanxiCount" select="count($knownGuanxiIdps)"/>
+                <xsl:if test="$guanxiCount != 0">
+                    <h3>Guanxi Entities</h3>
+                    <p>
+                        <xsl:if test="$guanxiCount = 1">
+                            The following entity is known to be running the Guanxi software:
+                        </xsl:if>
+                        <xsl:if test="$guanxiCount != 1">
+                            The following entities are known to be running the Guanxi software:
+                        </xsl:if>
+                    </p>
+                    <ul>
+                        <xsl:for-each select="$knownGuanxiIdps">
+                            <li>
+                                <xsl:value-of select="@ID"/>:
+                                <code><xsl:value-of select="@entityID"/></code>:
+                                <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
+                
+                <!--
+                    Athens Gateway entities
+                -->
+                <xsl:variable name="knownGateways" select="
+                    $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:beta'] |
+                    $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
+                    "/>
+                <xsl:variable name="gatewayCount" select="count($knownGateways)"/>
+                <xsl:if test="$guanxiCount != 0">
+                    <h3>Gateway Entities</h3>
+                    <p>
+                        <xsl:if test="$guanxiCount = 1">
+                            The following entity is known to be running Athens/Shibboleth gateway software:
+                        </xsl:if>
+                        <xsl:if test="$guanxiCount != 1">
+                            The following entities are known to be running Athens/Shibboleth gateway software:
+                        </xsl:if>
+                    </p>
+                    <ul>
+                        <xsl:for-each select="$knownGateways">
+                            <li>
+                                <xsl:value-of select="@ID"/>:
+                                <code><xsl:value-of select="@entityID"/></code>:
+                                <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
+                
+                <xsl:variable name="knownSoftwareEntities"
+                    select="$entities12 | $entities13 | $athensImEntities | $knownGuanxiIdps | $knownGateways"/>
                 <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
                 <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
                 <h3>Unknown Software</h3>
                 <p>
                     There are <xsl:value-of select="$unknownSoftwareEntityCount"/> entities in the metadata that
-                    don't meet any patterns I recognise.
+                    don't fall into any of the categories above.
                     This is <xsl:value-of select="format-number($unknownSoftwareEntityCount div $entityCount, '0.0%')"/>
                     of all entities.
                 </p>
