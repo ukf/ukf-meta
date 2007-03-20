@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.12 2007/03/14 10:09:05 iay Exp $
+    $Id: statistics.xsl,v 1.13 2007/03/20 11:08:03 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -331,22 +331,30 @@
                 <xsl:variable name="athensImEntities"
                     select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/origin/hs')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="athensImEntityCount" select="count($athensImEntities)"/>
-                <h3>AthensIM Entities</h3>
-                <p>
-                    There are <xsl:value-of select="$athensImEntityCount"/> entities in the metadata that
-                    appear to be running AthensIM identity provider software.
-                    This is <xsl:value-of select="format-number($athensImEntityCount div $entityCount, '0.0%')"/>
-                    of all entities, or <xsl:value-of select="format-number($athensImEntityCount div $idpCount, '0.0%')"/>
-                    of identity providers.
-                </p>
-                <ul>
-                    <xsl:for-each select="$athensImEntities">
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <code><xsl:value-of select="@entityID"/></code>
-                        </li>
-                    </xsl:for-each>
-                </ul>
+                <xsl:if test="$athensImEntityCount != 0">
+                    <h3>AthensIM Entities</h3>
+                    <p>
+                        <xsl:if test="$athensImEntityCount = 1">
+                            There is 1 entity in the metadata that appears to be
+                            running AthensIM identity provider software.
+                        </xsl:if>
+                        <xsl:if test="$athensImEntityCount != 1">
+                            There are <xsl:value-of select="$athensImEntityCount"/> entities in the metadata that
+                            appear to be running AthensIM identity provider software.
+                        </xsl:if>
+                        This is <xsl:value-of select="format-number($athensImEntityCount div $entityCount, '0.0%')"/>
+                        of all entities, or <xsl:value-of select="format-number($athensImEntityCount div $idpCount, '0.0%')"/>
+                        of identity providers.
+                    </p>
+                    <ul>
+                        <xsl:for-each select="$athensImEntities">
+                            <li>
+                                <xsl:value-of select="@ID"/>:
+                                <code><xsl:value-of select="@entityID"/></code>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
                 
                 <xsl:variable name="knownSoftwareEntities" select="$entities12 | $entities13 | $athensImEntities"/>
                 <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
