@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.13 2007/03/20 11:08:03 iay Exp $
+    $Id: statistics.xsl,v 1.14 2007/03/20 15:13:19 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -246,8 +246,14 @@
                     may not look like it.
                 -->
                 <xsl:variable name="known13sps" select="
-                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk']
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk'] |
+                    $entities[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki']                 
                     "/>
+                
+                <!--
+                    Entities for which we have explicit knowledge that they are running 1.3
+                -->
+                <xsl:variable name="known13entities" select="$known13idps | $known13sps"/>
                 
                 <xsl:variable name="sps13"
                     select="$known13sps |
@@ -259,7 +265,20 @@
                 <xsl:variable name="entities13Count" select="count($entities13)"/>
                 <h3>Shibboleth 1.3</h3>
                 <p>
-                    There are <xsl:value-of select="$entities13Count"/> entities in the metadata that look like they are probably
+                    We have verified with the owners that the following entities are running Shibboleth 1.3, even
+                    if that does not appear to be the case from their metadata:
+                </p>
+                <ul>
+                    <xsl:for-each select="$known13entities">
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <code><xsl:value-of select="@entityID"/></code>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+                <p>
+                    Including the above, there are
+                    <xsl:value-of select="$entities13Count"/> entities in the metadata that look like they are probably
                     running Shibboleth 1.3.  This is <xsl:value-of select="format-number($entities13Count div $entityCount, '0.0%')"/>
                     of all entities.
                 </p>
