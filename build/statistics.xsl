@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.15 2007/03/20 17:54:18 iay Exp $
+    $Id: statistics.xsl,v 1.16 2007/03/21 12:16:06 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -411,13 +411,13 @@
                     $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
                     "/>
                 <xsl:variable name="gatewayCount" select="count($knownGateways)"/>
-                <xsl:if test="$guanxiCount != 0">
+                <xsl:if test="$gatewayCount != 0">
                     <h3>Gateway Entities</h3>
                     <p>
-                        <xsl:if test="$guanxiCount = 1">
+                        <xsl:if test="$gatewayCount = 1">
                             The following entity is known to be running Athens/Shibboleth gateway software:
                         </xsl:if>
-                        <xsl:if test="$guanxiCount != 1">
+                        <xsl:if test="$gatewayCount != 1">
                             The following entities are known to be running Athens/Shibboleth gateway software:
                         </xsl:if>
                     </p>
