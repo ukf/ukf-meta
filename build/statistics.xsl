@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.17 2007/03/27 16:47:34 iay Exp $
+    $Id: statistics.xsl,v 1.18 2007/03/27 17:27:12 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -248,7 +248,8 @@
                 -->
                 <xsl:variable name="known13sps" select="
                     $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk'] |
-                    $entities[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki']                 
+                    $entities[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki'] |
+                    $entities[@entityID='https://sdauth.sciencedirect.com/']                 
                     "/>
                 
                 <!--
@@ -261,7 +262,7 @@
                         $sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="idps13"
                     select="$known13idps |
-                        $idps/descendant::md:SingleSignOnService[contains(@Location, '/shibboleth-idp/SSO')]/ancestor::md:EntityDescriptor"/>
+                        $idps/descendant::md:SingleSignOnService[contains(@Location, '-idp/SSO')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="entities13" select="$sps13 | $idps13"/>
                 <xsl:variable name="entities13Count" select="count($entities13)"/>
                 <h3>Shibboleth 1.3</h3>
