@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.16 2007/03/21 12:16:06 iay Exp $
+    $Id: statistics.xsl,v 1.17 2007/03/27 16:47:34 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -238,7 +238,8 @@
                 <xsl:variable name="known13idps" select="
                     $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shib.ncl.ac.uk'] |
                     $entities[@entityID='https://typekey.sdss.ac.uk/shibboleth'] |
-                    $entities[@entityID='https://typekey.iay.org.uk/shibboleth']                    
+                    $entities[@entityID='https://typekey.iay.org.uk/shibboleth'] |
+                    $entities[@entityID='https://idp.protectnetwork.org/protectnetwork-idp']
                     "/>
                 
                 <!--
