@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.18 2007/03/27 17:27:12 iay Exp $
+    $Id: statistics.xsl,v 1.19 2007/04/17 16:48:51 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -114,6 +114,25 @@
                 <p>This accounts for <xsl:value-of select="$memberEntityCount"/>
                 (<xsl:value-of select="format-number($memberEntityCount div $entityCount, '0.0%')"/>)
                 of the <xsl:value-of select="$entityCount"/> entities in the federation metadata.</p>
+                
+                <xsl:variable name="memberDualEntities" select="$memberEntities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
+                <xsl:variable name="memberDualEntityCount" select="count($memberDualEntities)"/>
+                <xsl:variable name="memberIdps" select="$memberEntities[md:IDPSSODescriptor]"/>
+                <xsl:variable name="memberIdpCount" select="count($memberIdps)"/>
+                <xsl:variable name="memberSps" select="$memberEntities[md:SPSSODescriptor]"/>
+                <xsl:variable name="memberSpCount" select="count($memberSps)"/>
+                <p>These <xsl:value-of select="$memberEntityCount"/> entities break down into:</p>
+                <ul>
+                    <li>
+                        <p>Identity providers: <xsl:value-of select="$memberIdpCount - $memberDualEntityCount"/></p>
+                    </li>
+                    <li>
+                        <p>Service providers: <xsl:value-of select="$memberSpCount - $memberDualEntityCount"/></p>
+                    </li>
+                    <li>
+                        <p>Gateways: <xsl:value-of select="$memberDualEntityCount"/></p>
+                    </li>
+                </ul>                
                 
                 <p>The remaining <xsl:value-of select="$nonMemberEntityCount"/>
                     (<xsl:value-of select="format-number($nonMemberEntityCount div $entityCount, '0.0%')"/>)
