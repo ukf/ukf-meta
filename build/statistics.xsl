@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.19 2007/04/17 16:48:51 iay Exp $
+    $Id: statistics.xsl,v 1.20 2007/04/19 15:42:05 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -94,6 +94,7 @@
                     <li><p><a href="#orphans">Orphan Entities</a></p></li>
                     <li><p><a href="#bymember">Entities by Member</a></p></li>
                     <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
+                    <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
                 </ul>
                 
                 <h2><a name="members">Member Statistics</a></h2>
@@ -510,6 +511,32 @@
                         </li>
                     </xsl:for-each>
                 </ul>
+                
+                <h2><a name="accountableIdPs">Identity Provider Accountability</a></h2>
+                <h3>Asserting User Accountability</h3>
+                <ul>
+                    <xsl:for-each select="$idps[md:Extensions/uklabel:AccountableUsers]">
+                        <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <xsl:if test="md:Extensions/uklabel:UKFederationMember">[M] </xsl:if>
+                            <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+                
+                <h3>Not Asserting User Accountability</h3>
+                <ul>
+                    <xsl:for-each select="$idps[not(md:Extensions/uklabel:AccountableUsers)]">
+                        <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <xsl:if test="md:Extensions/uklabel:UKFederationMember">[M] </xsl:if>
+                            <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+                
             </body>
         </html>
     </xsl:template>
