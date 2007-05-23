@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.21 2007/05/07 14:08:32 iay Exp $
+    $Id: statistics.xsl,v 1.22 2007/05/23 11:01:06 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -107,6 +107,8 @@
                     <tr>
                         <th align="left">Member</th>
                         <th>Entities</th>
+                        <th>IdPs</th>
+                        <th>SPs</th>
                     </tr>
                     <xsl:apply-templates select="$members" mode="count">
                         <xsl:with-param name="entities" select="$entities"/>
@@ -547,6 +549,7 @@
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
         <tr>
             <td><xsl:value-of select="$myName"/></td>
+            <!-- count total entities -->
             <td align="center">
                 <xsl:choose>
                     <xsl:when test="count($matched) = 0">
@@ -554,6 +557,30 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="count($matched)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </td>
+            <!-- count IdPs -->
+            <xsl:variable name="matchedIdPs" select="$matched[md:IDPSSODescriptor]"/>
+            <td align="center">
+                <xsl:choose>
+                    <xsl:when test="count($matchedIdPs) = 0">
+                        -
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="count($matchedIdPs)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </td>
+            <!-- count SPs -->
+            <xsl:variable name="matchedSPs" select="$matched[md:SPSSODescriptor]"/>
+            <td align="center">
+                <xsl:choose>
+                    <xsl:when test="count($matchedSPs) = 0">
+                        -
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="count($matchedSPs)"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </td>
