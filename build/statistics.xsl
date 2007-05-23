@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.22 2007/05/23 11:01:06 iay Exp $
+    $Id: statistics.xsl,v 1.23 2007/05/23 13:29:52 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -246,7 +246,7 @@
                     <li>
                         <p>
                             Support Browser/Artifact: <xsl:value-of select="$artifactSpCount"/>
-                            (<xsl:value-of select="format-number($artifactSpCount div $idpCount, '0.0%')"/>).
+                            (<xsl:value-of select="format-number($artifactSpCount div $spCount, '0.0%')"/>).
                         </p>
                     </li>
                 </ul>
