@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.23 2007/05/23 13:29:52 iay Exp $
+    $Id: statistics.xsl,v 1.24 2007/06/05 10:47:45 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -598,7 +598,7 @@
                     <xsl:for-each select="$matched">
                         <li>
                             <xsl:value-of select="@ID"/>:
-                            <xsl:if test="md:Extensions/uklabel:UKFederationMember">[M] </xsl:if>
+                            <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)">[not-M] </xsl:if>
                             <xsl:if test="md:IDPSSODescriptor">[IdP] </xsl:if>
                             <xsl:if test="md:SPSSODescriptor">[SP] </xsl:if>
                             <code><xsl:value-of select="@entityID"/></code>
