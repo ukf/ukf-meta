@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.25 2007/06/11 12:29:43 iay Exp $
+    $Id: statistics.xsl,v 1.26 2007/07/06 09:36:02 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -76,6 +76,18 @@
         <xsl:variable name="embeddedX509Entities" select="$entities[descendant::ds:X509Data]"/>
         <xsl:variable name="embeddedX509EntityCount" select="count($embeddedX509Entities)"/>
         
+        <!--
+            Look for some potential problems in the metadata.  We need to do this
+            at the start so that we can include or exclude the associated section.
+        -->
+        <!-- spaces in entity IDs -->
+        <xsl:variable name="prob.space.entityID" select="$entities[contains(@entityID, ' ')]"/>
+        <!-- spaces in Locations -->
+        <xsl:variable name="prob.space.location" select="$entities[descendant::*[contains(@Location,' ')]]"/>
+        <!-- all problems, used as a conditional -->
+        <xsl:variable name="prob.all" select="$prob.space.entityID"/>
+        <xsl:variable name="prob.count" select="count($prob.all)"/>
+
         <html>
             <head>
                 <title>UK Federation metadata statistics</title>
@@ -86,6 +98,9 @@
                 <p>This version was created at <xsl:value-of select="$now"/>.</p>
                 <p>Contents:</p>
                 <ul>
+                    <xsl:if test="$prob.count != 0">
+                        <li><p><a href="#problems">Metadata Problems</a></p></li>                        
+                    </xsl:if>
                     <li><p><a href="#members">Member Statistics</a></p></li>
                     <li><p><a href="#entities">Entity Statistics</a></p></li>
                     <li><p><a href="#bySoftware">Entities by Software</a></p></li>
@@ -94,6 +109,40 @@
                     <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
                 </ul>
+                
+
+                
+                <!--
+                    Metadata Problems section
+                -->                
+                <xsl:if test="$prob.count != 0">
+                    <h2><a name="problems">Metadata Problems</a></h2>
+                    <xsl:if test="count($prob.space.entityID) != 0">
+                        <p>The following entities have <code>entityID</code> attributes that include space characters:</p>
+                        <ul>
+                            <xsl:for-each select="$prob.space.entityID">
+                                <li>
+                                    <xsl:value-of select="@ID"/>:
+                                    "<code><xsl:value-of select="@entityID"/></code>"
+                                </li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:if>
+                    <xsl:if test="count($prob.space.location) != 0">
+                        <p>The following entities include elements with <code>Location</code> attributes
+                        that include space characters:</p>
+                        <ul>
+                            <xsl:for-each select="$prob.space.location">
+                                <li>
+                                    <xsl:value-of select="@ID"/>:
+                                    <code><xsl:value-of select="@entityID"/></code>
+                                </li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:if>
+                </xsl:if>
+                
+
                 
                 <h2><a name="members">Member Statistics</a></h2>
                 <p>Number of members: <xsl:value-of select="$memberCount"/></p>
