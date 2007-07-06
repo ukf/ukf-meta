@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.26 2007/07/06 09:36:02 iay Exp $
+    $Id: statistics.xsl,v 1.27 2007/07/06 10:26:48 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -84,8 +84,12 @@
         <xsl:variable name="prob.space.entityID" select="$entities[contains(@entityID, ' ')]"/>
         <!-- spaces in Locations -->
         <xsl:variable name="prob.space.location" select="$entities[descendant::*[contains(@Location,' ')]]"/>
+        <!-- duplicate entity IDs -->
+        <xsl:variable name="prob.distinct.entityIDs" select="set:distinct($entities/@entityID)"/>
+        <xsl:variable name="prob.dup.entityID"
+            select="set:distinct(set:difference($entities/@entityID, $prob.distinct.entityIDs))"/>
         <!-- all problems, used as a conditional -->
-        <xsl:variable name="prob.all" select="$prob.space.entityID"/>
+        <xsl:variable name="prob.all" select="$prob.space.entityID | $prob.space.location | $prob.dup.entityID"/>
         <xsl:variable name="prob.count" select="count($prob.all)"/>
 
         <html>
@@ -136,6 +140,16 @@
                                 <li>
                                     <xsl:value-of select="@ID"/>:
                                     <code><xsl:value-of select="@entityID"/></code>
+                                </li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:if>
+                    <xsl:if test="count($prob.dup.entityID) != 0">
+                        <p>The following entity names are used by more than one entity:</p>
+                        <ul>
+                            <xsl:for-each select="$prob.dup.entityID">
+                                <li>
+                                    <code><xsl:value-of select="."/></code>
                                 </li>
                             </xsl:for-each>
                         </ul>
