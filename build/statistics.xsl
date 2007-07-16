@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.27 2007/07/06 10:26:48 iay Exp $
+    $Id: statistics.xsl,v 1.28 2007/07/16 10:06:56 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -109,7 +109,7 @@
                     <li><p><a href="#entities">Entity Statistics</a></p></li>
                     <li><p><a href="#bySoftware">Entities by Software</a></p></li>
                     <li><p><a href="#orphans">Orphan Entities</a></p></li>
-                    <li><p><a href="#bymember">Entities by Member</a></p></li>
+                    <li><p><a href="#byOwner">Entities by Owner</a></p></li>
                     <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
                 </ul>
@@ -564,7 +564,7 @@
                     </ul>
                 </p>
                 
-                <h2><a name="bymember">Entities by Member</a></h2>
+                <h2><a name="byOwner">Entities by Owner</a></h2>
                 <ul>
                     <xsl:apply-templates select="$members" mode="enumerate">
                         <xsl:with-param name="entities" select="$entities"/>
