@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.29 2007/07/25 09:00:16 iay Exp $
+    $Id: statistics.xsl,v 1.30 2007/07/25 09:27:31 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -32,10 +32,21 @@
         
         <xsl:variable name="now" select="date:date-time()"/>
 
+        <!--
+            Pick up and break down the "members" document, which despite its name
+            describes all known entity owners, whether members or non-members.
+        -->
         <xsl:variable name="memberDocument" select="document('../xml/members.xml')"/>
+        <!-- federation members -->
         <xsl:variable name="members" select="$memberDocument//members:Member"/>
         <xsl:variable name="memberCount" select="count($members)"/>
         <xsl:variable name="memberNames" select="$members/md:OrganizationName"/>
+        <!-- federation non-member owners -->
+        <xsl:variable name="nonMembers" select="$memberDocument//members:NonMember"/>
+        <xsl:variable name="nonMemberCount" select="count($nonMembers)"/>
+        <xsl:variable name="nonMemberNames" select="$nonMembers/md:OrganizationName"/>
+        <!-- owners are the union of the above -->
+        <xsl:variable name="ownerNames" select="$memberDocument//md:OrganizationName"/>
         
         <xsl:variable name="entities" select="//md:EntityDescriptor"/>
         <xsl:variable name="entityCount" select="count($entities)"/>
@@ -592,7 +603,7 @@
                 
                 <h2><a name="byOwner">Entities by Owner</a></h2>
                 <ul>
-                    <xsl:apply-templates select="$members" mode="enumerate">
+                    <xsl:apply-templates select="$ownerNames" mode="enumerate">
                         <xsl:with-param name="entities" select="$entities"/>
                     </xsl:apply-templates>
                 </ul>
@@ -680,9 +691,9 @@
         </tr>
     </xsl:template>
     
-    <xsl:template match="members:Member" mode="enumerate">
+    <xsl:template match="md:OrganizationName" mode="enumerate">
         <xsl:param name="entities"/>
-        <xsl:variable name="myName" select="string(md:OrganizationName)"/>
+        <xsl:variable name="myName" select="."/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
         <xsl:if test="count($matched) != 0">
             <li>
