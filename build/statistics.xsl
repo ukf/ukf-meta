@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.28 2007/07/16 10:06:56 iay Exp $
+    $Id: statistics.xsl,v 1.29 2007/07/25 09:00:16 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -328,6 +328,7 @@
                     $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shib.ncl.ac.uk'] |
                     $entities[@entityID='https://typekey.sdss.ac.uk/shibboleth'] |
                     $entities[@entityID='https://typekey.iay.org.uk/shibboleth'] |
+                    $entities[@entityID='https://idp-1.bgfl.org/shibboleth'] |
                     $entities[@entityID='https://idp.protectnetwork.org/protectnetwork-idp']
                     "/>
                 
@@ -338,6 +339,7 @@
                 <xsl:variable name="known13sps" select="
                     $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk'] |
                     $entities[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki'] |
+                    $entities[@entityID='https://st-shibboleth.bham.org.uk/shibboleth'] |
                     $entities[@entityID='https://sdauth.sciencedirect.com/']                 
                     "/>
                 
@@ -437,6 +439,22 @@
                         </xsl:for-each>
                     </ul>
                 </xsl:if>
+                
+                <xsl:variable name="entitiesShib" select="$entities12 | $entities13"/>
+                <xsl:variable name="entitiesShibCount" select="count($entitiesShib)"/>
+                <h3>Shibboleth Combined</h3>
+                <p>
+                    Combining all versions of the Shibboleth reference software gives a total of
+                    <xsl:value-of select="$entitiesShibCount"/> entities, or
+                    <xsl:value-of select="format-number($entitiesShibCount div $entityCount, '0.0%')"/>
+                    of all entities.
+                </p>
+                <p>
+                    This means that
+                    <xsl:value-of select="$entityCount - $entitiesShibCount"/> entities
+                    (<xsl:value-of select="format-number(($entityCount - $entitiesShibCount) div $entityCount, '0.0%')"/>)
+                    are running something other than the Shibboleth reference software.
+                </p>
                 
                 <xsl:variable name="athensImEntities"
                     select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/origin/hs')]/ancestor::md:EntityDescriptor"/>
@@ -539,6 +557,14 @@
                         <li>
                             <xsl:value-of select="@ID"/>:
                             <code><xsl:value-of select="@entityID"/></code>
+                            <xsl:choose>
+                                <xsl:when test="@entityID = 'https://adfs.devnet3.plymouth.ac.uk'">
+                                    (Microsoft ADFS)
+                                </xsl:when>
+                                <xsl:when test="@entityID = 'https://www.educationcity.com/sso/shib'">
+                                    (proprietary implementation)
+                                </xsl:when>
+                            </xsl:choose>
                         </li>
                     </xsl:for-each>
                 </ul>
