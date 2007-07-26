@@ -8,7 +8,7 @@
     
     Author: Ian A. Young <ian@iay.org.uk>
     
-    $Id: statistics.xsl,v 1.30 2007/07/25 09:27:31 iay Exp $
+    $Id: statistics.xsl,v 1.31 2007/07/26 16:07:11 iay Exp $
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -46,6 +46,7 @@
         <xsl:variable name="nonMemberCount" select="count($nonMembers)"/>
         <xsl:variable name="nonMemberNames" select="$nonMembers/md:OrganizationName"/>
         <!-- owners are the union of the above -->
+        <xsl:variable name="owners" select="$members | $nonMembers"/>
         <xsl:variable name="ownerNames" select="$memberDocument//md:OrganizationName"/>
         
         <xsl:variable name="entities" select="//md:EntityDescriptor"/>
@@ -68,12 +69,8 @@
         
         <xsl:variable name="memberEntities"
             select="dyn:closure($members/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
-        <xsl:variable name="nonMemberEntities"
-            select="set:difference($entities, $memberEntities)"/>
         <xsl:variable name="memberEntityCount"
             select="dyn:sum($memberNames, 'count($entities[md:Organization/md:OrganizationName = current()])')"/>
-        <xsl:variable name="nonMemberEntityCount"
-            select="$entityCount - $memberEntityCount"/>
         
         <xsl:variable name="artifactIdps"
             select="$idps[md:IDPSSODescriptor/md:ArtifactResolutionService]"/>
@@ -99,8 +96,13 @@
         <xsl:variable name="prob.distinct.entityIDs" select="set:distinct($entities/@entityID)"/>
         <xsl:variable name="prob.dup.entityID"
             select="set:distinct(set:difference($entities/@entityID, $prob.distinct.entityIDs))"/>
+        <!-- entities without known owner -->
+        <xsl:variable name="ownedEntities"
+            select="dyn:closure($owners/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
+        <xsl:variable name="prob.unowned.entities" select="set:difference($entities, $ownedEntities)"/>
         <!-- all problems, used as a conditional -->
-        <xsl:variable name="prob.all" select="$prob.space.entityID | $prob.space.location | $prob.dup.entityID"/>
+        <xsl:variable name="prob.all" select="$prob.space.entityID | $prob.space.location |
+            $prob.dup.entityID | $prob.unowned.entities"/>
         <xsl:variable name="prob.count" select="count($prob.all)"/>
 
         <html>
@@ -119,7 +121,6 @@
                     <li><p><a href="#members">Member Statistics</a></p></li>
                     <li><p><a href="#entities">Entity Statistics</a></p></li>
                     <li><p><a href="#bySoftware">Entities by Software</a></p></li>
-                    <li><p><a href="#orphans">Orphan Entities</a></p></li>
                     <li><p><a href="#byOwner">Entities by Owner</a></p></li>
                     <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
@@ -165,9 +166,34 @@
                             </xsl:for-each>
                         </ul>
                     </xsl:if>
+                    <xsl:if test="count($prob.unowned.entities) != 0">
+                        <p>
+                            The following
+                            <xsl:choose>
+                                <xsl:when test="count($prob.unowned.entities) = 1">
+                                    entity does not appear
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    entities do not appear
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            to have <code>OrganizationName</code> values corresponding to the registered names of
+                            federation members or other known legitimate entity owners:
+                        </p>
+                        <ul>
+                            <xsl:for-each select="$prob.unowned.entities">
+                                <xsl:sort select="md:Organization/md:OrganizationName"/>
+                                <li>
+                                    <xsl:value-of select="md:Organization/md:OrganizationName"/>:
+                                    <code><xsl:value-of select="@entityID"/></code>
+                                    (<xsl:value-of select="@ID"/>)
+                                </li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:if>
                 </xsl:if>
-                
 
+                
                 
                 <h2><a name="members">Member Statistics</a></h2>
                 <p>Number of members: <xsl:value-of select="$memberCount"/></p>
@@ -209,11 +235,6 @@
                     </li>
                 </ul>                
                 
-                <p>The remaining <xsl:value-of select="$nonMemberEntityCount"/>
-                    (<xsl:value-of select="format-number($nonMemberEntityCount div $entityCount, '0.0%')"/>)
-                    may simply have misspelled
-                    <code>OrganizationName</code> values.</p>
-
                 <h2><a name="entities">Entity Statistics</a></h2>
                 <p>Total entities: <xsl:value-of select="$entityCount"/>.  This breaks down into:</p>
                 <ul>
@@ -579,27 +600,6 @@
                         </li>
                     </xsl:for-each>
                 </ul>
-                
-                <h2><a name="orphans">Orphan Entities</a></h2>
-                <p>
-                    There are <xsl:value-of select="$nonMemberEntityCount"/> entities
-                    (<xsl:value-of select="format-number($nonMemberEntityCount div $entityCount, '0.0%')"/>
-                    of the total) that don't appear to
-                    have <code>OrganizationName</code> values corresponding to the registered names of
-                    federation members.  This may be because of typographical errors or simply because the
-                    entities belong to SDSS Federation members in transition.  The list is sorted alphabetically
-                    by <code>OrganizationName</code>.
-                    <ul>
-                        <xsl:for-each select="$nonMemberEntities">
-                            <xsl:sort select="md:Organization/md:OrganizationName"/>
-                            <li>
-                                <xsl:value-of select="md:Organization/md:OrganizationName"/>:
-                                <code><xsl:value-of select="@entityID"/></code>
-                                (<xsl:value-of select="@ID"/>)
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </p>
                 
                 <h2><a name="byOwner">Entities by Owner</a></h2>
                 <ul>
