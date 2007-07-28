@@ -625,7 +625,7 @@
                         <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
                         <li>
                             <xsl:value-of select="@ID"/>:
-                            <xsl:if test="md:Extensions/uklabel:UKFederationMember">[M] </xsl:if>
+                            <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)">[not-M] </xsl:if>
                             <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
                         </li>
                     </xsl:for-each>
@@ -637,7 +637,7 @@
                         <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
                         <li>
                             <xsl:value-of select="@ID"/>:
-                            <xsl:if test="md:Extensions/uklabel:UKFederationMember">[M] </xsl:if>
+                            <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)">[not-M] </xsl:if>
                             <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
                         </li>
                     </xsl:for-each>
