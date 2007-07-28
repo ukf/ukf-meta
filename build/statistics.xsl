@@ -9,7 +9,6 @@
     Author: Ian A. Young <ian@iay.org.uk>
     
     $Id: statistics.xsl,v 1.31 2007/07/26 16:07:11 iay Exp $
-
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
