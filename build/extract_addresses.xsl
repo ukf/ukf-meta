@@ -9,7 +9,6 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: extract_addresses.xsl,v 1.1 2006/07/31 14:42:41 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

@@ -9,7 +9,6 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: extract_nocert_locs.xsl,v 1.1 2006/08/09 12:20:12 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

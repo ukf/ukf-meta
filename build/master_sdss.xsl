@@ -10,7 +10,6 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: master_sdss.xsl,v 1.6 2007/02/19 15:38:46 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

@@ -7,8 +7,6 @@
     giving statistics.
     
     Author: Ian A. Young <ian@iay.org.uk>
-    
-    $Id: statistics.xsl,v 1.31 2007/07/26 16:07:11 iay Exp $
 
 -->
 <xsl:stylesheet

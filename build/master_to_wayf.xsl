@@ -8,7 +8,6 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: master_to_wayf.xsl,v 1.1 2006/06/23 09:05:00 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

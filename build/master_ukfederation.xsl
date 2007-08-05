@@ -10,7 +10,6 @@
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
-	$Id: master_ukfederation.xsl,v 1.5 2007/02/20 09:10:54 iay Exp $
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
