@@ -23,7 +23,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: master_to_wayf.xsl,v 1.1 2006/06/23 09:05:00 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id$</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.

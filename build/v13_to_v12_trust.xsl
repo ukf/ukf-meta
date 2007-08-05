@@ -22,7 +22,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: v13_to_v12_trust.xsl,v 1.3 2005/04/08 13:46:23 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id$</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
