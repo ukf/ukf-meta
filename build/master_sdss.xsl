@@ -26,7 +26,7 @@
 		Version information for this file.  Remember to peel off the dollar signs
 		before dropping the text into another versioned file.
 	-->
-	<xsl:param name="cvsId">$Id: master_sdss.xsl,v 1.6 2007/02/19 15:38:46 iay Exp $</xsl:param>
+	<xsl:param name="cvsId">$Id$</xsl:param>
 
 	<!--
 		Add a comment to the start of the output file.
