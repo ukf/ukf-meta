@@ -129,16 +129,6 @@
 	-->
 	<target name="push" depends="get.remote.pass">
 		<!--
-			Push federation fragment files.
-		-->
-		<echo>Pushing entity fragment files.</echo>
-		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}/entities"
-				knownhosts="${known.hosts}">
-			<fileset dir="${entities.dir}">
-				<include name="*.xml"/>
-			</fileset>
-		</scp>
-		<!--
 			Push metadata files for the SDSS Federation.
 		-->
 		<echo>Pushing SDSS Federation metadata files.</echo>
