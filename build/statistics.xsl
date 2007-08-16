@@ -248,7 +248,28 @@
                         <p>Gateways: <xsl:value-of select="$memberDualEntityCount"/></p>
                     </li>
                 </ul>                
+
+                <h3>Additional Non-member Entity Owners</h3>
+                <p>
+                    In addition, the UK federation operator maintains agreements with certain
+                    other organisations so that metadata for entities belonging to those
+                    organisations can be published within the UK federation metadata for the
+                    benefit of UK federation members.
+                </p>
+                <p>Number of non-member relationships: <xsl:value-of select="$nonMemberCount"/></p>
+                <table border="1" cellspacing="2" cellpadding="4">
+                    <tr>
+                        <th align="left">Non-member agreement</th>
+                        <th>Entities</th>
+                        <th>IdPs</th>
+                        <th>SPs</th>
+                    </tr>
+                    <xsl:apply-templates select="$nonMembers" mode="count">
+                        <xsl:with-param name="entities" select="$entities"/>
+                    </xsl:apply-templates>
+                </table>
                 
+
                 <h2><a name="entities">Entity Statistics</a></h2>
                 <p>Total entities: <xsl:value-of select="$entityCount"/>.  This breaks down into:</p>
                 <ul>
@@ -661,7 +682,7 @@
         </html>
     </xsl:template>
     
-    <xsl:template match="members:Member" mode="count">
+    <xsl:template match="members:Member|members:NonMember" mode="count">
         <xsl:param name="entities"/>
         <xsl:variable name="myName" select="string(md:OrganizationName)"/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
