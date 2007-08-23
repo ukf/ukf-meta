@@ -406,7 +406,6 @@
                 <xsl:variable name="known13sps" select="
                     $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk'] |
                     $entities[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki'] |
-                    $entities[@entityID='https://st-shibboleth.bham.org.uk/shibboleth'] |
                     $entities[@entityID='https://sdauth.sciencedirect.com/']                 
                     "/>
                 
