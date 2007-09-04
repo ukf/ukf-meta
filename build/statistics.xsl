@@ -550,6 +550,7 @@
                     Guanxi entities.  Currently assumed to be identity providers only. 
                 -->
                 <xsl:variable name="knownGuanxiIdps" select="
+                    $entities[@entityID='https://registry.shibboleth.ox.ac.uk/sp/ask-dev'] |
                     $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:uhi.ac.uk']
                     "/>
                 <xsl:variable name="guanxiCount" select="count($knownGuanxiIdps)"/>
