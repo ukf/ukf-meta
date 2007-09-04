@@ -212,9 +212,7 @@
                 <h2><a name="members">Member Statistics</a></h2>
                 <p>Number of members: <xsl:value-of select="$memberCount"/></p>
                 <p>The following table shows, for each federation member, the number of entities
-                which appear to belong to that member.  To appear in this value, the entity's
-                <code>OrganizationName</code> must <em>exactly</em> match the
-                member's registered formal name.</p>
+                belonging to that member.</p>
                 <table border="1" cellspacing="2" cellpadding="4">
                     <tr>
                         <th align="left">Member</th>
@@ -291,9 +289,7 @@
                             <xsl:value-of select="$federationMemberEntityCount"/>
                             (<xsl:value-of select="format-number($federationMemberEntityCount div $entityCount, '0.0%')"/>)
                             are labelled as being owned by full
-                            federation members.  This is an undercount, as the label is not applied
-                            in the case of members transitioning from the SDSS Federation until
-                            the entity's metadata has been fully verified with the member.
+                            federation members.
                         </p>
                     </li>
                     <li>
