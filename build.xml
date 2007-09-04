@@ -510,4 +510,15 @@
 			x="statistics.xsl"/>
 	</target>
 	
+	<!--
+		Extract authorities
+	-->
+	<target name="extract.authorities">
+		<echo>Extracting key authorities</echo>
+		<XALAN
+			i="master.xml"
+			o="authorities.pem"
+			x="extract_authorities.xsl"/>
+	</target>
+	
 </project>
