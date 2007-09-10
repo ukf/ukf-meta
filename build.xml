@@ -80,6 +80,20 @@
 	<property name="master.file" value="${master.file.dir}/${master.file.name}"/>
 	
 	<!--
+		Keystore locations.
+		
+		Keystores live in different locations depending on the operating
+		system we're running on.
+	-->
+	<property name="keystore.base.loc.win" value="D:"/>
+	<property name="keystore.base.loc.mac" value="/Volumes/UK_KEYS"/>
+	<condition property="keystore.base.loc"
+		value="${keystore.base.loc.win}"
+		else="${keystore.base.loc.mac}">
+		<os family="windows"/>
+	</condition>
+	
+	<!--
 		Keystore files and key aliases.
 		
 		Each federation has a keystore for signing, and a second for verification.
@@ -89,12 +103,12 @@
 		password, which is the new UK Federation one rather than the older
 		and weaker SDSS Federation password.
 	-->
-	<property name="keystore.sdss.loc" value="/Volumes/UK_KEYS"/>
+	<property name="keystore.sdss.loc" value="${keystore.base.loc}"/>
 	<property name="keystore.sdss.sign.loc" value="${keystore.sdss.loc}/sdss-sign.jks"/>
 	<property name="keystore.sdss.sign.alias" value="sdss"/>
 	<property name="keystore.sdss.vfy.loc" value="${keystore.sdss.loc}/sdss.jks"/>
 	<property name="keystore.sdss.vfy.alias" value="sdss"/>
-	<property name="keystore.uk.loc" value="/Volumes/UK_KEYS"/>
+	<property name="keystore.uk.loc" value="${keystore.base.loc}"/>
 	<property name="keystore.uk.sign.loc" value="${keystore.uk.loc}/ukfederation-sign.jks"/>
 	<property name="keystore.uk.sign.alias" value="ukfederation"/>
 	<property name="keystore.uk.vfy.loc" value="${keystore.uk.loc}/ukfederation.jks"/>
@@ -195,7 +209,7 @@
 	-->
 	<target name="gen.entities">
 		<echo>Composing entity fragment files.</echo>
-		<concat destfile="${entities.file}" append="no" force="yes" fixlastline="yes">
+		<concat destfile="${entities.file}" append="no" force="yes" fixlastline="no">
 			<header filtering="no">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#10;&lt;Entities&gt;&#10;</header>
 			<fileset dir="${entities.dir}" includes="uk*.xml"/>
 			<footer>&lt;/Entities&gt;&#10;</footer>
