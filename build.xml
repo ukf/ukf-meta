@@ -232,6 +232,7 @@
 		<!-- [1] -->
 		<XALAN x="master_sdss.xsl" i="${master.file.name}"
 			o="${sdss.master.file}" />
+		<fixcrlf file="${xml.dir}/${sdss.master.file}" eol="lf"/>
 	</target>
 	
 	<target name="gen.sdss.1.3">
@@ -246,12 +247,14 @@
 		<!-- [5] -->
 		<XALAN x="v13_to_v12_sites.xsl" i="${sdss.master.file}"
 			o="sdss-sites-12-unsigned.xml"/>
+		<fixcrlf file="${xml.dir}/sdss-sites-12-unsigned.xml" eol="lf"/>
 		<!-- [6] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-sites-12-unsigned.xml"
 			tofile="${xml.dir}/sdss-sites-unsigned.xml"/>
 		<!-- [11] -->
 		<XALAN x="v13_to_v12_trust.xsl" i="${sdss.master.file}"
 			o="sdss-trust-12-unsigned.xml"/>
+		<fixcrlf file="${xml.dir}/sdss-trust-12-unsigned.xml" eol="lf"/>
 		<!-- [12] -->
 		<copy overwrite="yes" file="${xml.dir}/sdss-trust-12-unsigned.xml"
 			tofile="${xml.dir}/sdss-trust-unsigned.xml"/>
@@ -522,6 +525,7 @@
 			i="ukfederation-metadata-unsigned.xml"
 			o="ukfederation-stats.html"
 			x="statistics.xsl"/>
+		<fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf"/>
 	</target>
 	
 	<!--
