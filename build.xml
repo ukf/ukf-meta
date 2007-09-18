@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-	Federation metadata signing process for the SDSS and UK federations.
+	Federation metadata signing process for the UK federation.
 	
 	* "ant process" generates the other files from the master file, and
 	  signs as appropriate.  Requires the keystore password.
@@ -12,20 +12,6 @@
 	The files involved are:
 	
 	[0]		master [+entity fragment files]
-	[1]			sdss-metadata-unsigned
-	[2]				== sdss-sites-13-unsigned
-	[3]				sdss-metadata
-	[4]					== sdss-sites-13
-	[5]				sdss-sites-12-unsigned
-	[6]					== sdss-sites-unsigned
-	[7]					sdss-sites-12
-	[8]						== sdss-sites
-	[11]			sdss-trust-12-unsigned
-	[12]				== sdss-trust-unsigned
-	[13]				sdss-trust-12
-	[14]					== sdss-trust
-	[17]			sdss-wayf-unsigned.xml
-	[18]				sdss-wayf.xml
 	[19]		ukfederation-metadata-unsigned.xml
 	[20]			ukfederation-metadata.xml
 	[21]			ukfederation-sites-12-unsigned.xml
@@ -95,19 +81,7 @@
 	
 	<!--
 		Keystore files and key aliases.
-		
-		Each federation has a keystore for signing, and a second for verification.
-		Each of these keystores has a location and a key alias to use.
-		
-		We make the assumption here that all keystores and keys use the same
-		password, which is the new UK Federation one rather than the older
-		and weaker SDSS Federation password.
 	-->
-	<property name="keystore.sdss.loc" value="${keystore.base.loc}"/>
-	<property name="keystore.sdss.sign.loc" value="${keystore.sdss.loc}/sdss-sign.jks"/>
-	<property name="keystore.sdss.sign.alias" value="sdss"/>
-	<property name="keystore.sdss.vfy.loc" value="${keystore.sdss.loc}/sdss.jks"/>
-	<property name="keystore.sdss.vfy.alias" value="sdss"/>
 	<property name="keystore.uk.loc" value="${keystore.base.loc}"/>
 	<property name="keystore.uk.sign.loc" value="${keystore.uk.loc}/ukfederation-sign.jks"/>
 	<property name="keystore.uk.sign.alias" value="ukfederation"/>
@@ -117,7 +91,6 @@
 	<!--
 		Files within the XML directory.
 	-->
-	<property name="sdss.master.file" value="sdss-metadata-unsigned.xml"/>
 	<property name="uk.master.file" value="ukfederation-metadata-unsigned.xml"/>
 	
 	<property name="known.hosts" value="${build.dir}/known_hosts"/>
@@ -143,17 +116,17 @@
 	-->
 	<target name="push" depends="get.remote.pass">
 		<!--
-			Push metadata files for the SDSS Federation.
+			Push metadata files to the old SDSS federation location.
+			
+			Nowadays, these are not SDSS federation metadata files but other
+			miscellaneous files such as UK federation statistics.
 		-->
-		<echo>Pushing SDSS Federation metadata files.</echo>
+		<echo>Pushing non-metadata files.</echo>
 		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}"
 				knownhosts="${known.hosts}">
 			<fileset dir="${xml.dir}">
-				<include name="*.xml"/>
+				<include name="members.xml"/>
 				<include name="ukfederation-members.xsd"/>
-				<exclude name="ukfederation-*.xml"/>
-				<exclude name="entities.xml"/>
-				<exclude name="sdss-wayf-unsigned.xml"/>
 				<include name="ukfederation-stats.html"/>
 			</fileset>
 		</scp>
@@ -175,7 +148,7 @@
 	<!--
 		Generate unsigned metadata.
 	-->
-	<target name="generate" depends="gen.sdss, gen.uk">
+	<target name="generate" depends="gen.uk">
 		<echo>Generated unsigned metadata.</echo>
 	</target>
 	
@@ -217,53 +190,6 @@
 				<replaceregex pattern="&lt;\?[xX][mM][lL] .*&gt;" />
 			</filterchain>
 		</concat>
-	</target>
-	
-	<!--
-		Unsigned metadata generation for the SDSS Federation.
-	-->
-
-	<target name="gen.sdss" depends="gen.sdss.master, gen.sdss.1.3, gen.sdss.1.2, gen.sdss.wayf">
-		<echo>Generated SDSS unsigned metadata.</echo>
-	</target>
-
-	<target name="gen.sdss.master" depends="gen.entities">
-		<echo>Generating unsigned SDSS master file.</echo>
-		<!-- [1] -->
-		<XALAN x="master_sdss.xsl" i="${master.file.name}"
-			o="${sdss.master.file}" />
-		<fixcrlf file="${xml.dir}/${sdss.master.file}" eol="lf"/>
-	</target>
-	
-	<target name="gen.sdss.1.3">
-		<echo>Generating unsigned SDSS V1.3 metadata.</echo>
-		<!-- [2] -->
-		<copy overwrite="yes" file="${xml.dir}/${sdss.master.file}"
-			tofile="${xml.dir}/sdss-sites-13-unsigned.xml"/>
-	</target>
-
-	<target name="gen.sdss.1.2">
-		<echo>Generating unsigned SDSS V1.2 metadata.</echo>
-		<!-- [5] -->
-		<XALAN x="v13_to_v12_sites.xsl" i="${sdss.master.file}"
-			o="sdss-sites-12-unsigned.xml"/>
-		<fixcrlf file="${xml.dir}/sdss-sites-12-unsigned.xml" eol="lf"/>
-		<!-- [6] -->
-		<copy overwrite="yes" file="${xml.dir}/sdss-sites-12-unsigned.xml"
-			tofile="${xml.dir}/sdss-sites-unsigned.xml"/>
-		<!-- [11] -->
-		<XALAN x="v13_to_v12_trust.xsl" i="${sdss.master.file}"
-			o="sdss-trust-12-unsigned.xml"/>
-		<fixcrlf file="${xml.dir}/sdss-trust-12-unsigned.xml" eol="lf"/>
-		<!-- [12] -->
-		<copy overwrite="yes" file="${xml.dir}/sdss-trust-12-unsigned.xml"
-			tofile="${xml.dir}/sdss-trust-unsigned.xml"/>
-	</target>
-	
-	<target name="gen.sdss.wayf">
-		<echo>Generating unsigned SDSS WAYF metadata.</echo>
-		<!-- [17] -->
-		<XALAN x="master_to_wayf.xsl" i="sdss-metadata-unsigned.xml" o="sdss-wayf-unsigned.xml"/>
 	</target>
 	
 	<!--
@@ -345,61 +271,8 @@
 		Sign the various metadata files.
 	-->
 	
-	<target name="sign" depends="sign.sdss, sign.uk">
+	<target name="sign" depends="sign.uk">
 		<echo>Generated signed metadata.</echo>
-	</target>
-	
-	<!--
-		SDSS Federation signing.
-	-->
-
-	<macrodef name="SIGN.sdss">
-		<attribute name="i"/>
-		<attribute name="o"/>
-		<sequential>
-			<MDT i="@{i}" o="@{o}" keystore="${keystore.sdss.sign.loc}" alias="${keystore.sdss.sign.alias}">
-				<args>
-					<arg value="--sign"/>
-					<arg value="--password"/>
-					<arg value="${keystore.pass}"/>
-				</args>
-			</MDT>
-		</sequential>
-	</macrodef>
-	
-	<target name="sign.sdss" depends="sign.sdss.1.3, sign.sdss.1.2, sign.sdss.wayf">
-		<echo>Generated signed SDSS metadata.</echo>
-	</target>
-	
-	<target name="sign.sdss.1.3">
-		<echo>Signing SDSS V1.3 metadata.</echo>
-		<!-- [3] -->
-		<SIGN.sdss i="${sdss.master.file}" o="sdss-metadata.xml"/>
-		<!-- [4] -->
-		<copy overwrite="yes" file="${xml.dir}/sdss-metadata.xml"
-			tofile="${xml.dir}/sdss-sites-13.xml"/>
-		<!-- [20] -->
-		<SIGN.uk i="${uk.master.file}" o="ukfederation-metadata.xml"/>
-	</target>
-
-	<target name="sign.sdss.1.2">
-		<echo>Signing SDSS V1.2 metadata.</echo>
-		<!-- [7] -->
-		<SIGN.sdss i="sdss-sites-12-unsigned.xml" o="sdss-sites-12.xml"/>
-		<!-- [8] -->
-		<copy overwrite="yes" file="${xml.dir}/sdss-sites-12.xml"
-			tofile="${xml.dir}/sdss-sites.xml"/>
-		<!-- [13] -->
-		<SIGN.sdss i="sdss-trust-12-unsigned.xml" o="sdss-trust-12.xml"/>
-		<!-- [14] -->
-		<copy overwrite="yes" file="${xml.dir}/sdss-trust-12.xml"
-			tofile="${xml.dir}/sdss-trust.xml"/>
-	</target>
-
-	<target name="sign.sdss.wayf">
-		<echo>Signing SDSS WAYF metadata.</echo>
-		<!-- [18] -->
-		<SIGN.sdss i="sdss-wayf-unsigned.xml" o="sdss-wayf.xml"/>
 	</target>
 	
 	<macrodef name="SIGN.uk">
@@ -445,49 +318,10 @@
 	<!--
 		Verify the signed metadata files.
 	-->
-	<target name="verify" depends="verify.sdss, verify.uk">
+	<target name="verify" depends="verify.uk">
 		<echo>Verification completed.</echo>
 	</target>
 	
-	<!--
-		Verification of the SDSS Federation metadata.
-	-->
-	<macrodef name="VFY.sdss">
-		<attribute name="i"/>
-		<sequential>
-			<MDT i="@{i}" o="temp.xml" keystore="${keystore.sdss.vfy.loc}" alias="${keystore.sdss.vfy.alias}"/>
-			<touch file="${xml.dir}/temp.xml"/>
-			<delete file="${xml.dir}/temp.xml" quiet="true"/>
-		</sequential>
-	</macrodef>
-
-	<target name="verify.sdss" depends="verify.sdss.1.3, verify.sdss.1.2, verify.sdss.wayf">
-		<echo>Verified signed SDSS metadata.</echo>
-	</target>
-
-	<target name="verify.sdss.1.3">
-		<echo>Verifying signed SDSS V1.3 metadata.</echo>
-		<VFY.sdss i="sdss-metadata.xml"/>
-		<VFY.sdss i="sdss-sites-13.xml"/>
-	</target>
-	
-	<target name="verify.sdss.1.2">
-		<echo>Verifying signed SDSS V1.2 metadata.</echo>
-		<VFY.sdss i="sdss-sites-12.xml"/>
-		<VFY.sdss i="sdss-trust-12.xml"/>
-		<VFY.sdss i="sdss-sites.xml"/>
-		<VFY.sdss i="sdss-trust.xml"/>
-	</target>
-	
-	<target name="verify.sdss.wayf">
-		<echo>Verifying signed SDSS WAYF metadata.</echo>
-		<VFY.sdss i="sdss-wayf.xml"/>
-	</target>
-
-	<target name="verify.uk" depends="verify.uk.1.3, verify.uk.1.2, verify.uk.wayf">
-		<echo>Verified signed UK metadata.</echo>
-	</target>
-
 	<!--
 		Verification of the UK Federation metadata.
 	-->
@@ -500,6 +334,10 @@
 		</sequential>
 	</macrodef>
 		
+	<target name="verify.uk" depends="verify.uk.1.3, verify.uk.1.2, verify.uk.wayf">
+		<echo>Verified signed UK metadata.</echo>
+	</target>
+
 	<target name="verify.uk.1.3">
 		<echo>Verifying signed UK V1.3 metadata.</echo>
 		<VFY.uk   i="ukfederation-metadata.xml"/>
