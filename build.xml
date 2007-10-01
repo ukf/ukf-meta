@@ -122,7 +122,7 @@
 	<!--
 		Standard processing: generate, sign, then verify.
 	-->
-	<target name="process" depends="get.keystore.pass, generate, sign, verify, stats.uk">
+	<target name="process" depends="get.keystore.pass, generate, sign, verify, stats">
 		<echo>Processing complete.</echo>
 	</target>
 
@@ -298,10 +298,6 @@
 		Sign the various metadata files.
 	-->
 	
-	<target name="sign" depends="sign.uk">
-		<echo>Generated signed metadata.</echo>
-	</target>
-	
 	<macrodef name="SIGN.uk">
 		<attribute name="i"/>
 		<attribute name="o"/>
@@ -319,17 +315,11 @@
 		</sequential>
 	</macrodef>
 	
-	<target name="sign.uk" depends="sign.uk.1.3, sign.uk.1.2, sign.uk.wayf">
-		<echo>Generated signed UK metadata.</echo>
-	</target>
-	
-	<target name="sign.uk.1.3">
+	<target name="sign">
 		<echo>Signing UK V1.3 metadata.</echo>
 		<!-- [20] -->
 		<SIGN.uk i="${uk.master.file}" o="ukfederation-metadata.xml"/>
-	</target>
 
-	<target name="sign.uk.1.2">
 		<echo>Signing UK V1.2 metadata.</echo>
 		<!-- [22] -->
 		<SIGN.uk i="ukfederation-sites-12-unsigned.xml"
@@ -337,19 +327,12 @@
 		<!-- [24] -->
 		<SIGN.uk i="ukfederation-trust-12-unsigned.xml"
 			o="ukfederation-trust-12.xml"/>
-	</target>
 
-	<target name="sign.uk.wayf">
 		<echo>Signing UK WAYF metadata.</echo>
 		<!-- [26] -->
 		<SIGN.uk i="ukfederation-wayf-unsigned.xml" o="ukfederation-wayf.xml"/>
-	</target>
-	
-	<!--
-		Verify the signed metadata files.
-	-->
-	<target name="verify" depends="verify.uk">
-		<echo>Verification completed.</echo>
+
+		<echo>Generated signed UK metadata.</echo>
 	</target>
 	
 	<!--
@@ -362,30 +345,27 @@
 		</sequential>
 	</macrodef>
 		
-	<target name="verify.uk" depends="verify.uk.1.3, verify.uk.1.2, verify.uk.wayf">
-		<echo>Verified signed UK metadata.</echo>
-	</target>
-
-	<target name="verify.uk.1.3">
+	<!--
+		Verify the signed metadata files.
+	-->
+	<target name="verify">
 		<echo>Verifying signed UK V1.3 metadata.</echo>
-		<VFY.uk   i="ukfederation-metadata.xml"/>
-	</target>
-	
-	<target name="verify.uk.1.2">
+		<VFY.uk i="ukfederation-metadata.xml"/>
+
 		<echo>Verifying signed UK V1.2 metadata.</echo>
 		<VFY.uk i="ukfederation-sites-12.xml"/>
 		<VFY.uk i="ukfederation-trust-12.xml"/>
-	</target>
-	
-	<target name="verify.uk.wayf">
+
 		<echo>Verifying signed UK WAYF metadata.</echo>
 		<VFY.uk i="ukfederation-wayf.xml"/>
+
+		<echo>Verification completed.</echo>
 	</target>
 	
 	<!--
 		Statistics generation
 	-->
-	<target name="stats.uk">
+	<target name="stats">
 		<echo>Generating UK Federation statistics</echo>
 		<XALAN
 			i="ukfederation-metadata-unsigned.xml"
