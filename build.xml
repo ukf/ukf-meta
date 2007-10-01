@@ -85,7 +85,7 @@
 	<property name="keystore.uk.loc" value="${keystore.base.loc}"/>
 	<property name="keystore.uk.sign.loc" value="${keystore.uk.loc}/ukfederation-sign.jks"/>
 	<property name="keystore.uk.sign.alias" value="ukfederation"/>
-	<property name="keystore.uk.vfy.loc" value="${keystore.uk.loc}/ukfederation.jks"/>
+	<property name="keystore.uk.vfy.loc" value="${build.dir}/ukfederation.jks"/>
 	<property name="keystore.uk.vfy.alias" value="ukfederation"/>
 	
 	<!--
