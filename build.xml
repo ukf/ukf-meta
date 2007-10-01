@@ -74,25 +74,41 @@
 	</condition>
 
 	<!--
-		Keystore locations.
+		Signing keystore type.
 		
-		Keystores live in different locations depending on the operating
-		system we're running on.
+		On Windows, we use a hard token accessed through PKCS#11.
+		On Mac, we use a Java Keystore.
 	-->
-	<property name="keystore.base.loc.win" value="D:"/>
-	<property name="keystore.base.loc.mac" value="/Volumes/UK_KEYS"/>
-	<condition property="keystore.base.loc"
-		value="${keystore.base.loc.win}"
-		else="${keystore.base.loc.mac}">
+	<condition property="keystore.uk.sign.type"
+		value="PKCS11" else="JKS">
 		<os family="windows"/>
 	</condition>
-	
+
 	<!--
-		Keystore files and key aliases.
+		Signing keystore location.
+		
+		On Windows, because we're using PKCS#11, we use an explicit NONE.
+		Otherwise, the keystore lives on the UK_KEYS volume.
 	-->
-	<property name="keystore.uk.loc" value="${keystore.base.loc}"/>
-	<property name="keystore.uk.sign.loc" value="${keystore.uk.loc}/ukfederation-sign.jks"/>
-	<property name="keystore.uk.sign.alias" value="ukfederation"/>
+	<condition property="keystore.uk.sign.loc"
+		value="NONE" else="/Volumes/UK_KEYS/ukfederation-sign.jks">
+		<os family="windows"/>
+	</condition>
+
+	<!--
+		Signing keystore alias.
+		
+		The ACOS5 PKCS#11 library always gives imported entries an
+		alias of "Imported Certificate".
+	-->
+	<condition property="keystore.uk.sign.alias"
+		value="Imported Certificate" else="ukfederation">
+		<os family="windows"/>
+	</condition>
+
+	<!--
+		Verification keystore.
+	-->
 	<property name="keystore.uk.vfy.loc" value="${build.dir}/ukfederation.jks"/>
 	<property name="keystore.uk.vfy.alias" value="ukfederation"/>
 	
@@ -248,6 +264,7 @@
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<attribute name="o"/><!-- output file location -->
 		<attribute name="keystore"/><!-- keystore file location -->
+		<attribute name="storetype" default="JKS"/><!-- type of keystore to use -->
 		<attribute name="alias"/><!-- alias of key to use -->
 		<element name="args" optional="yes"/>
 		<sequential>
@@ -265,6 +282,8 @@
 				<args/>
 				<arg value="--keystore"/>
 				<arg value="@{keystore}"/>
+				<arg value="--storetype"/>
+				<arg value="@{storetype}"/>
 				<arg value="--alias"/>
 				<arg value="@{alias}"/>
 				<arg value="--in"/>
@@ -287,7 +306,10 @@
 		<attribute name="i"/>
 		<attribute name="o"/>
 		<sequential>
-			<MDT i="@{i}" o="${xml.dir}/@{o}" keystore="${keystore.uk.sign.loc}" alias="${keystore.uk.sign.alias}">
+			<MDT i="@{i}" o="${xml.dir}/@{o}"
+				keystore="${keystore.uk.sign.loc}"
+				storetype="${keystore.uk.sign.type}"
+				alias="${keystore.uk.sign.alias}">
 				<args>
 					<arg value="--sign"/>
 					<arg value="--password"/>
