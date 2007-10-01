@@ -66,6 +66,14 @@
 	<property name="master.file" value="${master.file.dir}/${master.file.name}"/>
 	
 	<!--
+		Null device location.
+	-->
+	<condition property="null.device"
+		value="nul:" else="/dev/null">
+		<os family="windows"/>
+	</condition>
+
+	<!--
 		Keystore locations.
 		
 		Keystores live in different locations depending on the operating
@@ -238,7 +246,7 @@
 	-->
 	<macrodef name="MDT">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-		<attribute name="o"/><!-- output file, assumed to be in the XML directory -->
+		<attribute name="o"/><!-- output file location -->
 		<attribute name="keystore"/><!-- keystore file location -->
 		<attribute name="alias"/><!-- alias of key to use -->
 		<element name="args" optional="yes"/>
@@ -262,7 +270,7 @@
 				<arg value="--in"/>
 				<arg value="${xml.dir}/@{i}"/>
 				<arg value="--out"/>
-				<arg value="${xml.dir}/@{o}"/>
+				<arg value="@{o}"/>
 			</java>
 		</sequential>
 	</macrodef>
@@ -279,7 +287,7 @@
 		<attribute name="i"/>
 		<attribute name="o"/>
 		<sequential>
-			<MDT i="@{i}" o="@{o}" keystore="${keystore.uk.sign.loc}" alias="${keystore.uk.sign.alias}">
+			<MDT i="@{i}" o="${xml.dir}/@{o}" keystore="${keystore.uk.sign.loc}" alias="${keystore.uk.sign.alias}">
 				<args>
 					<arg value="--sign"/>
 					<arg value="--password"/>
@@ -328,9 +336,7 @@
 	<macrodef name="VFY.uk">
 		<attribute name="i"/>
 		<sequential>
-			<MDT i="@{i}" o="temp.xml" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
-			<touch file="${xml.dir}/temp.xml"/>
-			<delete file="${xml.dir}/temp.xml" quiet="true"/>
+			<MDT i="@{i}" o="${null.device}" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
 		</sequential>
 	</macrodef>
 		
