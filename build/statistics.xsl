@@ -392,6 +392,7 @@
                     $entities[@entityID='https://typekey.sdss.ac.uk/shibboleth'] |
                     $entities[@entityID='https://typekey.iay.org.uk/shibboleth'] |
                     $entities[@entityID='https://idp-1.bgfl.org/shibboleth'] |
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shibboleth-i.sgul.ac.uk'] |
                     $entities[@entityID='https://idp.protectnetwork.org/protectnetwork-idp']
                     "/>
                 
