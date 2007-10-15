@@ -658,6 +658,7 @@
                         <li>
                             <xsl:value-of select="@ID"/>:
                             <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)">[not-M] </xsl:if>
+                            <xsl:if test="md:Extensions/wayf:HideFromWAYF">[H] </xsl:if>
                             <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
                         </li>
                     </xsl:for-each>
@@ -670,6 +671,7 @@
                         <li>
                             <xsl:value-of select="@ID"/>:
                             <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)">[not-M] </xsl:if>
+                            <xsl:if test="md:Extensions/wayf:HideFromWAYF">[H] </xsl:if>
                             <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
                         </li>
                     </xsl:for-each>
