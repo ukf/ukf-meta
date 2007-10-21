@@ -25,19 +25,9 @@ close EXTRAS;
 #
 # Exclude support addresses using some XSLT magic.
 #
-# SDSS addresses
-#
-open(XML,"java -cp ../xalan-j_2_6_0/bin/xalan.jar org.apache.xalan.xslt.Process -IN ../xml/sdss-metadata-unsigned.xml -XSL extract_addresses.xsl|") || die "could not open input file";
-while (<XML>) {
-	if (/<EmailAddress>(mailto:)?(.*)<\/EmailAddress>/) {
-		$metadata{$2} = 1;
-	}
-}
-close XML;
-#
 # UK addresses
 #
-open(XML,"java -cp ../xalan-j_2_6_0/bin/xalan.jar org.apache.xalan.xslt.Process -IN ../xml/ukfederation-metadata-unsigned.xml -XSL extract_addresses.xsl|") || die "could not open input file";
+open(XML,"java -cp ../xalan-j_2_6_0/bin/xalan.jar org.apache.xalan.xslt.Process -IN ../xml/ukfederation-metadata.xml -XSL extract_addresses.xsl|") || die "could not open input file";
 while (<XML>) {
 	if (/<EmailAddress>(mailto:)?(.*)<\/EmailAddress>/) {
 		$metadata{$2} = 1;
