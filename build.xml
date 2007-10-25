@@ -97,14 +97,8 @@
 
 	<!--
 		Signing keystore alias.
-		
-		The ACOS5 PKCS#11 library always gives imported entries an
-		alias of "Imported Certificate".
 	-->
-	<condition property="keystore.uk.sign.alias"
-		value="Imported Certificate" else="ukfederation">
-		<os family="windows"/>
-	</condition>
+	<property name="keystore.uk.sign.alias" value="ukfederation"/>
 
 	<!--
 		Verification keystore.
