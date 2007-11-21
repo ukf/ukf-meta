@@ -91,19 +91,28 @@
         <xsl:variable name="prob.space.entityID" select="$entities[contains(@entityID, ' ')]"/>
         <!-- spaces in Locations -->
         <xsl:variable name="prob.space.location" select="$entities[descendant::*[contains(@Location,' ')]]"/>
-        <!-- Locations that don't start with http, at least -->
-        <xsl:variable name="prob.nohttp.location" select="$entities[descendant::*[@Location and not(starts-with(@Location,'http'))]]"/>
+
+        <!-- Locations that don't start with https:// -->
+        <xsl:variable name="prob.nohttps.location.exceptions"
+            select="$entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:gilead.ncl.ac.uk']"/>
+        <xsl:variable name="prob.nohttps.location.entities"
+            select="set:difference($entities, $prob.nohttps.location.exceptions)"/>
+        <xsl:variable name="prob.nohttps.location"
+            select="$prob.nohttps.location.entities[descendant::*[@Location and not(starts-with(@Location,'https://'))]]"/>
+        
         <!-- duplicate entity IDs -->
         <xsl:variable name="prob.distinct.entityIDs" select="set:distinct($entities/@entityID)"/>
         <xsl:variable name="prob.dup.entityID"
             select="set:distinct(set:difference($entities/@entityID, $prob.distinct.entityIDs))"/>
+        
         <!-- entities without known owner -->
         <xsl:variable name="ownedEntities"
             select="dyn:closure($owners/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
         <xsl:variable name="prob.unowned.entities" select="set:difference($entities, $ownedEntities)"/>
+        
         <!-- all problems, used as a conditional -->
         <xsl:variable name="prob.all" select="$prob.space.entityID | $prob.space.location |
-            $prob.nohttp.location |
+            $prob.nohttps.location |
             $prob.dup.entityID | $prob.unowned.entities"/>
         <xsl:variable name="prob.count" select="count($prob.all)"/>
 
@@ -159,11 +168,11 @@
                             </xsl:for-each>
                         </ul>
                     </xsl:if>
-                    <xsl:if test="count($prob.nohttp.location) != 0">
+                    <xsl:if test="count($prob.nohttps.location) != 0">
                         <p>The following entities include elements with <code>Location</code> attributes
-                        that don't start with <code>http</code>:</p>
+                        that don't start with <code>https://</code>:</p>
                         <ul>
-                            <xsl:for-each select="$prob.nohttp.location">
+                            <xsl:for-each select="$prob.nohttps.location">
                                 <li>
                                     <xsl:value-of select="@ID"/>:
                                     <code><xsl:value-of select="@entityID"/></code>
