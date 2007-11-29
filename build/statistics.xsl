@@ -94,7 +94,7 @@
 
         <!-- Locations that don't start with https:// -->
         <xsl:variable name="prob.nohttps.location.exceptions"
-            select="$entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:gilead.ncl.ac.uk']"/>
+            select="$entities[@entityID='no.such.entity']"/>
         <xsl:variable name="prob.nohttps.location.entities"
             select="set:difference($entities, $prob.nohttps.location.exceptions)"/>
         <xsl:variable name="prob.nohttps.location"
