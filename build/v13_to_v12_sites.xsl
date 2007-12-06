@@ -63,12 +63,15 @@
 
 	<!--
 		Map EntityDescriptor to whichever of OriginSite and/or DestinationSite apply.
+		
+		We can't translate entities who don't have a KeyName in their appropriate roles, so
+		make everything conditional on that.
 	-->
 	<xsl:template match="md:EntityDescriptor">
-		<xsl:if test="md:IDPSSODescriptor">
+		<xsl:if test="md:IDPSSODescriptor[md:KeyDescriptor/ds:KeyInfo/ds:KeyName]">
 			<xsl:call-template name="OriginSite"/>
 		</xsl:if>
-		<xsl:if test="md:SPSSODescriptor">
+		<xsl:if test="md:SPSSODescriptor[md:KeyDescriptor/ds:KeyInfo/ds:KeyName]">
 			<xsl:call-template name="DestinationSite"/>
 		</xsl:if>
 	</xsl:template>
