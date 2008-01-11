@@ -269,6 +269,76 @@
                     </li>
                 </ul>                
 
+                <!--
+                    Break down members by whether or not they have entities registered
+                -->
+                <xsl:variable name="membersWithIdPs"
+                    select="$members[md:OrganizationName = $idps//md:OrganizationName]"/>
+                <xsl:variable name="membersWithSps"
+                    select="$members[md:OrganizationName = $sps//md:OrganizationName]"/>
+                <xsl:variable name="membersWithBoth"
+                    select="set:intersection($membersWithIdPs, $membersWithSps)"/>
+                <xsl:variable name="membersWithEither"
+                    select="set:distinct($membersWithIdPs | $membersWithSps)"/>
+                <xsl:variable name="membersWithJustIdPs"
+                    select="set:difference($membersWithIdPs, $membersWithSps)"/>
+                <xsl:variable name="membersWithJustSPs"
+                    select="set:difference($membersWithSps, $membersWithIdPs)"/>
+                <xsl:variable name="membersWithNone"
+                    select="set:difference($members, $membersWithEither)"/>
+                <xsl:variable name="membersWithIdPsCount" select="count($membersWithIdPs)"/>
+                <xsl:variable name="membersWithSpsCount" select="count($membersWithSps)"/>
+                <xsl:variable name="membersWithBothCount" select="count($membersWithBoth)"/>
+                <xsl:variable name="membersWithEitherCount" select="count($membersWithEither)"/>
+                <xsl:variable name="membersWithJustIdPsCount" select="count($membersWithJustIdPs)"/>
+                <xsl:variable name="membersWithJustSPsCount" select="count($membersWithJustSPs)"/>
+                <xsl:variable name="membersWithNoneCount" select="count($membersWithNone)"/>
+                <p>Breakdown of members by entity registration status:</p>
+                <ul>
+                    <li>
+                        <p>
+                            At least one IdP: <xsl:value-of select="$membersWithIdPsCount"/>
+                            (<xsl:value-of select="format-number($membersWithIdPsCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            At least one SP: <xsl:value-of select="$membersWithSpsCount"/>
+                            (<xsl:value-of select="format-number($membersWithSpsCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            At least one of either: <xsl:value-of select="$membersWithEitherCount"/>
+                            (<xsl:value-of select="format-number($membersWithEitherCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            At least one of each: <xsl:value-of select="$membersWithBothCount"/>
+                            (<xsl:value-of select="format-number($membersWithBothCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Just at least one IdP: <xsl:value-of select="$membersWithJustIdPsCount"/>
+                            (<xsl:value-of select="format-number($membersWithJustIdPsCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Just at least one SP: <xsl:value-of select="$membersWithJustSPsCount"/>
+                            (<xsl:value-of select="format-number($membersWithJustSPsCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Without entities: <xsl:value-of select="$membersWithNoneCount"/>
+                            (<xsl:value-of select="format-number($membersWithNoneCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                </ul>
+                
                 <h3>Additional Non-member Entity Owners</h3>
                 <p>
                     In addition, the UK federation operator maintains agreements with certain
