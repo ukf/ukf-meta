@@ -362,7 +362,7 @@
 	<target name="stats">
 		<echo>Generating UK Federation statistics</echo>
 		<XALAN
-			i="ukfederation-metadata-unsigned.xml"
+			i="ukfederation-metadata.xml"
 			o="ukfederation-stats.html"
 			x="statistics.xsl"/>
 		<fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf"/>
