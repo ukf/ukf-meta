@@ -1,21 +1,22 @@
 #!/usr/bin/perl -w
 
-$known_bad{'census.data-archive.ac.uk:8080'} = 1;
+$known_bad{'census.data-archive.ac.uk:8080'} = 1; # it is really http, not https
 
-open(XML,"java -cp ../xalan-j_2_6_0/bin/xalan.jar org.apache.xalan.xslt.Process -IN ../xml/sdss-metadata-unsigned.xml -XSL extract_nocert_locs.xsl|") || die "could not open input file";
+open(XML,"java -cp ../xalan-j_2_6_0/bin/xalan.jar org.apache.xalan.xslt.Process -IN ../xml/ukfederation-metadata.xml -XSL extract_nocert_locs.xsl|") || die "could not open input file";
 while (<XML>) {
+	chop;
 	if (/^http:/) {
-		print "skipping http location: $_";
-	} elsif (/^https:\/\/([^\/:]+(:\d+)?)\//) {
+		print "skipping http location: $_\n";
+	} elsif (/^https:\/\/([^\/:]+(:\d+)?)(\/|$)/) {
 		my $location = $1;
 		$location .= ":443" unless defined $2;
 		if ($known_bad{$location}) {
-			print "skipping known bad location: $_";
+			print "skipping known bad location: $_\n";
 		} else {
 			$locations{$location} = 1;
 		}
 	} else {
-		print "bad location: $_";
+		print "bad location: $_\n";
 	}
 }
 close XML;
