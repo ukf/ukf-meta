@@ -321,13 +321,13 @@
                     </li>
                     <li>
                         <p>
-                            Just at least one IdP: <xsl:value-of select="$membersWithJustIdPsCount"/>
+                            At least one IdP, but no SPs: <xsl:value-of select="$membersWithJustIdPsCount"/>
                             (<xsl:value-of select="format-number($membersWithJustIdPsCount div $memberCount, '0.0%')"/>)
                         </p>
                     </li>
                     <li>
                         <p>
-                            Just at least one SP: <xsl:value-of select="$membersWithJustSPsCount"/>
+                            At least one SP, but no IdPs: <xsl:value-of select="$membersWithJustSPsCount"/>
                             (<xsl:value-of select="format-number($membersWithJustSPsCount div $memberCount, '0.0%')"/>)
                         </p>
                     </li>
