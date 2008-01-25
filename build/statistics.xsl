@@ -241,6 +241,7 @@
                         <th>Entities</th>
                         <th>IdPs</th>
                         <th>SPs</th>
+                        <th>AIdP</th>
                     </tr>
                     <xsl:apply-templates select="$members" mode="count">
                         <xsl:with-param name="entities" select="$entities"/>
@@ -286,6 +287,12 @@
                     select="set:difference($membersWithSps, $membersWithIdPs)"/>
                 <xsl:variable name="membersWithNone"
                     select="set:difference($members, $membersWithEither)"/>
+                <xsl:variable name="membersWithAthensIdP"
+                    select="$members[@usesAthensIdP = 'true']"/>
+                <xsl:variable name="membersWithJustAthensIdP"
+                    select="set:difference($membersWithAthensIdP, $membersWithEither)"/>
+                <xsl:variable name="membersWithNoneNoAthens"
+                    select="set:difference($membersWithNone, $membersWithAthensIdP)"/>
                 <xsl:variable name="membersWithIdPsCount" select="count($membersWithIdPs)"/>
                 <xsl:variable name="membersWithSpsCount" select="count($membersWithSps)"/>
                 <xsl:variable name="membersWithBothCount" select="count($membersWithBoth)"/>
@@ -293,6 +300,8 @@
                 <xsl:variable name="membersWithJustIdPsCount" select="count($membersWithJustIdPs)"/>
                 <xsl:variable name="membersWithJustSPsCount" select="count($membersWithJustSPs)"/>
                 <xsl:variable name="membersWithNoneCount" select="count($membersWithNone)"/>
+                <xsl:variable name="membersWithJustAthensIdPCount" select="count($membersWithJustAthensIdP)"/>
+                <xsl:variable name="membersWithNoneNoAthensCount" select="count($membersWithNoneNoAthens)"/>
                 <p>Breakdown of members by entity registration status:</p>
                 <ul>
                     <li>
@@ -337,6 +346,28 @@
                             (<xsl:value-of select="format-number($membersWithNoneCount div $memberCount, '0.0%')"/>)
                         </p>
                     </li>
+                    <li>
+                        <p>
+                            Without entities, but with Athens IdP access: <xsl:value-of select="$membersWithJustAthensIdPCount"/>
+                            (<xsl:value-of select="format-number($membersWithJustAthensIdPCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Without entities, and with no Athens IdP access: <xsl:value-of select="$membersWithNoneNoAthensCount"/>
+                            (<xsl:value-of select="format-number($membersWithNoneNoAthensCount div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Chart:
+                            <xsl:value-of select="$membersWithJustIdPsCount"/>,
+                            <xsl:value-of select="$membersWithJustSPsCount"/>,
+                            <xsl:value-of select="$membersWithBothCount"/>,
+                            <xsl:value-of select="$membersWithJustAthensIdPCount"/>,
+                            <xsl:value-of select="$membersWithNoneNoAthensCount"/>.                            
+                        </p>
+                    </li>
                 </ul>
                 
                 <h3>Additional Non-member Entity Owners</h3>
@@ -353,6 +384,7 @@
                         <th>Entities</th>
                         <th>IdPs</th>
                         <th>SPs</th>
+                        <th>AIdP</th>
                     </tr>
                     <xsl:apply-templates select="$nonMembers" mode="count">
                         <xsl:with-param name="entities" select="$entities"/>
@@ -865,6 +897,17 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="count($matchedSPs)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </td>
+            <!-- has Athens IdP access? -->
+            <td align="center">
+                <xsl:choose>
+                    <xsl:when test="@usesAthensIdP = 'true'">
+                        *
+                    </xsl:when>
+                    <xsl:otherwise>
+                        &#160;
                     </xsl:otherwise>
                 </xsl:choose>
             </td>
