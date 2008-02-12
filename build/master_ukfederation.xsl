@@ -61,13 +61,6 @@
 	</xsl:template>
 
 	<!--
-		Tweak the federation URI.
-	-->
-	<xsl:template match="@Name[parent::md:EntitiesDescriptor]">
-		<xsl:attribute name="Name">http://ukfederation.org.uk</xsl:attribute>
-	</xsl:template>
-	
-	<!--
 		Drop any explicit xsi:schemaLocation attributes from imported entity fragments.
 	-->
 	<xsl:template match="@xsi:schemaLocation[parent::md:EntityDescriptor]">
