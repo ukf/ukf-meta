@@ -60,6 +60,33 @@
 		</xsl:copy>
 	</xsl:template>
 
+	<xsl:template match="md:AttributeAuthorityDescriptor[not(md:Extensions)]">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:text>&#10;        </xsl:text><Extensions>
+				<xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
+					<xsl:text>&#10;            </xsl:text>
+					<xsl:copy-of select="."/>
+				</xsl:for-each>
+				<!--<xsl:apply-templates select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope"/>-->
+				<xsl:text>&#10;        </xsl:text></Extensions>
+			<xsl:apply-templates select="node()"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="md:IDPSSODescriptor[not(md:Extensions)]">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:text>&#10;        </xsl:text><Extensions>
+				<xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
+					<xsl:text>&#10;            </xsl:text>
+					<xsl:copy-of select="."/>
+				</xsl:for-each>
+				<xsl:text>&#10;        </xsl:text></Extensions>
+			<xsl:apply-templates select="node()"/>
+		</xsl:copy>
+	</xsl:template>
+	
 	<!--
 		Drop any explicit xsi:schemaLocation attributes from imported entity fragments.
 	-->
