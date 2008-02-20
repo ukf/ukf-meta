@@ -390,4 +390,15 @@
 			x="extract_embedded.xsl"/>
 	</target>
 	
+	<!--
+		Check embedded certificates.
+	-->
+	<target name="check.embedded" depends="extract.embedded">
+		<echo>Checking embedded certificates</echo>
+		<exec executable="perl" dir="${xml.dir}"
+			input="${xml.dir}/embedded.pem">
+			<arg value="${build.dir}/check_embedded.pl"/>
+		</exec>
+	</target>
+	
 </project>
