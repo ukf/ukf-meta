@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	extract_roots.xsl
+	extract_authorities.xsl
 	
 	XSL stylesheet that takes a SAML 2.0 metadata file and extracts
 	the certificate authorities in the form of a series of
