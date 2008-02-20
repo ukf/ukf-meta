@@ -379,4 +379,15 @@
 			x="extract_authorities.xsl"/>
 	</target>
 	
+	<!--
+		Extract embedded certificates
+	-->
+	<target name="extract.embedded" depends="gen.uk">
+		<echo>Extracting embedded certificates</echo>
+		<XALAN
+			i="ukfederation-metadata-unsigned.xml"
+			o="embedded.pem"
+			x="extract_embedded.xsl"/>
+	</target>
+	
 </project>
