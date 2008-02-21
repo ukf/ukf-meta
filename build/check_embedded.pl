@@ -54,13 +54,18 @@ while (<>) {
 		#
 		# Use openssl to convert the certificate to text
 		#
-		my(@lines, $issuer, $subjectCN);
-		$cmd = "openssl x509 -in $filename -noout -text |";
+		my(@lines, $issuer, $subjectCN, $issuerCN);
+		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 |";
 		open(SSL, $cmd) || die "could not open openssl subcommand";
 		while (<SSL>) {
 			push @lines, $_;
 			if (/^\s*Issuer:\s*(.*)$/) {
 				$issuer = $1;
+				if ($issuer =~ /CN=([^,]+)/) {
+					$issuerCN = $1;
+				} else {
+					$issuerCN = $issuer;
+				}
 			}
 			if (/^\s*Subject:\s*.*CN=([a-z0-9\-\.]+).*$/) {
 				$subjectCN = $1;
@@ -121,16 +126,24 @@ while (<>) {
 		#
 		# Now, adjust for our expectations.
 		#
-		if (!$hasKeyName && $error eq 'self signed certificate') {
-			$error = '';
-			print "   (self signed certificate)\n";
+		# Pretty much any certificate is fine if we don't have a KeyName.
+		#
+		if (!$hasKeyName) {
+			if ($error eq 'self signed certificate') {
+				$error = '';
+				print "   (self signed certificate)\n";
+			} elsif ($error eq 'unable to get local issuer certificate') {
+				$error = '';
+				print "   (unknown issuer: $issuerCN)\n";
+			}
 		}
+
 		if ($hasKeyName && $error eq 'self signed certificate') {
 			$error = 'self signed certificate: remove KeyName?';
 		}
 
 		if ($error eq 'unable to get local issuer certificate') {
-			$error = "unknown issuer: $issuer";
+			$error = "unknown issuer: $issuerCN";
 		}
 
 		if ($error ne '') {
