@@ -67,7 +67,7 @@ while (<>) {
 					$issuerCN = $issuer;
 				}
 			}
-			if (/^\s*Subject:\s*.*CN=([a-z0-9\-\.]+).*$/) {
+			if (/^\s*Subject:\s*.*?CN=([a-z0-9\-\.]+).*$/) {
 				$subjectCN = $1;
 				# print "subjectCN = $subjectCN\n";
 			}
