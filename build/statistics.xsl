@@ -596,6 +596,14 @@
                 </ul>
                 
                 <!--
+                    Detect Shibboleth 1.3 entities.
+                    
+                    Pick from things we know aren't Shibboleth 2.0 to avoid
+                    double counting.
+                -->
+                <xsl:variable name="entities.shib.13.in" select="$entities.shib.2.out"/>
+
+                <!--
                     This is a list of identity providers that we *know* are running 1.3, even though they
                     may not look like it.
                 -->
@@ -625,10 +633,10 @@
                 
                 <xsl:variable name="sps13"
                     select="$known13sps |
-                        $sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
+                    $entities.shib.13.in/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="idps13"
                     select="$known13idps |
-                        $idps/descendant::md:SingleSignOnService[contains(@Location, '-idp/SSO')]/ancestor::md:EntityDescriptor"/>
+                    $entities.shib.13.in/descendant::md:SingleSignOnService[contains(@Location, '-idp/SSO')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="entities13" select="$sps13 | $idps13"/>
                 <xsl:variable name="entities13Count" select="count($entities13)"/>
                 <h3>Shibboleth 1.3</h3>
