@@ -533,6 +533,69 @@
                 <h2><a name="bySoftware">Entities by Software</a></h2>
 
                 <!--
+                    Peel off Shibboleth 2.0 IdPs and SPs.
+                -->
+                <xsl:variable name="entities.shib.2.in" select="$entities"/>
+                <xsl:variable name="idps.shib.2"
+                    select="$entities.shib.2.in/descendant::md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="sps.shib.2"
+                    select="$entities.shib.2.in/descendant::md:AssertionConsumerService[contains(@Location, '/Shibboleth.sso/SAML2/POST')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="entities.shib.2"
+                    select="$idps.shib.2 | $sps.shib.2"/>
+                <xsl:variable name="entities.shib.2.out"
+                    select="set:difference($entities.shib.2.in, $entities.shib.2)"/>
+
+                <h3>Shibboleth 2.0</h3>
+                <p>
+                    There are <xsl:value-of select="count($entities.shib.2)"/> entities in the metadata
+                    that look like they are probably running Shibboleth 2.0.
+                    This is <xsl:value-of select="format-number(count($entities.shib.2) div $entityCount, '0.0%')"/>
+                    of all entities.
+                </p>
+                
+                <h4>Shibboleth 2.0 Identity Providers</h4>
+                <p>
+                    The following <xsl:value-of select="count($idps.shib.2)"/> identity providers look like they are
+                    running Shibboleth 2.0.
+                    This is <xsl:value-of select="format-number(count($idps.shib.2) div $idpCount, '0.0%')"/>
+                    of all identity providers.</p>
+                <ul>
+                    <xsl:for-each select="$idps.shib.2">
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <code><xsl:value-of select="@entityID"/></code>:
+                            <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
+                        </li>
+                    </xsl:for-each>
+                </ul>
+                
+                <h4>Shibboleth 2.0 Service Providers</h4>
+                <xsl:if test="count($sps.shib.2) = 1">
+                    <p>
+                        The following service provider looks like it is
+                        running Shibboleth 2.0.
+                        This is <xsl:value-of select="format-number(count($sps.shib.2) div $spCount, '0.0%')"/>
+                        of all service providers.
+                    </p>
+                </xsl:if>
+                <xsl:if test="count($sps.shib.2) != 1">
+                    <p>
+                        The following <xsl:value-of select="count($sps.shib.2)"/> service providers look like they are
+                        running Shibboleth 2.0.
+                        This is <xsl:value-of select="format-number(count($sps.shib.2) div $spCount, '0.0%')"/>
+                        of all service providers.
+                    </p>
+                </xsl:if>
+                <ul>
+                    <xsl:for-each select="$sps.shib.2">
+                        <li>
+                            <xsl:value-of select="@ID"/>:
+                            <code><xsl:value-of select="@entityID"/></code>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+                
+                <!--
                     This is a list of identity providers that we *know* are running 1.3, even though they
                     may not look like it.
                 -->
@@ -652,7 +715,7 @@
                     </ul>
                 </xsl:if>
                 
-                <xsl:variable name="entitiesShib" select="$entities12 | $entities13"/>
+                <xsl:variable name="entitiesShib" select="$entities12 | $entities13 | $entities.shib.2"/>
                 <xsl:variable name="entitiesShibCount" select="count($entitiesShib)"/>
                 <h3>Shibboleth Combined</h3>
                 <p>
@@ -755,7 +818,7 @@
                 </xsl:if>
                 
                 <xsl:variable name="knownSoftwareEntities"
-                    select="$entities12 | $entities13 | $athensImEntities | $knownGuanxiIdps | $knownGateways"/>
+                    select="$entities.shib.2 | $entities12 | $entities13 | $athensImEntities | $knownGuanxiIdps | $knownGateways"/>
                 <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
                 <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
                 <h3>Unknown Software</h3>
