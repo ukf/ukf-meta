@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
+    targetNamespace="http://ukfederation.org.uk/2006/11/label"
+    version="2008-04-02"
+    elementFormDefault="qualified">
+    
+    <annotation>
+        <documentation>
+            This schema describes the UK federation label namespace.
+            
+            For additional information, see the Federation Technical Specification.
+            
+            This version of the schema follows FTS edition 1.1 of 1-June-2007.
+        </documentation>
+    </annotation>
+    
+    <complexType name="basicLabel">
+        <annotation>
+            <documentation>
+                Most elements defined in the UK federation label namespace
+                are basic labels: empty elements whose presence or absence
+                is all that is important.
+            </documentation>
+        </annotation>
+        <!--
+            No content elements are defined, so a basicLabel may contain
+            neither text nor nested elements.
+        -->
+    </complexType>
+    
+    <complexType name="datedLabel">
+        <annotation>
+            <documentation>
+                A datedLabel is like a basicLabel, but with a single
+                additional mandatory date attribute.
+            </documentation>
+        </annotation>
+        <complexContent>
+            <extension base="ukfedlabel:basicLabel">
+                <attribute name="date" type="date" use="required"/>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <element name="SDSSPolicy" type="ukfedlabel:basicLabel">
+        <annotation>
+            <documentation>
+                Indicates an entity originally "grandfathered" into the
+                UK federation from the SDSS federation.
+            </documentation>
+        </annotation>
+    </element>
+    
+    <element name="UKFederationMember" type="ukfedlabel:basicLabel">
+        <annotation>
+            <documentation>
+                Indicates an entity whose owner is a member in good standing
+                of the UK federation.
+            </documentation>
+        </annotation>
+    </element>
+    
+    <element name="AccountableUsers" type="ukfedlabel:basicLabel">
+        <annotation>
+            <documentation>
+                Indicates an identity provider entity whose owner has
+                asserted to the UK federation that the entity provides
+                user accountability in terms of the definition given
+                in section 6 of the federation's Rules of Membership.
+            </documentation>
+        </annotation>
+    </element>
+    
+    <element name="DeletedEntity" type="ukfedlabel:datedLabel">
+        <annotation>
+            <documentation>
+                Marks an entity which should not appear in the federation's
+                public metadata.  This label is used during maintenance of
+                the federation's metadata, and consumers of the published
+                metadata should never encounter it (and have no need to
+                check for its presence).
+            </documentation>
+        </annotation>
+    </element>
+
+</schema>
