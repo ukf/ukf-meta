@@ -1,0 +1,4 @@
+#!/bin/bash
+
+find ../entities -name uk\*.xml \
+	-exec perl -i patch_entity.pl \{\} \;
