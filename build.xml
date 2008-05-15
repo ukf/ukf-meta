@@ -380,6 +380,17 @@
 	</target>
 	
 	<!--
+		Extract member list for joining date backfill.
+	-->
+	<target name="extract.member.dates">
+		<echo>Extracting member dates</echo>
+		<XALAN
+			i="members.xml"
+			o="member-dates.txt"
+			x="extract_member_dates.xsl"/>
+	</target>
+
+	<!--
 		Extract embedded certificates
 	-->
 	<target name="extract.embedded" depends="gen.uk">
