@@ -380,6 +380,17 @@
 	</target>
 	
 	<!--
+		Check authorities
+	-->
+	<target name="check.authorities">
+		<echo>Checking authority certificates</echo>
+		<exec executable="perl" dir="${xml.dir}"
+			input="${xml.dir}/authorities.pem">
+			<arg value="${build.dir}/check_authorities.pl"/>
+		</exec>
+	</target>
+
+	<!--
 		Extract member list for joining date backfill.
 	-->
 	<target name="extract.member.dates">
