@@ -71,6 +71,13 @@ while (<>) {
 				$subjectCN = $1;
 				# print "subjectCN = $subjectCN\n";
 			}
+			if (/RSA Public Key: \((\d+) bit\)/) {
+				$pubSize = $1;
+				# print "   Public key size: $pubSize\n";
+				if ($pubSize < 1024) {
+					print "      *** PUBLIC KEY TOO SHORT ***\n";
+				}
+			}
 		}
 		close SSL;
 		#print "   text lines: $#lines\n";
