@@ -1,5 +1,6 @@
 #!/usr/bin/perl -w
 use File::Temp qw(tempfile);
+use Date::Parse;
 
 while (<>) {
 
@@ -54,13 +55,26 @@ while (<>) {
 			}
 			if (/^\s*Subject:\s*(.*)$/) {
 				$subject = $1;
-				print "   Subject: $subject\n";
+				print "   Subject: $subject\n" unless $subject eq $issuer;
 			}
 			if (/RSA Public Key: \((\d+) bit\)/) {
 				$pubSize = $1;
 				print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
 					print "      *** PUBLIC KEY TOO SHORT ***\n";
+				}
+			}
+			if (/Not After : (.*)$/) {
+				$notAfter = $1;
+				$days = (str2time($notAfter)-time())/86400.0;
+				if ($days < 0) {
+					print "   *** EXPIRED ***\n";
+				} elsif ($days < 30) {
+					$days = int($days);
+					print "   *** expires in $days days\n";
+				} elsif ($days < (365*2)) {
+					$days = int($days);
+					print "   expires in $days days\n";
 				}
 			}
 		}
