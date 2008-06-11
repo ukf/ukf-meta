@@ -75,7 +75,7 @@ while (<>) {
 		# Use openssl to convert the certificate to text
 		#
 		my(@lines, $issuer, $subjectCN, $issuerCN);
-		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 |";
+		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 -modulus |";
 		open(SSL, $cmd) || die "could not open openssl subcommand";
 		while (<SSL>) {
 			push @lines, $_;
