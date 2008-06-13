@@ -49,6 +49,12 @@
 	<property name="xalan.dir" value="xalan-j_2_6_0"/>
 	<property name="xml.dir" value="xml"/>
 
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+	
 	<!--
 		The entities file contains the individual entity fragment files
 		concatenated together and enclosed in an <Entities> element.
@@ -401,6 +407,25 @@
 			x="extract_member_dates.xsl"/>
 	</target>
 
+	<!--
+		Utility to fold overlong embedded certificates.
+	-->
+	<target name="fold.embedded.certs">
+		<echo>Folding embedded certificates</echo>
+		<for param="file">
+			<path>
+				<fileset dir="${entities.dir}" includes="uk*.xml"/>
+			</path>
+			<sequential>
+				<exec executable="perl" dir="${entities.dir}">
+					<arg value="-i"/>
+					<arg value="${build.dir}/fold_cert.pl"/>
+					<arg value="@{file}"/>
+				</exec>
+			</sequential>
+		</for>
+	</target>
+	
 	<!--
 		Extract embedded certificates
 	-->
