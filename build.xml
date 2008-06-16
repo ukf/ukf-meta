@@ -8,23 +8,6 @@
 	  
 	* "ant push" sends all files to the remote site, and requires
 	  the remote site password.
-	  
-	The files involved are:
-	
-	[0]		master [+entity fragment files]
-	[19]		ukfederation-metadata-unsigned.xml
-	[20]			ukfederation-metadata.xml
-	[21]			ukfederation-sites-12-unsigned.xml
-	[22]				ukfederation-sites-12.xml
-	[23]			ukfederation-trust-12-unsigned.xml
-	[24]				ukfederation-trust-12.xml
-	[25]			ukfederation-wayf-unsigned.xml
-	[26]				ukfederation-wayf.xml
- 
-	In the above list, indentation implies the creation hierarchy and "=="
-	implies creation by copying.  The numbers in brackets are duplicated
-	in the script where the file in question is created.  Some numbers are
-	missing because some old format files are no longer being generated.
 -->
 <project default="process">
     
@@ -49,6 +32,9 @@
 	<property name="xalan.dir" value="xalan-j_2_6_0"/>
 	<property name="xml.dir" value="xml"/>
 
+	<!--
+		Additional ANT task definitions.
+	-->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
 			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar"/>
@@ -56,21 +42,62 @@
 	</taskdef>
 	
 	<!--
-		The entities file contains the individual entity fragment files
-		concatenated together and enclosed in an <Entities> element.
+		The first phase in the signing process is to concatenate the
+		individual entity fragment files (uk*.xml in the entities directory)
+		together and enclose them in an <Entities> element.
+		
+		The resulting file [1] entities.xml contains *all* entities,
+		even deleted ones, and contains some information we don't ultimately
+		want to publish.  entities.xml itself is neither stored
+		in the repository nor published.
 	-->
 	<property name="entities.file.dir" value="${xml.dir}"/>
 	<property name="entities.file.name" value="entities.xml"/>
 	<property name="entities.file" value="${entities.file.dir}/${entities.file.name}"/>
 
 	<!--
-		The master file contains the trust fabric, and optionally some entities
-		which have not yet been broken out into separate fragment files.
+		The master file contains the UK federation's KeyAuthority descriptors.
 	-->
 	<property name="master.file.dir" value="${xml.dir}"/>
 	<property name="master.file.name" value="master.xml"/>
 	<property name="master.file" value="${master.file.dir}/${master.file.name}"/>
 	
+	<!--
+		The full, unfiltered entities.xml is combined with the UK federation
+		trust roots (from master.xml) to produce the "UK federation master file"
+		([2] ukfederation-metadata-master.xml).  This drops entities marked as
+		deleted.  Although the file by this stage conforms to UK federation
+		conventions, it may still contain information not intended for
+		publication.
+	-->
+	<property name="uk.master.file" value="ukfederation-metadata-master.xml"/>
+	
+	<!--
+		The UK federation master file is then processed to remove housekeeping
+		information, resulting in the UK federation's unsigned metadata file,
+		[19] ukfederation-metadata-unsigned.xml. (This is currently a null
+		operation)
+	-->
+	<property name="uk.metadata.unsigned" value="ukfederation-metadata-unsigned.xml"/>
+
+	<!--
+		From there, the process (with indentation implying the creation
+		hierarchy) is:
+		
+		[19]	ukfederation-metadata-unsigned.xml
+		[20]		ukfederation-metadata.xml
+		[21]		ukfederation-sites-12-unsigned.xml
+		[22]			ukfederation-sites-12.xml
+		[23]		ukfederation-trust-12-unsigned.xml
+		[24]			ukfederation-trust-12.xml
+		[25]		ukfederation-wayf-unsigned.xml
+		[26]			ukfederation-wayf.xml
+		
+		The numbers in brackets are duplicated in the script where the file in
+		question is created.  Some numbers are missing because some old format
+		files are no longer being generated.
+	-->
+
 	<!--
 		Null device location.
 	-->
@@ -111,11 +138,6 @@
 	-->
 	<property name="keystore.uk.vfy.loc" value="${build.dir}/ukfederation.jks"/>
 	<property name="keystore.uk.vfy.alias" value="ukfederation"/>
-	
-	<!--
-		Files within the XML directory.
-	-->
-	<property name="uk.master.file" value="ukfederation-metadata-unsigned.xml"/>
 	
 	<property name="known.hosts" value="${build.dir}/known_hosts"/>
 
@@ -206,6 +228,7 @@
 	-->
 	<target name="gen.entities">
 		<echo>Composing entity fragment files.</echo>
+		<!-- [1] -->
 		<concat destfile="${entities.file}" append="no" force="yes" fixlastline="no">
 			<header filtering="no">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#10;&lt;Entities&gt;&#10;</header>
 			<fileset dir="${entities.dir}" includes="uk*.xml"/>
@@ -220,31 +243,38 @@
 		Unsigned metadata generation for the UK Federation.
 	-->
 
-	<target name="gen.uk" depends="gen.uk.master, gen.uk.1.2, gen.uk.wayf">
+	<target name="gen.uk" depends="gen.uk.unsigned, gen.uk.1.2, gen.uk.wayf">
 		<echo>Generated UK unsigned metadata.</echo>
 	</target>
 
 	<target name="gen.uk.master" depends="gen.entities">
-		<echo>Generating unsigned UK master file.</echo>
-		<!-- [19] -->
+		<echo>Generating UK federation master file.</echo>
+		<!-- [2] -->
 		<XALAN x="master_ukfederation.xsl" i="${master.file.name}"
 			o="${uk.master.file}" />
+	</target>
+	
+	<target name="gen.uk.unsigned" depends="gen.uk.master">
+		<echo>Generating unsigned UK metadata file.</echo>
+		<!-- [19] -->
+		<XALAN x="uk_master_unsigned.xsl" i="${uk.master.file}"
+			o="${uk.metadata.unsigned}" />
 	</target>
 	
 	<target name="gen.uk.1.2">
 		<echo>Generating unsigned UK V1.2 metadata.</echo>
 		<!-- [21] -->
-		<XALAN x="v13_to_v12_sites.xsl" i="${uk.master.file}"
+		<XALAN x="v13_to_v12_sites.xsl" i="${uk.metadata.unsigned}"
 			o="ukfederation-sites-12-unsigned.xml"/>
 		<!-- [23] -->
-		<XALAN x="v13_to_v12_trust.xsl" i="${uk.master.file}"
+		<XALAN x="v13_to_v12_trust.xsl" i="${uk.metadata.unsigned}"
 			o="ukfederation-trust-12-unsigned.xml"/>
 	</target>
 	
 	<target name="gen.uk.wayf">
 		<echo>Generating unsigned UK WAYF metadata.</echo>
 		<!-- [25] -->
-		<XALAN x="master_to_wayf.xsl" i="${uk.master.file}"
+		<XALAN x="master_to_wayf.xsl" i="${uk.metadata.unsigned}"
 			o="ukfederation-wayf-unsigned.xml"/>
 	</target>
 
@@ -364,11 +394,15 @@
 	
 	<!--
 		Statistics generation
+		
+		Note that statistics are generated from the UK federation master file,
+		so that the statistics process has access to information that will not
+		be included in published metadata.
 	-->
-	<target name="stats">
+	<target name="stats" depends="gen.uk.unsigned">
 		<echo>Generating UK Federation statistics</echo>
 		<XALAN
-			i="ukfederation-metadata.xml"
+			i="${uk.master.file}"
 			o="ukfederation-stats.html"
 			x="statistics.xsl"/>
 		<fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf"/>
