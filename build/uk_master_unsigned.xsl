@@ -23,6 +23,13 @@
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
+	<!--
+		Strip uklabel:Software elements entirely.
+	-->
+	<xsl:template match="uklabel:Software|uklabel:Software">
+		<!-- do nothing -->
+	</xsl:template>
+	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
