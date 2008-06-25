@@ -533,9 +533,18 @@
                 <h2><a name="bySoftware">Entities by Software</a></h2>
 
                 <!--
+                    Peel off EZproxy SPs
+                -->
+                <xsl:variable name="entities.ezproxy.in" select="$entities"/>
+                <xsl:variable name="entities.ezproxy"
+                    select="$entities.ezproxy.in[md:Extensions/uklabel:Software/@name='EZproxy']"/>
+                <xsl:variable name="entities.ezproxy.out"
+                    select="set:difference($entities.ezproxy.in, $entities.ezproxy)"/>
+
+                <!--
                     Peel off Shibboleth 2.0 IdPs and SPs.
                 -->
-                <xsl:variable name="entities.shib.2.in" select="$entities"/>
+                <xsl:variable name="entities.shib.2.in" select="$entities.ezproxy.out"/>
                 <xsl:variable name="idps.shib.2"
                     select="$entities.shib.2.in/descendant::md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="sps.shib.2"
@@ -658,15 +667,14 @@
                     running Shibboleth 1.3.  This is <xsl:value-of select="format-number($entities13Count div $entityCount, '0.0%')"/>
                     of all entities.
                 </p>
+                <xsl:variable name="entities.shib.13.out"
+                    select="set:difference($entities.shib.13.in, $entities13)"/>
                 
+                <xsl:variable name="entities.shib.12.in" select="$entities.shib.13.out"/>
                 <xsl:variable name="sps12"
-                    select="set:difference(
-                        $sps/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor,
-                        $known13sps)"/>
+                    select="$entities.shib.12.in/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="idps12"
-                    select="set:difference(
-                        $idps/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor,
-                        $known13idps)"/>
+                    select="$entities.shib.12.in/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="entities12" select="$idps12 | $sps12"/>
                 <xsl:variable name="entities12Count" select="count($entities12)"/>
                 <h3>Shibboleth 1.2</h3>
@@ -722,6 +730,8 @@
                         </xsl:for-each>
                     </ul>
                 </xsl:if>
+                <xsl:variable name="entities.shib.12.out"
+                    select="set:difference($entities.shib.12.in, $entities12)"/>
                 
                 <xsl:variable name="entitiesShib" select="$entities12 | $entities13 | $entities.shib.2"/>
                 <xsl:variable name="entitiesShibCount" select="count($entitiesShib)"/>
@@ -738,6 +748,33 @@
                     (<xsl:value-of select="format-number(($entityCount - $entitiesShibCount) div $entityCount, '0.0%')"/>)
                     are running something other than the Shibboleth reference software.
                 </p>
+                
+                <xsl:variable name="entities.ezproxy.count" select="count($entities.ezproxy)"/>
+                <xsl:if test="$entities.ezproxy.count != 0">
+                    <h3>EZproxy Entities</h3>
+                    <p>
+                        <xsl:if test="$entities.ezproxy.count = 1">
+                            There is 1 entity in the metadata that appears to be
+                            running EZproxy service provider software.
+                        </xsl:if>
+                        <xsl:if test="$entities.ezproxy.count != 1">
+                            There are <xsl:value-of select="$entities.ezproxy.count"/> entities
+                            in the metadata that
+                            appear to be running EZproxy service provider software.
+                        </xsl:if>
+                        This is <xsl:value-of select="format-number($entities.ezproxy.count div $entityCount, '0.0%')"/>
+                        of all entities, or <xsl:value-of select="format-number($entities.ezproxy.count div $spCount, '0.0%')"/>
+                        of service providers.
+                    </p>
+                    <ul>
+                        <xsl:for-each select="$entities.ezproxy">
+                            <li>
+                                <xsl:value-of select="@ID"/>:
+                                <code><xsl:value-of select="@entityID"/></code>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
                 
                 <xsl:variable name="athensImEntities"
                     select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/origin/hs')]/ancestor::md:EntityDescriptor"/>
@@ -826,7 +863,7 @@
                 </xsl:if>
                 
                 <xsl:variable name="knownSoftwareEntities"
-                    select="$entities.shib.2 | $entities12 | $entities13 | $athensImEntities | $knownGuanxiIdps | $knownGateways"/>
+                    select="$entities.ezproxy | $entities.shib.2 | $entities12 | $entities13 | $athensImEntities | $knownGuanxiIdps | $knownGateways"/>
                 <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
                 <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
                 <h3>Unknown Software</h3>
