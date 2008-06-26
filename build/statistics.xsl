@@ -538,6 +538,13 @@
                     ***   C L A S S I F Y   E N T I T I E S   B Y   S O F T W A R E   ***
                     ***                                                               ***
                     *********************************************************************
+                    
+                    The classification algorithms used here are chained together so that
+                    each classification step works only on those entities not already
+                    classified.  This means that entities won't be counted twice, but
+                    means that the order of classification blocks is important and
+                    shouldn't be changed without careful thought.  In general, more
+                    specific algorithms should appear before more general ones.
                 -->
                 
                 <!--
@@ -562,6 +569,101 @@
                 <xsl:variable name="entities.shib.2.out"
                     select="set:difference($entities.shib.2.in, $entities.shib.2)"/>
 
+                <!--
+                    Classify Shibboleth 1.3 IdPs and SPs.
+                -->
+                <xsl:variable name="entities.shib.13.in" select="$entities.shib.2.out"/>
+                
+                <!--
+                    This is a list of identity providers that we *know* are running 1.3, even though they
+                    may not look like it.
+                -->
+                <xsl:variable name="known13idps" select="
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shib.ncl.ac.uk'] |
+                    $entities[@entityID='https://typekey.sdss.ac.uk/shibboleth'] |
+                    $entities[@entityID='https://typekey.iay.org.uk/shibboleth'] |
+                    $entities[@entityID='https://idp-1.bgfl.org/shibboleth'] |
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shibboleth-i.sgul.ac.uk'] |
+                    $entities[@entityID='https://idp.protectnetwork.org/protectnetwork-idp']
+                    "/>
+                
+                <!--
+                    This is a list of service providers that we *know* are running 1.3, even though they
+                    may not look like it.
+                -->
+                <xsl:variable name="known13sps" select="
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk'] |
+                    $entities[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki'] |
+                    $entities[@entityID='https://sdauth.sciencedirect.com/']                 
+                    "/>
+                
+                <!--
+                    Entities for which we have explicit knowledge that they are running 1.3
+                -->
+                <xsl:variable name="known13entities" select="$known13idps | $known13sps"/>
+                
+                <xsl:variable name="sps13"
+                    select="$known13sps |
+                    $entities.shib.13.in/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="idps13"
+                    select="$known13idps |
+                    $entities.shib.13.in/descendant::md:SingleSignOnService[contains(@Location, '-idp/SSO')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="entities13" select="$sps13 | $idps13"/>
+                <xsl:variable name="entities13Count" select="count($entities13)"/>
+                <xsl:variable name="entities.shib.13.out"
+                    select="set:difference($entities.shib.13.in, $entities13)"/>
+                
+                <!--
+                    Classify Shibboleth 1.2 IdPs and SPs.
+                -->
+                <xsl:variable name="entities.shib.12.in" select="$entities.shib.13.out"/>
+                <xsl:variable name="sps12"
+                    select="$entities.shib.12.in/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="idps12"
+                    select="$entities.shib.12.in/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="entities12" select="$idps12 | $sps12"/>
+                <xsl:variable name="entities12Count" select="count($entities12)"/>
+                <xsl:variable name="entities.shib.12.out"
+                    select="set:difference($entities.shib.12.in, $entities12)"/>
+                
+                <!--
+                    Things become more ad hoc below this point.  In the long run, these algorithms should be
+                    put on the same "chained" footing as the ones above.
+                -->
+
+                <!--
+                    Classify AthensIM entities
+                -->
+                <xsl:variable name="athensImEntities"
+                    select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/origin/hs')]/ancestor::md:EntityDescriptor"/>
+                <xsl:variable name="athensImEntityCount" select="count($athensImEntities)"/>
+
+                <!--
+                    Classify Guanxi entities.
+                -->
+                <xsl:variable name="knownGuanxiIdps" select="
+                    $entities[@entityID='https://registry.shibboleth.ox.ac.uk/sp/ask-dev'] |
+                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:uhi.ac.uk']
+                    "/>
+                <xsl:variable name="guanxiCount" select="count($knownGuanxiIdps)"/>
+                
+                <!--
+                    Classify Athens Gateway entities
+                -->
+                <xsl:variable name="knownGateways" select="
+                    $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:beta'] |
+                    $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
+                    "/>
+                <xsl:variable name="gatewayCount" select="count($knownGateways)"/>
+
+                <!--
+                    Remaining entities are unknown.
+                -->                
+                <xsl:variable name="knownSoftwareEntities"
+                    select="$entities.ezproxy | $entities.shib.2 | $entities12 | $entities13 | $athensImEntities | $knownGuanxiIdps | $knownGateways"/>
+                <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
+                <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
+                
                 <!--
                     ***************************************************************
                     ***                                                         ***
@@ -620,50 +722,6 @@
                     </xsl:for-each>
                 </ul>
                 
-                <!--
-                    Detect Shibboleth 1.3 entities.
-                    
-                    Pick from things we know aren't Shibboleth 2.0 to avoid
-                    double counting.
-                -->
-                <xsl:variable name="entities.shib.13.in" select="$entities.shib.2.out"/>
-
-                <!--
-                    This is a list of identity providers that we *know* are running 1.3, even though they
-                    may not look like it.
-                -->
-                <xsl:variable name="known13idps" select="
-                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shib.ncl.ac.uk'] |
-                    $entities[@entityID='https://typekey.sdss.ac.uk/shibboleth'] |
-                    $entities[@entityID='https://typekey.iay.org.uk/shibboleth'] |
-                    $entities[@entityID='https://idp-1.bgfl.org/shibboleth'] |
-                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shibboleth-i.sgul.ac.uk'] |
-                    $entities[@entityID='https://idp.protectnetwork.org/protectnetwork-idp']
-                    "/>
-                
-                <!--
-                    This is a list of service providers that we *know* are running 1.3, even though they
-                    may not look like it.
-                -->
-                <xsl:variable name="known13sps" select="
-                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk'] |
-                    $entities[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki'] |
-                    $entities[@entityID='https://sdauth.sciencedirect.com/']                 
-                    "/>
-                
-                <!--
-                    Entities for which we have explicit knowledge that they are running 1.3
-                -->
-                <xsl:variable name="known13entities" select="$known13idps | $known13sps"/>
-                
-                <xsl:variable name="sps13"
-                    select="$known13sps |
-                    $entities.shib.13.in/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="idps13"
-                    select="$known13idps |
-                    $entities.shib.13.in/descendant::md:SingleSignOnService[contains(@Location, '-idp/SSO')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="entities13" select="$sps13 | $idps13"/>
-                <xsl:variable name="entities13Count" select="count($entities13)"/>
                 <h3>Shibboleth 1.3</h3>
                 <p>
                     We have verified with the owners that the following entities are running Shibboleth 1.3, even
@@ -683,16 +741,7 @@
                     running Shibboleth 1.3.  This is <xsl:value-of select="format-number($entities13Count div $entityCount, '0.0%')"/>
                     of all entities.
                 </p>
-                <xsl:variable name="entities.shib.13.out"
-                    select="set:difference($entities.shib.13.in, $entities13)"/>
                 
-                <xsl:variable name="entities.shib.12.in" select="$entities.shib.13.out"/>
-                <xsl:variable name="sps12"
-                    select="$entities.shib.12.in/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="idps12"
-                    select="$entities.shib.12.in/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="entities12" select="$idps12 | $sps12"/>
-                <xsl:variable name="entities12Count" select="count($entities12)"/>
                 <h3>Shibboleth 1.2</h3>
                 <p>There are <xsl:value-of select="$entities12Count"/> entities in the metadata that look like they might still
                 be running Shibboleth 1.2.  This is <xsl:value-of select="format-number($entities12Count div $entityCount, '0.0%')"/>
@@ -749,8 +798,6 @@
                         </xsl:for-each>
                     </ul>
                 </xsl:if>
-                <xsl:variable name="entities.shib.12.out"
-                    select="set:difference($entities.shib.12.in, $entities12)"/>
                 
                 <xsl:variable name="entitiesShib" select="$entities12 | $entities13 | $entities.shib.2"/>
                 <xsl:variable name="entitiesShibCount" select="count($entitiesShib)"/>
@@ -795,9 +842,9 @@
                     </ul>
                 </xsl:if>
                 
-                <xsl:variable name="athensImEntities"
-                    select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/origin/hs')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="athensImEntityCount" select="count($athensImEntities)"/>
+                <!--
+                    AthensIM entities
+                -->
                 <xsl:if test="$athensImEntityCount != 0">
                     <h3>AthensIM Entities</h3>
                     <p>
@@ -822,15 +869,10 @@
                         </xsl:for-each>
                     </ul>
                 </xsl:if>
-                
+
                 <!--
-                    Guanxi entities.  Currently assumed to be identity providers only. 
-                -->
-                <xsl:variable name="knownGuanxiIdps" select="
-                    $entities[@entityID='https://registry.shibboleth.ox.ac.uk/sp/ask-dev'] |
-                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:uhi.ac.uk']
-                    "/>
-                <xsl:variable name="guanxiCount" select="count($knownGuanxiIdps)"/>
+                    Guanxi entities.  Currently assumed to be identity providers only.
+                -->                
                 <xsl:if test="$guanxiCount != 0">
                     <h3>Guanxi Entities</h3>
                     <p>
@@ -853,13 +895,8 @@
                 </xsl:if>
                 
                 <!--
-                    Athens Gateway entities
+                    Athens Gateway entities.
                 -->
-                <xsl:variable name="knownGateways" select="
-                    $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:beta'] |
-                    $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
-                    "/>
-                <xsl:variable name="gatewayCount" select="count($knownGateways)"/>
                 <xsl:if test="$gatewayCount != 0">
                     <h3>Gateway Entities</h3>
                     <p>
@@ -881,10 +918,9 @@
                     </ul>
                 </xsl:if>
                 
-                <xsl:variable name="knownSoftwareEntities"
-                    select="$entities.ezproxy | $entities.shib.2 | $entities12 | $entities13 | $athensImEntities | $knownGuanxiIdps | $knownGateways"/>
-                <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
-                <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
+                <!--
+                    Unknown entities.
+                -->
                 <h3>Unknown Software</h3>
                 <p>
                     There are <xsl:value-of select="$unknownSoftwareEntityCount"/> entities in the metadata that
