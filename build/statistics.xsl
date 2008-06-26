@@ -533,7 +533,15 @@
                 <h2><a name="bySoftware">Entities by Software</a></h2>
 
                 <!--
-                    Peel off EZproxy SPs
+                    *********************************************************************
+                    ***                                                               ***
+                    ***   C L A S S I F Y   E N T I T I E S   B Y   S O F T W A R E   ***
+                    ***                                                               ***
+                    *********************************************************************
+                -->
+                
+                <!--
+                    Classify EZproxy SPs
                 -->
                 <xsl:variable name="entities.ezproxy.in" select="$entities"/>
                 <xsl:variable name="entities.ezproxy"
@@ -542,7 +550,7 @@
                     select="set:difference($entities.ezproxy.in, $entities.ezproxy)"/>
 
                 <!--
-                    Peel off Shibboleth 2.0 IdPs and SPs.
+                    Classify Shibboleth 2.0 IdPs and SPs.
                 -->
                 <xsl:variable name="entities.shib.2.in" select="$entities.ezproxy.out"/>
                 <xsl:variable name="idps.shib.2"
@@ -554,6 +562,14 @@
                 <xsl:variable name="entities.shib.2.out"
                     select="set:difference($entities.shib.2.in, $entities.shib.2)"/>
 
+                <!--
+                    ***************************************************************
+                    ***                                                         ***
+                    ***   R E P O R T   C L A S S I F I E D   E N T I T I E S   ***
+                    ***                                                         ***
+                    ***************************************************************
+                -->
+                
                 <h3>Shibboleth 2.0</h3>
                 <p>
                     There are <xsl:value-of select="count($entities.shib.2)"/> entities in the metadata
@@ -698,20 +714,23 @@
                     </xsl:for-each>
                 </ul>
                 
-                <h4>Shibboleth 1.2 Service Providers</h4>
-                <p>The following <xsl:value-of select="count($sps12)"/> service providers look like they might be
-                    running Shibboleth 1.2 because they have at least one <code>AssertionConsumerService/@Location</code>
-                    containing <code>"Shibboleth.shire"</code>.
-                    This is <xsl:value-of select="format-number(count($sps12) div $spCount, '0.0%')"/>
-                    of all service providers.</p>
-                <ul>
-                    <xsl:for-each select="$sps12">
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <code><xsl:value-of select="@entityID"/></code>
-                        </li>
-                    </xsl:for-each>
-                </ul>
+                <xsl:if test="count($sps12) != 0">
+                    <h4>Shibboleth 1.2 Service Providers</h4>
+                    <p>The following <xsl:value-of select="count($sps12)"/> service providers look like they might be
+                        running Shibboleth 1.2 because they have at least one <code>AssertionConsumerService/@Location</code>
+                        containing <code>"Shibboleth.shire"</code>.
+                        This is <xsl:value-of select="format-number(count($sps12) div $spCount, '0.0%')"/>
+                        of all service providers.</p>
+                    <ul>
+                        <xsl:for-each select="$sps12">
+                            <li>
+                                <xsl:value-of select="@ID"/>:
+                                <code><xsl:value-of select="@entityID"/></code>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
+
                 <xsl:variable name="mixedVersionSps"
                     select="$sps12/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="mixedVersionSpCount" select="count($mixedVersionSps)"/>
