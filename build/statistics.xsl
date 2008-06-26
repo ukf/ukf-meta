@@ -558,9 +558,19 @@
                     select="set:difference($entities.ezproxy.in, $entities.ezproxy)"/>
 
                 <!--
+                    Classify OpenAthens SP entities.
+                -->
+                <xsl:variable name="entities.openathenssp.in" select="$entities.ezproxy.out"/>
+                <xsl:variable name="entities.openathenssp"
+                    select="$entities.openathenssp.in[md:Extensions/uklabel:Software/@name='OpenAthens SP']"/>
+                <xsl:variable name="entities.openathenssp.count" select="count($entities.openathenssp)"/>
+                <xsl:variable name="entities.openathenssp.out"
+                    select="set:difference($entities.openathenssp.in, $entities.openathenssp)"/>
+                
+                <!--
                     Classify Shibboleth 2.0 IdPs and SPs.
                 -->
-                <xsl:variable name="entities.shib.2.in" select="$entities.ezproxy.out"/>
+                <xsl:variable name="entities.shib.2.in" select="$entities.openathenssp.out"/>
                 <xsl:variable name="idps.shib.2"
                     select="$entities.shib.2.in/descendant::md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')]/ancestor::md:EntityDescriptor"/>
                 <xsl:variable name="sps.shib.2"
@@ -968,6 +978,39 @@
                     </p>
                 </xsl:if>
                 
+                <!--
+                    OpenAthens SP entities.
+                -->
+                <xsl:if test="$entities.openathenssp.count != 0">
+                    <h3>OpenAthens SP Entities</h3>
+                    <p>
+                        <xsl:if test="$entities.openathenssp.count = 1">
+                            There is 1 entity in the metadata running
+                            OpenAthens SP
+                            service provider software.
+                        </xsl:if>
+                        <xsl:if test="$entities.openathenssp.count != 1">
+                            There are <xsl:value-of select="$entities.openathenssp.count"/>
+                            entities in the metadata running
+                            OpenAthens SP
+                            service provider software.
+                        </xsl:if>
+                    </p>
+                    <ul>
+                        <xsl:for-each select="$entities.openathenssp">
+                            <li>
+                                <xsl:value-of select="@ID"/>:
+                                <code><xsl:value-of select="@entityID"/></code>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                    <p>
+                        This is <xsl:value-of select="format-number($entities.openathenssp.count div $entityCount, '0.0%')"/>
+                        of all entities, or <xsl:value-of select="format-number($entities.openathenssp.count div $spCount, '0.0%')"/>
+                        of service providers.
+                    </p>
+                </xsl:if>
+
                 <!--
                     Unknown entities.
                 -->
