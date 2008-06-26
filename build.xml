@@ -75,8 +75,7 @@
 	<!--
 		The UK federation master file is then processed to remove housekeeping
 		information, resulting in the UK federation's unsigned metadata file,
-		[19] ukfederation-metadata-unsigned.xml. (This is currently a null
-		operation)
+		[19] ukfederation-metadata-unsigned.xml.
 	-->
 	<property name="uk.metadata.unsigned" value="ukfederation-metadata-unsigned.xml"/>
 
