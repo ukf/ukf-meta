@@ -18,11 +18,12 @@
     xmlns:members="http://ukfederation.org.uk/2007/01/members"
     xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
     xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
+    xmlns:eduservlabel="http://eduserv.org.uk/labels"
     xmlns:math="http://exslt.org/math"
     xmlns:date="http://exslt.org/dates-and-times"
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
-    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf uklabel math date dyn set"
+    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf uklabel math date dyn set eduservlabel"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
@@ -627,6 +628,36 @@
                     select="set:difference($entities.shib.12.in, $entities12)"/>
                 
                 <!--
+                    Classify Athens Gateway entities
+                -->
+                <xsl:variable name="entities.gateways.in" select="$entities.shib.12.out"/>
+                <xsl:variable name="knownGateways" select="
+                    $entities.gateways.in[@entityID='urn:mace:eduserv.org.uk:athens:federation:beta'] |
+                    $entities.gateways.in[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
+                    "/>
+                <xsl:variable name="gatewayCount" select="count($knownGateways)"/>
+                <xsl:variable name="entities.gateways.out"
+                    select="set:difference($entities.gateways.in, $knownGateways)"/>
+                
+                <!--
+                    Classify OpenAthens virtual IdPs.
+                -->
+                <xsl:variable name="entities.openathens.virtual.in" select="$entities.gateways.out"/>
+                <xsl:variable name="entities.openathens.virtual"
+                    select="$entities.openathens.virtual.in[md:Extensions/eduservlabel:AthensPUIDAuthority]"/>
+                <xsl:variable name="entities.openathens.virtual.count"
+                    select="count($entities.openathens.virtual)"/>
+                <xsl:variable name="entities.openathens.virtual.out"
+                    select="set:difference($entities.openathens.virtual.in, $entities.openathens.virtual)"/>
+                
+                <!--
+                    Variables containing all classified and unclassified entities, respectively.
+                -->
+                <xsl:variable name="entities.unclassified" select="$entities.openathens.virtual.out"/>
+                <xsl:variable name="entities.classified"
+                    select="set:difference($entities, $entities.unclassified)"/>
+
+                <!--
                     Things become more ad hoc below this point.  In the long run, these algorithms should be
                     put on the same "chained" footing as the ones above.
                 -->
@@ -648,19 +679,10 @@
                 <xsl:variable name="guanxiCount" select="count($knownGuanxiIdps)"/>
                 
                 <!--
-                    Classify Athens Gateway entities
-                -->
-                <xsl:variable name="knownGateways" select="
-                    $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:beta'] |
-                    $entities[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
-                    "/>
-                <xsl:variable name="gatewayCount" select="count($knownGateways)"/>
-
-                <!--
                     Remaining entities are unknown.
                 -->                
                 <xsl:variable name="knownSoftwareEntities"
-                    select="$entities.ezproxy | $entities.shib.2 | $entities12 | $entities13 | $athensImEntities | $knownGuanxiIdps | $knownGateways"/>
+                    select="$entities.classified | $athensImEntities | $knownGuanxiIdps"/>
                 <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
                 <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
                 
@@ -916,6 +938,34 @@
                             </li>
                         </xsl:for-each>
                     </ul>
+                </xsl:if>
+                
+                <!--
+                    OpenAthens virtual IdPs
+                -->
+                <xsl:if test="$entities.openathens.virtual.count != 0">
+                    <h3>OpenAthens Virtual Identity Providers</h3>
+                    <p>
+                        The following <xsl:value-of select="$entities.openathens.virtual.count"/>
+                        entities are virtual identity providers run by Eduserv
+                        as part of the OpenAthens system on behalf of their clients:
+                    </p>
+                    <ul>
+                        <xsl:for-each select="$entities.openathens.virtual">
+                            <li>
+                                <xsl:value-of select="@ID"/>:
+                                <code><xsl:value-of select="@entityID"/></code>:
+                                <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                    <p>
+                        This is
+                        <xsl:value-of select="format-number($entities.openathens.virtual.count div $entityCount, '0.0%')"/>
+                        of all entities, or
+                        <xsl:value-of select="format-number($entities.openathens.virtual.count div $idpCount, '0.0%')"/>
+                        of identity providers.
+                    </p>
                 </xsl:if>
                 
                 <!--
