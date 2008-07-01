@@ -347,7 +347,7 @@
 	<target name="sign">
 		<echo>Signing UK V1.3 metadata.</echo>
 		<!-- [20] -->
-		<SIGN.uk i="${uk.master.file}" o="ukfederation-metadata.xml"/>
+		<SIGN.uk i="${uk.metadata.unsigned}" o="ukfederation-metadata.xml"/>
 
 		<echo>Signing UK V1.2 metadata.</echo>
 		<!-- [22] -->
