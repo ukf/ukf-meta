@@ -549,9 +549,29 @@
                 -->
                 
                 <!--
+                    Classify miscellaneous entities.
+                    
+                    Here we pull off a list of entities labelled with explicit
+                    Software labels that aren't for the software we address
+                    in more detail below.  The result is, as it were, a list of
+                    "known unknowns" that we can re-integrate later with those
+                    entities we fail to classify altogether.
+                -->
+                <xsl:variable name="entities.misc.in" select="$entities"/>
+                <xsl:variable name="entities.misc"
+                    select="$entities.misc.in[
+                        md:Extensions/uklabel:Software
+                            [@name != 'Shibboleth']
+                            [@name != 'EZproxy']
+                            [@name != 'OpenAthens SP']
+                    ]"/>
+                <xsl:variable name="entities.misc.out"
+                    select="set:difference($entities.misc.in, $entities.misc)"/>
+                
+                <!--
                     Classify EZproxy SPs
                 -->
-                <xsl:variable name="entities.ezproxy.in" select="$entities"/>
+                <xsl:variable name="entities.ezproxy.in" select="$entities.misc.out"/>
                 <xsl:variable name="entities.ezproxy"
                     select="$entities.ezproxy.in[md:Extensions/uklabel:Software/@name='EZproxy']"/>
                 <xsl:variable name="entities.ezproxy.out"
@@ -695,7 +715,8 @@
                 -->                
                 <xsl:variable name="knownSoftwareEntities"
                     select="$entities.classified | $athensImEntities | $knownGuanxiIdps"/>
-                <xsl:variable name="unknownSoftwareEntities" select="set:difference($entities, $knownSoftwareEntities)"/>
+                <xsl:variable name="unknownSoftwareEntities"
+                    select="set:difference($entities, $knownSoftwareEntities) | $entities.misc"/>
                 <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
                 
                 <!--
@@ -1005,7 +1026,7 @@
                 <!--
                     Unknown entities.
                 -->
-                <h3>Unknown Software</h3>
+                <h3>Unknown or Other Software</h3>
                 <p>
                     There are <xsl:value-of select="$unknownSoftwareEntityCount"/> entities in the metadata that
                     don't fall into any of the categories above.
@@ -1023,6 +1044,9 @@
                                 </xsl:when>
                                 <xsl:when test="@entityID = 'https://www.educationcity.com/sso/shib'">
                                     (proprietary implementation)
+                                </xsl:when>
+                                <xsl:when test="md:Extensions/uklabel:Software">
+                                    (<xsl:value-of select="md:Extensions/uklabel:Software/@name"/>)
                                 </xsl:when>
                             </xsl:choose>
                         </li>
