@@ -635,22 +635,9 @@
                     select="set:difference($entities.shib.13.in, $entities.shib.13)"/>
                 
                 <!--
-                    Classify Shibboleth 1.2 IdPs and SPs.
-                -->
-                <xsl:variable name="entities.shib.12.in" select="$entities.shib.13.out"/>
-                <xsl:variable name="sps12"
-                    select="$entities.shib.12.in/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.shire')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="idps12"
-                    select="$entities.shib.12.in/descendant::md:SingleSignOnService[contains(@Location, '/HS')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="entities12" select="$idps12 | $sps12"/>
-                <xsl:variable name="entities12Count" select="count($entities12)"/>
-                <xsl:variable name="entities.shib.12.out"
-                    select="set:difference($entities.shib.12.in, $entities12)"/>
-                
-                <!--
                     Classify Athens Gateway entities
                 -->
-                <xsl:variable name="entities.gateways.in" select="$entities.shib.12.out"/>
+                <xsl:variable name="entities.gateways.in" select="$entities.shib.13.out"/>
                 <xsl:variable name="knownGateways" select="
                     $entities.gateways.in[@entityID='urn:mace:eduserv.org.uk:athens:federation:beta'] |
                     $entities.gateways.in[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
@@ -774,64 +761,7 @@
                     of all entities.
                 </p>
                 
-                <h3>Shibboleth 1.2</h3>
-                <p>There are <xsl:value-of select="$entities12Count"/> entities in the metadata that look like they might still
-                be running Shibboleth 1.2.  This is <xsl:value-of select="format-number($entities12Count div $entityCount, '0.0%')"/>
-                of all entities.</p>
-                
-                <h4>Shibboleth 1.2 Identity Providers</h4>
-                <p>The following <xsl:value-of select="count($idps12)"/> identity providers look like they might be
-                running Shibboleth 1.2 because they have at least one <code>SingleSignOnService/@Location</code>
-                containing <code>"/HS"</code>.
-                    This is <xsl:value-of select="format-number(count($idps12) div $idpCount, '0.0%')"/>
-                    of all identity providers.</p>
-                <ul>
-                    <xsl:for-each select="$idps12">
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <code><xsl:value-of select="@entityID"/></code>:
-                            <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
-                        </li>
-                    </xsl:for-each>
-                </ul>
-                
-                <xsl:if test="count($sps12) != 0">
-                    <h4>Shibboleth 1.2 Service Providers</h4>
-                    <p>The following <xsl:value-of select="count($sps12)"/> service providers look like they might be
-                        running Shibboleth 1.2 because they have at least one <code>AssertionConsumerService/@Location</code>
-                        containing <code>"Shibboleth.shire"</code>.
-                        This is <xsl:value-of select="format-number(count($sps12) div $spCount, '0.0%')"/>
-                        of all service providers.</p>
-                    <ul>
-                        <xsl:for-each select="$sps12">
-                            <li>
-                                <xsl:value-of select="@ID"/>:
-                                <code><xsl:value-of select="@entityID"/></code>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
-
-                <xsl:variable name="mixedVersionSps"
-                    select="$sps12/descendant::md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="mixedVersionSpCount" select="count($mixedVersionSps)"/>
-                <xsl:if test="$mixedVersionSpCount != 0">
-                    <p>On the other hand, the following <xsl:value-of select="$mixedVersionSpCount"/> entities also sport
-                        1.3-style <code>AssertionConsumerService/@Location</code> elements
-                        containing <code>"Shibboleth.sso"</code>.  These may therefore be in transition, or
-                        simply need a metadata update to remove the old <code>@Location</code>:
-                    </p>
-                    <ul>
-                        <xsl:for-each select="$mixedVersionSps">
-                            <li>
-                                <xsl:value-of select="@ID"/>:
-                                <code><xsl:value-of select="@entityID"/></code>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
-                
-                <xsl:variable name="entitiesShib" select="$entities12 | $entities.shib.13 | $entities.shib.2"/>
+                <xsl:variable name="entitiesShib" select="$entities.shib.13 | $entities.shib.2"/>
                 <xsl:variable name="entitiesShibCount" select="count($entitiesShib)"/>
                 <h3>Shibboleth Combined</h3>
                 <p>
