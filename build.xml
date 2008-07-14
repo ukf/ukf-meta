@@ -408,6 +408,17 @@
 	</target>
 	
 	<!--
+		Extract TLS locations from the UK federation metadata.
+	-->
+	<target name="extract.locs" depends="gen.uk.unsigned">
+		<echo>Extracting TLS locations</echo>
+		<exec executable="perl" dir="${build.dir}"
+			output="${build.dir}/locations.txt">
+			<arg value="${build.dir}/extract_locs.pl"/>
+		</exec>
+	</target>
+	
+	<!--
 		Extract authorities
 	-->
 	<target name="extract.authorities">
