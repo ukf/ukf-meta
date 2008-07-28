@@ -118,6 +118,12 @@
         <xsl:variable name="prob.dup.entityID"
             select="set:distinct(set:difference($entities/@entityID, $prob.distinct.entityIDs))"/>
         
+        <!-- duplicate IdP OrganizationDisplayName -->
+        <xsl:variable name="prob.distinct.ODNs"
+            select="set:distinct($idps/md:Organization/md:OrganizationDisplayName)"/>
+        <xsl:variable name="prob.dup.ODNs"
+            select="set:distinct(set:difference($idps/md:Organization/md:OrganizationDisplayName, $prob.distinct.ODNs))"/>
+        
         <!-- entities without known owner -->
         <xsl:variable name="ownedEntities"
             select="dyn:closure($owners/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
@@ -126,7 +132,7 @@
         <!-- all problems, used as a conditional -->
         <xsl:variable name="prob.all" select="$prob.space.entityID | $prob.space.location |
             $prob.nohttps.location |
-            $prob.dup.entityID | $prob.unowned.entities"/>
+            $prob.dup.entityID | $prob.dup.ODNs | $prob.unowned.entities"/>
         <xsl:variable name="prob.count" select="count($prob.all)"/>
 
         <html>
@@ -203,6 +209,27 @@
                             </xsl:for-each>
                         </ul>
                     </xsl:if>
+                    
+                    <xsl:if test="count($prob.dup.ODNs) != 0">
+                        <p>The following OrganizationDisplayName values are used by more than one IdP entity:</p>
+                        <ul>
+                            <xsl:for-each select="$prob.dup.ODNs">
+                                <xsl:variable name="prob.dup.ODN" select="."/>
+                                <li>
+                                    <code><xsl:value-of select="$prob.dup.ODN"/></code>
+                                    <ul>
+                                        <xsl:for-each select="$idps[md:Organization/md:OrganizationDisplayName = $prob.dup.ODN]">
+                                            <li>
+                                                <xsl:value-of select="@ID"/>:
+                                                <code><xsl:value-of select="@entityID"/></code>
+                                            </li>
+                                        </xsl:for-each>
+                                    </ul>
+                                </li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:if>
+                    
                     <xsl:if test="count($prob.unowned.entities) != 0">
                         <p>
                             The following
