@@ -471,6 +471,25 @@
 	</target>
 	
 	<!--
+		Utility to add the second Eduserv gateway certificate.
+	-->
+	<target name="add.second.eduserv.cert">
+		<echo>Adding second Eduserv gateway certificate</echo>
+		<for param="file">
+			<path>
+				<fileset dir="${entities.dir}" includes="uk*.xml"/>
+			</path>
+			<sequential>
+				<exec executable="perl" dir="${entities.dir}">
+					<arg value="-i"/>
+					<arg value="${build.dir}/add_second_eduserv_cert.pl"/>
+					<arg value="@{file}"/>
+				</exec>
+			</sequential>
+		</for>
+	</target>
+	
+	<!--
 		Extract embedded certificates
 	-->
 	<target name="extract.embedded" depends="gen.uk">
