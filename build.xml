@@ -471,6 +471,25 @@
 	</target>
 	
 	<!--
+		Utility to remove the old Eduserv gateway certificate.
+	-->
+	<target name="remove.old.eduserv.cert">
+		<echo>Removing old Eduserv gateway certificate</echo>
+		<for param="file">
+			<path>
+				<fileset dir="${entities.dir}" includes="uk*.xml"/>
+			</path>
+			<sequential>
+				<exec executable="perl" dir="${entities.dir}">
+					<arg value="-i"/>
+					<arg value="${build.dir}/remove_old_eduserv_cert.pl"/>
+					<arg value="@{file}"/>
+				</exec>
+			</sequential>
+		</for>
+	</target>
+	
+	<!--
 		Utility to add the second Eduserv gateway certificate.
 	-->
 	<target name="add.second.eduserv.cert">
