@@ -206,7 +206,7 @@
 		<attribute name="o"/>
 		<attribute name="x"/>
 		<sequential>
-			<java fork="true" maxmemory="128m" failonerror="true" classname="org.apache.xalan.xslt.Process">
+			<java fork="true" maxmemory="256m" failonerror="true" classname="org.apache.xalan.xslt.Process">
 				<classpath location="${xalan.dir}/bin/xalan.jar"/>
 				<arg value="-IN"/>
 				<arg value="${xml.dir}/@{i}"/>
