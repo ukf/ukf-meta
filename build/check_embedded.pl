@@ -27,6 +27,7 @@ while (<>) {
 	# Handle Entity/KeyName header line.
 	#
 	if (/^Entity:/) {
+		@olines = ();
 		@args = split;
 		$entity = $args[1];
 		$keyname = $args[3];
@@ -34,14 +35,14 @@ while (<>) {
 		#
 		# Output header line.
 		#
-		print "Entity $entity ";
+		$oline = "Entity $entity ";
 		$hasKeyName = !($keyname eq '(none)');
 		if ($hasKeyName) {
-			print "has KeyName $keyname";
+			$oline .= "has KeyName $keyname";
 		} else {
-			print "has no KeyName";
+			$oline .= "has no KeyName";
 		}
-		print "\n";
+		push(@olines, $oline);
 
 		#
 		# Create a temporary file for this certificate in PEM format.
@@ -95,20 +96,20 @@ while (<>) {
 				$pubSize = $1;
 				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
-					print "      *** PUBLIC KEY TOO SHORT ***\n";
+					push(@olines, "      *** PUBLIC KEY TOO SHORT ***");
 				}
 			}
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$days = (str2time($notAfter)-time())/86400.0;
 				if ($days < 0) {
-					print "   *** EXPIRED ***\n";
+					push(@olines, "   *** EXPIRED ***");
 				} elsif ($days < 30) {
 					$days = int($days);
-					print "   *** expires in $days days\n";
+					push(@olines, "   *** expires in $days days");
 				} elsif ($days < 90) {
 					$days = int($days);
-					print "   expires in $days days\n";
+					push(@olines, "   expires in $days days");
 				}
 			}
 
@@ -125,11 +126,11 @@ while (<>) {
 				# print "   fpr: $fpr\n";
 				if ($pubSize == 1024) {
 					if (defined($rsa1024{$fpr})) {
-						print "   *** WEAK DEBIAN KEY ***\n";
+						push(@olines, "   *** WEAK DEBIAN KEY ***");
 					}
 				} elsif ($pubSize == 2048) {
 					if (defined($rsa2048{$fpr})) {
-						print "   *** WEAK DEBIAN KEY ***\n";
+						push(@olines, "   *** WEAK DEBIAN KEY ***");
 					}
 				}
 			}
@@ -142,7 +143,7 @@ while (<>) {
 		# Check KeyName if one has been supplied.
 		#
 		if ($hasKeyName && $keyname ne $subjectCN) {
-			print "   *** KeyName mismatch: $keyname != $subjectCN\n";
+			push(@olines, "   *** KeyName mismatch: $keyname != $subjectCN");
 		}
 		
 		#
@@ -176,7 +177,7 @@ while (<>) {
 		# Irrespective of what went wrong, client and server results should match.
 		#
 		if ($clientOK != $serverOK) {
-			print "   *** client/server purpose result mismatch: $clientOK != $serverOK\n";
+			push(@olines, "   *** client/server purpose result mismatch: $clientOK != $serverOK");
 		}
 		
 		#
@@ -194,10 +195,10 @@ while (<>) {
 		if (!$hasKeyName) {
 			if ($error eq 'self signed certificate') {
 				$error = '';
-				print "   (self signed certificate)\n";
+				push(@olines, "   (self signed certificate)");
 			} elsif ($error eq 'unable to get local issuer certificate') {
 				$error = '';
-				print "   (unknown issuer: $issuerCN)\n";
+				push(@olines, "   (unknown issuer: $issuerCN)");
 			}
 		}
 
@@ -210,7 +211,7 @@ while (<>) {
 		}
 
 		if ($error ne '') {
-			print "   *** $error\n";
+			push(@olines, "   *** $error");
 		}
 		
 		#
@@ -218,7 +219,15 @@ while (<>) {
 		# it to be deleted.
 		#
 		close $fh;
-		
-		print "\n";
+
+		#
+		# Print any interesting things related to this certificate.
+		#
+		if (@olines > 1) {
+			foreach $oline (@olines) {
+				print $oline, "\n";
+			}
+			print "\n";
+		}
 	}
 }
