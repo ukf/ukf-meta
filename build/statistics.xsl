@@ -270,6 +270,7 @@
                         <th>IdPs</th>
                         <th>SPs</th>
                         <th>AIdP</th>
+                        <th align="left">Scope</th>
                     </tr>
                     <xsl:apply-templates select="$members" mode="count">
                         <xsl:with-param name="entities" select="$entities"/>
@@ -413,6 +414,7 @@
                         <th>IdPs</th>
                         <th>SPs</th>
                         <th>AIdP</th>
+                        <th align="left">Scope</th>
                     </tr>
                     <xsl:apply-templates select="$nonMembers" mode="count">
                         <xsl:with-param name="entities" select="$entities"/>
@@ -1079,6 +1081,7 @@
         <xsl:param name="entities"/>
         <xsl:variable name="myName" select="string(md:OrganizationName)"/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
+        <xsl:variable name="scopes" select="members:Scopes/shibmeta:Scope"/>
         <tr>
             <td><xsl:value-of select="$myName"/></td>
             <!-- count total entities -->
@@ -1124,6 +1127,23 @@
                     </xsl:when>
                     <xsl:otherwise>
                         &#160;
+                    </xsl:otherwise>
+                </xsl:choose>
+            </td>
+            <!-- Scope or scopes -->
+            <td align="left">
+                <xsl:choose>
+                    <xsl:when test="count($scopes) = 0">
+                        &#160;
+                    </xsl:when>
+                    <xsl:when test="count($scopes) = 1">
+                        <xsl:value-of select="$scopes"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$scopes[position()=1]"/>
+                        <br />
+                        (<xsl:value-of select="count($scopes)-1"/> other
+                        scope<xsl:if test="count($scopes) != 2">s</xsl:if>)
                     </xsl:otherwise>
                 </xsl:choose>
             </td>
