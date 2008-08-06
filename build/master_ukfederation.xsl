@@ -6,7 +6,8 @@
 	XSL stylesheet that takes a SAML 2.0 metadata master file containing
 	a trust fabric and optional entities, and makes a UK Federation
 	master file by tweaking appropriately and inserting the combined
-	entities file.
+	entities file.  The entities from the combined entities file are
+	also transformed in various ways here.
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
@@ -19,8 +20,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
+	xmlns:members="http://ukfederation.org.uk/2007/01/members"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-	exclude-result-prefixes="wayf">
+	exclude-result-prefixes="wayf members">
 
 	<!--
 		Version information for this file.  Remember to peel off the dollar signs
@@ -41,13 +43,20 @@
 		<xsl:comment>
 			<xsl:text>&#10;&#9;U K   F E D E R A T I O N   M E T A D A T A&#10;</xsl:text>
 		</xsl:comment>
-		<xsl:apply-templates/>
+	    <xsl:apply-templates/>
 	</xsl:template>
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
-	<!--
+    <!--
+        Pick up "members" document and extract outsourced scope lists from it.
+    -->
+    <xsl:variable name="memberDocument" select="document('../xml/members.xml')"/>
+    <xsl:variable name="outsourcedScopes"
+        select="$memberDocument//members:Member/members:Scopes[members:Entity]"/>
+
+    <!--
 		Root EntitiesDescriptor element.
 		
 		Copy all attributes and nested elements to the output, then
@@ -60,29 +69,49 @@
 		</xsl:copy>
 	</xsl:template>
 
-	<xsl:template match="md:AttributeAuthorityDescriptor[not(md:Extensions)]">
+    <!--
+        Extend the scope list contained within an IdP's entity-level Extensions element
+        with any outsourced scopes provided by the member list. 
+    -->
+    <xsl:template match="md:EntityDescriptor[md:IDPSSODescriptor]/md:Extensions">
+        <xsl:copy>
+            <!-- copy everything from within the original element -->
+            <xsl:apply-templates select="node()"/>
+            <!-- copy scopes from member outsource records -->
+            <xsl:variable name="entityID" select="ancestor::md:EntityDescriptor/@entityID"/>
+            <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
+                <xsl:text>    </xsl:text>
+                <xsl:element name="shibmeta:Scope">
+                    <xsl:attribute name="regexp">false</xsl:attribute>
+                    <xsl:value-of select="."/>
+                </xsl:element>
+                <xsl:text>&#10;    </xsl:text>
+            </xsl:for-each>
+        </xsl:copy>
+    </xsl:template>
+
+    <!--
+        If an IdP's SSO or AA roles are missing Extensions (and Scope extensions in
+        particular) then manufacture them as a combination of the EntityDescriptor's
+        overall scope extensions and any outsourced scopes provided by the member list.
+    -->
+    <xsl:template match="md:IDPSSODescriptor[not(md:Extensions)] |
+                         md:AttributeAuthorityDescriptor[not(md:Extensions)]">
 		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
+		    <xsl:variable name="entityID" select="ancestor::md:EntityDescriptor/@entityID"/>
+		    <xsl:apply-templates select="@*"/>
 			<xsl:text>&#10;        </xsl:text><Extensions>
-				<xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
+			    <!-- copy scopes from EntityDescriptor extensions -->
+			    <xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
 					<xsl:text>&#10;            </xsl:text>
 					<xsl:copy-of select="."/>
 				</xsl:for-each>
-				<!--<xsl:apply-templates select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope"/>-->
-				<xsl:text>&#10;        </xsl:text></Extensions>
-			<xsl:apply-templates select="node()"/>
-		</xsl:copy>
-	</xsl:template>
-	
-	<xsl:template match="md:IDPSSODescriptor[not(md:Extensions)]">
-		<xsl:copy>
-			<xsl:apply-templates select="@*"/>
-			<xsl:text>&#10;        </xsl:text><Extensions>
-				<xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
-					<xsl:text>&#10;            </xsl:text>
-					<xsl:copy-of select="."/>
-				</xsl:for-each>
-				<xsl:text>&#10;        </xsl:text></Extensions>
+			    <!-- copy scopes from member outsource records -->
+			    <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
+			        <xsl:text>&#10;            </xsl:text>
+			        <shibmeta:Scope regexp="false"><xsl:value-of select="."/></shibmeta:Scope>
+			    </xsl:for-each>
+			    <xsl:text>&#10;        </xsl:text></Extensions>
 			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
 	</xsl:template>
