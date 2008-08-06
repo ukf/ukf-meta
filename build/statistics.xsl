@@ -1081,7 +1081,7 @@
         <xsl:param name="entities"/>
         <xsl:variable name="myName" select="string(md:OrganizationName)"/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
-        <xsl:variable name="scopes" select="members:Scopes/shibmeta:Scope"/>
+        <xsl:variable name="scopes" select="members:Scopes/members:Scope"/>
         <tr>
             <td><xsl:value-of select="$myName"/></td>
             <!-- count total entities -->
