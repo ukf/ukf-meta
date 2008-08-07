@@ -1081,7 +1081,7 @@
         <xsl:param name="entities"/>
         <xsl:variable name="myName" select="string(md:OrganizationName)"/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
-        <xsl:variable name="scopes" select="members:Scopes/members:Scope"/>
+        <xsl:variable name="primaryScope" select="members:Scopes/members:Scope[@isPrimary='true'][position()=1]"/>
         <tr>
             <td><xsl:value-of select="$myName"/></td>
             <!-- count total entities -->
@@ -1130,20 +1130,14 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </td>
-            <!-- Scope or scopes -->
+            <!-- Primary Scope, if present -->
             <td align="left">
                 <xsl:choose>
-                    <xsl:when test="count($scopes) = 0">
+                    <xsl:when test="count($primaryScope) = 0">
                         &#160;
                     </xsl:when>
-                    <xsl:when test="count($scopes) = 1">
-                        <xsl:value-of select="$scopes"/>
-                    </xsl:when>
                     <xsl:otherwise>
-                        <xsl:value-of select="$scopes[position()=1]"/>
-                        <br />
-                        (<xsl:value-of select="count($scopes)-1"/> other
-                        scope<xsl:if test="count($scopes) != 2">s</xsl:if>)
+                        <code><xsl:value-of select="$primaryScope"/></code>
                     </xsl:otherwise>
                 </xsl:choose>
             </td>
