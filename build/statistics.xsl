@@ -155,6 +155,8 @@
                     <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
                     <li><p><a href="#scopes">Identity Providers by Scope</a></p></li>
+                    <li><p><a href="#scopesByMember">Primary Scopes by Member</a></p></li>
+                    <li><p><a href="#membersByScope">Members by Primary Scope</a></p></li>
                 </ul>
                 
 
@@ -270,7 +272,7 @@
                         <th>IdPs</th>
                         <th>SPs</th>
                         <th>AIdP</th>
-                        <th align="left">Scope</th>
+                        <th align="left">Primary Scope</th>
                     </tr>
                     <xsl:apply-templates select="$members" mode="count">
                         <xsl:with-param name="entities" select="$entities"/>
@@ -1043,7 +1045,14 @@
                         </li>
                     </xsl:for-each>
                 </ul>
-                
+
+                <!--
+                    *****************************************************************
+                    ***                                                           ***
+                    ***   I D E N T I T Y   P R O V I D E R S   B Y   S C O P E   ***
+                    ***                                                           ***
+                    *****************************************************************
+                -->                
                 <h2><a name="scopes">Identity Providers by Scope</a></h2>
                 <xsl:variable name="allScopes" select="set:distinct($idps//shibmeta:Scope)"/>
                 <ul>
@@ -1073,6 +1082,55 @@
                         </li>
                     </xsl:for-each>
                 </ul>
+                
+                <!--
+                    ***********************************************************
+                    ***                                                     ***
+                    ***   P R I M A R Y   S C O P E S   B Y   M E M B E R   ***
+                    ***                                                     ***
+                    ***********************************************************
+                -->
+                <h2><a name="scopesByMember">Primary Scopes by Member</a></h2>
+                <table border="1" cellspacing="2" cellpadding="4">
+                    <tr>
+                        <th align="left">Member</th>
+                        <th align="left">Primary Scope</th>
+                    </tr>
+                    <xsl:variable name="membersWithScopes"
+                        select="$members[descendant::members:Scope[@isPrimary='true']]"/>
+                    <xsl:for-each select="$membersWithScopes">
+                        <xsl:sort select="md:OrganizationName"/>
+                        <tr>
+                            <td><xsl:value-of select="md:OrganizationName"/></td>
+                            <td><code><xsl:value-of select="descendant::members:Scope[@isPrimary='true'][position()=1]"/></code></td>
+                        </tr>
+                    </xsl:for-each>
+                </table>
+                
+                <!--
+                    ***********************************************************
+                    ***                                                     ***
+                    ***   P R I M A R Y   S C O P E S   B Y   M E M B E R   ***
+                    ***                                                     ***
+                    ***********************************************************
+                -->
+                <h2><a name="membersByScope">Members by Primary Scope</a></h2>
+                <table border="1" cellspacing="2" cellpadding="4">
+                    <tr>
+                        <th align="left">Primary Scope</th>
+                        <th align="left">Member</th>
+                    </tr>
+                    <xsl:variable name="membersWithScopes"
+                        select="$members[descendant::members:Scope[@isPrimary='true']]"/>
+                    <xsl:for-each select="$membersWithScopes">
+                        <xsl:sort select="descendant::members:Scope[@isPrimary='true'][position()=1]"/>
+                        <tr>
+                            <td><code><xsl:value-of select="descendant::members:Scope[@isPrimary='true'][position()=1]"/></code></td>
+                            <td><xsl:value-of select="md:OrganizationName"/></td>
+                        </tr>
+                    </xsl:for-each>
+                </table>
+                
             </body>
         </html>
     </xsl:template>
