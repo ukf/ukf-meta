@@ -157,6 +157,7 @@
                     <li><p><a href="#scopes">Identity Providers by Scope</a></p></li>
                     <li><p><a href="#scopesByMember">Primary Scopes by Member</a></p></li>
                     <li><p><a href="#membersByScope">Members by Primary Scope</a></p></li>
+                    <li><p><a href="#undeployedMembers">Members Lacking Deployment</a></p></li>
                 </ul>
                 
 
@@ -1131,6 +1132,36 @@
                     </xsl:for-each>
                 </table>
                 
+                <!--
+                    ***************************************************************
+                    ***                                                         ***
+                    ***   M E M B E R S   L A C K I N G   D E P L O Y M E N T   ***
+                    ***                                                         ***
+                    ***************************************************************
+                -->
+                <h2><a name="undeployedMembers">Members Lacking Deployment</a></h2>
+                <!-- start with members with no entities and no OpenAthens -->
+                <xsl:variable name="nodeploy.0" select="$membersWithNoneNoAthens"/>
+                <!-- remove members who have scopes sent to some entity -->
+                <xsl:variable name="nodeploy.1"
+                    select="$nodeploy.0[not(members:Scopes/members:Entity)]"
+                />
+                <xsl:variable name="nodeploy.out" select="$nodeploy.1"/>
+                <p>
+                    The following <xsl:value-of select="count($nodeploy.out)"/>
+                    members of the UK federation have no deployed entities,
+                    either in their own name or deployed on their behalf by other members.
+                    The list is ordered by date of joining the UK federation.
+                </p>
+                <ul>
+                    <xsl:for-each select="$nodeploy.out">
+                        <xsl:sort select="members:JoinDate"/>
+                        <li>
+                            <xsl:value-of select="members:JoinDate"/>:
+                            <xsl:value-of select="md:OrganizationName"/>
+                        </li>
+                    </xsl:for-each>
+                </ul>                
             </body>
         </html>
     </xsl:template>
