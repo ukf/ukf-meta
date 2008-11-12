@@ -30,6 +30,13 @@
 		<!-- do nothing -->
 	</xsl:template>
 	
+	<!--
+		Remove administrative contacts.
+	-->
+	<xsl:template match="md:ContactPerson[@contactType='administrative']">
+		<!-- do nothing -->
+	</xsl:template>
+	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
