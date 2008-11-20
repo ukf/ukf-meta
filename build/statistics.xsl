@@ -596,6 +596,7 @@
                             [@name != 'Shibboleth']
                             [@name != 'EZproxy']
                             [@name != 'OpenAthens SP']
+                            [@name != 'Guanxi']
                     ]"/>
                 <xsl:variable name="entities.misc.out"
                     select="set:difference($entities.misc.in, $entities.misc)"/>
@@ -690,9 +691,22 @@
                     select="set:difference($entities.openathens.virtual.in, $entities.openathens.virtual)"/>
                 
                 <!--
+                    Classify Guanxi entities.
+                -->
+                <xsl:variable name="entities.guanxi.in" select="$entities.openathens.virtual.out"/>
+                <xsl:variable name="entities.guanxi" select="
+                    $entities.guanxi.in[@entityID='https://registry.shibboleth.ox.ac.uk/sp/ask-dev'] |
+                    $entities.guanxi.in[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:uhi.ac.uk'] |
+                    $entities.guanxi.in[md:Extensions/uklabel:Software/@name='Guanxi']
+                "/>
+                <xsl:variable name="entities.guanxi.count" select="count($entities.guanxi)"/>
+                <xsl:variable name="entities.guanxi.out"
+                    select="set:difference($entities.guanxi.in, $entities.guanxi)"/>
+                
+                <!--
                     Variables containing all classified and unclassified entities, respectively.
                 -->
-                <xsl:variable name="entities.unclassified" select="$entities.openathens.virtual.out"/>
+                <xsl:variable name="entities.unclassified" select="$entities.guanxi.out"/>
                 <xsl:variable name="entities.classified"
                     select="set:difference($entities, $entities.unclassified)"/>
 
@@ -709,19 +723,10 @@
                 <xsl:variable name="athensImEntityCount" select="count($athensImEntities)"/>
 
                 <!--
-                    Classify Guanxi entities.
-                -->
-                <xsl:variable name="knownGuanxiIdps" select="
-                    $entities[@entityID='https://registry.shibboleth.ox.ac.uk/sp/ask-dev'] |
-                    $entities[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:uhi.ac.uk']
-                    "/>
-                <xsl:variable name="guanxiCount" select="count($knownGuanxiIdps)"/>
-                
-                <!--
                     Remaining entities are unknown.
                 -->                
                 <xsl:variable name="knownSoftwareEntities"
-                    select="$entities.classified | $athensImEntities | $knownGuanxiIdps"/>
+                    select="$entities.classified | $athensImEntities"/>
                 <xsl:variable name="unknownSoftwareEntities"
                     select="set:difference($entities, $knownSoftwareEntities) | $entities.misc"/>
                 <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
@@ -867,18 +872,18 @@
                 <!--
                     Guanxi entities.  Currently assumed to be identity providers only.
                 -->                
-                <xsl:if test="$guanxiCount != 0">
+                <xsl:if test="$entities.guanxi.count != 0">
                     <h3>Guanxi Entities</h3>
                     <p>
-                        <xsl:if test="$guanxiCount = 1">
+                        <xsl:if test="$entities.guanxi.count = 1">
                             The following entity is known to be running the Guanxi software:
                         </xsl:if>
-                        <xsl:if test="$guanxiCount != 1">
+                        <xsl:if test="$entities.guanxi.count != 1">
                             The following entities are known to be running the Guanxi software:
                         </xsl:if>
                     </p>
                     <ul>
-                        <xsl:for-each select="$knownGuanxiIdps">
+                        <xsl:for-each select="$entities.guanxi">
                             <li>
                                 <xsl:value-of select="@ID"/>:
                                 <code><xsl:value-of select="@entityID"/></code>:
