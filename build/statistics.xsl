@@ -694,11 +694,8 @@
                     Classify Guanxi entities.
                 -->
                 <xsl:variable name="entities.guanxi.in" select="$entities.openathens.virtual.out"/>
-                <xsl:variable name="entities.guanxi" select="
-                    $entities.guanxi.in[@entityID='https://registry.shibboleth.ox.ac.uk/sp/ask-dev'] |
-                    $entities.guanxi.in[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:uhi.ac.uk'] |
-                    $entities.guanxi.in[md:Extensions/uklabel:Software/@name='Guanxi']
-                "/>
+                <xsl:variable name="entities.guanxi"
+                    select="$entities.guanxi.in[md:Extensions/uklabel:Software/@name='Guanxi']"/>
                 <xsl:variable name="entities.guanxi.count" select="count($entities.guanxi)"/>
                 <xsl:variable name="entities.guanxi.out"
                     select="set:difference($entities.guanxi.in, $entities.guanxi)"/>
