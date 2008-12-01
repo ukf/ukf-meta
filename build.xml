@@ -20,6 +20,7 @@
 	<property name="remote.loc.sdss" value="${remote.user}@${remote.host}:${remote.dir.sdss}"/>
 	<property name="remote.dir.uk" value="metadata"/>
 	<property name="remote.loc.uk" value="${remote.user}@${remote.host}:${remote.dir.uk}"/>
+	<property name="remote.url" value="http://master.metadata.ukfederation.org.uk"/>
 
 	<!--
 		Local specialised directories.
@@ -388,6 +389,32 @@
 		<echo>Verifying signed UK WAYF metadata.</echo>
 		<VFY.uk i="ukfederation-wayf.xml"/>
 
+		<echo>Verification completed.</echo>
+	</target>
+	
+	<!--
+		Verify a metadata file held on the master distribution site.
+	-->
+	<macrodef name="VFY.remote">
+		<attribute name="i"/>
+		<sequential>
+			<echo>Verifying @{i}...</echo>
+			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+			<get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
+			<MDT i="temp.xml" o="${null.device}" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
+			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+		</sequential>
+	</macrodef>
+	
+	<!--
+		Verify a metadata file held on the master distribution site.
+	-->
+	<target name="verify.master.metadata">
+		<echo>Verifying metadata held at ${remote.url}</echo>
+		<VFY.remote i="ukfederation-metadata.xml"/>
+		<VFY.remote i="ukfederation-sites-12.xml"/>
+		<VFY.remote i="ukfederation-trust-12.xml"/>
+		<VFY.remote i="ukfederation-wayf.xml"/>
 		<echo>Verification completed.</echo>
 	</target>
 	
