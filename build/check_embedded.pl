@@ -21,6 +21,23 @@ while (<KEYS>) {
 close KEYS;
 print "Blacklists loaded.\n";
 
+sub error {
+	my($s) = @_;
+	push(@olines, '   *** ' . $s . ' ***');
+	$printme = 1;
+}
+
+sub warning {
+	my ($s) = @_;
+	push(@olines, '   ' . $s);
+	$printme = 1;
+}
+
+sub comment {
+	my($s) = @_;
+	push(@olines, '   (' . $s . ')');
+}
+
 while (<>) {
 
 	#
@@ -28,6 +45,7 @@ while (<>) {
 	#
 	if (/^Entity:/) {
 		@olines = ();
+		$printme = 0;
 		@args = split;
 		$entity = $args[1];
 		$keyname = $args[3];
@@ -96,20 +114,20 @@ while (<>) {
 				$pubSize = $1;
 				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
-					push(@olines, "      *** PUBLIC KEY TOO SHORT ***");
+					error(@olines, 'PUBLIC KEY TOO SHORT');
 				}
 			}
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$days = (str2time($notAfter)-time())/86400.0;
 				if ($days < 0) {
-					push(@olines, "   *** EXPIRED ***");
+					error("EXPIRED");
 				} elsif ($days < 30) {
 					$days = int($days);
-					push(@olines, "   *** expires in $days days");
+					error("expires in $days days");
 				} elsif ($days < 90) {
 					$days = int($days);
-					push(@olines, "   expires in $days days");
+					warning("expires in $days days");
 				}
 			}
 
@@ -126,11 +144,11 @@ while (<>) {
 				# print "   fpr: $fpr\n";
 				if ($pubSize == 1024) {
 					if (defined($rsa1024{$fpr})) {
-						push(@olines, "   *** WEAK DEBIAN KEY ***");
+						error("WEAK DEBIAN KEY");
 					}
 				} elsif ($pubSize == 2048) {
 					if (defined($rsa2048{$fpr})) {
-						push(@olines, "   *** WEAK DEBIAN KEY ***");
+						error("WEAK DEBIAN KEY");
 					}
 				}
 			}
@@ -143,7 +161,7 @@ while (<>) {
 		# Check KeyName if one has been supplied.
 		#
 		if ($hasKeyName && $keyname ne $subjectCN) {
-			push(@olines, "   *** KeyName mismatch: $keyname != $subjectCN");
+			error("KeyName mismatch: $keyname != $subjectCN");
 		}
 		
 		#
@@ -177,7 +195,7 @@ while (<>) {
 		# Irrespective of what went wrong, client and server results should match.
 		#
 		if ($clientOK != $serverOK) {
-			push(@olines, "   *** client/server purpose result mismatch: $clientOK != $serverOK");
+			error("client/server purpose result mismatch: $clientOK != $serverOK");
 		}
 		
 		#
@@ -195,10 +213,10 @@ while (<>) {
 		if (!$hasKeyName) {
 			if ($error eq 'self signed certificate') {
 				$error = '';
-				push(@olines, "   (self signed certificate)");
+				comment("self signed certificate");
 			} elsif ($error eq 'unable to get local issuer certificate') {
 				$error = '';
-				push(@olines, "   (unknown issuer: $issuerCN)");
+				comment("unknown issuer: $issuerCN");
 			}
 		}
 
@@ -211,7 +229,7 @@ while (<>) {
 		}
 
 		if ($error ne '') {
-			push(@olines, "   *** $error");
+			error($error);
 		}
 		
 		#
@@ -223,7 +241,7 @@ while (<>) {
 		#
 		# Print any interesting things related to this certificate.
 		#
-		if (@olines > 1) {
+		if ($printme) {
 			foreach $oline (@olines) {
 				print $oline, "\n";
 			}
