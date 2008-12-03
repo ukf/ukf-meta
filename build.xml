@@ -142,11 +142,34 @@
 	<property name="known.hosts" value="${build.dir}/known_hosts"/>
 
 	<!--
+		*************************************************
+		***                                           ***
+		***   E N T R Y   P O I N T   T A R G E T S   ***
+		***                                           ***
+		*************************************************
+	-->
+	
+	<!--
 		Standard processing: generate, sign, then verify.
 	-->
 	<target name="process" depends="get.keystore.pass, generate, sign, verify, stats">
 		<echo>Processing complete.</echo>
 	</target>
+	
+	<!--
+		After standard processing, push: get password, push files, verify them.
+	-->
+	<target name="push" depends="get.remote.pass, push.files, verify.remote.metadata">
+		<echo>Data pushed and verified.</echo>
+	</target>
+
+	<!--
+		*************************************
+		***                               ***
+		***   M E T A D A T A   P U S H   ***
+		***                               ***
+		*************************************
+	-->
 
 	<!--
 		Acquire the remote password.
@@ -160,7 +183,7 @@
 	<!--
 		Push all generated XML files, and entity fragment files, to the remote machine.
 	-->
-	<target name="push" depends="get.remote.pass">
+	<target name="push.files" depends="get.remote.pass">
 		<!--
 			Push metadata files to the old SDSS federation location.
 			
@@ -191,6 +214,40 @@
 		</scp>
 	</target>
 
+	<!--
+		Verify a metadata file held on the master distribution site.
+	-->
+	<macrodef name="VFY.remote">
+		<attribute name="i"/>
+		<sequential>
+			<echo>Verifying @{i}...</echo>
+			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+			<get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
+			<MDT i="temp.xml" o="${null.device}" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
+			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+		</sequential>
+	</macrodef>
+	
+	<!--
+		Verify a metadata file held on the master distribution site.
+	-->
+	<target name="verify.remote.metadata">
+		<echo>Verifying metadata held at ${remote.url}</echo>
+		<VFY.remote i="ukfederation-metadata.xml"/>
+		<VFY.remote i="ukfederation-sites-12.xml"/>
+		<VFY.remote i="ukfederation-trust-12.xml"/>
+		<VFY.remote i="ukfederation-wayf.xml"/>
+		<echo>Verification completed.</echo>
+	</target>
+	
+	<!--
+		*************************************************
+		***                                           ***
+		***   M E T A D A T A   G E N E R A T I O N   ***
+		***                                           ***
+		*************************************************
+	-->
+	
 	<!--
 		Generate unsigned metadata.
 	-->
@@ -389,32 +446,6 @@
 		<echo>Verifying signed UK WAYF metadata.</echo>
 		<VFY.uk i="ukfederation-wayf.xml"/>
 
-		<echo>Verification completed.</echo>
-	</target>
-	
-	<!--
-		Verify a metadata file held on the master distribution site.
-	-->
-	<macrodef name="VFY.remote">
-		<attribute name="i"/>
-		<sequential>
-			<echo>Verifying @{i}...</echo>
-			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-			<get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
-			<MDT i="temp.xml" o="${null.device}" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
-			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-		</sequential>
-	</macrodef>
-	
-	<!--
-		Verify a metadata file held on the master distribution site.
-	-->
-	<target name="verify.master.metadata">
-		<echo>Verifying metadata held at ${remote.url}</echo>
-		<VFY.remote i="ukfederation-metadata.xml"/>
-		<VFY.remote i="ukfederation-sites-12.xml"/>
-		<VFY.remote i="ukfederation-trust-12.xml"/>
-		<VFY.remote i="ukfederation-wayf.xml"/>
 		<echo>Verification completed.</echo>
 	</target>
 	
