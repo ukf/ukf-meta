@@ -466,6 +466,16 @@
 	</target>
 	
 	<!--
+		Check mailing list against current metadata
+	-->
+	<target name="check.mailing.list" depends="gen.uk.master">
+		<echo>Checking mailing list entries.</echo>
+		<exec executable="perl" dir="${build.dir}">
+			<arg value="${build.dir}/addresses.pl"/>
+		</exec>
+	</target>
+	
+	<!--
 		Extract TLS locations from the UK federation metadata.
 	-->
 	<target name="extract.locs" depends="gen.uk.unsigned">
