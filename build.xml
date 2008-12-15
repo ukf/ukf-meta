@@ -81,6 +81,14 @@
 	<property name="uk.metadata.unsigned" value="ukfederation-metadata-unsigned.xml"/>
 
 	<!--
+		In addition, the UK federation master file acts as the parent to two
+		other metadata streams, the "test" and "export" streams.  These have their
+		own XSLT transforms, and their own unsigned files ([27] and [29]).
+	-->
+	<property name="uk.metadata.test.unsigned" value="ukfederation-test-unsigned.xml"/>
+	<property name="uk.metadata.export.unsigned" value="ukfederation-export-unsigned.xml"/>
+	
+	<!--
 		From there, the process (with indentation implying the creation
 		hierarchy) is:
 		
@@ -92,6 +100,11 @@
 		[24]			ukfederation-trust-12.xml
 		[25]		ukfederation-wayf-unsigned.xml
 		[26]			ukfederation-wayf.xml
+		
+		[27]	ukfederation-test-unsigned.xml
+		[28]		ukfederation-test.xml
+		[29]	ukfederation-export-unsigned.xml
+		[30]		ukfederation-export.xml
 		
 		The numbers in brackets are duplicated in the script where the file in
 		question is created.  Some numbers are missing because some old format
@@ -312,10 +325,16 @@
 	</target>
 	
 	<target name="gen.uk.unsigned" depends="gen.uk.master">
-		<echo>Generating unsigned UK metadata file.</echo>
+		<echo>Generating unsigned UK metadata files.</echo>
 		<!-- [19] -->
 		<XALAN x="uk_master_unsigned.xsl" i="${uk.master.file}"
 			o="${uk.metadata.unsigned}" />
+		<!-- [27] -->
+		<XALAN x="uk_master_test.xsl" i="${uk.master.file}"
+			o="${uk.metadata.test.unsigned}" />
+		<!-- [29] -->
+		<XALAN x="uk_master_export.xsl" i="${uk.master.file}"
+			o="${uk.metadata.export.unsigned}" />
 	</target>
 	
 	<target name="gen.uk.1.2">
@@ -445,6 +464,12 @@
 
 		<echo>Verifying signed UK WAYF metadata.</echo>
 		<VFY.uk i="ukfederation-wayf.xml"/>
+
+		<echo>Verifying signed UK test metadata.</echo>
+		<VFY.uk i="ukfederation-test.xml"/>
+
+		<echo>Verifying signed UK export metadata.</echo>
+		<VFY.uk i="ukfederation-export.xml"/>
 
 		<echo>Verification completed.</echo>
 	</target>
