@@ -438,6 +438,14 @@
 		<!-- [26] -->
 		<SIGN.uk i="ukfederation-wayf-unsigned.xml" o="ukfederation-wayf.xml"/>
 
+		<echo>Signing UK test metadata.</echo>
+		<!-- [28] -->
+		<SIGN.uk i="ukfederation-test-unsigned.xml" o="ukfederation-test.xml"/>
+
+		<echo>Signing UK export metadata.</echo>
+		<!-- [30] -->
+		<SIGN.uk i="ukfederation-export-unsigned.xml" o="ukfederation-export.xml"/>
+
 		<echo>Generated signed UK metadata.</echo>
 	</target>
 	
