@@ -1082,27 +1082,16 @@
                 </ul>
                 
                 <h2><a name="accountableIdPs">Identity Provider Accountability</a></h2>
-                <h3>Asserting User Accountability</h3>
+                <p>
+                    The following entities are visible in the main federation WAYF list
+                    but do not assert user accountability:
+                </p>
                 <ul>
-                    <xsl:for-each select="$idps[md:Extensions/uklabel:AccountableUsers]">
+                    <xsl:for-each select="$idps[not(md:Extensions/uklabel:AccountableUsers)]
+                            [not(md:Extensions/wayf:HideFromWAYF)]">
                         <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
                         <li>
                             <xsl:value-of select="@ID"/>:
-                            <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)">[not-M] </xsl:if>
-                            <xsl:if test="md:Extensions/wayf:HideFromWAYF">[H] </xsl:if>
-                            <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-                
-                <h3>Not Asserting User Accountability</h3>
-                <ul>
-                    <xsl:for-each select="$idps[not(md:Extensions/uklabel:AccountableUsers)]">
-                        <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)">[not-M] </xsl:if>
-                            <xsl:if test="md:Extensions/wayf:HideFromWAYF">[H] </xsl:if>
                             <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
                         </li>
                     </xsl:for-each>
