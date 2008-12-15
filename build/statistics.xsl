@@ -23,7 +23,8 @@
     xmlns:date="http://exslt.org/dates-and-times"
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
-    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf uklabel math date dyn set eduservlabel"
+    xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf uklabel math date dyn set eduservlabel idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
@@ -128,10 +129,19 @@
         <xsl:variable name="ownedEntities"
             select="dyn:closure($owners/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
         <xsl:variable name="prob.unowned.entities" select="set:difference($entities, $ownedEntities)"/>
+
+        <!-- missing Binding attribute on DiscoveryServiceResponse elements -->
+        <xsl:variable name="prob.discovery.binding.missing"
+            select="$entities[descendant::idpdisc:DiscoveryResponse[not(@Binding)]]"/>
+        
+        <!-- wrong Binding attribute value on DiscoveryServiceResponse elements -->
+        <xsl:variable name="prob.discovery.binding.wrong"
+            select="$entities[descendant::idpdisc:DiscoveryResponse[@Binding]
+                [@Binding!='urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol']]"/>
         
         <!-- all problems, used as a conditional -->
         <xsl:variable name="prob.all" select="$prob.space.entityID | $prob.space.location |
-            $prob.nohttps.location |
+            $prob.nohttps.location | $prob.discovery.binding.missing | $prob.discovery.binding.wrong |
             $prob.dup.entityID | $prob.dup.ODNs | $prob.unowned.entities"/>
         <xsl:variable name="prob.count" select="count($prob.all)"/>
 
@@ -258,6 +268,56 @@
                             </xsl:for-each>
                         </ul>
                     </xsl:if>
+                    
+                    <xsl:if test="count($prob.discovery.binding.missing) != 0">
+                        <p>
+                            The following
+                            <xsl:choose>
+                                <xsl:when test="count($prob.discovery.binding.missing) = 1">
+                                    entity has a discovery response element
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    entities have discovery response elements
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            lacking a <code>Binding</code> attribute:
+                        </p>
+                        <ul>
+                            <xsl:for-each select="$prob.discovery.binding.missing">
+                                <xsl:sort select="@ID"/>
+                                <li>
+                                    <xsl:value-of select="@ID"/>:
+                                    <code><xsl:value-of select="@entityID"/></code>
+                                </li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:if>
+                    
+                    <xsl:if test="count($prob.discovery.binding.wrong) != 0">
+                        <p>
+                            The following
+                            <xsl:choose>
+                                <xsl:when test="count($prob.discovery.binding.missing) = 1">
+                                    entity has a discovery response element
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    entities have discovery response elements
+                                </xsl:otherwise>
+                            </xsl:choose>
+                            with an unrecognised <code>Binding</code> value:
+                        </p>
+                        <ul>
+                            <xsl:for-each select="$prob.discovery.binding.wrong">
+                                <xsl:sort select="@ID"/>
+                                <li>
+                                    <xsl:value-of select="@ID"/>:
+                                    <code><xsl:value-of select="@entityID"/></code>
+                                    (<code><xsl:value-of select="descendant::idpdisc:DiscoveryResponse/@Binding"/></code>)
+                                </li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:if>
+                    
                 </xsl:if>
 
                 
