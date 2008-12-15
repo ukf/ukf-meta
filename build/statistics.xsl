@@ -164,7 +164,6 @@
                     <li><p><a href="#byOwner">Entities by Owner</a></p></li>
                     <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
-                    <li><p><a href="#scopes">Identity Providers by Scope</a></p></li>
                     <li><p><a href="#scopesByMember">Primary Scopes by Member</a></p></li>
                     <li><p><a href="#membersByScope">Members by Primary Scope</a></p></li>
                     <li><p><a href="#undeployedMembers">Members Lacking Deployment</a></p></li>
@@ -1109,43 +1108,6 @@
                     </xsl:for-each>
                 </ul>
 
-                <!--
-                    *****************************************************************
-                    ***                                                           ***
-                    ***   I D E N T I T Y   P R O V I D E R S   B Y   S C O P E   ***
-                    ***                                                           ***
-                    *****************************************************************
-                -->                
-                <h2><a name="scopes">Identity Providers by Scope</a></h2>
-                <xsl:variable name="allScopes" select="set:distinct($idps//shibmeta:Scope)"/>
-                <ul>
-                    <xsl:for-each select="$allScopes">
-                        <xsl:sort select="."/>
-                        <xsl:variable name="thisScope" select="string(.)"/>
-                        <xsl:variable name="thisScopeIdPs"
-                            select="$idps//shibmeta:Scope[.=$thisScope]/ancestor::md:EntityDescriptor"/>
-                        <xsl:variable name="thisScopeIdPCount" select="count($thisScopeIdPs)"/>
-                        <li>
-                            <xsl:value-of select="$thisScope"/>:
-                            <xsl:choose>
-                                <xsl:when test="$thisScopeIdPCount = 1">
-                                    <xsl:value-of select="$thisScopeIdPs/md:Organization/md:OrganizationDisplayName"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <ul>
-                                        <xsl:for-each select="$thisScopeIdPs">
-                                            <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
-                                            <li>
-                                                <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
-                                            </li>
-                                        </xsl:for-each>
-                                    </ul>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-                
                 <!--
                     ***********************************************************
                     ***                                                     ***
