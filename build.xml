@@ -422,7 +422,7 @@
 	</macrodef>
 	
 	<target name="sign">
-		<echo>Signing UK V1.3 metadata.</echo>
+		<echo>Signing UK metadata.</echo>
 		<!-- [20] -->
 		<SIGN.uk i="${uk.metadata.unsigned}" o="ukfederation-metadata.xml"/>
 
@@ -463,7 +463,7 @@
 		Verify the signed metadata files.
 	-->
 	<target name="verify">
-		<echo>Verifying signed UK V1.3 metadata.</echo>
+		<echo>Verifying signed UK metadata.</echo>
 		<VFY.uk i="ukfederation-metadata.xml"/>
 
 		<echo>Verifying signed UK V1.2 metadata.</echo>
