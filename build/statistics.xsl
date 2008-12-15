@@ -162,7 +162,6 @@
                     <li><p><a href="#entities">Entity Statistics</a></p></li>
                     <li><p><a href="#bySoftware">Entities by Software</a></p></li>
                     <li><p><a href="#byOwner">Entities by Owner</a></p></li>
-                    <li><p><a href="#keyedEntities">Entities with Embedded Key Material</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
                     <li><p><a href="#scopesByMember">Primary Scopes by Member</a></p></li>
                     <li><p><a href="#membersByScope">Members by Primary Scope</a></p></li>
@@ -1070,18 +1069,8 @@
                         <xsl:with-param name="entities" select="$entities"/>
                     </xsl:apply-templates>
                 </ul>
-                
-                <h2><a name="keyedEntities">Entities with Embedded Key Material</a></h2>
-                <ul>
-                    <xsl:for-each select="$embeddedX509Entities">
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <code><xsl:value-of select="@entityID"/></code>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-                
                 <h2><a name="accountableIdPs">Identity Provider Accountability</a></h2>
+                
                 <p>
                     The following entities are visible in the main federation WAYF list
                     but do not assert user accountability:
