@@ -163,7 +163,6 @@
                     <li><p><a href="#bySoftware">Entities by Software</a></p></li>
                     <li><p><a href="#byOwner">Entities by Owner</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
-                    <li><p><a href="#scopesByMember">Primary Scopes by Member</a></p></li>
                     <li><p><a href="#membersByScope">Members by Primary Scope</a></p></li>
                     <li><p><a href="#undeployedMembers">Members Lacking Deployment</a></p></li>
                 </ul>
@@ -1089,31 +1088,7 @@
                 <!--
                     ***********************************************************
                     ***                                                     ***
-                    ***   P R I M A R Y   S C O P E S   B Y   M E M B E R   ***
-                    ***                                                     ***
-                    ***********************************************************
-                -->
-                <h2><a name="scopesByMember">Primary Scopes by Member</a></h2>
-                <table border="1" cellspacing="2" cellpadding="4">
-                    <tr>
-                        <th align="left">Member</th>
-                        <th align="left">Primary Scope</th>
-                    </tr>
-                    <xsl:variable name="membersWithScopes"
-                        select="$members[descendant::members:Scope[@isPrimary='true']]"/>
-                    <xsl:for-each select="$membersWithScopes">
-                        <xsl:sort select="md:OrganizationName"/>
-                        <tr>
-                            <td><xsl:value-of select="md:OrganizationName"/></td>
-                            <td><code><xsl:value-of select="descendant::members:Scope[@isPrimary='true'][position()=1]"/></code></td>
-                        </tr>
-                    </xsl:for-each>
-                </table>
-                
-                <!--
-                    ***********************************************************
-                    ***                                                     ***
-                    ***   P R I M A R Y   S C O P E S   B Y   M E M B E R   ***
+                    ***   M E M B E R S   B Y   P R I M A R Y   S C O P E   ***
                     ***                                                     ***
                     ***********************************************************
                 -->
