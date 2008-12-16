@@ -977,20 +977,9 @@
                 <xsl:if test="$entities.openathens.virtual.count != 0">
                     <h3>OpenAthens Virtual Identity Providers</h3>
                     <p>
-                        The following <xsl:value-of select="$entities.openathens.virtual.count"/>
-                        entities are virtual identity providers run by Eduserv
-                        as part of the OpenAthens system on behalf of their clients:
-                    </p>
-                    <ul>
-                        <xsl:for-each select="$entities.openathens.virtual">
-                            <li>
-                                <xsl:value-of select="@ID"/>:
-                                <code><xsl:value-of select="@entityID"/></code>:
-                                <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                    <p>
+                        Eduserv operate <xsl:value-of select="$entities.openathens.virtual.count"/>
+                        virtual identity provider entities
+                        as part of the OpenAthens system on behalf of their clients.
                         This is
                         <xsl:value-of select="format-number($entities.openathens.virtual.count div $entityCount, '0.0%')"/>
                         of all entities, or
