@@ -1209,10 +1209,13 @@
                 <ul>
                     <xsl:for-each select="$matched">
                         <li>
-                            <xsl:value-of select="@ID"/>:
-                            <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)">[not-M] </xsl:if>
-                            <xsl:if test="md:IDPSSODescriptor">[IdP] </xsl:if>
-                            <xsl:if test="md:SPSSODescriptor">[SP] </xsl:if>
+                            <xsl:value-of select="@ID"/>
+                            <xsl:text>:</xsl:text>
+                            <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)"> [not-M]</xsl:if>
+                            <xsl:if test="md:IDPSSODescriptor"> [IdP]</xsl:if>
+                            <xsl:if test="md:SPSSODescriptor"> [SP]</xsl:if>
+                            <xsl:apply-templates select="md:Extensions/uklabel:Software" mode="short"/>
+                            <xsl:text> </xsl:text>
                             <code><xsl:value-of select="@entityID"/></code>
                         </li>
                     </xsl:for-each>
@@ -1220,5 +1223,34 @@
             </li>
         </xsl:if>
     </xsl:template>
-    
+
+    <!--
+        Display a Software label in a short form suitable for text displays
+    -->
+    <xsl:template match="uklabel:Software" mode="short">
+        <xsl:text> [</xsl:text>
+        <xsl:choose>
+            <xsl:when test="@name = 'Shibboleth'">
+                <xsl:text>Shib</xsl:text>
+            </xsl:when>
+            <xsl:when test="@name='OpenAthens SP'">
+                <xsl:text>OASP</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="@name"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="@fullVersion">
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="@fullVersion"/>
+            </xsl:when>
+            <xsl:when test="@version">
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="@version"/>
+            </xsl:when>
+        </xsl:choose>
+        <xsl:text>]</xsl:text>
+    </xsl:template>
+
 </xsl:stylesheet>
