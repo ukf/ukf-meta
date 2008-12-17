@@ -4,7 +4,7 @@
 	master_ukfederation.xsl
 	
 	XSL stylesheet that takes a SAML 2.0 metadata master file containing
-	a trust fabric and optional entities, and makes a UK Federation
+	a trust fabric and optional entities, and makes a UK federation
 	master file by tweaking appropriately and inserting the combined
 	entities file.  The entities from the combined entities file are
 	also transformed in various ways here.
@@ -21,25 +21,8 @@
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns:members="http://ukfederation.org.uk/2007/01/members"
-	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	exclude-result-prefixes="wayf members">
-
-	<xsl:variable name="now" select="date:date-time()"/>
-
-	<!--
-		Add a comment to the start of the output file.
-	-->
-	<xsl:template match="/">
-		<xsl:comment>
-			<xsl:text>&#10;&#9;U K   F E D E R A T I O N   M E T A D A T A&#10;</xsl:text>
-			<xsl:text>&#10;</xsl:text>
-			<xsl:text>&#9;Aggregate built </xsl:text>
-			<xsl:value-of select="$now"/>
-			<xsl:text>&#10;</xsl:text>
-		</xsl:comment>
-	    <xsl:apply-templates/>
-	</xsl:template>
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
