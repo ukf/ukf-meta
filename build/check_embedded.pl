@@ -114,7 +114,7 @@ while (<>) {
 				$pubSize = $1;
 				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
-					error(@olines, 'PUBLIC KEY TOO SHORT');
+					error('PUBLIC KEY TOO SHORT');
 				}
 			}
 			if (/Not After : (.*)$/) {
