@@ -6,7 +6,7 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 #
 # Load RSA key blacklists.
 #
-print "Loading key blacklists...\n";
+#print "Loading key blacklists...\n";
 open KEYS, '../build/blacklist.RSA-1024' || die "can't open RSA 1024 blacklist";
 while (<KEYS>) {
 	chomp;
@@ -19,7 +19,7 @@ while (<KEYS>) {
 	$rsa2048{$_} = 1;
 }
 close KEYS;
-print "Blacklists loaded.\n";
+#print "Blacklists loaded.\n";
 
 sub error {
 	my($s) = @_;
