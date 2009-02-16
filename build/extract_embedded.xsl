@@ -28,6 +28,11 @@
 
 	<xsl:template match="//md:EntityDescriptor//md:KeyDescriptor[.//ds:X509Certificate]">
 		<xsl:text>Entity: </xsl:text>
+		<xsl:if test="ancestor::md:EntityDescriptor/@ID">
+			<xsl:text>[</xsl:text>
+			<xsl:value-of select='ancestor::md:EntityDescriptor/@ID'/>
+			<xsl:text>]</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="ancestor::md:EntityDescriptor/@entityID"/>
 		<xsl:text> KeyName: </xsl:text>
 		<xsl:choose>
