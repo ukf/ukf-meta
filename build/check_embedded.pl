@@ -4,6 +4,18 @@ use Date::Parse;
 use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 
 #
+# Perform checks on a series of certificates that are to be, or have been, embedded in the
+# UK federation metadata.
+#
+# The certificates are provided on standard input in PEM format with header lines
+# indicating the entity with which they are associated.
+#
+# Command line options:
+#
+#	-q	quiet		don't print anything out if there are no problems detected
+#
+
+#
 # Load RSA key blacklists.
 #
 #print "Loading key blacklists...\n";
@@ -36,6 +48,14 @@ sub warning {
 sub comment {
 	my($s) = @_;
 	push(@olines, '   (' . $s . ')');
+}
+
+#
+# Process command-line options.
+#
+while (@ARGV) {
+	$arg = shift @ARGV;
+	$quiet = 1 if $arg eq '-q';
 }
 
 while (<>) {
@@ -246,7 +266,7 @@ while (<>) {
 		#
 		# Print any interesting things related to this certificate.
 		#
-		if ($printme) {
+		if ($printme || !$quiet) {
 			foreach $oline (@olines) {
 				print $oline, "\n";
 			}

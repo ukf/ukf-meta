@@ -632,6 +632,7 @@
 		<exec executable="perl" dir="${xml.dir}"
 			input="${xml.dir}/embedded.pem">
 			<arg value="${build.dir}/check_embedded.pl"/>
+			<arg value="-q"/>
 		</exec>
 	</target>
 	
