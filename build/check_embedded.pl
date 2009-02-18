@@ -41,6 +41,11 @@ sub comment {
 while (<>) {
 
 	#
+	# Discard blank lines.
+	#
+	next if /^\s*$/;
+	
+	#
 	# Handle Entity/KeyName header line.
 	#
 	if (/^Entity:/) {
