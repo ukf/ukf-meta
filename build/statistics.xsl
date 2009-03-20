@@ -600,10 +600,58 @@
                     </li>
                     <li>
                         <p>
-                            Support Browser/Artifact: <xsl:value-of select="$artifactIdpCount"/>
+                            Support artifact resolution: <xsl:value-of select="$artifactIdpCount"/>
                             (<xsl:value-of select="format-number($artifactIdpCount div $idpCount, '0.0%')"/>).
                         </p>
                     </li>
+                </ul>
+                
+                <p>SSO protocol support:</p>
+                <ul>
+                    <xsl:variable name="idp.sso.shibboleth"
+                        select="$idps[contains(md:IDPSSODescriptor/@protocolSupportEnumeration,
+                        'urn:mace:shibboleth:1.0')]"/>
+                    <xsl:variable name="idp.sso.shibboleth.count" select="count($idp.sso.shibboleth)"/>
+                    <li>
+                        <p>
+                            Shibboleth 1.0 SSO: <xsl:value-of select="$idp.sso.shibboleth.count"/>
+                            (<xsl:value-of select="format-number($idp.sso.shibboleth.count div $idpCount, '0.0%')"/>)
+                        </p>
+                        <ul>
+                            <xsl:variable name="idp.sso.shibboleth.auth"
+                            select="$idp.sso.shibboleth[md:IDPSSODescriptor/md:SingleSignOnService/@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest']"/>
+                            <xsl:variable name="idp.sso.shibboleth.auth.count" select="count($idp.sso.shibboleth.auth)"/>
+                            <li>
+                                <p>
+                                    Shibboleth 1.0 authentication request: <xsl:value-of select="$idp.sso.shibboleth.auth.count"/>
+                                    (<xsl:value-of select="format-number($idp.sso.shibboleth.auth.count div $idpCount, '0.0%')"/>)
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <xsl:variable name="idp.sso.saml.1.1"
+                        select="$idps[contains(md:IDPSSODescriptor/@protocolSupportEnumeration,
+                        'urn:oasis:names:tc:SAML:1.1:protocol')]"/>
+                    <xsl:variable name="idp.sso.saml.1.1.count" select="count($idp.sso.saml.1.1)"/>
+                    <li>
+                        <p>
+                            SAML 1.1 SSO: <xsl:value-of select="$idp.sso.saml.1.1.count"/>
+                            (<xsl:value-of select="format-number($idp.sso.saml.1.1.count div $idpCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    
+                    <xsl:variable name="idp.sso.saml.2.0"
+                        select="$idps[contains(md:IDPSSODescriptor/@protocolSupportEnumeration,
+                        'urn:oasis:names:tc:SAML:2.0:protocol')]"/>
+                    <xsl:variable name="idp.sso.saml.2.0.count" select="count($idp.sso.saml.2.0)"/>
+                    <li>
+                        <p>
+                            SAML 2.0 SSO: <xsl:value-of select="$idp.sso.saml.2.0.count"/>
+                            (<xsl:value-of select="format-number($idp.sso.saml.2.0.count div $idpCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    
                 </ul>
                 
                 <h3>Service Providers</h3>
@@ -618,7 +666,159 @@
                             (<xsl:value-of select="format-number($artifactSpCount div $spCount, '0.0%')"/>).
                         </p>
                     </li>
+                    
+                    <xsl:variable name="sp.slo" select="$sps[md:SPSSODescriptor/md:SingleLogoutService]"/>
+                    <xsl:variable name="sp.slo.count" select="count($sp.slo)"/>
+                    <li>
+                        <p>
+                            Support Single Logout: <xsl:value-of select="$sp.slo.count"/>
+                            (<xsl:value-of select="format-number($sp.slo.count div $spCount, '0.0%')"/>).
+                        </p>
+                    </li>
+                    
+                    <xsl:variable name="sp.nim" select="$sps[md:SPSSODescriptor/md:ManageNameIDService]"/>
+                    <xsl:variable name="sp.nim.count" select="count($sp.nim)"/>
+                    <li>
+                        <p>
+                            Support NameID Management: <xsl:value-of select="$sp.nim.count"/>
+                            (<xsl:value-of select="format-number($sp.nim.count div $spCount, '0.0%')"/>).
+                        </p>
+                    </li>
+                    
+                    <xsl:variable name="sp.idpdisc"
+                        select="$sps[md:SPSSODescriptor/md:Extensions/idpdisc:DiscoveryResponse/@Binding=
+                        'urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol']"/>
+                    <xsl:variable name="sp.idpdisc.count" select="count($sp.idpdisc)"/>
+                    <li>
+                        <p>
+                            Support SAML IdP Discovery Service Profile: <xsl:value-of select="$sp.idpdisc.count"/>
+                            (<xsl:value-of select="format-number($sp.idpdisc.count div $spCount, '0.0%')"/>).
+                        </p>
+                    </li>
                 </ul>
+                
+                <p>SSO protocol support:</p>
+                <ul>
+                    <xsl:variable name="sp.sso.saml.1.0"
+                        select="$sps[contains(md:SPSSODescriptor/@protocolSupportEnumeration,
+                        'urn:oasis:names:tc:SAML:1.0:protocol')]"/>
+                    <xsl:variable name="sp.sso.saml.1.0.count" select="count($sp.sso.saml.1.0)"/>
+                    <li>
+                        <p>
+                            SAML 1.0 SSO: <xsl:value-of select="$sp.sso.saml.1.0.count"/>
+                            (<xsl:value-of select="format-number($sp.sso.saml.1.0.count div $spCount, '0.0%')"/>)
+                        </p>
+                        <ul>
+                            <xsl:variable name="sp.saml.1.0.acs.saml.1.0.post"
+                                select="$sp.sso.saml.1.0[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:1.0:profiles:browser-post']"/>
+                            <xsl:variable name="sp.saml.1.0.acs.saml.1.0.post.count" select="count($sp.saml.1.0.acs.saml.1.0.post)"/>
+                            <li>
+                                <p>
+                                    Browser/POST: <xsl:value-of select="$sp.saml.1.0.acs.saml.1.0.post.count"/>
+                                    (<xsl:value-of select="format-number($sp.saml.1.0.acs.saml.1.0.post.count div $sp.sso.saml.1.0.count, '0.0%')"/>)
+                                </p>
+                            </li>
+                            
+                            <xsl:variable name="sp.saml.1.0.acs.saml.1.0.artifact"
+                                select="$sp.sso.saml.1.0[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:1.0:profiles:artifact-01']"/>
+                            <xsl:variable name="sp.saml.1.0.acs.saml.1.0.artifact.count" select="count($sp.saml.1.0.acs.saml.1.0.artifact)"/>
+                            <li>
+                                <p>
+                                    Browser/Artifact: <xsl:value-of select="$sp.saml.1.0.acs.saml.1.0.artifact.count"/>
+                                    (<xsl:value-of select="format-number($sp.saml.1.0.acs.saml.1.0.artifact.count div $sp.sso.saml.1.0.count, '0.0%')"/>)
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <xsl:variable name="sp.sso.saml.1.1"
+                        select="$sps[contains(md:SPSSODescriptor/@protocolSupportEnumeration,
+                        'urn:oasis:names:tc:SAML:1.1:protocol')]"/>
+                    <xsl:variable name="sp.sso.saml.1.1.count" select="count($sp.sso.saml.1.1)"/>
+                    <li>
+                        <p>
+                            SAML 1.1 SSO: <xsl:value-of select="$sp.sso.saml.1.1.count"/>
+                            (<xsl:value-of select="format-number($sp.sso.saml.1.1.count div $spCount, '0.0%')"/>)
+                        </p>
+                        <ul>
+                            <xsl:variable name="sp.saml.1.1.acs.saml.1.0.post"
+                                select="$sp.sso.saml.1.1[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:1.0:profiles:browser-post']"/>
+                            <xsl:variable name="sp.saml.1.1.acs.saml.1.0.post.count" select="count($sp.saml.1.1.acs.saml.1.0.post)"/>
+                            <li>
+                                <p>
+                                    Browser/POST: <xsl:value-of select="$sp.saml.1.1.acs.saml.1.0.post.count"/>
+                                    (<xsl:value-of select="format-number($sp.saml.1.1.acs.saml.1.0.post.count div $sp.sso.saml.1.1.count, '0.0%')"/>)
+                                </p>
+                            </li>
+                            
+                            <xsl:variable name="sp.saml.1.1.acs.saml.1.0.artifact"
+                                select="$sp.sso.saml.1.1[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:1.0:profiles:artifact-01']"/>
+                            <xsl:variable name="sp.saml.1.1.acs.saml.1.0.artifact.count" select="count($sp.saml.1.1.acs.saml.1.0.artifact)"/>
+                            <li>
+                                <p>
+                                    Browser/Artifact: <xsl:value-of select="$sp.saml.1.1.acs.saml.1.0.artifact.count"/>
+                                    (<xsl:value-of select="format-number($sp.saml.1.1.acs.saml.1.0.artifact.count div $sp.sso.saml.1.1.count, '0.0%')"/>)
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <xsl:variable name="sp.sso.saml.2.0"
+                        select="$sps[contains(md:SPSSODescriptor/@protocolSupportEnumeration,
+                        'urn:oasis:names:tc:SAML:2.0:protocol')]"/>
+                    <xsl:variable name="sp.sso.saml.2.0.count" select="count($sp.sso.saml.2.0)"/>
+                    <li>
+                        <p>
+                            SAML 2.0 SSO: <xsl:value-of select="$sp.sso.saml.2.0.count"/>
+                            (<xsl:value-of select="format-number($sp.sso.saml.2.0.count div $spCount, '0.0%')"/>)
+                        </p>
+                        <ul>
+                            <xsl:variable name="sp.saml.2.0.acs.saml.2.0.post"
+                                select="$sp.sso.saml.2.0[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']"/>
+                            <xsl:variable name="sp.saml.2.0.acs.saml.2.0.post.count" select="count($sp.saml.2.0.acs.saml.2.0.post)"/>
+                            <li>
+                                <p>
+                                    Browser/POST: <xsl:value-of select="$sp.saml.2.0.acs.saml.2.0.post.count"/>
+                                    (<xsl:value-of select="format-number($sp.saml.2.0.acs.saml.2.0.post.count div $sp.sso.saml.2.0.count, '0.0%')"/>)
+                                </p>
+                            </li>
+                            
+                            <xsl:variable name="sp.saml.2.0.acs.saml.2.0.post.ss"
+                                select="$sp.sso.saml.2.0[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign']"/>
+                            <xsl:variable name="sp.saml.2.0.acs.saml.2.0.post.ss.count" select="count($sp.saml.2.0.acs.saml.2.0.post.ss)"/>
+                            <li>
+                                <p>
+                                    Browser/POST-SimpleSign: <xsl:value-of select="$sp.saml.2.0.acs.saml.2.0.post.ss.count"/>
+                                    (<xsl:value-of select="format-number($sp.saml.2.0.acs.saml.2.0.post.ss.count div $sp.sso.saml.2.0.count, '0.0%')"/>)
+                                </p>
+                            </li>
+
+                            <xsl:variable name="sp.saml.2.0.acs.saml.2.0.artifact"
+                                select="$sp.sso.saml.2.0[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact']"/>
+                            <xsl:variable name="sp.saml.2.0.acs.saml.2.0.artifact.count" select="count($sp.saml.2.0.acs.saml.2.0.artifact)"/>
+                            <li>
+                                <p>
+                                    Browser/Artifact: <xsl:value-of select="$sp.saml.2.0.acs.saml.2.0.artifact.count"/>
+                                    (<xsl:value-of select="format-number($sp.saml.2.0.acs.saml.2.0.artifact.count div $sp.sso.saml.2.0.count, '0.0%')"/>)
+                                </p>
+                            </li>
+
+                            <xsl:variable name="sp.saml.2.0.acs.saml.2.0.paos"
+                                select="$sp.sso.saml.2.0[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:2.0:bindings:PAOS']"/>
+                            <xsl:variable name="sp.saml.2.0.acs.saml.2.0.paos.count" select="count($sp.saml.2.0.acs.saml.2.0.paos)"/>
+                            <li>
+                                <p>
+                                    PAOS: <xsl:value-of select="$sp.saml.2.0.acs.saml.2.0.paos.count"/>
+                                    (<xsl:value-of select="format-number($sp.saml.2.0.acs.saml.2.0.paos.count div $sp.sso.saml.2.0.count, '0.0%')"/>)
+                                </p>
+                            </li>                            
+                        </ul>
+                    </li>
+                    
+                </ul>
+                
+
+                
                 
                 <h2><a name="bySoftware">Entities by Software</a></h2>
 
