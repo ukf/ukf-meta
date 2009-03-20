@@ -831,6 +831,14 @@
                 
                 
                 <h2><a name="bySoftware">Entities by Software</a></h2>
+                
+                <h3>Breakdown Summary</h3>
+
+                <xsl:call-template name="entity.breakdown.by.software">
+                    <xsl:with-param name="entities" select="$entities"/>
+                </xsl:call-template>
+                
+                
 
                 <!--
                     *********************************************************************
@@ -1248,9 +1256,6 @@
                             <xsl:choose>
                                 <xsl:when test="@entityID = 'https://adfs.devnet3.plymouth.ac.uk'">
                                     (Microsoft ADFS)
-                                </xsl:when>
-                                <xsl:when test="@entityID = 'https://www.educationcity.com/sso/shib'">
-                                    (proprietary implementation)
                                 </xsl:when>
                                 <xsl:when test="md:Extensions/uklabel:Software">
                                     (<xsl:value-of select="md:Extensions/uklabel:Software/@name"/>)
@@ -1761,9 +1766,6 @@
                                 <xsl:choose>
                                     <xsl:when test="@entityID = 'https://adfs.devnet3.plymouth.ac.uk'">
                                         (Microsoft ADFS)
-                                    </xsl:when>
-                                    <xsl:when test="@entityID = 'https://www.educationcity.com/sso/shib'">
-                                        (proprietary implementation)
                                     </xsl:when>
                                     <xsl:when test="md:Extensions/uklabel:Software">
                                         (<xsl:value-of select="md:Extensions/uklabel:Software/@name"/>)
