@@ -864,6 +864,7 @@
                             [@name != 'EZproxy']
                             [@name != 'OpenAthens SP']
                             [@name != 'Guanxi']
+                            [@name != 'AthensIM']
                     ]"/>
                 <xsl:variable name="entities.misc.out"
                     select="set:difference($entities.misc.in, $entities.misc)"/>
@@ -968,33 +969,30 @@
                     select="set:difference($entities.guanxi.in, $entities.guanxi)"/>
                 
                 <!--
+                    Classify AthensIM entities.
+                -->
+                <xsl:variable name="entities.athensim.in" select="$entities.guanxi.out"/>
+                <xsl:variable name="entities.athensim"
+                    select="$entities.athensim.in[md:Extensions/uklabel:Software/@name='AthensIM']"/>
+                <xsl:variable name="entities.athensim.out"
+                    select="set:difference($entities.athensim.in, $entities.athensim)"/>
+                
+                <!--
                     Variables containing all classified and unclassified entities, respectively.
                 -->
-                <xsl:variable name="entities.unclassified" select="$entities.guanxi.out"/>
+                <xsl:variable name="entities.unclassified" select="$entities.athensim.out"/>
                 <xsl:variable name="entities.classified"
                     select="set:difference($entities, $entities.unclassified)"/>
-
-                <!--
-                    Things become more ad hoc below this point.  In the long run, these algorithms should be
-                    put on the same "chained" footing as the ones above.
-                -->
-
-                <!--
-                    Classify AthensIM entities
-                -->
-                <xsl:variable name="athensImEntities"
-                    select="$idps/descendant::md:SingleSignOnService[contains(@Location, '/origin/hs')]/ancestor::md:EntityDescriptor"/>
-                <xsl:variable name="athensImEntityCount" select="count($athensImEntities)"/>
-
+                
                 <!--
                     Remaining entities are unknown.
                 -->                
                 <xsl:variable name="knownSoftwareEntities"
-                    select="$entities.classified | $athensImEntities"/>
+                    select="$entities.classified"/>
                 <xsl:variable name="unknownSoftwareEntities"
                     select="set:difference($entities, $knownSoftwareEntities) | $entities.misc"/>
                 <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
-                
+
                 <!--
                     ***************************************************************
                     ***                                                         ***
@@ -1108,23 +1106,24 @@
                 <!--
                     AthensIM entities
                 -->
-                <xsl:if test="$athensImEntityCount != 0">
+                <xsl:variable name="entities.athensim.count" select="count($entities.athensim)"/>
+                <xsl:if test="$entities.athensim.count != 0">
                     <h3>AthensIM Entities</h3>
                     <p>
-                        <xsl:if test="$athensImEntityCount = 1">
+                        <xsl:if test="$entities.athensim.count = 1">
                             There is 1 entity in the metadata that appears to be
                             running AthensIM identity provider software.
                         </xsl:if>
-                        <xsl:if test="$athensImEntityCount != 1">
-                            There are <xsl:value-of select="$athensImEntityCount"/> entities in the metadata that
+                        <xsl:if test="$entities.athensim.count != 1">
+                            There are <xsl:value-of select="$entities.athensim.count"/> entities in the metadata that
                             appear to be running AthensIM identity provider software.
                         </xsl:if>
-                        This is <xsl:value-of select="format-number($athensImEntityCount div $entityCount, '0.0%')"/>
-                        of all entities, or <xsl:value-of select="format-number($athensImEntityCount div $idpCount, '0.0%')"/>
+                        This is <xsl:value-of select="format-number($entities.athensim.count div $entityCount, '0.0%')"/>
+                        of all entities, or <xsl:value-of select="format-number($entities.athensim.count div $idpCount, '0.0%')"/>
                         of identity providers.
                     </p>
                     <ul>
-                        <xsl:for-each select="$athensImEntities">
+                        <xsl:for-each select="$entities.athensim">
                             <li>
                                 <xsl:value-of select="@ID"/>:
                                 <code><xsl:value-of select="@entityID"/></code>
