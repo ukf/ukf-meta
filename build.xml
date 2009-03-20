@@ -223,6 +223,7 @@
 				<include name="ukfederation-sites-12.xml"/>
 				<include name="ukfederation-trust-12.xml"/>
 				<include name="ukfederation-wayf.xml"/>
+				<include name="ukfederation-test.xml"/>
 			</fileset>
 		</scp>
 	</target>
@@ -250,6 +251,7 @@
 		<VFY.remote i="ukfederation-sites-12.xml"/>
 		<VFY.remote i="ukfederation-trust-12.xml"/>
 		<VFY.remote i="ukfederation-wayf.xml"/>
+		<VFY.remote i="ukfederation-test.xml"/>
 		<echo>Verification completed.</echo>
 	</target>
 	
