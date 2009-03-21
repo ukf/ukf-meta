@@ -28,6 +28,7 @@
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="endorsed.dir" value="endorsed"/>
 	<property name="entities.dir" value="entities"/>
+	<property name="bin.dir" value="bin"/>
 	<property name="lib.dir" value="lib"/>
 	<property name="templates.dir" value="templates"/>
 	<property name="xalan.dir" value="xalan-j_2_6_0"/>
@@ -280,7 +281,10 @@
 		<attribute name="x"/>
 		<sequential>
 			<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
-				<classpath location="${xalan.dir}/bin/xalan.jar"/>
+				<classpath>
+					<pathelement location="${xalan.dir}/bin/xalan.jar"/>
+					<pathelement path="${bin.dir}"/>
+				</classpath>
 				<arg value="-IN"/>
 				<arg value="${xml.dir}/@{i}"/>
 				<arg value="-OUT"/>
