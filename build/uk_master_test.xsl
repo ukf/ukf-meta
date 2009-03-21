@@ -20,14 +20,27 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
+	
 	xmlns:date="http://exslt.org/dates-and-times"
+	xmlns:ukfxd="xalan://uk.org.ukfederation.xalan.Dates"
+	extension-element-prefixes="date ukfxd"
+	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	exclude-result-prefixes="wayf">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
+	<!--
+		validityDays
+		
+		This parameter determines the number of days between the aggregation instant and the
+		end of validity of the signed metadata.
+	-->
+	<xsl:variable name="validityDays" select="28"/>
+	
 	<xsl:variable name="now" select="date:date-time()"/>
+	<xsl:variable name="validUntil" select="ukfxd:dateAdd($now, $validityDays)"/>
 	
 	<!--
 		Document root.
@@ -42,8 +55,12 @@
 	-->
 	<xsl:template match="/md:EntitiesDescriptor">
 		<xsl:copy>
+			<xsl:attribute name="validUntil">
+				<xsl:value-of select="$validUntil"/>
+			</xsl:attribute>
+			<xsl:apply-templates select="@*"/>
 			<xsl:call-template name="document.comment"/>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
 	</xsl:template>
 
@@ -58,6 +75,12 @@
 			<xsl:text>&#10;</xsl:text>
 			<xsl:text>&#9;Aggregate built </xsl:text>
 			<xsl:value-of select="$now"/>
+			<xsl:text>&#10;</xsl:text>
+			<xsl:text>&#10;</xsl:text>
+			<xsl:text>&#9;Aggregate valid for </xsl:text>
+			<xsl:value-of select="$validityDays"/>
+			<xsl:text> days, until </xsl:text>
+			<xsl:value-of select="$validUntil"/>
 			<xsl:text>&#10;</xsl:text>
 		</xsl:comment>
 	</xsl:template>
