@@ -1512,7 +1512,6 @@
                         [@name != 'OpenAthens SP']
                         [@name != 'Guanxi']
                         [@name != 'simpleSAMLphp']
-                        [@name != 'Atypon SAML SP']
                         [@name != 'Atypon SAML SP 1.1/2.0']
                         [@name != 'AthensIM']
                 ]"/>
@@ -1542,8 +1541,7 @@
             -->
             <xsl:variable name="entities.atyponsamlsp.in" select="$entities.simplesamlphp.out"/>
             <xsl:variable name="entities.atyponsamlsp"
-                select="$entities.atyponsamlsp.in[md:Extensions/uklabel:Software/@name='Atypon SAML SP'] |
-                $entities.atyponsamlsp.in[md:Extensions/uklabel:Software/@name='Atypon SAML SP 1.1/2.0']"/>
+                select="$entities.atyponsamlsp.in[md:Extensions/uklabel:Software/@name='Atypon SAML SP 1.1/2.0']"/>
             <xsl:variable name="entities.atyponsamlsp.out"
                 select="set:difference($entities.atyponsamlsp.in, $entities.atyponsamlsp)"/>
             
