@@ -160,7 +160,6 @@
                     </xsl:if>
                     <li><p><a href="#members">Member Statistics</a></p></li>
                     <li><p><a href="#entities">Entity Statistics</a></p></li>
-                    <li><p><a href="#bySoftware">Entities by Software</a></p></li>
                     <li><p><a href="#byOwner">Entities by Owner</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
                     <li><p><a href="#membersByScope">Members by Primary Scope</a></p></li>
@@ -584,6 +583,12 @@
                     </li>
                 </ul>
 
+                <xsl:call-template name="entity.breakdown.by.software">
+                    <xsl:with-param name="entities" select="$entities"/>
+                </xsl:call-template>
+
+
+
                 <h3>Identity Providers</h3>
                 <p>There are <xsl:value-of select="$idpCount"/> identity providers,
                 including <xsl:value-of select="$dualEntityCount"/>
@@ -829,441 +834,6 @@
                 </xsl:call-template>
 
                 
-                
-                <h2><a name="bySoftware">Entities by Software</a></h2>
-                
-                <h3>Breakdown Summary</h3>
-
-                <xsl:call-template name="entity.breakdown.by.software">
-                    <xsl:with-param name="entities" select="$entities"/>
-                </xsl:call-template>
-                
-                
-
-                <!--
-                    *********************************************************************
-                    ***                                                               ***
-                    ***   C L A S S I F Y   E N T I T I E S   B Y   S O F T W A R E   ***
-                    ***                                                               ***
-                    *********************************************************************
-                    
-                    The classification algorithms used here are chained together so that
-                    each classification step works only on those entities not already
-                    classified.  This means that entities won't be counted twice, but
-                    means that the order of classification blocks is important and
-                    shouldn't be changed without careful thought.  In general, more
-                    specific algorithms should appear before more general ones.
-                -->
-                
-                <!--
-                    Classify miscellaneous entities.
-                    
-                    Here we pull off a list of entities labelled with explicit
-                    Software labels that aren't for the software we address
-                    in more detail below.  The result is, as it were, a list of
-                    "known unknowns" that we can re-integrate later with those
-                    entities we fail to classify altogether.
-                -->
-                <xsl:variable name="entities.misc.in" select="$entities"/>
-                <xsl:variable name="entities.misc"
-                    select="$entities.misc.in[
-                        md:Extensions/uklabel:Software
-                            [@name != 'Shibboleth']
-                            [@name != 'EZproxy']
-                            [@name != 'OpenAthens SP']
-                            [@name != 'Guanxi']
-                            [@name != 'AthensIM']
-                    ]"/>
-                <xsl:variable name="entities.misc.out"
-                    select="set:difference($entities.misc.in, $entities.misc)"/>
-                
-                <!--
-                    Classify EZproxy SPs
-                -->
-                <xsl:variable name="entities.ezproxy.in" select="$entities.misc.out"/>
-                <xsl:variable name="entities.ezproxy"
-                    select="$entities.ezproxy.in[md:Extensions/uklabel:Software/@name='EZproxy']"/>
-                <xsl:variable name="entities.ezproxy.out"
-                    select="set:difference($entities.ezproxy.in, $entities.ezproxy)"/>
-
-                <!--
-                    Classify OpenAthens SP entities.
-                -->
-                <xsl:variable name="entities.openathenssp.in" select="$entities.ezproxy.out"/>
-                <xsl:variable name="entities.openathenssp"
-                    select="$entities.openathenssp.in[md:Extensions/uklabel:Software/@name='OpenAthens SP']"/>
-                <xsl:variable name="entities.openathenssp.count" select="count($entities.openathenssp)"/>
-                <xsl:variable name="entities.openathenssp.out"
-                    select="set:difference($entities.openathenssp.in, $entities.openathenssp)"/>
-                
-                <!--
-                    Classify Shibboleth 2.0 IdPs and SPs.
-                -->
-                <xsl:variable name="entities.shib.2.in" select="$entities.openathenssp.out"/>
-                <xsl:variable name="entities.shib.2"
-                    select="$entities.shib.2.in[
-                        md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')] |
-                        md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, '/Shibboleth.sso/SAML2/POST')] |
-                        md:Extensions/uklabel:Software[@name='Shibboleth'][@version = '2']
-                    ]"/>
-                <xsl:variable name="idps.shib.2" select="$entities.shib.2[md:IDPSSODescriptor]"/>
-                <xsl:variable name="sps.shib.2" select="$entities.shib.2[md:SPSSODescriptor]"/>
-                <xsl:variable name="entities.shib.2.out"
-                    select="set:difference($entities.shib.2.in, $entities.shib.2)"/>
-
-                <!--
-                    Classify Shibboleth 1.3 entities.
-                -->
-                <xsl:variable name="entities.shib.13.in" select="$entities.shib.2.out"/>
-                <xsl:variable name="entities.shib.13.knownHere" select="
-                    $entities.shib.13.in[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shib.ncl.ac.uk'] |
-                    $entities.shib.13.in[@entityID='https://typekey.sdss.ac.uk/shibboleth'] |
-                    $entities.shib.13.in[@entityID='https://typekey.iay.org.uk/shibboleth'] |
-                    $entities.shib.13.in[@entityID='https://idp-1.bgfl.org/shibboleth'] |
-                    $entities.shib.13.in[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shibboleth-i.sgul.ac.uk'] |
-                    $entities.shib.13.in[@entityID='https://idp.protectnetwork.org/protectnetwork-idp'] |
-                    $entities.shib.13.in[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk'] |
-                    $entities.shib.13.in[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki'] |
-                    $entities.shib.13.in[@entityID='https://sdauth.sciencedirect.com/']
-                "/>
-                <xsl:variable name="entities.shib.13.unknownHere"
-                    select="set:difference($entities.shib.13.in, $entities.shib.13.knownHere)"/>
-                <xsl:variable name="entities.shib.13.known" select="
-                    $entities.shib.13.unknownHere[md:Extensions/uklabel:Software[@name='Shibboleth'][@version = '1.3']] |
-                    $entities.shib.13.knownHere
-                "/>
-                <xsl:variable name="entities.shib.13.unknown"
-                    select="set:difference($entities.shib.13.in, $entities.shib.13.known)"/>
-                <xsl:variable name="entities.shib.13"
-                    select="$entities.shib.13.in[
-                        md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '-idp/SSO')] |
-                        md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]
-                    ] | $entities.shib.13.known"/>
-                <xsl:variable name="entities.shib.13.count" select="count($entities.shib.13)"/>
-                <xsl:variable name="entities.shib.13.out"
-                    select="set:difference($entities.shib.13.in, $entities.shib.13)"/>
-                
-                <!--
-                    Classify Athens Gateway entities
-                -->
-                <xsl:variable name="entities.gateways.in" select="$entities.shib.13.out"/>
-                <xsl:variable name="knownGateways" select="
-                    $entities.gateways.in[@entityID='urn:mace:eduserv.org.uk:athens:federation:beta'] |
-                    $entities.gateways.in[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
-                    "/>
-                <xsl:variable name="gatewayCount" select="count($knownGateways)"/>
-                <xsl:variable name="entities.gateways.out"
-                    select="set:difference($entities.gateways.in, $knownGateways)"/>
-                
-                <!--
-                    Classify OpenAthens virtual IdPs.
-                -->
-                <xsl:variable name="entities.openathens.virtual.in" select="$entities.gateways.out"/>
-                <xsl:variable name="entities.openathens.virtual"
-                    select="$entities.openathens.virtual.in[md:Extensions/eduservlabel:AthensPUIDAuthority]"/>
-                <xsl:variable name="entities.openathens.virtual.count"
-                    select="count($entities.openathens.virtual)"/>
-                <xsl:variable name="entities.openathens.virtual.out"
-                    select="set:difference($entities.openathens.virtual.in, $entities.openathens.virtual)"/>
-                
-                <!--
-                    Classify Guanxi entities.
-                -->
-                <xsl:variable name="entities.guanxi.in" select="$entities.openathens.virtual.out"/>
-                <xsl:variable name="entities.guanxi"
-                    select="$entities.guanxi.in[md:Extensions/uklabel:Software/@name='Guanxi']"/>
-                <xsl:variable name="entities.guanxi.count" select="count($entities.guanxi)"/>
-                <xsl:variable name="entities.guanxi.out"
-                    select="set:difference($entities.guanxi.in, $entities.guanxi)"/>
-                
-                <!--
-                    Classify AthensIM entities.
-                -->
-                <xsl:variable name="entities.athensim.in" select="$entities.guanxi.out"/>
-                <xsl:variable name="entities.athensim"
-                    select="$entities.athensim.in[md:Extensions/uklabel:Software/@name='AthensIM']"/>
-                <xsl:variable name="entities.athensim.out"
-                    select="set:difference($entities.athensim.in, $entities.athensim)"/>
-                
-                <!--
-                    Variables containing all classified and unclassified entities, respectively.
-                -->
-                <xsl:variable name="entities.unclassified" select="$entities.athensim.out"/>
-                <xsl:variable name="entities.classified"
-                    select="set:difference($entities, $entities.unclassified)"/>
-                
-                <!--
-                    Remaining entities are unknown.
-                -->                
-                <xsl:variable name="knownSoftwareEntities"
-                    select="$entities.classified"/>
-                <xsl:variable name="unknownSoftwareEntities"
-                    select="set:difference($entities, $knownSoftwareEntities) | $entities.misc"/>
-                <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
-
-                <!--
-                    ***************************************************************
-                    ***                                                         ***
-                    ***   R E P O R T   C L A S S I F I E D   E N T I T I E S   ***
-                    ***                                                         ***
-                    ***************************************************************
-                -->
-                
-                <h3>Shibboleth 2</h3>
-                <p>
-                    There are <xsl:value-of select="count($entities.shib.2)"/> entities in the metadata
-                    running Shibboleth 2.
-                    This is <xsl:value-of select="format-number(count($entities.shib.2) div $entityCount, '0.0%')"/>
-                    of all entities.
-                </p>
-                
-                <h4>Shibboleth 2 Identity Providers</h4>
-                <p>
-                    The following <xsl:value-of select="count($idps.shib.2)"/> identity providers are
-                    running Shibboleth 2.
-                    This is <xsl:value-of select="format-number(count($idps.shib.2) div $idpCount, '0.0%')"/>
-                    of all identity providers.</p>
-                <ul>
-                    <xsl:for-each select="$idps.shib.2">
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <code><xsl:value-of select="@entityID"/></code>:
-                            <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
-                        </li>
-                    </xsl:for-each>
-                </ul>
-                
-                <h4>Shibboleth 2 Service Providers</h4>
-                <p>
-                    The following service providers are running Shibboleth 2.
-                    This is <xsl:value-of select="format-number(count($sps.shib.2) div $spCount, '0.0%')"/>
-                    of all service providers.
-                </p>
-                <ul>
-                    <xsl:for-each select="$sps.shib.2">
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <code><xsl:value-of select="@entityID"/></code>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-                
-                <h3>Shibboleth 1.3</h3>
-                <p>
-                    We have verified with the owners that the following entities are running Shibboleth 1.3, even
-                    if that does not appear to be the case from their metadata:
-                </p>
-                <ul>
-                    <xsl:for-each select="$entities.shib.13.known">
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <code><xsl:value-of select="@entityID"/></code>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-                <p>
-                    Including the above, there are
-                    <xsl:value-of select="$entities.shib.13.count"/> entities in the metadata that look like they are probably
-                    running Shibboleth 1.3.  This is <xsl:value-of select="format-number($entities.shib.13.count div $entityCount, '0.0%')"/>
-                    of all entities.
-                </p>
-                
-                <xsl:variable name="entitiesShib" select="$entities.shib.13 | $entities.shib.2"/>
-                <xsl:variable name="entitiesShibCount" select="count($entitiesShib)"/>
-                <h3>Shibboleth Combined</h3>
-                <p>
-                    Combining all versions of the Shibboleth reference software gives a total of
-                    <xsl:value-of select="$entitiesShibCount"/> entities, or
-                    <xsl:value-of select="format-number($entitiesShibCount div $entityCount, '0.0%')"/>
-                    of all entities.
-                </p>
-                <p>
-                    This means that
-                    <xsl:value-of select="$entityCount - $entitiesShibCount"/> entities
-                    (<xsl:value-of select="format-number(($entityCount - $entitiesShibCount) div $entityCount, '0.0%')"/>)
-                    are running something other than the Shibboleth reference software.
-                </p>
-                
-                <xsl:variable name="entities.ezproxy.count" select="count($entities.ezproxy)"/>
-                <xsl:if test="$entities.ezproxy.count != 0">
-                    <h3>EZproxy Entities</h3>
-                    <p>
-                        <xsl:if test="$entities.ezproxy.count = 1">
-                            There is 1 entity in the metadata that appears to be
-                            running EZproxy service provider software.
-                        </xsl:if>
-                        <xsl:if test="$entities.ezproxy.count != 1">
-                            There are <xsl:value-of select="$entities.ezproxy.count"/> entities
-                            in the metadata that
-                            appear to be running EZproxy service provider software.
-                        </xsl:if>
-                        This is <xsl:value-of select="format-number($entities.ezproxy.count div $entityCount, '0.0%')"/>
-                        of all entities, or <xsl:value-of select="format-number($entities.ezproxy.count div $spCount, '0.0%')"/>
-                        of service providers.
-                    </p>
-                    <ul>
-                        <xsl:for-each select="$entities.ezproxy">
-                            <li>
-                                <xsl:value-of select="@ID"/>:
-                                <code><xsl:value-of select="@entityID"/></code>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
-                
-                <!--
-                    AthensIM entities
-                -->
-                <xsl:variable name="entities.athensim.count" select="count($entities.athensim)"/>
-                <xsl:if test="$entities.athensim.count != 0">
-                    <h3>AthensIM Entities</h3>
-                    <p>
-                        <xsl:if test="$entities.athensim.count = 1">
-                            There is 1 entity in the metadata that appears to be
-                            running AthensIM identity provider software.
-                        </xsl:if>
-                        <xsl:if test="$entities.athensim.count != 1">
-                            There are <xsl:value-of select="$entities.athensim.count"/> entities in the metadata that
-                            appear to be running AthensIM identity provider software.
-                        </xsl:if>
-                        This is <xsl:value-of select="format-number($entities.athensim.count div $entityCount, '0.0%')"/>
-                        of all entities, or <xsl:value-of select="format-number($entities.athensim.count div $idpCount, '0.0%')"/>
-                        of identity providers.
-                    </p>
-                    <ul>
-                        <xsl:for-each select="$entities.athensim">
-                            <li>
-                                <xsl:value-of select="@ID"/>:
-                                <code><xsl:value-of select="@entityID"/></code>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
-
-                <!--
-                    Guanxi entities.  Currently assumed to be identity providers only.
-                -->                
-                <xsl:if test="$entities.guanxi.count != 0">
-                    <h3>Guanxi Entities</h3>
-                    <p>
-                        <xsl:if test="$entities.guanxi.count = 1">
-                            The following entity is known to be running the Guanxi software:
-                        </xsl:if>
-                        <xsl:if test="$entities.guanxi.count != 1">
-                            The following entities are known to be running the Guanxi software:
-                        </xsl:if>
-                    </p>
-                    <ul>
-                        <xsl:for-each select="$entities.guanxi">
-                            <li>
-                                <xsl:value-of select="@ID"/>:
-                                <code><xsl:value-of select="@entityID"/></code>:
-                                <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
-                
-                <!--
-                    Athens Gateway entities.
-                -->
-                <xsl:if test="$gatewayCount != 0">
-                    <h3>Gateway Entities</h3>
-                    <p>
-                        <xsl:if test="$gatewayCount = 1">
-                            The following entity is known to be running Athens/Shibboleth gateway software:
-                        </xsl:if>
-                        <xsl:if test="$gatewayCount != 1">
-                            The following entities are known to be running Athens/Shibboleth gateway software:
-                        </xsl:if>
-                    </p>
-                    <ul>
-                        <xsl:for-each select="$knownGateways">
-                            <li>
-                                <xsl:value-of select="@ID"/>:
-                                <code><xsl:value-of select="@entityID"/></code>:
-                                <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>.
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
-                
-                <!--
-                    OpenAthens virtual IdPs
-                -->
-                <xsl:if test="$entities.openathens.virtual.count != 0">
-                    <h3>OpenAthens Virtual Identity Providers</h3>
-                    <p>
-                        Eduserv operate <xsl:value-of select="$entities.openathens.virtual.count"/>
-                        virtual identity provider entities
-                        as part of the OpenAthens system on behalf of their clients.
-                        This is
-                        <xsl:value-of select="format-number($entities.openathens.virtual.count div $entityCount, '0.0%')"/>
-                        of all entities, or
-                        <xsl:value-of select="format-number($entities.openathens.virtual.count div $idpCount, '0.0%')"/>
-                        of identity providers.
-                    </p>
-                </xsl:if>
-                
-                <!--
-                    OpenAthens SP entities.
-                -->
-                <xsl:if test="$entities.openathenssp.count != 0">
-                    <h3>OpenAthens SP Entities</h3>
-                    <p>
-                        <xsl:if test="$entities.openathenssp.count = 1">
-                            There is 1 entity in the metadata running
-                            OpenAthens SP
-                            service provider software.
-                        </xsl:if>
-                        <xsl:if test="$entities.openathenssp.count != 1">
-                            There are <xsl:value-of select="$entities.openathenssp.count"/>
-                            entities in the metadata running
-                            OpenAthens SP
-                            service provider software.
-                        </xsl:if>
-                    </p>
-                    <ul>
-                        <xsl:for-each select="$entities.openathenssp">
-                            <li>
-                                <xsl:value-of select="@ID"/>:
-                                <code><xsl:value-of select="@entityID"/></code>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                    <p>
-                        This is <xsl:value-of select="format-number($entities.openathenssp.count div $entityCount, '0.0%')"/>
-                        of all entities, or <xsl:value-of select="format-number($entities.openathenssp.count div $spCount, '0.0%')"/>
-                        of service providers.
-                    </p>
-                </xsl:if>
-
-                <!--
-                    Unknown entities.
-                -->
-                <h3>Unknown or Other Software</h3>
-                <p>
-                    There are <xsl:value-of select="$unknownSoftwareEntityCount"/> entities in the metadata that
-                    don't fall into any of the categories above.
-                    This is <xsl:value-of select="format-number($unknownSoftwareEntityCount div $entityCount, '0.0%')"/>
-                    of all entities.
-                </p>
-                <ul>
-                    <xsl:for-each select="$unknownSoftwareEntities">
-                        <li>
-                            <xsl:value-of select="@ID"/>:
-                            <code><xsl:value-of select="@entityID"/></code>
-                            <xsl:choose>
-                                <xsl:when test="@entityID = 'https://adfs.devnet3.plymouth.ac.uk'">
-                                    (Microsoft ADFS)
-                                </xsl:when>
-                                <xsl:when test="md:Extensions/uklabel:Software">
-                                    (<xsl:value-of select="md:Extensions/uklabel:Software/@name"/>)
-                                </xsl:when>
-                            </xsl:choose>
-                        </li>
-                    </xsl:for-each>
-                </ul>
                 
                 <h2><a name="byOwner">Entities by Owner</a></h2>
                 <ul>
@@ -1740,6 +1310,7 @@
                 <xsl:with-param name="name">Unknown or other</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
                 <xsl:with-param name="show" select="1"/>
+                <xsl:with-param name="show.software" select="1"/>
             </xsl:call-template>
 
         </ul>
@@ -1750,6 +1321,7 @@
         <xsl:param name="name"/>
         <xsl:param name="total"/>
         <xsl:param name="show">0</xsl:param>
+        <xsl:param name="show.software">0</xsl:param>
         <xsl:variable name="n" select="count($entities)"/>
         <xsl:if test="$n != 0">
             <li>
@@ -1757,20 +1329,22 @@
                     <xsl:value-of select="$name"/>: <xsl:value-of select="$n"/>
                     (<xsl:value-of select="format-number($n div $total, '0.0%')"/>)
                 </p>
-                <xsl:if test="$show != 0">
+                <xsl:if test="($show != 0) or ($n &lt;= 8)">
                     <ul>
                         <xsl:for-each select="$entities">
                             <li>
                                 <xsl:value-of select="@ID"/>:
                                 <code><xsl:value-of select="@entityID"/></code>
-                                <xsl:choose>
-                                    <xsl:when test="@entityID = 'https://adfs.devnet3.plymouth.ac.uk'">
-                                        (Microsoft ADFS)
-                                    </xsl:when>
-                                    <xsl:when test="md:Extensions/uklabel:Software">
-                                        (<xsl:value-of select="md:Extensions/uklabel:Software/@name"/>)
-                                    </xsl:when>
-                                </xsl:choose>
+                                <xsl:if test="$show.software != 0">
+                                    <xsl:choose>
+                                        <xsl:when test="@entityID = 'https://adfs.devnet3.plymouth.ac.uk'">
+                                            (Microsoft ADFS)
+                                        </xsl:when>
+                                        <xsl:when test="md:Extensions/uklabel:Software">
+                                            (<xsl:value-of select="md:Extensions/uklabel:Software/@name"/>)
+                                        </xsl:when>
+                                    </xsl:choose>
+                                </xsl:if>
                             </li>
                         </xsl:for-each>
                     </ul>
