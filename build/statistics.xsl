@@ -1062,6 +1062,7 @@
                         [@name != 'simpleSAMLphp']
                         [@name != 'Atypon SAML SP 1.1/2.0']
                         [@name != 'AthensIM']
+                        [@name != 'Eduserv Gateway']
                 ]"/>
             <xsl:variable name="entities.misc.out"
                 select="set:difference($entities.misc.in, $entities.misc)"/>
@@ -1119,31 +1120,12 @@
                 Classify Shibboleth 1.3 entities.
             -->
             <xsl:variable name="entities.shib.13.in" select="$entities.shib.2.out"/>
-            <xsl:variable name="entities.shib.13.knownHere" select="
-                $entities.shib.13.in[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shib.ncl.ac.uk'] |
-                $entities.shib.13.in[@entityID='https://typekey.sdss.ac.uk/shibboleth'] |
-                $entities.shib.13.in[@entityID='https://typekey.iay.org.uk/shibboleth'] |
-                $entities.shib.13.in[@entityID='https://idp-1.bgfl.org/shibboleth'] |
-                $entities.shib.13.in[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:shibboleth-i.sgul.ac.uk'] |
-                $entities.shib.13.in[@entityID='https://idp.protectnetwork.org/protectnetwork-idp'] |
-                $entities.shib.13.in[@entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:dangermouse.ncl.ac.uk'] |
-                $entities.shib.13.in[@entityID='https://spie.oucs.ox.ac.uk/shibboleth/wiki'] |
-                $entities.shib.13.in[@entityID='https://sdauth.sciencedirect.com/']
-            "/>
-            <xsl:variable name="entities.shib.13.unknownHere"
-                select="set:difference($entities.shib.13.in, $entities.shib.13.knownHere)"/>
-            <xsl:variable name="entities.shib.13.known" select="
-                $entities.shib.13.unknownHere[md:Extensions/uklabel:Software[@name='Shibboleth'][@version = '1.3']] |
-                $entities.shib.13.knownHere
-            "/>
-            <xsl:variable name="entities.shib.13.unknown"
-                select="set:difference($entities.shib.13.in, $entities.shib.13.known)"/>
             <xsl:variable name="entities.shib.13"
                 select="$entities.shib.13.in[
+                    md:Extensions/uklabel:Software[@name='Shibboleth'][@version = '1.3'] |
                     md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '-idp/SSO')] |
                     md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]
-                ] | $entities.shib.13.known"/>
-            <xsl:variable name="entities.shib.13.count" select="count($entities.shib.13)"/>
+                ]"/>
             <xsl:variable name="entities.shib.13.out"
                 select="set:difference($entities.shib.13.in, $entities.shib.13)"/>
             
@@ -1151,12 +1133,10 @@
                 Classify Athens Gateway entities
             -->
             <xsl:variable name="entities.gateways.in" select="$entities.shib.13.out"/>
-            <xsl:variable name="knownGateways" select="
-                $entities.gateways.in[@entityID='urn:mace:eduserv.org.uk:athens:federation:beta'] |
-                $entities.gateways.in[@entityID='urn:mace:eduserv.org.uk:athens:federation:uk']
-                "/>
+            <xsl:variable name="entities.gateways"
+                select="$entities.gateways.in[md:Extensions/uklabel:Software/@name='Eduserv Gateway']"/>
             <xsl:variable name="entities.gateways.out"
-                select="set:difference($entities.gateways.in, $knownGateways)"/>
+                select="set:difference($entities.gateways.in, $entities.gateways)"/>
             
             <!--
                 Classify OpenAthens virtual IdPs.
@@ -1186,20 +1166,11 @@
                 select="set:difference($entities.athensim.in, $entities.athensim)"/>
             
             <!--
-                Variables containing all classified and unclassified entities, respectively.
+                Remaining entities are unknown.
             -->
             <xsl:variable name="entities.unclassified" select="$entities.athensim.out"/>
-            <xsl:variable name="entities.classified"
-                select="set:difference($entities, $entities.unclassified)"/>
-
-            <!--
-                Remaining entities are unknown.
-            -->                
-            <xsl:variable name="knownSoftwareEntities"
-                select="$entities.classified"/>
             <xsl:variable name="unknownSoftwareEntities"
-                select="set:difference($entities, $knownSoftwareEntities) | $entities.misc"/>
-            <xsl:variable name="unknownSoftwareEntityCount" select="count($unknownSoftwareEntities)"/>
+                select="$entities.unclassified | $entities.misc"/>
             
             <!--
                 ***************************************************************
@@ -1266,7 +1237,7 @@
             </xsl:call-template>
             
             <xsl:call-template name="entity.breakdown.by.software.line">
-                <xsl:with-param name="entities" select="$knownGateways"/>
+                <xsl:with-param name="entities" select="$entities.gateways"/>
                 <xsl:with-param name="name">Athens/Shibboleth gateway</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
             </xsl:call-template>
@@ -1315,9 +1286,6 @@
                                 <code><xsl:value-of select="@entityID"/></code>
                                 <xsl:if test="$show.software != 0">
                                     <xsl:choose>
-                                        <xsl:when test="@entityID = 'https://adfs.devnet3.plymouth.ac.uk'">
-                                            (Microsoft ADFS)
-                                        </xsl:when>
                                         <xsl:when test="md:Extensions/uklabel:Software">
                                             (<xsl:value-of select="md:Extensions/uklabel:Software/@name"/>)
                                         </xsl:when>
