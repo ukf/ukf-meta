@@ -86,18 +86,6 @@
         <xsl:variable name="embeddedX509EntityCount" select="count($embeddedX509Entities)"/>
         
         <!--
-        	Trust fabric statistics
-        -->
-        <xsl:variable name="pkixCapableEntities" select="$entities[descendant::ds:KeyName]"/>
-        <xsl:variable name="dkeyCapableEntities" select="$entities[descendant::ds:X509Data]"/>
-        <xsl:variable name="pkixEntities" select="set:difference($pkixCapableEntities, $dkeyCapableEntities)"/>
-        <xsl:variable name="dkeyEntities" select="set:difference($dkeyCapableEntities, $pkixCapableEntities)"/>
-        <xsl:variable name="hybridEntities" select="set:intersection($pkixCapableEntities, $dkeyCapableEntities)"/>
-        <xsl:variable name="pkixEntityCount" select="count($pkixEntities)"/>
-        <xsl:variable name="dkeyEntityCount" select="count($dkeyEntities)"/>
-        <xsl:variable name="hybridEntityCount" select="count($hybridEntities)"/>
-        
-        <!--
             Look for some potential problems in the metadata.  We need to do this
             at the start so that we can include or exclude the associated section.
         -->
@@ -536,31 +524,9 @@
 
                 </ul>
 
-                <p>Trust models:</p>
-                <ul>
-                    <li>
-                        <p>
-                            PKIX only:
-                            <xsl:value-of select="$pkixEntityCount"/>
-                            (<xsl:value-of select="format-number($pkixEntityCount div $entityCount, '0.0%')"/>)
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Hybrid (PKIX and direct key):
-                            <xsl:value-of select="$hybridEntityCount"/>
-                            (<xsl:value-of select="format-number($hybridEntityCount div $entityCount, '0.0%')"/>)
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Direct key only:
-                            <xsl:value-of select="$dkeyEntityCount"/>
-                            (<xsl:value-of select="format-number($dkeyEntityCount div $entityCount, '0.0%')"/>)
-                        </p>
-                    </li>
-                </ul>
-
+                <xsl:call-template name="entity.breakdown.by.trust">
+                    <xsl:with-param name="entities" select="$entities"/>
+                </xsl:call-template>
                 <xsl:call-template name="entity.breakdown.by.software">
                     <xsl:with-param name="entities" select="$entities"/>
                 </xsl:call-template>
@@ -637,6 +603,9 @@
                     
                 </ul>
 
+                <xsl:call-template name="entity.breakdown.by.trust">
+                    <xsl:with-param name="entities" select="$idps"/>
+                </xsl:call-template>
                 <xsl:call-template name="entity.breakdown.by.software">
                     <xsl:with-param name="entities" select="$idps"/>
                 </xsl:call-template>
@@ -807,6 +776,9 @@
                     
                 </ul>
                 
+                <xsl:call-template name="entity.breakdown.by.trust">
+                    <xsl:with-param name="entities" select="$sps"/>
+                </xsl:call-template>
                 <xsl:call-template name="entity.breakdown.by.software">
                     <xsl:with-param name="entities" select="$sps"/>
                 </xsl:call-template>
@@ -1014,6 +986,54 @@
         </xsl:choose>
         <xsl:text>]</xsl:text>
     </xsl:template>
+
+
+
+    <!--
+        Break down a set of entities by the trust models available.
+    -->
+    <xsl:template name="entity.breakdown.by.trust">
+        <xsl:param name="entities"/>
+        <xsl:variable name="entityCount" select="count($entities)"/>
+        <!--
+            Trust fabric statistics
+        -->
+        <xsl:variable name="pkixCapableEntities" select="$entities[descendant::ds:KeyName]"/>
+        <xsl:variable name="dkeyCapableEntities" select="$entities[descendant::ds:X509Data]"/>
+        <xsl:variable name="pkixEntities" select="set:difference($pkixCapableEntities, $dkeyCapableEntities)"/>
+        <xsl:variable name="dkeyEntities" select="set:difference($dkeyCapableEntities, $pkixCapableEntities)"/>
+        <xsl:variable name="hybridEntities" select="set:intersection($pkixCapableEntities, $dkeyCapableEntities)"/>
+        <xsl:variable name="pkixEntityCount" select="count($pkixEntities)"/>
+        <xsl:variable name="dkeyEntityCount" select="count($dkeyEntities)"/>
+        <xsl:variable name="hybridEntityCount" select="count($hybridEntities)"/>
+        
+        <p>Trust models:</p>
+        <ul>
+            <li>
+                <p>
+                    PKIX only:
+                    <xsl:value-of select="$pkixEntityCount"/>
+                    (<xsl:value-of select="format-number($pkixEntityCount div $entityCount, '0.0%')"/>)
+                </p>
+            </li>
+            <li>
+                <p>
+                    Hybrid (PKIX and direct key):
+                    <xsl:value-of select="$hybridEntityCount"/>
+                    (<xsl:value-of select="format-number($hybridEntityCount div $entityCount, '0.0%')"/>)
+                </p>
+            </li>
+            <li>
+                <p>
+                    Direct key only:
+                    <xsl:value-of select="$dkeyEntityCount"/>
+                    (<xsl:value-of select="format-number($dkeyEntityCount div $entityCount, '0.0%')"/>)
+                </p>
+            </li>
+        </ul>
+        
+    </xsl:template>        
+
 
 
 
