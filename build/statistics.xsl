@@ -335,28 +335,6 @@
                         <xsl:with-param name="entities" select="$entities"/>
                     </xsl:apply-templates>
                 </table>
-                <p>This accounts for <xsl:value-of select="$memberEntityCount"/>
-                (<xsl:value-of select="format-number($memberEntityCount div $entityCount, '0.0%')"/>)
-                of the <xsl:value-of select="$entityCount"/> entities in the federation metadata.</p>
-                
-                <xsl:variable name="memberDualEntities" select="$memberEntities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
-                <xsl:variable name="memberDualEntityCount" select="count($memberDualEntities)"/>
-                <xsl:variable name="memberIdps" select="$memberEntities[md:IDPSSODescriptor]"/>
-                <xsl:variable name="memberIdpCount" select="count($memberIdps)"/>
-                <xsl:variable name="memberSps" select="$memberEntities[md:SPSSODescriptor]"/>
-                <xsl:variable name="memberSpCount" select="count($memberSps)"/>
-                <p>These <xsl:value-of select="$memberEntityCount"/> entities break down into:</p>
-                <ul>
-                    <li>
-                        <p>Identity providers: <xsl:value-of select="$memberIdpCount - $memberDualEntityCount"/></p>
-                    </li>
-                    <li>
-                        <p>Service providers: <xsl:value-of select="$memberSpCount - $memberDualEntityCount"/></p>
-                    </li>
-                    <li>
-                        <p>Gateways: <xsl:value-of select="$memberDualEntityCount"/></p>
-                    </li>
-                </ul>                
 
                 <!--
                     Break down members by whether or not they have entities registered
