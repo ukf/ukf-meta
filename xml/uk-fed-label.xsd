@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     targetNamespace="http://ukfederation.org.uk/2006/11/label"
-    version="2008-04-02"
+    version="2008-06-24"
     elementFormDefault="qualified">
     
     <annotation>
@@ -84,4 +84,56 @@
         </annotation>
     </element>
 
+    <element name="Software">
+        <annotation>
+            <documentation>
+                Indicates the software used to implement the entity, and
+                optionally both general and specific indications of the
+                version of software used.  This information is added to
+                an entity only if it has been received from the deployer
+                of the entity on the indicated date.
+                
+                This information is used in entity fragment files only,
+                and is not included in the metadata published by the
+                UK federation.  Its principal use is in classifying
+                entities for statistical purposes.
+            </documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="ukfedlabel:datedLabel">
+                    <attribute name="name" use="required" type="token">
+                        <annotation>
+                            <documentation>
+                                The name of the software used to implement the entity.
+                                Although not described as such in this schema, the name
+                                should be picked from the controlled vocabulary understood
+                                by the federation statistics scripts.
+                            </documentation>
+                        </annotation>
+                    </attribute>
+                    
+                    <attribute name="version" use="optional" type="token">
+                        <annotation>
+                            <documentation>
+                                The general version of the software in use.  This should
+                                only be specific enough to identify the broad functionality
+                                of the entity, for example "1.3" vs. "2.0" would be sufficient
+                                for Shibboleth entities.
+                            </documentation>
+                        </annotation>
+                    </attribute>
+                    
+                    <attribute name="fullVersion" use="optional" type="token">
+                        <annotation>
+                            <documentation>
+                                The specific version of the software in use, if known.
+                            </documentation>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
+    
 </schema>
