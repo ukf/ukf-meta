@@ -381,7 +381,7 @@
 		<element name="args" optional="yes"/>
 		<sequential>
 			<java classname="edu.internet2.middleware.shibboleth.utils.MetadataTool"
-				fork="true" failonerror="true">
+				fork="true" failonerror="true" maxmemory="384m">
 				<classpath>
 					<fileset dir="${lib.dir}">
 						<include name="**/*.jar"/>
