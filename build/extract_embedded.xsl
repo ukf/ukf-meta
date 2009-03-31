@@ -27,26 +27,30 @@
 	<xsl:output method="text"/>
 
 	<xsl:template match="//md:EntityDescriptor//md:KeyDescriptor[.//ds:X509Certificate]">
-		<xsl:text>Entity: </xsl:text>
-		<xsl:if test="ancestor::md:EntityDescriptor/@ID">
-			<xsl:text>[</xsl:text>
-			<xsl:value-of select='ancestor::md:EntityDescriptor/@ID'/>
-			<xsl:text>]</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="ancestor::md:EntityDescriptor/@entityID"/>
-		<xsl:text> KeyName: </xsl:text>
-		<xsl:choose>
-			<xsl:when test=".//ds:KeyName">
-				<xsl:value-of select=".//ds:KeyName"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>(none)</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text>&#x0a;</xsl:text>
-		<xsl:text>-----BEGIN CERTIFICATE-----&#x0a;</xsl:text>
-		<xsl:apply-templates select="str:tokenize(.//ds:X509Certificate)"/>
-		<xsl:text>-----END CERTIFICATE-----&#x0a;</xsl:text>
+		<xsl:variable name="keydesc" select="."/>
+		<xsl:variable name="entity" select="ancestor::md:EntityDescriptor"/>
+		<xsl:for-each select="$keydesc//ds:X509Certificate">
+			<xsl:text>Entity: </xsl:text>
+			<xsl:if test="$entity/@ID">
+				<xsl:text>[</xsl:text>
+				<xsl:value-of select='$entity/@ID'/>
+				<xsl:text>]</xsl:text>
+			</xsl:if>
+			<xsl:value-of select="$entity/@entityID"/>
+			<xsl:text> KeyName: </xsl:text>
+			<xsl:choose>
+				<xsl:when test="$keydesc//ds:KeyName">
+					<xsl:value-of select="$keydesc//ds:KeyName"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>(none)</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>&#x0a;</xsl:text>
+			<xsl:text>-----BEGIN CERTIFICATE-----&#x0a;</xsl:text>
+			<xsl:apply-templates select="str:tokenize(.)"/>
+			<xsl:text>-----END CERTIFICATE-----&#x0a;</xsl:text>
+		</xsl:for-each>
 	</xsl:template>
 	
 	<xsl:template match="token">
