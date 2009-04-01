@@ -283,6 +283,7 @@
 			<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
 				<classpath>
 					<pathelement location="${xalan.dir}/bin/xalan.jar"/>
+					<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
 					<pathelement path="${bin.dir}"/>
 				</classpath>
 				<arg value="-IN"/>
