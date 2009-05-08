@@ -362,6 +362,14 @@
 	</target>
 
 	<!--
+		*******************************************
+		***                                     ***
+		***   M E T A D A T A   S I G N I N G   ***
+		***                                     ***
+		*******************************************
+	-->
+	
+	<!--
 		Acquire the keystore password.
 	-->
 	<target name="get.keystore.pass" unless="keystore.pass">
@@ -488,6 +496,35 @@
 
 		<echo>Verification completed.</echo>
 	</target>
+	
+	<!--
+		*****************************************
+		***                                   ***
+		***   M E T A D A T A   C H E C K S   ***
+		***                                   ***
+		*****************************************
+	-->
+	
+	<macrodef name="CHECK">
+		<attribute name="i"/>
+		<sequential>
+			<XALAN i="@{i}" o="temp.tmp" x="check.xsl"/>
+		</sequential>
+	</macrodef>
+	
+	<target name="err.test" depends="gen.uk.unsigned">
+		<echo>testing UK federation metadata</echo>
+		<CHECK i="${uk.metadata.unsigned}"/>
+		<echo>tested UK federation metadata</echo>
+	</target>
+
+	<!--
+		*******************************
+		***                         ***
+		***   M I S C E L L A N Y   ***
+		***                         ***
+		*******************************
+	-->
 	
 	<!--
 		Statistics generation
