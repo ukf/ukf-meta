@@ -47,6 +47,24 @@
 	
 	
 	<!--
+		Check for a construct which is known to cause the Shibboleth 1.3 SP to dump core.
+		
+			<md:KeyDescriptor use="signing">
+				<ds:KeyInfo>
+					<KeyName>blabla<KeyName>
+				</ds:KeyInfo>
+			</md:KeyDescriptor>
+		
+		The issue here is that the KeyName does not have the ds: namespace.
+	-->
+	<xsl:template match="ds:KeyInfo/*[namespace-uri() != 'http://www.w3.org/2000/09/xmldsig#']">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">ds:KeyInfo child element not in ds namespace</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		Common template to call to report a fatal error on some element within an entity.
 	-->
 	<xsl:template name="fatal">
