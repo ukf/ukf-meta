@@ -329,6 +329,7 @@
 		<!-- [2] -->
 		<XALAN x="master_ukfederation.xsl" i="${master.file.name}"
 			o="${uk.master.file}" />
+		<CHECK i="${uk.master.file}"/>
 	</target>
 	
 	<target name="gen.uk.unsigned" depends="gen.uk.master">
@@ -344,7 +345,7 @@
 			o="${uk.metadata.export.unsigned}" />
 	</target>
 	
-	<target name="gen.uk.1.2">
+	<target name="gen.uk.1.2" depends="gen.uk.unsigned">
 		<echo>Generating unsigned UK V1.2 metadata.</echo>
 		<!-- [21] -->
 		<XALAN x="v13_to_v12_sites.xsl" i="${uk.metadata.unsigned}"
@@ -354,7 +355,7 @@
 			o="ukfederation-trust-12-unsigned.xml"/>
 	</target>
 	
-	<target name="gen.uk.wayf">
+	<target name="gen.uk.wayf" depends="gen.uk.unsigned">
 		<echo>Generating unsigned UK WAYF metadata.</echo>
 		<!-- [25] -->
 		<XALAN x="master_to_wayf.xsl" i="${uk.metadata.unsigned}"
@@ -508,7 +509,17 @@
 	<macrodef name="CHECK">
 		<attribute name="i"/>
 		<sequential>
-			<XALAN i="@{i}" o="temp.tmp" x="check.xsl"/>
+			<java classname="uk.org.ukfederation.apps.mdcheck.MetadataCheck"
+				fork="true" failonerror="true" maxmemory="384m">
+				<classpath>
+					<pathelement location="${xalan.dir}/bin/xalan.jar"/>
+					<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
+					<pathelement path="${bin.dir}"/>
+				</classpath>
+				<jvmarg value="-Djava.endorsed.dirs=endorsed"/>
+				<arg value="${xml.dir}/@{i}"/>
+				<arg value="${build.dir}/check.xsl"/>
+			</java>
 		</sequential>
 	</macrodef>
 	
