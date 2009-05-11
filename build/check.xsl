@@ -14,6 +14,7 @@
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 	<!--
@@ -86,6 +87,23 @@
 		</xsl:call-template>
 	</xsl:template>
 	
+	
+	<!--
+		Checks on the DiscoveryResponse extension.
+	-->
+	
+	<xsl:template match="idpdisc:DiscoveryResponse[not(@Binding)]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">missing Binding attribute on DiscoveryResponse</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="idpdisc:DiscoveryResponse[@Binding]
+		[@Binding!='urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol']">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">incorrect Binding value on DiscoveryResponse</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
 	
 	<!--
 		Common template to call to report a fatal error on some element within an entity.
