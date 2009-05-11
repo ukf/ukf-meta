@@ -90,14 +90,6 @@
             at the start so that we can include or exclude the associated section.
         -->
 
-        <!-- Locations that don't start with https:// -->
-        <xsl:variable name="prob.nohttps.location.exceptions"
-            select="$entities[@entityID='no.such.entity']"/>
-        <xsl:variable name="prob.nohttps.location.entities"
-            select="set:difference($entities, $prob.nohttps.location.exceptions)"/>
-        <xsl:variable name="prob.nohttps.location"
-            select="$prob.nohttps.location.entities[descendant::*[@Location and not(starts-with(@Location,'https://'))]]"/>
-        
         <!-- duplicate entity IDs -->
         <xsl:variable name="prob.distinct.entityIDs" select="set:distinct($entities/@entityID)"/>
         <xsl:variable name="prob.dup.entityID"
@@ -115,8 +107,7 @@
         <xsl:variable name="prob.unowned.entities" select="set:difference($entities, $ownedEntities)"/>
 
         <!-- all problems, used as a conditional -->
-        <xsl:variable name="prob.all" select="$prob.nohttps.location |
-            $prob.dup.entityID |
+        <xsl:variable name="prob.all" select="$prob.dup.entityID |
             $prob.dup.ODNs |
             $prob.unowned.entities"/>
         <xsl:variable name="prob.count" select="count($prob.all)"/>
@@ -149,18 +140,6 @@
                 -->                
                 <xsl:if test="$prob.count != 0">
                     <h2><a name="problems">Metadata Problems</a></h2>
-                    <xsl:if test="count($prob.nohttps.location) != 0">
-                        <p>The following entities include elements with <code>Location</code> attributes
-                        that don't start with <code>https://</code>:</p>
-                        <ul>
-                            <xsl:for-each select="$prob.nohttps.location">
-                                <li>
-                                    <xsl:value-of select="@ID"/>:
-                                    <code><xsl:value-of select="@entityID"/></code>
-                                </li>
-                            </xsl:for-each>
-                        </ul>
-                    </xsl:if>
                     <xsl:if test="count($prob.dup.entityID) != 0">
                         <p>The following entity names are used by more than one entity:</p>
                         <ul>
