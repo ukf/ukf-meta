@@ -26,7 +26,6 @@
 		Local specialised directories.
 	-->
 	<property name="build.dir" value="${basedir}/build"/>
-	<property name="endorsed.dir" value="endorsed"/>
 	<property name="entities.dir" value="entities"/>
 	<property name="bin.dir" value="bin"/>
 	<property name="lib.dir" value="lib"/>
@@ -34,6 +33,14 @@
 	<property name="xalan.dir" value="xalan-j_2_6_0"/>
 	<property name="xml.dir" value="xml"/>
 
+	<!--
+		Endorsed libraries.
+	-->
+	<!-- endorsed libraries for metadatatool -->
+	<property name="endorsed.mdt.dir" value="endorsed-mdt"/>
+	<!-- endorsed libraries for everything except metadatatool -->
+	<property name="endorsed.dir" value="endorsed"/>
+	
 	<!--
 		Additional ANT task definitions.
 	-->
@@ -397,7 +404,11 @@
 						<include name="**/*.jar"/>
 					</fileset>
 				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=endorsed"/>
+				<!--
+					metadatatool requires its own variant of
+					the endorsed libraries.
+				-->
+				<jvmarg value="-Djava.endorsed.dirs=${endorsed.mdt.dir}"/>
 				<!--
 				<jvmarg value="-Dlog4j.configuration=log4j.properties"/>
 				-->
@@ -512,11 +523,10 @@
 			<java classname="uk.org.ukfederation.apps.mdcheck.MetadataCheck"
 				fork="true" failonerror="true" maxmemory="384m">
 				<classpath>
-					<pathelement location="${xalan.dir}/bin/xalan.jar"/>
 					<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
 					<pathelement path="${bin.dir}"/>
 				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=endorsed"/>
+				<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}"/>
 				<arg value="${xml.dir}/@{i}"/>
 				<arg value="${build.dir}/check.xsl"/>
 			</java>
