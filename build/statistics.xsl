@@ -90,26 +90,13 @@
             at the start so that we can include or exclude the associated section.
         -->
 
-        <!-- duplicate entity IDs -->
-        <xsl:variable name="prob.distinct.entityIDs" select="set:distinct($entities/@entityID)"/>
-        <xsl:variable name="prob.dup.entityID"
-            select="set:distinct(set:difference($entities/@entityID, $prob.distinct.entityIDs))"/>
-        
-        <!-- duplicate IdP OrganizationDisplayName -->
-        <xsl:variable name="prob.distinct.ODNs"
-            select="set:distinct($idps/md:Organization/md:OrganizationDisplayName)"/>
-        <xsl:variable name="prob.dup.ODNs"
-            select="set:distinct(set:difference($idps/md:Organization/md:OrganizationDisplayName, $prob.distinct.ODNs))"/>
-        
         <!-- entities without known owner -->
         <xsl:variable name="ownedEntities"
             select="dyn:closure($owners/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
         <xsl:variable name="prob.unowned.entities" select="set:difference($entities, $ownedEntities)"/>
 
         <!-- all problems, used as a conditional -->
-        <xsl:variable name="prob.all" select="$prob.dup.entityID |
-            $prob.dup.ODNs |
-            $prob.unowned.entities"/>
+        <xsl:variable name="prob.all" select="$prob.unowned.entities"/>
         <xsl:variable name="prob.count" select="count($prob.all)"/>
 
         <html>
@@ -140,37 +127,6 @@
                 -->                
                 <xsl:if test="$prob.count != 0">
                     <h2><a name="problems">Metadata Problems</a></h2>
-                    <xsl:if test="count($prob.dup.entityID) != 0">
-                        <p>The following entity names are used by more than one entity:</p>
-                        <ul>
-                            <xsl:for-each select="$prob.dup.entityID">
-                                <li>
-                                    <code><xsl:value-of select="."/></code>
-                                </li>
-                            </xsl:for-each>
-                        </ul>
-                    </xsl:if>
-                    
-                    <xsl:if test="count($prob.dup.ODNs) != 0">
-                        <p>The following OrganizationDisplayName values are used by more than one IdP entity:</p>
-                        <ul>
-                            <xsl:for-each select="$prob.dup.ODNs">
-                                <xsl:variable name="prob.dup.ODN" select="."/>
-                                <li>
-                                    <code><xsl:value-of select="$prob.dup.ODN"/></code>
-                                    <ul>
-                                        <xsl:for-each select="$idps[md:Organization/md:OrganizationDisplayName = $prob.dup.ODN]">
-                                            <li>
-                                                <xsl:value-of select="@ID"/>:
-                                                <code><xsl:value-of select="@entityID"/></code>
-                                            </li>
-                                        </xsl:for-each>
-                                    </ul>
-                                </li>
-                            </xsl:for-each>
-                        </ul>
-                    </xsl:if>
-                    
                     <xsl:if test="count($prob.unowned.entities) != 0">
                         <p>
                             The following

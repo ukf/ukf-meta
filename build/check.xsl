@@ -13,6 +13,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:set="http://exslt.org/sets"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
@@ -23,6 +24,49 @@
 		xsl:message element.
 	-->
 	<xsl:output method="text"/>
+	
+	
+	<!--
+		Checks across the whole of the document are defined here.
+		
+		Only bother with these when the document element is an EntitiesDescriptor.
+	-->
+	<xsl:template match="/md:EntitiesDescriptor">
+		<xsl:variable name="entities" select="//md:EntityDescriptor"/>
+		<xsl:variable name="idps" select="$entities[md:IDPSSODescriptor]"/>
+		
+		<!-- check for duplicate entityID values -->
+		<xsl:variable name="distinct.entityIDs" select="set:distinct($entities/@entityID)"/>
+		<xsl:variable name="dup.entityIDs"
+			select="set:distinct(set:difference($entities/@entityID, $distinct.entityIDs))"/>
+		<xsl:for-each select="$dup.entityIDs">
+			<xsl:variable name="dup.entityID" select="."/>
+			<xsl:for-each select="$entities[@entityID = $dup.entityID]">
+				<xsl:call-template name="fatal">
+					<xsl:with-param name="m">duplicate entityID: <xsl:value-of select='$dup.entityID'/></xsl:with-param>
+				</xsl:call-template>
+			</xsl:for-each>
+		</xsl:for-each>
+		
+		<!-- check for duplicate OrganisationDisplayName values -->
+		<xsl:variable name="distinct.ODNs"
+			select="set:distinct($idps/md:Organization/md:OrganizationDisplayName)"/>
+		<xsl:variable name="dup.ODNs"
+			select="set:distinct(set:difference($idps/md:Organization/md:OrganizationDisplayName, $distinct.ODNs))"/>
+		<xsl:for-each select="$dup.ODNs">
+			<xsl:variable name="dup.ODN" select="."/>
+			<xsl:for-each select="$idps[md:Organization/md:OrganizationDisplayName = $dup.ODN]">
+				<xsl:call-template name="fatal">
+					<xsl:with-param name="m">duplicate OrganisationDisplayName: <xsl:value-of select='$dup.ODN'/></xsl:with-param>
+				</xsl:call-template>
+			</xsl:for-each>
+		</xsl:for-each>
+		
+		<!--
+			Perform checks on child elements.
+		-->
+		<xsl:apply-templates/>
+	</xsl:template>
 	
 	
 	<!--
