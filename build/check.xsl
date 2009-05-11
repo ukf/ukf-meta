@@ -65,13 +65,23 @@
 	
 	
 	<!--
+		Entity IDs should not contain space characters.
+	-->
+	<xsl:template match="md:EntityDescriptor[contains(@entityID, ' ')]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">entity ID contains space character</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		Common template to call to report a fatal error on some element within an entity.
 	-->
 	<xsl:template name="fatal">
 		<xsl:param name="m"/>
 		<xsl:message terminate='no'>
 			<xsl:text>*** </xsl:text>
-			<xsl:value-of select="ancestor::md:EntityDescriptor/@ID"/>
+			<xsl:value-of select="ancestor-or-self::md:EntityDescriptor/@ID"/>
 			<xsl:text>: </xsl:text>
 			<xsl:value-of select="$m"/>
 		</xsl:message>
