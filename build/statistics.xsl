@@ -89,8 +89,6 @@
             Look for some potential problems in the metadata.  We need to do this
             at the start so that we can include or exclude the associated section.
         -->
-        <!-- spaces in Locations -->
-        <xsl:variable name="prob.space.location" select="$entities[descendant::*[contains(@Location,' ')]]"/>
 
         <!-- Locations that don't start with https:// -->
         <xsl:variable name="prob.nohttps.location.exceptions"
@@ -126,9 +124,12 @@
                 [@Binding!='urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol']]"/>
         
         <!-- all problems, used as a conditional -->
-        <xsl:variable name="prob.all" select="$prob.space.location |
-            $prob.nohttps.location | $prob.discovery.binding.missing | $prob.discovery.binding.wrong |
-            $prob.dup.entityID | $prob.dup.ODNs | $prob.unowned.entities"/>
+        <xsl:variable name="prob.all" select="$prob.nohttps.location |
+            $prob.discovery.binding.missing |
+            $prob.discovery.binding.wrong |
+            $prob.dup.entityID |
+            $prob.dup.ODNs |
+            $prob.unowned.entities"/>
         <xsl:variable name="prob.count" select="count($prob.all)"/>
 
         <html>
@@ -159,18 +160,6 @@
                 -->                
                 <xsl:if test="$prob.count != 0">
                     <h2><a name="problems">Metadata Problems</a></h2>
-                    <xsl:if test="count($prob.space.location) != 0">
-                        <p>The following entities include elements with <code>Location</code> attributes
-                        that include space characters:</p>
-                        <ul>
-                            <xsl:for-each select="$prob.space.location">
-                                <li>
-                                    <xsl:value-of select="@ID"/>:
-                                    <code><xsl:value-of select="@entityID"/></code>
-                                </li>
-                            </xsl:for-each>
-                        </ul>
-                    </xsl:if>
                     <xsl:if test="count($prob.nohttps.location) != 0">
                         <p>The following entities include elements with <code>Location</code> attributes
                         that don't start with <code>https://</code>:</p>

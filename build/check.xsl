@@ -75,6 +75,19 @@
 	
 	
 	<!--
+		@Location attributes should not contain space characters.
+		
+		This may be a little strict, and might be better confined to md:* elements.
+		At present, however, this produces no false positives.
+	-->
+	<xsl:template match="*[contains(@Location, ' ')]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location contains space character</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		Common template to call to report a fatal error on some element within an entity.
 	-->
 	<xsl:template name="fatal">
