@@ -16,6 +16,7 @@
 	xmlns:set="http://exslt.org/sets"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+	xmlns:ukfxm="xalan://uk.org.ukfederation.xalan.Members"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 	<!--
@@ -25,6 +26,13 @@
 	-->
 	<xsl:output method="text"/>
 	
+	
+	<!--
+		Pick up the members.xml document, and create a Members class instance.
+	-->
+	<xsl:variable name="memberDocument" select="document('xml/members.xml')"/>
+	<xsl:variable name="members" select="ukfxm:new($memberDocument)"/>
+
 	
 	<!--
 		Checks across the whole of the document are defined here.
@@ -66,6 +74,28 @@
 			Perform checks on child elements.
 		-->
 		<xsl:apply-templates/>
+	</xsl:template>
+	
+	
+	<!--
+		Check for entities which do not have an OrganizationName at all.
+	-->
+	<xsl:template match="md:EntityDescriptor[not(md:Organization/md:OrganizationName)]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">entity lacks OrganizationName</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
+
+	<!--
+		Check for entities with OrganizationName elements which don't correspond to
+		a canonical owner name.
+	-->
+	<xsl:template match="md:EntityDescriptor[md:Organization/md:OrganizationName]
+		[not(ukfxm:isOwnerName($members, md:Organization/md:OrganizationName))]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">unknown owner name: <xsl:value-of select="md:Organization/md:OrganizationName"/></xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 	
 	
