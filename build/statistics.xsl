@@ -584,12 +584,29 @@
 
                 
                 
+                <!--
+                    *********************************************
+                    ***                                       ***
+                    ***   E N T I T I E S   B Y   O W N E R   ***
+                    ***                                       ***
+                    *********************************************
+                -->
                 <h2><a name="byOwner">Entities by Owner</a></h2>
                 <ul>
                     <xsl:apply-templates select="$ownerNames" mode="enumerate">
                         <xsl:with-param name="entities" select="$entities"/>
                     </xsl:apply-templates>
                 </ul>
+
+                
+                
+                <!--
+                    ***********************************************
+                    ***                                         ***
+                    ***   I D P   A C C O U N T A B I L I T Y   ***
+                    ***                                         ***
+                    ***********************************************
+                -->
                 <h2><a name="accountableIdPs">Identity Provider Accountability</a></h2>
                 
                 <p>
@@ -746,6 +763,7 @@
                             <xsl:text>:</xsl:text>
                             <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)"> [not-M]</xsl:if>
                             <xsl:if test="md:IDPSSODescriptor"> [IdP]</xsl:if>
+                            <xsl:if test="md:Extensions/wayf:HideFromWAYF"> [H]</xsl:if>
                             <xsl:if test="md:SPSSODescriptor"> [SP]</xsl:if>
                             <xsl:apply-templates select="md:Extensions/uklabel:Software" mode="short"/>
                             <xsl:text> </xsl:text>
