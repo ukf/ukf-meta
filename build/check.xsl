@@ -102,8 +102,8 @@
 	
 	<!--
 		Checks for an IdP whose KeyDescriptor elements do not include a @use attribute.
-		This causes problems with certain versions of the Shibboleth 1.3 SP, which
-		interpret this as "no use permitted" rather than "either signing or encryption use
+		This causes problems with the Shibboleth 1.3 SP prior to V1.3.1, which
+		interprets this as "no use permitted" rather than "either signing or encryption use
 		permitted".
 		
 		Two checks are required, one for each of the IdP role descriptors.
