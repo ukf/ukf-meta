@@ -211,6 +211,67 @@
 	
 	
 	<!--
+		md:SPSSODescriptor
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:SPSSODescriptor">
+		<SPSSODescriptor>
+			<xsl:apply-templates select="node()|@*"/>
+		</SPSSODescriptor>
+	</xsl:template>
+	
+	
+	<!--
+		md:KeyDescriptor
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:KeyDescriptor">
+		<KeyDescriptor>
+			<xsl:apply-templates select="node()|@*"/>
+		</KeyDescriptor>
+	</xsl:template>
+	
+	
+	<!--
+		md:SingleLogoutService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:SingleLogoutService">
+		<SingleLogoutService>
+			<xsl:apply-templates select="node()|@*"/>
+		</SingleLogoutService>
+	</xsl:template>
+	
+	
+	
+	<!--
+		md:ManageNameIDService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:ManageNameIDService">
+		<ManageNameIDService>
+			<xsl:apply-templates select="node()|@*"/>
+		</ManageNameIDService>
+	</xsl:template>
+	
+	
+	<!--
+		md:AssertionConsumerService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:AssertionConsumerService">
+		<AssertionConsumerService>
+			<xsl:apply-templates select="node()|@*"/>
+		</AssertionConsumerService>
+	</xsl:template>
+	
+	
+	<!--
 		Normalise whitespace in X509Certificate elements.
 	-->
 	<xsl:template match="ds:X509Certificate">
@@ -221,6 +282,13 @@
 		</xsl:element>
 	</xsl:template>
 	
+	
+	<!--
+		Discard ds:X509SubjectName
+	-->
+	<xsl:template match="ds:X509SubjectName">
+		<!-- do nothing -->
+	</xsl:template>
 	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
