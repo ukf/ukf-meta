@@ -242,6 +242,8 @@ while (<>) {
 			} elsif ($error eq 'unable to get local issuer certificate') {
 				$error = '';
 				comment("unknown issuer: $issuerCN");
+			} elsif ($clientOK) {
+				$error = "certificate matches trust fabric; add KeyName?";
 			}
 		}
 
