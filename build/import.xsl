@@ -36,6 +36,8 @@
 	extension-element-prefixes="ukfxd ukftu"
 
 	xmlns:xalan="http://xml.apache.org/xalan"
+	
+	exclude-result-prefixes="md xalan"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -268,6 +270,42 @@
 		<AssertionConsumerService>
 			<xsl:apply-templates select="node()|@*"/>
 		</AssertionConsumerService>
+	</xsl:template>
+	
+	
+	<!--
+		ds:KeyInfo
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="ds:KeyInfo">
+		<ds:KeyInfo>
+			<xsl:apply-templates select="node()|@*"/>
+		</ds:KeyInfo>
+	</xsl:template>
+	
+	
+	<!--
+		ds:KeyName
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="ds:KeyName">
+		<ds:KeyName>
+			<xsl:apply-templates select="node()|@*"/>
+		</ds:KeyName>
+	</xsl:template>
+	
+	
+	<!--
+		ds:X509Data
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="ds:X509Data">
+		<ds:X509Data>
+			<xsl:apply-templates select="node()|@*"/>
+		</ds:X509Data>
 	</xsl:template>
 	
 	
