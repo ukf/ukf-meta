@@ -25,10 +25,12 @@
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
-	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	
 	xmlns:ukfxd="xalan://uk.org.ukfederation.xalan.Dates"
@@ -37,7 +39,7 @@
 
 	xmlns:xalan="http://xml.apache.org/xalan"
 	
-	exclude-result-prefixes="md xalan"
+	exclude-result-prefixes="idpdisc md xalan"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -225,6 +227,18 @@
 	
 	
 	<!--
+		md:Extensions
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:Extensions">
+		<Extensions>
+			<xsl:apply-templates select="node()|@*"/>
+		</Extensions>
+	</xsl:template>
+	
+	
+	<!--
 		md:KeyDescriptor
 		
 		Normalise namespace prefix.
@@ -327,6 +341,22 @@
 	<xsl:template match="ds:X509SubjectName">
 		<!-- do nothing -->
 	</xsl:template>
+	
+	
+	<!--
+		idpdisc:DiscoveryResponse
+		
+		Normalise namespace prefix, add missing Binding attribute.
+	-->
+	<xsl:template match="idpdisc:DiscoveryResponse">
+		<DiscoveryResponse xmlns="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol">
+			<xsl:if test="not(@Binding)">
+				<xsl:attribute name="Binding">urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol</xsl:attribute>
+			</xsl:if>
+			<xsl:apply-templates select="node()|@*"/>
+		</DiscoveryResponse>
+	</xsl:template>
+	
 	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
