@@ -512,6 +512,31 @@
 	<!--
 		*****************************************
 		***                                   ***
+		***   M E T A D A T A   I M P O R T   ***
+		***                                   ***
+		*****************************************
+	-->
+	<target name="import.metadata">
+		<echo>Importing metadata from ${entities.dir}/import.xml</echo>
+		<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
+			<classpath>
+				<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
+				<pathelement path="${bin.dir}"/>
+			</classpath>
+			<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}"/>
+			<arg value="-IN"/>
+			<arg value="${entities.dir}/import.xml"/>
+			<arg value="-OUT"/>
+			<arg value="${entities.dir}/imported.xml"/>
+			<arg value="-XSL"/>
+			<arg value="${build.dir}/import.xsl"/>
+		</java>
+		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
+	</target>
+	
+	<!--
+		*****************************************
+		***                                   ***
 		***   M E T A D A T A   C H E C K S   ***
 		***                                   ***
 		*****************************************
