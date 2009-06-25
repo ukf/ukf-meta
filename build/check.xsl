@@ -121,6 +121,29 @@
 		</xsl:call-template>
 	</xsl:template>
 	
+
+	<!--
+		Check for role descriptors with missing KeyDescriptor elements.
+	-->
+	
+	<xsl:template match="md:IDPSSODescriptor[not(md:KeyDescriptor)]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">IdP SSO Descriptor lacking KeyDescriptor</xsl:with-param>
+		</xsl:call-template>	
+	</xsl:template>
+
+	<xsl:template match="md:SPSSODescriptor[not(md:KeyDescriptor)]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">SP SSO Descriptor lacking KeyDescriptor</xsl:with-param>
+		</xsl:call-template>	
+	</xsl:template>
+	
+	<xsl:template match="md:AttributeAuthorityDescriptor[not(md:KeyDescriptor)]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">IdP AA Descriptor lacking KeyDescriptor</xsl:with-param>
+		</xsl:call-template>	
+	</xsl:template>
+	
 	
 	<!--
 		Check for a construct which is known to cause the Shibboleth 1.3 SP to dump core.
