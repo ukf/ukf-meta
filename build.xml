@@ -336,7 +336,7 @@
 		<!-- [2] -->
 		<XALAN x="master_ukfederation.xsl" i="${master.file.name}"
 			o="${uk.master.file}" />
-		<CHECK i="${xml.dir}/${uk.master.file}"/>
+		<CHECK i="${xml.dir}/${uk.master.file}" s="check.xsl"/>
 	</target>
 	
 	<target name="gen.uk.unsigned" depends="gen.uk.master">
@@ -516,6 +516,7 @@
 		***                                   ***
 		*****************************************
 	-->
+	
 	<target name="import.metadata">
 		<echo>Importing metadata from ${entities.dir}/import.xml</echo>
 		<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
@@ -532,6 +533,8 @@
 			<arg value="${build.dir}/import.xsl"/>
 		</java>
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
+		<CHECK i="${entities.dir}/imported.xml" s="check_imported.xsl"/>
+		<echo>Checked.</echo>
 	</target>
 	
 	<!--
@@ -543,13 +546,17 @@
 	-->
 	
 	<!--
-		Check a metadata document against our local conventions.
+		Check a metadata document against a set of conventions.
 		
 		Parameter 'i' is the file to be checked; no assumption is made
 		about its location so this must contain a full path.
+		
+		Parameter 's' is the checking stylesheet to use; assumed to be
+		present in the build.dir.
 	-->
 	<macrodef name="CHECK">
 		<attribute name="i"/>
+		<attribute name="s"/>
 		<sequential>
 			<java classname="uk.org.ukfederation.apps.mdcheck.MetadataCheck"
 				fork="true" failonerror="true" maxmemory="384m">
@@ -559,17 +566,11 @@
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}"/>
 				<arg value="@{i}"/>
-				<arg value="${build.dir}/check.xsl"/>
+				<arg value="${build.dir}/@{s}"/>
 			</java>
 		</sequential>
 	</macrodef>
 	
-	<target name="err.test" depends="gen.uk.unsigned">
-		<echo>testing UK federation metadata</echo>
-		<CHECK i="${xml.dir}/${uk.metadata.unsigned}"/>
-		<echo>tested UK federation metadata</echo>
-	</target>
-
 	<!--
 		*******************************
 		***                         ***
