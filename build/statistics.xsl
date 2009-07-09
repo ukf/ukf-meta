@@ -784,8 +784,8 @@
             <xsl:when test="@name = 'Shibboleth'">
                 <xsl:text>Shib</xsl:text>
             </xsl:when>
-            <xsl:when test="@name='OpenAthens SP'">
-                <xsl:text>OASP</xsl:text>
+            <xsl:when test="@name='OpenAthens'">
+                <xsl:text>OA</xsl:text>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="@name"/>
@@ -894,7 +894,7 @@
                     md:Extensions/uklabel:Software
                         [@name != 'Shibboleth']
                         [@name != 'EZproxy']
-                        [@name != 'OpenAthens SP']
+                        [@name != 'OpenAthens']
                         [@name != 'Guanxi']
                         [@name != 'simpleSAMLphp']
                         [@name != 'Atypon SAML SP 1.1/2.0']
@@ -932,18 +932,18 @@
                 select="set:difference($entities.atyponsamlsp.in, $entities.atyponsamlsp)"/>
             
             <!--
-                Classify OpenAthens SP entities.
+                Classify OpenAthens entities.
             -->
-            <xsl:variable name="entities.openathenssp.in" select="$entities.atyponsamlsp.out"/>
-            <xsl:variable name="entities.openathenssp"
-                select="$entities.openathenssp.in[md:Extensions/uklabel:Software/@name='OpenAthens SP']"/>
-            <xsl:variable name="entities.openathenssp.out"
-                select="set:difference($entities.openathenssp.in, $entities.openathenssp)"/>
+            <xsl:variable name="entities.openathens.in" select="$entities.atyponsamlsp.out"/>
+            <xsl:variable name="entities.openathens"
+                select="$entities.openathens.in[md:Extensions/uklabel:Software/@name='OpenAthens']"/>
+            <xsl:variable name="entities.openathens.out"
+                select="set:difference($entities.openathens.in, $entities.openathens)"/>
             
             <!--
                 Classify Shibboleth 2.0 IdPs and SPs.
             -->
-            <xsl:variable name="entities.shib.2.in" select="$entities.openathenssp.out"/>
+            <xsl:variable name="entities.shib.2.in" select="$entities.openathens.out"/>
             <xsl:variable name="entities.shib.2"
                 select="$entities.shib.2.in[
                     md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')] |
@@ -1086,8 +1086,8 @@
             </xsl:call-template>
             
             <xsl:call-template name="entity.breakdown.by.software.line">
-                <xsl:with-param name="entities" select="$entities.openathenssp"/>
-                <xsl:with-param name="name">OpenAthens SP</xsl:with-param>
+                <xsl:with-param name="entities" select="$entities.openathens"/>
+                <xsl:with-param name="name">OpenAthens</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
             </xsl:call-template>
             
