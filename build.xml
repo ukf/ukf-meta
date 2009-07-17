@@ -82,22 +82,29 @@
 	<property name="uk.master.file" value="ukfederation-metadata-master.xml"/>
 	
 	<!--
-		The UK federation master file is then processed to remove housekeeping
-		information, resulting in the UK federation's unsigned metadata file,
-		[19] ukfederation-metadata-unsigned.xml.
+		The UK federation master file acts as the parent to four separate processing
+		"streams":  production, test, export and fallback.  The fifth "wayf" stream
+		is derived from the production stream.
+		
+		Each stream has its own XSLT transform and its own unsigned file, as follows:
 	-->
-	<property name="uk.metadata.unsigned" value="ukfederation-metadata-unsigned.xml"/>
-
-	<!--
-		In addition, the UK federation master file acts as the parent to two
-		other metadata streams, the "test" and "export" streams.  These have their
-		own XSLT transforms, and their own unsigned files ([27] and [29]).
-	-->
-	<property name="uk.metadata.test.unsigned" value="ukfederation-test-unsigned.xml"/>
-	<property name="uk.metadata.export.unsigned" value="ukfederation-export-unsigned.xml"/>
+	<property name="md.prod.unsigned"   value="ukfederation-metadata-unsigned.xml"/>
+	<property name="md.test.unsigned"   value="ukfederation-test-unsigned.xml"/>
+	<property name="md.export.unsigned" value="ukfederation-export-unsigned.xml"/>
+	<property name="md.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
+	<property name="md.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
 	
 	<!--
-		From there, the process (with indentation implying the creation
+		Each stream has its own signed file.
+	-->
+	<property name="md.prod.signed"     value="ukfederation-metadata.xml"/>
+	<property name="md.test.signed"     value="ukfederation-test.xml"/>
+	<property name="md.export.signed"   value="ukfederation-export.xml"/>
+	<property name="md.back.signed"     value="ukfederation-back.xml"/>
+	<property name="md.wayf.signed"     value="ukfederation-wayf.xml"/>
+	
+	<!--
+		The process (with indentation implying the creation
 		hierarchy) is:
 		
 		[19]	ukfederation-metadata-unsigned.xml
@@ -113,6 +120,8 @@
 		[28]		ukfederation-test.xml
 		[29]	ukfederation-export-unsigned.xml
 		[30]		ukfederation-export.xml
+		[31]    ukfederation-back-unsigned.xml
+		[32]        ukfederation-back.xml
 		
 		The numbers in brackets are duplicated in the script where the file in
 		question is created.  Some numbers are missing because some old format
@@ -227,11 +236,12 @@
 		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.uk}"
 				knownhosts="${known.hosts}">
 			<fileset dir="${xml.dir}">
-				<include name="ukfederation-metadata.xml"/>
+				<include name="${md.prod.signed}"/>
 				<include name="ukfederation-sites-12.xml"/>
 				<include name="ukfederation-trust-12.xml"/>
-				<include name="ukfederation-wayf.xml"/>
-				<include name="ukfederation-test.xml"/>
+				<include name="${md.wayf.signed}"/>
+				<include name="${md.test.signed}"/>
+				<include name="${md.back.signed}"/>
 			</fileset>
 		</scp>
 	</target>
@@ -255,11 +265,12 @@
 	-->
 	<target name="verify.remote.metadata">
 		<echo>Verifying metadata held at ${remote.url}</echo>
-		<VFY.remote i="ukfederation-metadata.xml"/>
+		<VFY.remote i="${md.prod.signed}"/>
 		<VFY.remote i="ukfederation-sites-12.xml"/>
 		<VFY.remote i="ukfederation-trust-12.xml"/>
-		<VFY.remote i="ukfederation-wayf.xml"/>
-		<VFY.remote i="ukfederation-test.xml"/>
+		<VFY.remote i="${md.wayf.signed}"/>
+		<VFY.remote i="${md.test.signed}"/>
+		<VFY.remote i="${md.back.signed}"/>
 		<echo>Verification completed.</echo>
 	</target>
 	
@@ -343,13 +354,16 @@
 		<echo>Generating unsigned UK metadata files.</echo>
 		<!-- [19] -->
 		<XALAN x="uk_master_unsigned.xsl" i="${uk.master.file}"
-			o="${uk.metadata.unsigned}" />
+			o="${md.prod.unsigned}" />
 		<!-- [27] -->
 		<XALAN x="uk_master_test.xsl" i="${uk.master.file}"
-			o="${uk.metadata.test.unsigned}" />
+			o="${md.test.unsigned}" />
 		<!-- [29] -->
 		<XALAN x="uk_master_export.xsl" i="${uk.master.file}"
-			o="${uk.metadata.export.unsigned}" />
+			o="${md.export.unsigned}" />
+		<!-- [31] -->
+		<XALAN x="uk_master_back.xsl" i="${uk.master.file}"
+			o="${md.back.unsigned}" />
 	</target>
 	
 	<target name="gen.uk.1.2" depends="gen.uk.unsigned">
@@ -366,7 +380,7 @@
 		<echo>Generating unsigned UK WAYF metadata.</echo>
 		<!-- [25] -->
 		<XALAN x="master_to_wayf.xsl" i="${uk.metadata.unsigned}"
-			o="ukfederation-wayf-unsigned.xml"/>
+			o="${md.wayf.unsigned}"/>
 	</target>
 
 	<!--
@@ -451,7 +465,7 @@
 	<target name="sign">
 		<echo>Signing UK metadata.</echo>
 		<!-- [20] -->
-		<SIGN.uk i="${uk.metadata.unsigned}" o="ukfederation-metadata.xml"/>
+		<SIGN.uk i="${md.prod.unsigned}" o="${md.prod.signed}"/>
 
 		<echo>Signing UK V1.2 metadata.</echo>
 		<!-- [22] -->
@@ -463,16 +477,20 @@
 
 		<echo>Signing UK WAYF metadata.</echo>
 		<!-- [26] -->
-		<SIGN.uk i="ukfederation-wayf-unsigned.xml" o="ukfederation-wayf.xml"/>
+		<SIGN.uk i="${md.wayf.unsigned}" o="${md.wayf.signed}"/>
 
 		<echo>Signing UK test metadata.</echo>
 		<!-- [28] -->
-		<SIGN.uk i="ukfederation-test-unsigned.xml" o="ukfederation-test.xml"/>
+		<SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}"/>
 
 		<echo>Signing UK export metadata.</echo>
 		<!-- [30] -->
-		<SIGN.uk i="ukfederation-export-unsigned.xml" o="ukfederation-export.xml"/>
+		<SIGN.uk i="${md.export.unsigned}" o="${md.export.signed}"/>
 
+		<echo>Signing UK fallback metadata.</echo>
+		<!-- [32] -->
+		<SIGN.uk i="${md.back.unsigned}" o="${md.back.signed}"/>
+		
 		<echo>Generated signed UK metadata.</echo>
 	</target>
 	
@@ -491,20 +509,23 @@
 	-->
 	<target name="verify">
 		<echo>Verifying signed UK metadata.</echo>
-		<VFY.uk i="ukfederation-metadata.xml"/>
+		<VFY.uk i="${md.prod.signed}"/>
 
 		<echo>Verifying signed UK V1.2 metadata.</echo>
 		<VFY.uk i="ukfederation-sites-12.xml"/>
 		<VFY.uk i="ukfederation-trust-12.xml"/>
 
 		<echo>Verifying signed UK WAYF metadata.</echo>
-		<VFY.uk i="ukfederation-wayf.xml"/>
+		<VFY.uk i="${md.wayf.signed}"/>
 
 		<echo>Verifying signed UK test metadata.</echo>
-		<VFY.uk i="ukfederation-test.xml"/>
+		<VFY.uk i="${md.test.signed}"/>
 
 		<echo>Verifying signed UK export metadata.</echo>
-		<VFY.uk i="ukfederation-export.xml"/>
+		<VFY.uk i="${md.export.signed}"/>
+		
+		<echo>Verifying signed UK fallback metadata.</echo>
+		<VFY.uk i="${md.back.signed}"/>
 
 		<echo>Verification completed.</echo>
 	</target>
@@ -716,7 +737,7 @@
 	<target name="extract.embedded" depends="gen.uk">
 		<echo>Extracting embedded certificates</echo>
 		<XALAN
-			i="ukfederation-metadata-unsigned.xml"
+			i="${md.prod.unsigned}"
 			o="embedded.pem"
 			x="extract_embedded.xsl"/>
 	</target>
