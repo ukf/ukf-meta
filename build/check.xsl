@@ -171,8 +171,20 @@
 			<xsl:with-param name="m">entity ID contains space character</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
+
+
+	<!--
+		Entity IDs should start with one of "http://", "https://" or "urn:mace:".
+	-->
+	<xsl:template match="md:EntityDescriptor[not(starts-with(@entityID, 'urn:mace:'))]
+		[not(starts-with(@entityID, 'http://'))]
+		[not(starts-with(@entityID, 'https://'))]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">entity ID <xsl:value-of select="@entityID"/> does not start with acceptable prefix</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
+
 	<!--
 		@Location attributes should not contain space characters.
 		
