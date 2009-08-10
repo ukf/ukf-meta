@@ -34,7 +34,7 @@
 		This parameter determines the number of days between the aggregation instant and the
 		end of validity of the signed metadata.
 	-->
-	<xsl:variable name="validityDays" select="28"/>
+	<xsl:variable name="validityDays" select="21"/>
 	
 	<xsl:variable name="now" select="date:date-time()"/>
 	<xsl:variable name="validUntil" select="ukfxd:dateAdd($now, $validityDays)"/>
