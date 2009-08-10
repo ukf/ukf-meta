@@ -150,7 +150,7 @@ while (<>) {
 				} elsif ($days < 30) {
 					$days = int($days);
 					error("expires in $days days");
-				} elsif ($days < 90) {
+				} elsif ($days < 60) {
 					$days = int($days);
 					warning("expires in $days days");
 				}
