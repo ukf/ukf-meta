@@ -38,11 +38,7 @@
 	-->
 	<property name="tools.dir" value="tools"/>
 	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
-	
-	<!--
-		Endorsed libraries for everything except metadatatool.
-	-->
-	<property name="endorsed.dir" value="endorsed"/>
+	<property name="tools.xalan" value="${tools.dir}/xalan"/>
 	
 	<!--
 		Additional ANT task definitions.
@@ -548,7 +544,7 @@
 				<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
 				<pathelement path="${bin.dir}"/>
 			</classpath>
-			<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}"/>
+			<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 			<arg value="-IN"/>
 			<arg value="${entities.dir}/import.xml"/>
 			<arg value="-OUT"/>
@@ -588,7 +584,7 @@
 					<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
 					<pathelement path="${bin.dir}"/>
 				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${endorsed.dir}"/>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 				<arg value="@{i}"/>
 				<arg value="${build.dir}/@{s}"/>
 			</java>

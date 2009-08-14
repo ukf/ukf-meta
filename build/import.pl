@@ -11,4 +11,4 @@
 #		./check_entity 123
 #
 
-system("java -cp ../bin:../lib/joda-time-1.6.jar -Djava.endorsed.dirs=../endorsed org.apache.xalan.xslt.Process -IN ../entities/import.xml -OUT ../entities/imported.xml -XSL import.xsl");
+system("java -cp ../bin:../lib/joda-time-1.6.jar -Djava.endorsed.dirs=../tools/xalan/endorsed org.apache.xalan.xslt.Process -IN ../entities/import.xml -OUT ../entities/imported.xml -XSL import.xsl");
