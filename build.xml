@@ -30,7 +30,6 @@
 	<property name="bin.dir" value="bin"/>
 	<property name="lib.dir" value="lib"/>
 	<property name="templates.dir" value="templates"/>
-	<property name="xalan.dir" value="xalan-j_2_6_0"/>
 	<property name="xml.dir" value="xml"/>
 
 	<!--
@@ -299,10 +298,10 @@
 		<sequential>
 			<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
 				<classpath>
-					<pathelement location="${xalan.dir}/bin/xalan.jar"/>
 					<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
 					<pathelement path="${bin.dir}"/>
 				</classpath>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 				<arg value="-IN"/>
 				<arg value="${xml.dir}/@{i}"/>
 				<arg value="-OUT"/>
