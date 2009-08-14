@@ -29,7 +29,7 @@ while (@ARGV) {
 		unlink($temp) if -e $temp;
 		
 		# extract embedded certificates
-		open(EXTRACT, "java -cp ../xalan-j_2_6_0/bin/xalan.jar org.apache.xalan.xslt.Process -IN $fn -OUT $temp -XSL extract_embedded.xsl|")
+		open(EXTRACT, "java -Djava.endorsed.dirs=../tools/xalan/endorsed org.apache.xalan.xslt.Process -IN $fn -OUT $temp -XSL extract_embedded.xsl|")
 		 	|| die "could not open certificate extract process";
 		while (<EXTRACT>) {
 			print $_;
