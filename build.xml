@@ -34,11 +34,14 @@
 	<property name="xml.dir" value="xml"/>
 
 	<!--
-		Endorsed libraries.
+		Location of externally supplied tool bundles.
 	-->
-	<!-- endorsed libraries for metadatatool -->
-	<property name="endorsed.mdt.dir" value="endorsed-mdt"/>
-	<!-- endorsed libraries for everything except metadatatool -->
+	<property name="tools.dir" value="tools"/>
+	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
+	
+	<!--
+		Endorsed libraries for everything except metadatatool.
+	-->
 	<property name="endorsed.dir" value="endorsed"/>
 	
 	<!--
@@ -422,7 +425,7 @@
 					metadatatool requires its own variant of
 					the endorsed libraries.
 				-->
-				<jvmarg value="-Djava.endorsed.dirs=${endorsed.mdt.dir}"/>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.metadatatool}/endorsed"/>
 				<!--
 				<jvmarg value="-Dlog4j.configuration=log4j.properties"/>
 				-->
