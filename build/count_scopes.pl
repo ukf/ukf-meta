@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-open(XML,"java -cp ../xalan-j_2_6_0/bin/xalan.jar org.apache.xalan.xslt.Process -IN ../xml/ukfederation-metadata-unsigned.xml -XSL extract_scopes.xsl|") || die "could not open input file";
+open(XML,"java -Djava.endorsed.dirs=../tools/xalan/endorsed org.apache.xalan.xslt.Process -IN ../xml/ukfederation-metadata-unsigned.xml -XSL extract_scopes.xsl|") || die "could not open input file";
 while (<XML>) {
 	# print $_;
 	chop;
