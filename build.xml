@@ -36,6 +36,7 @@
 		Location of externally supplied tool bundles.
 	-->
 	<property name="tools.dir" value="tools"/>
+	<property name="tools.ant" value="${tools.dir}/ant"/>
 	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
 	<property name="tools.xalan" value="${tools.dir}/xalan"/>
 	
@@ -44,7 +45,7 @@
 	-->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar"/>
+			<pathelement location="${tools.ant}/lib/ant-contrib-1.0b3.jar"/>
 		</classpath>
 	</taskdef>
 	
