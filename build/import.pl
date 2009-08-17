@@ -6,9 +6,8 @@
 # This utility is intended for use immediately before checking in a new entity fragment,
 # or prior to checking in major changes such as to embedded trust certificates.
 #
-# The fragment is indicated by a numeric parameter, e.g. 999 would indicate uk000999.xml
-#
-#		./check_entity 123
+# The fragment is always taken from entities/import.xml, and the output is always placed
+# in entities/imported.xml.
 #
 
 system("java -cp ../bin:../lib/joda-time-1.6.jar -Djava.endorsed.dirs=../tools/xalan/endorsed org.apache.xalan.xslt.Process -IN ../entities/import.xml -OUT ../entities/imported.xml -XSL import.xsl");
