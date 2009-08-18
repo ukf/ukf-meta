@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+use Xalan;
+
 #
 # Import an entity metadata fragment file.
 #
@@ -10,4 +12,4 @@
 # in entities/imported.xml.
 #
 
-system("java -cp ../bin:../lib/joda-time-1.6.jar -Djava.endorsed.dirs=../tools/xalan/endorsed org.apache.xalan.xslt.Process -IN ../entities/import.xml -OUT ../entities/imported.xml -XSL import.xsl");
+system(xalanCall . " -IN ../entities/import.xml -OUT ../entities/imported.xml -XSL import.xsl");

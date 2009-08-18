@@ -299,7 +299,9 @@
 		<sequential>
 			<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
 				<classpath>
-					<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
+					<fileset dir="${tools.xalan}/lib">
+						<include name="**/*.jar"/>
+					</fileset>
 					<pathelement path="${bin.dir}"/>
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
@@ -541,7 +543,9 @@
 		<echo>Importing metadata from ${entities.dir}/import.xml</echo>
 		<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
 			<classpath>
-				<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
+				<fileset dir="${tools.xalan}/lib">
+					<include name="**/*.jar"/>
+				</fileset>
 				<pathelement path="${bin.dir}"/>
 			</classpath>
 			<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
@@ -581,7 +585,9 @@
 			<java classname="uk.org.ukfederation.apps.mdcheck.MetadataCheck"
 				fork="true" failonerror="true" maxmemory="384m">
 				<classpath>
-					<pathelement location="${lib.dir}/joda-time-1.6.jar"/>
+					<fileset dir="${tools.xalan}/lib">
+						<include name="**/*.jar"/>
+					</fileset>
 					<pathelement path="${bin.dir}"/>
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>

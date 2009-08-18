@@ -1,8 +1,10 @@
 #!/usr/bin/perl -w
 
+use Xalan;
+
 $known_bad{'census.data-archive.ac.uk:8080'} = 1; # it is really http, not https
 
-open(XML,"java -Djava.endorsed.dirs=../tools/xalan/endorsed org.apache.xalan.xslt.Process -IN ../xml/ukfederation-metadata.xml -XSL extract_nocert_locs.xsl|") || die "could not open input file";
+open(XML, xalanCall . " -IN ../xml/ukfederation-metadata.xml -XSL extract_nocert_locs.xsl|") || die "could not open input file";
 while (<XML>) {
 	chop;
 	if (/^http:/) {

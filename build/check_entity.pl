@@ -1,4 +1,5 @@
 #!/usr/bin/perl -w
+use Xalan;
 use File::Temp qw(tempfile);
 use Date::Parse;
 use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
@@ -29,7 +30,7 @@ while (@ARGV) {
 		unlink($temp) if -e $temp;
 		
 		# extract embedded certificates
-		open(EXTRACT, "java -Djava.endorsed.dirs=../tools/xalan/endorsed org.apache.xalan.xslt.Process -IN $fn -OUT $temp -XSL extract_embedded.xsl|")
+		open(EXTRACT, xalanCall . " -IN $fn -OUT $temp -XSL extract_embedded.xsl|")
 		 	|| die "could not open certificate extract process";
 		while (<EXTRACT>) {
 			print $_;
