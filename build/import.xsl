@@ -33,9 +33,9 @@
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	
-	xmlns:ukfxd="xalan://uk.org.ukfederation.xalan.Dates"
-	xmlns:ukftu="xalan://uk.org.ukfederation.xalan.TextUtils"
-	extension-element-prefixes="ukfxd ukftu"
+	xmlns:mdxDates="xalan://uk.ac.sdss.xalan.md.Dates"
+	xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
+	extension-element-prefixes="mdxDates mdxTextUtils"
 
 	xmlns:xalan="http://xml.apache.org/xalan"
 	
@@ -116,7 +116,7 @@
 				-->
 				<ukfedlabel:Software name="Shibboleth"
 					version="2" fullVersion="*** FILL IN OR REMOVE ***">
-					<xsl:attribute name="date"><xsl:value-of select="ukfxd:date()"/></xsl:attribute>
+					<xsl:attribute name="date"><xsl:value-of select="mdxDates:date()"/></xsl:attribute>
 				</ukfedlabel:Software>
 
 				<!--
@@ -329,7 +329,7 @@
 	<xsl:template match="ds:X509Certificate">
 		<xsl:element name="ds:X509Certificate">
 			<xsl:text>&#10;</xsl:text>
-			<xsl:value-of select="ukftu:wrapBase64(.)"/>
+			<xsl:value-of select="mdxTextUtils:wrapBase64(.)"/>
 			<xsl:text>&#10;</xsl:text>
 		</xsl:element>
 	</xsl:template>

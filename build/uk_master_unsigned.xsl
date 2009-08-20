@@ -19,8 +19,8 @@
 	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
 	
 	xmlns:date="http://exslt.org/dates-and-times"
-	xmlns:ukfxd="xalan://uk.org.ukfederation.xalan.Dates"
-	extension-element-prefixes="date ukfxd"
+	xmlns:mdxDates="xalan://uk.ac.sdss.xalan.md.Dates"
+	extension-element-prefixes="date mdxDates"
 	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	exclude-result-prefixes="wayf">
@@ -37,7 +37,7 @@
 	<xsl:variable name="validityDays" select="21"/>
 	
 	<xsl:variable name="now" select="date:date-time()"/>
-	<xsl:variable name="validUntil" select="ukfxd:dateAdd($now, $validityDays)"/>
+	<xsl:variable name="validUntil" select="mdxDates:dateAdd($now, $validityDays)"/>
 	
 	<!--
 		Document root.

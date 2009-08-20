@@ -16,7 +16,7 @@
 	xmlns:set="http://exslt.org/sets"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-	xmlns:ukfxMail="xalan://uk.org.ukfederation.xalan.Mail"
+	xmlns:mdxMail="xalan://uk.ac.sdss.xalan.md.Mail"
 	xmlns:ukfxm="xalan://uk.org.ukfederation.xalan.Members"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -235,7 +235,7 @@
 	<!--
 		Check for badly formatted e-mail addresses.
 	-->
-	<xsl:template match="md:EmailAddress[ukfxMail:dodgyAddress(.)]">
+	<xsl:template match="md:EmailAddress[mdxMail:dodgyAddress(.)]">
 		<xsl:call-template name="fatal">
 			<xsl:with-param name="m">badly formatted e-mail address: '<xsl:value-of select='.'/>'</xsl:with-param>
 		</xsl:call-template>
