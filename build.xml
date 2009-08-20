@@ -302,7 +302,6 @@
 					<fileset dir="${tools.xalan}/lib">
 						<include name="**/*.jar"/>
 					</fileset>
-					<pathelement path="${bin.dir}"/>
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 				<arg value="-IN"/>
@@ -546,7 +545,6 @@
 				<fileset dir="${tools.xalan}/lib">
 					<include name="**/*.jar"/>
 				</fileset>
-				<pathelement path="${bin.dir}"/>
 			</classpath>
 			<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 			<arg value="-IN"/>

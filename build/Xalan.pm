@@ -20,7 +20,7 @@ sub xalanCall
 	$res .= " -Djava.endorsed.dirs=$xalanRoot/endorsed";
 	
 	# Classpath
-	my $classpath = '../bin';
+	my $classpath = '';
 	while (glob "$xalanRoot/lib/*") {
 		$classpath .= ':' unless $classpath eq '';
 		$classpath .= $_;
