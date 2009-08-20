@@ -17,7 +17,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:mdxMail="xalan://uk.ac.sdss.xalan.md.Mail"
-	xmlns:ukfxm="xalan://uk.org.ukfederation.xalan.Members"
+	xmlns:ukfxMembers="xalan://uk.ac.sdss.xalan.ukf.Members"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 	<!--
@@ -32,7 +32,7 @@
 		Pick up the members.xml document, and create a Members class instance.
 	-->
 	<xsl:variable name="memberDocument" select="document('xml/members.xml')"/>
-	<xsl:variable name="members" select="ukfxm:new($memberDocument)"/>
+	<xsl:variable name="members" select="ukfxMembers:new($memberDocument)"/>
 
 	
 	<!--
@@ -93,7 +93,7 @@
 		a canonical owner name.
 	-->
 	<xsl:template match="md:EntityDescriptor[md:Organization/md:OrganizationName]
-		[not(ukfxm:isOwnerName($members, md:Organization/md:OrganizationName))]">
+		[not(ukfxMembers:isOwnerName($members, md:Organization/md:OrganizationName))]">
 		<xsl:call-template name="fatal">
 			<xsl:with-param name="m">unknown owner name: <xsl:value-of select="md:Organization/md:OrganizationName"/></xsl:with-param>
 		</xsl:call-template>
