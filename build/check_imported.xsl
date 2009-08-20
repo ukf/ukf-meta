@@ -16,8 +16,6 @@
 	xmlns:set="http://exslt.org/sets"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-	xmlns:ukfxMail="xalan://uk.org.ukfederation.xalan.Mail"
-	xmlns:ukfxm="xalan://uk.org.ukfederation.xalan.Members"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 	<!--
