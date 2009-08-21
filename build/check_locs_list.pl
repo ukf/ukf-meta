@@ -1,4 +1,6 @@
 #!/usr/bin/perl -w
+
+use ExtractCert;
 use File::Temp qw(tempfile);
 use Date::Parse;
 use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
@@ -51,8 +53,7 @@ while (<>) {
 	#
 	# Attempt certificate extraction
 	#
-	system "java -classpath ../bin uk.org.ukfederation.apps.cert.ExtractCert " .
-		"$host $port $temp_der";
+	system extractCertCall . " $host $port $temp_der";
 
 	#
 	# If the output file doesn't exist, the extraction failed.
