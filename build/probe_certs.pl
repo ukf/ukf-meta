@@ -1,7 +1,9 @@
 #!/usr/bin/perl -w
 
+use ExtractCert;
 use Xalan;
 
+print "Loading endpoint locations...\n";
 open(XML, xalanCall . " -IN ../xml/ukfederation-metadata.xml -XSL extract_cert_locs.xsl|") || die "could not open input file";
 while (<XML>) {
 	if (/^http:/) {
@@ -18,22 +20,66 @@ close XML;
 
 $count = scalar keys %locations;
 print "Unique SSL with-certificate locations: $count\n";
+
+#
+# Temporary output file for certificate extraction tool.
+#
+$temp_der = '/tmp/probe_certs.der';
+
+#
+# Extract the certificate from each location.
+#
 foreach $loc (sort keys %locations) {
-	print "probing: $loc\n";
-	$cmd = "openssl s_client -connect $loc -showcerts -verify 10 -cert ssl_test.pem -key ssl_test.key </dev/null 2>/dev/null ";
-	open (CMD, "$cmd|") || die "can't open s_client command";
-	$got = 0;
-	while (<CMD>) {
-		if (/^Server certificate/ .. /\-\-\-/) {
-			if (/^issuer=(.*)$/) {
-				$issuers{$1}{$loc} = 1;
-				$numissued++;
-				$got = 1;
+	print "$count: probing: $loc\n";
+	$count--;
+
+	#
+	# Remove any old copy of the DER file.
+	#
+	unlink $temp_der;
+	
+	#
+	# Separate location into host and port.
+	#
+	my ($host, $port) = split(/:/, $loc);
+	#print "host: $host, port: $port\n";
+	my $hostPort = "$host:$port";
+
+	#
+	# Attempt certificate extraction
+	#
+	system extractCertCall . " $host $port $temp_der";
+
+	#
+	# If the output file doesn't exist, the extraction failed.
+	#
+	if (!-e $temp_der) {
+		print "*** $hostPort: certificate extraction failed\n";
+		$failed{$loc} = 1;
+		next;
+	}
+	
+	#
+	# Use openssl to convert the certificate to text
+	#
+	my(@lines, $issuer, $subjectCN, $issuerCN);
+	$cmd = "openssl x509 -in $temp_der -inform der -noout -text -nameopt RFC2253 -modulus |";
+	open(SSL, $cmd) || die "could not open openssl subcommand";
+	while (<SSL>) {
+		push @lines, $_;
+		if (/^\s*Issuer:\s*(.*)$/) {
+			$issuer = $1;
+			#print "$hostPort: issuer is $issuer\n";
+			$issuers{$issuer}{$loc} = 1;
+			$numissued++;
+			if ($issuer =~ /CN=([^,]+)/) {
+				$issuerCN = $1;
+			} else {
+				$issuerCN = $issuer;
 			}
 		}
 	}
-	close CMD;
-	$failed{$loc} = 1 unless $got;
+
 }
 print "\n\n";
 
@@ -55,3 +101,8 @@ foreach $issuer (sort keys %issuers) {
 		print "   $loc\n";
 	} 
 }
+
+#
+# Clean up
+#
+unlink $temp_der;
