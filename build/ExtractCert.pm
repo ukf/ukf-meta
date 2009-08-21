@@ -30,6 +30,6 @@ sub extractCertCall
 	$res;
 }
 
-print ">>>" . extractCertCall . "<<<\n";
+#print ">>>" . extractCertCall . "<<<\n";
 
 1;
