@@ -37,6 +37,7 @@
 	-->
 	<property name="tools.dir" value="tools"/>
 	<property name="tools.ant" value="${tools.dir}/ant"/>
+	<property name="tools.mdcheck" value="${tools.dir}/mdcheck"/>
 	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
 	<property name="tools.xalan" value="${tools.dir}/xalan"/>
 	
@@ -580,13 +581,15 @@
 		<attribute name="i"/>
 		<attribute name="s"/>
 		<sequential>
-			<java classname="uk.org.ukfederation.apps.mdcheck.MetadataCheck"
+			<java classname="uk.ac.sdss.mdcheck.MetadataCheck"
 				fork="true" failonerror="true" maxmemory="384m">
 				<classpath>
+					<fileset dir="${tools.mdcheck}/lib">
+						<include name="**/*.jar"/>
+					</fileset>
 					<fileset dir="${tools.xalan}/lib">
 						<include name="**/*.jar"/>
 					</fileset>
-					<pathelement path="${bin.dir}"/>
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 				<arg value="@{i}"/>
