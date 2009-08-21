@@ -27,7 +27,6 @@
 	-->
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="entities.dir" value="entities"/>
-	<property name="bin.dir" value="bin"/>
 	<property name="xml.dir" value="xml"/>
 
 	<!--
