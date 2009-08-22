@@ -15,6 +15,7 @@ sub extractCertCall
 	my $extractCertRoot = "../tools/extractcert";
 	
 	my $res = "java";
+	#$res .= " -Djavax.net.debug=ssl:record";
 	
 	# Classpath
 	my $classpath = '';
