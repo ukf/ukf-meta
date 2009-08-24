@@ -765,6 +765,15 @@
                             <xsl:if test="md:IDPSSODescriptor"> [IdP]</xsl:if>
                             <xsl:if test="md:Extensions/wayf:HideFromWAYF"> [H]</xsl:if>
                             <xsl:if test="md:SPSSODescriptor"> [SP]</xsl:if>
+                            <xsl:choose>
+                                <xsl:when test="descendant::ds:X509Data">
+                                    <xsl:text> [DK</xsl:text>
+                                    <xsl:if test="descendant::ds:KeyName">+PKIX</xsl:if>
+                                    <xsl:text>]</xsl:text>
+                                </xsl:when>
+                                
+                                <xsl:when test="descendant::ds:KeyName"> [PKIX]</xsl:when>
+                            </xsl:choose>
                             <xsl:apply-templates select="md:Extensions/uklabel:Software" mode="short"/>
                             <xsl:text> </xsl:text>
                             <code><xsl:value-of select="@entityID"/></code>
