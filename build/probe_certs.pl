@@ -62,7 +62,7 @@ foreach $loc (sort keys %locations) {
 	#
 	# Use openssl to convert the certificate to text
 	#
-	my(@lines, $issuer, $subjectCN, $issuerCN);
+	my(@lines, $subject, $issuer);
 	$cmd = "openssl x509 -in $temp_der -inform der -noout -text -nameopt RFC2253 -modulus |";
 	open(SSL, $cmd) || die "could not open openssl subcommand";
 	while (<SSL>) {
@@ -70,16 +70,18 @@ foreach $loc (sort keys %locations) {
 		if (/^\s*Issuer:\s*(.*)$/) {
 			$issuer = $1;
 			#print "$hostPort: issuer is $issuer\n";
-			$issuers{$issuer}{$loc} = 1;
-			$numissued++;
-			if ($issuer =~ /CN=([^,]+)/) {
-				$issuerCN = $1;
-			} else {
-				$issuerCN = $issuer;
-			}
+		}
+		if (/^\s*Subject:\s*(.*)$/) {
+			$subject = $1;
 		}
 	}
+	
+	if ($subject eq $issuer) {
+		$issuer = "(self signed certificate)";
+	}
 
+	$issuers{$issuer}{$loc} = 1;
+	$numissued++;
 }
 print "\n\n";
 
