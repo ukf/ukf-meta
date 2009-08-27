@@ -36,6 +36,7 @@
 	<property name="tools.ant" value="${tools.dir}/ant"/>
 	<property name="tools.mdcheck" value="${tools.dir}/mdcheck"/>
 	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
+	<property name="tools.samlsign" value="${tools.dir}/samlsign"/>
 	<property name="tools.xalan" value="${tools.dir}/xalan"/>
 	
 	<!--
@@ -252,7 +253,31 @@
 			<echo>Verifying @{i}...</echo>
 			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
 			<get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
-			<MDT i="temp.xml" o="${null.device}" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
+			
+			<!--
+				Verify using metadatatool.
+			-->
+			<MDT.VFY.uk i="temp.xml"/>
+
+			<!--
+				Verify using samlsign as well, but only if the file isn't one
+				of the pre-SAML format files.
+			-->
+			<if>
+				<not>
+					<or>
+						<equals arg1="@{i}" arg2="ukfederation-sites-12.xml"/>
+						<equals arg1="@{i}" arg2="ukfederation-trust-12.xml"/>
+					</or>
+				</not>
+				<then>
+					<SAMLSIGN.VFY.uk i="temp.xml"/>
+				</then>
+			</if>
+			
+			<!--
+				Delete the temporary file.
+			-->
 			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
 		</sequential>
 	</macrodef>
@@ -382,22 +407,13 @@
 	</target>
 
 	<!--
-		*******************************************
-		***                                     ***
-		***   M E T A D A T A   S I G N I N G   ***
-		***                                     ***
-		*******************************************
+		*********************************************
+		***                                       ***
+		***   M E T A D A T A T O O L   T O O L   ***
+		***                                       ***
+		*********************************************
 	-->
 	
-	<!--
-		Acquire the keystore password.
-	-->
-	<target name="get.keystore.pass" unless="keystore.pass">
-		<input addproperty="keystore.pass">
-			Please enter the password for the keystores:
-		</input>
-	</target>
-
 	<!--
 		Macro to run the metadatatool application with appropriate defaults.
 	-->
@@ -416,14 +432,7 @@
 						<include name="**/*.jar"/>
 					</fileset>
 				</classpath>
-				<!--
-					metadatatool requires its own variant of
-					the endorsed libraries.
-				-->
 				<jvmarg value="-Djava.endorsed.dirs=${tools.metadatatool}/endorsed"/>
-				<!--
-				<jvmarg value="-Dlog4j.configuration=log4j.properties"/>
-				-->
 				<args/>
 				<arg value="--keystore"/>
 				<arg value="@{keystore}"/>
@@ -439,11 +448,7 @@
 		</sequential>
 	</macrodef>
 	
-	<!--
-		Sign the various metadata files.
-	-->
-	
-	<macrodef name="SIGN.uk">
+	<macrodef name="MDT.SIGN.uk">
 		<attribute name="i"/>
 		<attribute name="o"/>
 		<sequential>
@@ -460,6 +465,85 @@
 		</sequential>
 	</macrodef>
 	
+	<macrodef name="MDT.VFY.uk">
+		<attribute name="i"/>
+		<sequential>
+			<MDT i="@{i}" o="${null.device}" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
+		</sequential>
+	</macrodef>
+		
+	<!--
+		*************************************
+		***                               ***
+		***   S A M L S I G N   T O O L   ***
+		***                               ***
+		*************************************
+	-->
+	
+	<macrodef name="SAMLSIGN">
+		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+		<element name="args" optional="yes"/>
+		<sequential>
+			<java classname="org.opensaml.util.samlsign.SAMLSign"
+				fork="true" failonerror="true" maxmemory="384m">
+				<classpath>
+					<fileset dir="${tools.samlsign}/lib">
+						<include name="**/*.jar"/>
+					</fileset>
+				</classpath>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.samlsign}/endorsed"/>
+				<args/>
+				<arg value="--validateSchema"/>
+				<arg value="--in"/>
+				<arg value="${xml.dir}/@{i}"/>
+			</java>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="SAMLSIGN.VFY.uk">
+		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+		<sequential>
+			<SAMLSIGN i="@{i}">
+				<args>
+					<arg value="--validateSig"/>
+					<arg value="--cert"/>
+					<arg value="${build.dir}/ukfederation-2008.pem"/>
+				</args>
+			</SAMLSIGN>
+		</sequential>
+	</macrodef>
+	
+	<!--
+		*******************************************
+		***                                     ***
+		***   M E T A D A T A   S I G N I N G   ***
+		***                                     ***
+		*******************************************
+	-->
+	
+	<!--
+		Acquire the keystore password.
+	-->
+	<target name="get.keystore.pass" unless="keystore.pass">
+		<input addproperty="keystore.pass">
+			Please enter the password for the keystores:
+		</input>
+	</target>
+
+	<!--
+		Select tool to sign UK federation metadata with.
+	-->
+	<macrodef name="SIGN.uk">
+		<attribute name="i"/>
+		<attribute name="o"/>
+		<sequential>
+			<MDT.SIGN.uk i="@{i}" o="@{o}"/>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Sign the various metadata files.
+	-->
 	<target name="sign">
 		<echo>Signing UK metadata.</echo>
 		<!-- [20] -->
@@ -493,12 +577,32 @@
 	</target>
 	
 	<!--
-		Verification of the UK Federation metadata.
+		Select the tool to verify UK federation metadata with.
 	-->
 	<macrodef name="VFY.uk">
 		<attribute name="i"/>
 		<sequential>
-			<MDT i="@{i}" o="${null.device}" keystore="${keystore.uk.vfy.loc}" alias="${keystore.uk.vfy.alias}"/>
+			<!--
+				Verify using metadatatool.
+			-->
+			<MDT.VFY.uk i="@{i}"/>
+
+			<!--
+				Verify using samlsign as well, but only if the file isn't one
+				of the pre-SAML format files.
+			-->
+			<if>
+				<not>
+					<or>
+						<equals arg1="@{i}" arg2="ukfederation-sites-12.xml"/>
+						<equals arg1="@{i}" arg2="ukfederation-trust-12.xml"/>
+					</or>
+				</not>
+				<then>
+					<SAMLSIGN.VFY.uk i="@{i}"/>
+				</then>
+			</if>
+			
 		</sequential>
 	</macrodef>
 		
