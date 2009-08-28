@@ -116,6 +116,11 @@ while (<>) {
 		#
 		
 		#
+		# Collection of names this certificate contains
+		#
+		my %names;
+		
+		#
 		# Use openssl to convert the certificate to text
 		#
 		my(@lines, $issuer, $subjectCN, $issuerCN);
@@ -123,6 +128,7 @@ while (<>) {
 		open(SSL, $cmd) || die "could not open openssl subcommand";
 		while (<SSL>) {
 			push @lines, $_;
+
 			if (/^\s*Issuer:\s*(.*)$/) {
 				$issuer = $1;
 				if ($issuer =~ /CN=([^,]+)/) {
@@ -130,18 +136,25 @@ while (<>) {
 				} else {
 					$issuerCN = $issuer;
 				}
+				next;
 			}
+			
 			if (/^\s*Subject:\s*.*?CN=([a-z0-9\-\.]+).*$/) {
 				$subjectCN = $1;
+				$names{$subjectCN}++;
 				# print "subjectCN = $subjectCN\n";
+				next;
 			}
+			
 			if (/RSA Public Key: \((\d+) bit\)/) {
 				$pubSize = $1;
 				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
 					error('PUBLIC KEY TOO SHORT');
 				}
+				next;
 			}
+			
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$days = (str2time($notAfter)-time())/86400.0;
@@ -154,6 +167,7 @@ while (<>) {
 					$days = int($days);
 					warning("expires in $days days");
 				}
+				next;
 			}
 
 			#
@@ -176,6 +190,36 @@ while (<>) {
 						error("WEAK DEBIAN KEY");
 					}
 				}
+				next;
+			}
+			
+			#
+			# subjectAlternativeName
+			#
+			if (/X509v3 Subject Alternative Name:/) {
+				#
+				# Steal the next line, which will look like this:
+				#
+				#    DNS:www.example.co.uk, DNS:example.co.uk, URI:http://example.co.uk/
+				#
+				my $next = <SSL>;
+				
+				#
+				# Make an array of components, each something like "DNS:example.co.uk"
+				#
+				$next =~ s/\s*//g;
+				my @altNames = split /\s*,\s*/, $next;
+				# my $altSet = "{" . join(", ", @altNames) . "}";
+				# print "Alt set: $altSet\n";
+				
+				#
+				# Each "DNS" component is an additional name for this certificate.
+				#
+				while (@altNames) {
+					my ($type, $altName) = split(":", pop @altNames);
+					$names{$altName}++ if $type eq 'DNS'; 
+				}
+				next;
 			}
 			
 		}
@@ -185,8 +229,9 @@ while (<>) {
 		#
 		# Check KeyName if one has been supplied.
 		#
-		if ($hasKeyName && $keyname ne $subjectCN) {
-			error("KeyName mismatch: $keyname != $subjectCN");
+		if ($hasKeyName && !defined($names{$keyname})) {
+			my $nameList = join ", ", sort keys %names;
+			error("KeyName mismatch: $keyname not in {$nameList}");
 		}
 		
 		#
