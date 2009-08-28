@@ -312,32 +312,6 @@
 	</target>
 	
 	<!--
-		Macro to run the Xalan XSLT engine, taking files from pre-defined
-		locations.
-	-->
-	<macrodef name="XALAN">
-		<attribute name="i"/>
-		<attribute name="o"/>
-		<attribute name="x"/>
-		<sequential>
-			<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
-				<classpath>
-					<fileset dir="${tools.xalan}/lib">
-						<include name="**/*.jar"/>
-					</fileset>
-				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
-				<arg value="-IN"/>
-				<arg value="${xml.dir}/@{i}"/>
-				<arg value="-OUT"/>
-				<arg value="${xml.dir}/@{o}"/>
-				<arg value="-XSL"/>
-				<arg value="${build.dir}/@{x}"/>
-			</java>
-		</sequential>
-	</macrodef>
-
-	<!--
 		gen.entities
 		
 		Concatenates the (potentially many) entity fragment files together into a single file
@@ -535,6 +509,40 @@
 		</sequential>
 	</macrodef>
 	
+	<!--
+		*******************************
+		***                         ***
+		***   X A L A N   T O O L   ***
+		***                         ***
+		*******************************
+	-->
+	
+	<!--
+		Macro to run the Xalan XSLT engine, taking files from pre-defined
+		locations.
+	-->
+	<macrodef name="XALAN">
+		<attribute name="i"/>
+		<attribute name="o"/>
+		<attribute name="x"/>
+		<sequential>
+			<java fork="true" maxmemory="384m" failonerror="true" classname="org.apache.xalan.xslt.Process">
+				<classpath>
+					<fileset dir="${tools.xalan}/lib">
+						<include name="**/*.jar"/>
+					</fileset>
+				</classpath>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
+				<arg value="-IN"/>
+				<arg value="${xml.dir}/@{i}"/>
+				<arg value="-OUT"/>
+				<arg value="${xml.dir}/@{o}"/>
+				<arg value="-XSL"/>
+				<arg value="${build.dir}/@{x}"/>
+			</java>
+		</sequential>
+	</macrodef>
+
 	<!--
 		*******************************************
 		***                                     ***
