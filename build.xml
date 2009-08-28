@@ -500,6 +500,28 @@
 		</sequential>
 	</macrodef>
 	
+	<macrodef name="SAMLSIGN.SIGN.uk">
+		<attribute name="i"/>
+		<attribute name="o"/>
+		<sequential>
+			<SAMLSIGN i="@{i}">
+				<args>
+					<arg value="--sign"/>
+					<arg value="--keystore"/>
+					<arg value="${null.device}"/>
+					<arg value="--storetype"/>
+					<arg value="${keystore.uk.sign.type}"/>
+					<arg value="--alias"/>
+					<arg value="${keystore.uk.sign.alias}"/>
+					<arg value="--password"/>
+					<arg value="${keystore.pass}"/>
+					<arg value="--out"/>
+					<arg value="${xml.dir}/@{o}"/>
+				</args>
+			</SAMLSIGN>
+		</sequential>
+	</macrodef>
+	
 	<macrodef name="SAMLSIGN.VFY.uk">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<sequential>
