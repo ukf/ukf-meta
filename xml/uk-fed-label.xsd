@@ -136,4 +136,13 @@
         </complexType>
     </element>
     
+    <element name="ExportOptIn" type="ukfedlabel:datedLabel">
+        <annotation>
+            <documentation>
+                Indicates that the entity has been opted-in to inclusion in
+                the UK federation export aggregate.
+            </documentation>
+        </annotation>
+    </element>
+    
 </schema>
