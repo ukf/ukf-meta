@@ -468,7 +468,7 @@
 				<jvmarg value="-Djava.endorsed.dirs=${tools.samlsign}/endorsed"/>
 				<args/>
 				<arg value="--validateSchema"/>
-				<arg value="--in"/>
+				<arg value="--inFile"/>
 				<arg value="${xml.dir}/@{i}"/>
 			</java>
 		</sequential>
@@ -489,7 +489,7 @@
 					<arg value="${keystore.uk.sign.alias}"/>
 					<arg value="--password"/>
 					<arg value="${keystore.pass}"/>
-					<arg value="--out"/>
+					<arg value="--outFile"/>
 					<arg value="${xml.dir}/@{o}"/>
 				</args>
 			</SAMLSIGN>
@@ -501,8 +501,8 @@
 		<sequential>
 			<SAMLSIGN i="@{i}">
 				<args>
-					<arg value="--validateSig"/>
-					<arg value="--cert"/>
+					<arg value="--verifySignature"/>
+					<arg value="--certificate"/>
 					<arg value="${build.dir}/ukfederation-2008.pem"/>
 				</args>
 			</SAMLSIGN>
