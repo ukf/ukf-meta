@@ -45,9 +45,20 @@
 	</xsl:template>
 	
 	<!--
-		Strip uklabel:Software elements entirely.
+		Pass through certain uklabel namespace elements.
 	-->
-	<xsl:template match="uklabel:Software|uklabel:Software">
+	<xsl:template match="uklabel:UKFederationMember |
+		uklabel:SDSSPolicy |
+		uklabel:AccountableUsers">
+		<xsl:copy>
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<!--
+		Strip all other uklabel namespace elements entirely.
+	-->
+	<xsl:template match="uklabel:*">
 		<!-- do nothing -->
 	</xsl:template>
 	
