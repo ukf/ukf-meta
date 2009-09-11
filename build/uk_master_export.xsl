@@ -45,6 +45,28 @@
 	</xsl:template>
 	
 	<!--
+		Drop the federation-specific key authority information.
+		
+		We assume, for now, that this is the only extension on the EntitiesDescriptor
+		and just omit that entirely.  If we ever start putting other extensions in at
+		that level, this would need to be revised.
+	-->
+	<xsl:template match="md:EntitiesDescriptor/md:Extensions">
+		<!-- do nothing -->
+	</xsl:template>
+	
+	<!--
+		Only include explicitly opted-in entities by discarding
+		everything else.
+		
+		There must be at least one of these, or the output will
+		not be schema-valid.
+	-->
+	<xsl:template match="md:EntityDescriptor[not(md:Extensions/uklabel:ExportOptIn)]">
+		<!-- do nothing -->
+	</xsl:template>
+	
+	<!--
 		Pass through certain uklabel namespace elements.
 	-->
 	<xsl:template match="uklabel:UKFederationMember |
