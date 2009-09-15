@@ -13,6 +13,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:set="http://exslt.org/sets"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
@@ -163,6 +164,17 @@
 	<xsl:template match="*[@Location and not(starts-with(@Location,'https://'))]">
 		<xsl:call-template name="fatal">
 			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location does not start with https://</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
+		Check for Shibboleth Scope elements that don't include a regexp attribute.
+		This has a default in the schema so omitting it can cause signing brittleness.
+	-->
+	<xsl:template match="shibmd:Scope[not(@regexp)]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">Scope <xsl:value-of select="."/> lacks @regexp</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
