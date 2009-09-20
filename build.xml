@@ -240,6 +240,7 @@
 				<include name="${md.wayf.signed}"/>
 				<include name="${md.test.signed}"/>
 				<include name="${md.back.signed}"/>
+				<include name="${md.export.signed}"/>
 			</fileset>
 		</scp>
 	</target>
@@ -293,6 +294,7 @@
 		<VFY.remote i="${md.wayf.signed}"/>
 		<VFY.remote i="${md.test.signed}"/>
 		<VFY.remote i="${md.back.signed}"/>
+		<VFY.remote i="${md.export.signed}"/>
 		<echo>Verification completed.</echo>
 	</target>
 	
