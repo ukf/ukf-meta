@@ -485,14 +485,15 @@
 					<arg value="--sign"/>
 					<arg value="--keystore"/>
 					<arg value="${null.device}"/>
-					<arg value="--storetype"/>
+					<arg value="--keystoreType"/>
 					<arg value="${keystore.uk.sign.type}"/>
-					<arg value="--alias"/>
+					<arg value="--key"/>
 					<arg value="${keystore.uk.sign.alias}"/>
-					<arg value="--password"/>
+					<arg value="--keyPassword"/>
 					<arg value="${keystore.pass}"/>
 					<arg value="--outFile"/>
 					<arg value="${xml.dir}/@{o}"/>
+					<arg value="--quiet"/>
 				</args>
 			</SAMLSIGN>
 		</sequential>
@@ -506,6 +507,7 @@
 					<arg value="--verifySignature"/>
 					<arg value="--certificate"/>
 					<arg value="${build.dir}/ukfederation-2008.pem"/>
+					<arg value="--quiet"/>
 				</args>
 			</SAMLSIGN>
 		</sequential>
