@@ -121,7 +121,6 @@
 		Pass through certain uklabel namespace elements.
 	-->
 	<xsl:template match="uklabel:UKFederationMember |
-		uklabel:SDSSPolicy |
 		uklabel:AccountableUsers">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
