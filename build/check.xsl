@@ -13,6 +13,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:set="http://exslt.org/sets"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -160,6 +161,22 @@
 	<xsl:template match="ds:KeyInfo/*[namespace-uri() != 'http://www.w3.org/2000/09/xmldsig#']">
 		<xsl:call-template name="fatal">
 			<xsl:with-param name="m">ds:KeyInfo child element not in ds namespace</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
+		Check for IDP role descriptors containing (at any level of nesting)
+		SAML 2.0 attribute elements that do not include a NameFormat XML attribute.
+		
+		This combination causes the Shibboleth 1.3 and related code (such as metadatatool)
+		to reject the metadata.
+		
+		See https://bugs.internet2.edu/jira/browse/SIDPO-34
+	-->
+	<xsl:template match="md:IDPSSODescriptor[descendant::saml:Attribute[not(@NameFormat)]]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">SIDPO-34: Attribute lacking NameFormat in IDPSSODescriptor</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
