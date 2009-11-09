@@ -17,6 +17,10 @@
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
+
+    xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
+	extension-element-prefixes="mdxTextUtils"
+
 	exclude-result-prefixes="shibmeta md ds wayf">
 
 	<!-- Output is plain text -->
@@ -24,8 +28,8 @@
 
 	<xsl:template match="//md:EntitiesDescriptor/md:Extensions/shibmeta:KeyAuthority//ds:X509Certificate">
 		<xsl:text>-----BEGIN CERTIFICATE-----&#x0a;</xsl:text>
-		<xsl:value-of select="."/>
-		<xsl:text>-----END CERTIFICATE-----&#x0a;</xsl:text>
+		<xsl:value-of select="mdxTextUtils:wrapBase64(.)"/>
+		<xsl:text>&#x0a;-----END CERTIFICATE-----&#x0a;</xsl:text>
 	</xsl:template>
 	
 	<xsl:template match="text()">
