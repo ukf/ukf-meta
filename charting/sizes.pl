@@ -5,8 +5,6 @@
 #
 use File::stat;
 
-$fn = '../xml/ukfederation-metadata.xml';
-
 @months = (
 	'2006-12',
 	'2007-01', '2007-02', '2007-03', '2007-04', '2007-05', '2007-06',
@@ -17,13 +15,46 @@ $fn = '../xml/ukfederation-metadata.xml';
 	'2009-07', '2009-08', '2009-09', '2009-10', '2009-11',	
 );
 
-print "month size entities ratio\n";
-
+# ingest files
 foreach $month (@months) {
-	system("svn update $fn --quiet --revision \\{$month-01T00:00:00Z\\}");
-	$stat = stat('../xml/ukfederation-metadata.xml');
+	my $fn = "cache/$month.xml";
+	$stat = stat($fn);
 	$size = $stat->size;
 	$wc = int(`grep '</Entity' $fn | wc -l`);
 	$ratio = int($size/$wc);
-	print "$month $size $wc $ratio\n";	 
+	push @sizes, $size;
+	push @counts, $wc;
+	push @ratios, $ratio;
+}
+
+print "months\n";
+foreach $month (@months) {
+	print "$month\n";
+}
+
+print "size\n";
+foreach $size (@sizes) {
+	print "$size\n";
+}
+
+print "sizeM\n";
+foreach $size (@sizes) {
+	$size /= 1000000;
+	print "$size\n";
+}
+
+print "entities\n";
+foreach $count (@counts) {
+	print "$count\n";
+}
+
+print "ratio\n";
+foreach $ratio (@ratios) {
+	print "$ratio\n";
+}
+
+print "ratioK\n";
+foreach $ratio (@ratios) {
+	$ratio /= 1000;
+	print "$ratio\n";
 }
