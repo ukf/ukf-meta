@@ -162,10 +162,10 @@ while (<>) {
 					error("EXPIRED");
 				} elsif ($days < 30) {
 					$days = int($days);
-					error("expires in $days days");
+					error("expires in $days days ($notAfter)");
 				} elsif ($days < 60) {
 					$days = int($days);
-					warning("expires in $days days");
+					warning("expires in $days days ($notAfter)");
 				}
 				next;
 			}
