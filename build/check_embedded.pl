@@ -58,6 +58,20 @@ while (@ARGV) {
 	$quiet = 1 if $arg eq '-q';
 }
 
+#
+# Hash of already-seen blobs.
+#
+# Each entry in the hash is indexed by the blob itself.  Each blob is a concatenated
+# sequence of information that uniquely identifies an already checked key.  This is
+# used to avoid processing the same blob more than once.
+#
+my %blobs;
+
+#
+# Blob currently being constructed.
+#
+my $blob;
+
 while (<>) {
 
 	#
@@ -86,6 +100,7 @@ while (<>) {
 			$oline .= "has no KeyName";
 		}
 		push(@olines, $oline);
+		$blob = $oline;		# start building a new blob
 
 		#
 		# Create a temporary file for this certificate in PEM format.
@@ -102,12 +117,28 @@ while (<>) {
 	# Put other lines into a temporary file.
 	#
 	print $fh $_;
+	$blob .= '|' . $_;
 	
 	#
 	# If this is the last line of the certificate, actually do
 	# something with it.
 	#
 	if (/END CERTIFICATE/) {
+		#
+		# Have we seen this blob before?  If so, close (and delete) the
+		# temporary file, and go and look for a new certificate to process.
+		#
+		if (defined($blobs{$blob})) {
+			# print "skipping a blob\n";
+			close SSL;
+			next;
+		}
+		
+		#
+		# Otherwise, remember this blob so that we won't process it again.
+		#
+		$blobs{$blob} = 1;
+
 		#
 		# Don't close the temporary file yet, because that would cause it
 		# to be deleted.  We've already arranged for buffering to be
