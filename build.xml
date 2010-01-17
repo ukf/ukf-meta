@@ -36,7 +36,7 @@
 	<property name="tools.ant" value="${tools.dir}/ant"/>
 	<property name="tools.mdcheck" value="${tools.dir}/mdcheck"/>
 	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
-	<property name="tools.samlsign" value="${tools.dir}/samlsign"/>
+	<property name="tools.xmltool" value="${tools.dir}/xmltool"/>
 	<property name="tools.xalan" value="${tools.dir}/xalan"/>
 	
 	<!--
@@ -261,20 +261,9 @@
 			<MDT.VFY.uk i="temp.xml"/>
 
 			<!--
-				Verify using samlsign as well, but only if the file isn't one
-				of the pre-SAML format files.
+				Verify using xmltool.
 			-->
-			<if>
-				<not>
-					<or>
-						<equals arg1="@{i}" arg2="ukfederation-sites-12.xml"/>
-						<equals arg1="@{i}" arg2="ukfederation-trust-12.xml"/>
-					</or>
-				</not>
-				<then>
-					<SAMLSIGN.VFY.uk i="temp.xml"/>
-				</then>
-			</if>
+			<XMLTOOL.VFY.uk i="temp.xml"/>
 			
 			<!--
 				Delete the temporary file.
@@ -495,38 +484,42 @@
 	</macrodef>
 		
 	<!--
-		*************************************
-		***                               ***
-		***   S A M L S I G N   T O O L   ***
-		***                               ***
-		*************************************
+		***********************************
+		***                             ***
+		***   X M L T O O L   T O O L   ***
+		***                             ***
+		***********************************
 	-->
 	
-	<macrodef name="SAMLSIGN">
+	<macrodef name="XMLTOOL">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<element name="args" optional="yes"/>
 		<sequential>
-			<java classname="org.opensaml.util.samlsign.SAMLSign"
+			<java classname="org.opensaml.xml.util.XmlTool"
 				fork="true" failonerror="true" maxmemory="384m">
 				<classpath>
-					<fileset dir="${tools.samlsign}/lib">
+					<fileset dir="${tools.xmltool}/lib">
 						<include name="**/*.jar"/>
 					</fileset>
 				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.samlsign}/endorsed"/>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.xmltool}/endorsed"/>
 				<args/>
-				<arg value="--validateSchema"/>
+				<!-- xmltool does not yet support schema validation
+				<arg value="- -validateSchema"/>
+				<arg value="- -schemaDirectory"/>
+				<arg value="${xml.dir}"/>
+				-->
 				<arg value="--inFile"/>
 				<arg value="${xml.dir}/@{i}"/>
 			</java>
 		</sequential>
 	</macrodef>
 	
-	<macrodef name="SAMLSIGN.SIGN.uk">
-		<attribute name="i"/>
-		<attribute name="o"/>
+	<macrodef name="XMLTOOL.SIGN.uk">
+		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+		<attribute name="o"/><!-- output file, assumed to be in the XML directory -->
 		<sequential>
-			<SAMLSIGN i="@{i}">
+			<XMLTOOL i="@{i}">
 				<args>
 					<arg value="--sign"/>
 					<arg value="--keystore"/>
@@ -541,21 +534,21 @@
 					<arg value="${xml.dir}/@{o}"/>
 					<arg value="--quiet"/>
 				</args>
-			</SAMLSIGN>
+			</XMLTOOL>
 		</sequential>
 	</macrodef>
 	
-	<macrodef name="SAMLSIGN.VFY.uk">
+	<macrodef name="XMLTOOL.VFY.uk">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<sequential>
-			<SAMLSIGN i="@{i}">
+			<XMLTOOL i="@{i}">
 				<args>
 					<arg value="--verifySignature"/>
 					<arg value="--certificate"/>
 					<arg value="${build.dir}/ukfederation-2008.pem"/>
-					<arg value="--quiet"/>
+					<!-- <arg value="- -quiet"/>-->
 				</args>
-			</SAMLSIGN>
+			</XMLTOOL>
 		</sequential>
 	</macrodef>
 	
@@ -668,20 +661,9 @@
 			<MDT.VFY.uk i="@{i}"/>
 
 			<!--
-				Verify using samlsign as well, but only if the file isn't one
-				of the pre-SAML format files.
+				Verify using xmltool.
 			-->
-			<if>
-				<not>
-					<or>
-						<equals arg1="@{i}" arg2="ukfederation-sites-12.xml"/>
-						<equals arg1="@{i}" arg2="ukfederation-trust-12.xml"/>
-					</or>
-				</not>
-				<then>
-					<SAMLSIGN.VFY.uk i="@{i}"/>
-				</then>
-			</if>
+			<XMLTOOL.VFY.uk i="@{i}"/>
 			
 		</sequential>
 	</macrodef>
