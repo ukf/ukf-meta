@@ -504,11 +504,9 @@
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xmltool}/endorsed"/>
 				<args/>
-				<!-- xmltool does not yet support schema validation
-				<arg value="- -validateSchema"/>
-				<arg value="- -schemaDirectory"/>
+				<arg value="--validateSchema"/>
+				<arg value="--schemaDirectory"/>
 				<arg value="${xml.dir}"/>
-				-->
 				<arg value="--inFile"/>
 				<arg value="${xml.dir}/@{i}"/>
 			</java>
@@ -532,7 +530,9 @@
 					<arg value="${keystore.pass}"/>
 					<arg value="--outFile"/>
 					<arg value="${xml.dir}/@{o}"/>
-					<arg value="--quiet"/>
+					<!--
+					<arg value="- -quiet"/>
+					-->
 				</args>
 			</XMLTOOL>
 		</sequential>
@@ -546,7 +546,9 @@
 					<arg value="--verifySignature"/>
 					<arg value="--certificate"/>
 					<arg value="${build.dir}/ukfederation-2008.pem"/>
-					<!-- <arg value="- -quiet"/>-->
+					<!--
+					<arg value="- -quiet"/>
+					-->
 				</args>
 			</XMLTOOL>
 		</sequential>
