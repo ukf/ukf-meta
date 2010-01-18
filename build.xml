@@ -638,7 +638,7 @@
 
 		<echo>Signing UK test metadata.</echo>
 		<!-- [28] -->
-		<SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}"/>
+		<XMLTOOL.SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}"/>
 
 		<echo>Signing UK export metadata.</echo>
 		<!-- [30] -->
