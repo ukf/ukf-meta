@@ -116,7 +116,7 @@
                         <th>IdPs</th>
                         <th>SPs</th>
                         <th>AIdP</th>
-                        <th>OS</th>
+                        <th>OSrc</th>
                         <th align="left">Primary Scope</th>
                     </tr>
                     <xsl:apply-templates select="$members" mode="count">
