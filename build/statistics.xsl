@@ -116,6 +116,7 @@
                         <th>IdPs</th>
                         <th>SPs</th>
                         <th>AIdP</th>
+                        <th>OS</th>
                         <th align="left">Primary Scope</th>
                     </tr>
                     <xsl:apply-templates select="$members" mode="count">
@@ -735,6 +736,38 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </td>
+            
+            <!-- Outsourcing in general -->
+            <td align="center">
+                <xsl:choose>
+                
+                	<!-- Special case: Eduserv does NOT outsource -->
+                    <xsl:when test="md:OrganizationName = 'Eduserv'">
+                        &#160;
+                    </xsl:when>
+                    
+                    <!-- anyone else using the Athens IdP does outsource -->
+                    <xsl:when test="@usesAthensIdP = 'true'">
+                        *
+                    </xsl:when>
+                    
+                    <!--
+                    	Anyone pushing scopes to an entity is assumed to
+                    	be outsourcing.  Strictly speaking, this should be
+                    	anyone pushing scopes to an entity owned by another
+                    	member.
+                    -->
+                    <xsl:when test="members:Scopes/members:Entity">
+                        *
+                    </xsl:when>
+                    
+                    <!-- if none of the above, not outsourcing -->
+                    <xsl:otherwise>
+                        &#160;
+                    </xsl:otherwise>
+                </xsl:choose>
+            </td>
+            
             <!-- Primary Scope, if present -->
             <td align="left">
                 <xsl:choose>
