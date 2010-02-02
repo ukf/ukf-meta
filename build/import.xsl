@@ -276,6 +276,18 @@
 	
 	
 	<!--
+		md:ArtifactResolutionService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:ArtifactResolutionService">
+		<ArtifactResolutionService>
+			<xsl:apply-templates select="node()|@*"/>
+		</ArtifactResolutionService>
+	</xsl:template>
+	
+	
+	<!--
 		md:AssertionConsumerService
 		
 		Normalise namespace prefix.
