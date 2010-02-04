@@ -503,6 +503,7 @@
 					</fileset>
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xmltool}/endorsed"/>
+				<jvmarg value="-Dorg.opensaml.xml.util.XmlTool.home=${tools.xmltool}"/>
 				<args/>
 				<arg value="--validateSchema"/>
 				<arg value="--schemaDirectory"/>
