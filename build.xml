@@ -531,6 +531,8 @@
 					<arg value="${keystore.pass}"/>
 					<arg value="--outFile"/>
 					<arg value="${xml.dir}/@{o}"/>
+					<arg value="--referenceIdAttributeName"/>
+					<arg value="ID"/>
 					<!--
 					<arg value="- -quiet"/>
 					-->
