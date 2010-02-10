@@ -115,7 +115,6 @@
                         <th>Entities</th>
                         <th>IdPs</th>
                         <th>SPs</th>
-                        <th>AIdP</th>
                         <th>OSrc</th>
                         <th align="left">Primary Scope</th>
                     </tr>
@@ -238,7 +237,7 @@
                         <th>Entities</th>
                         <th>IdPs</th>
                         <th>SPs</th>
-                        <th>AIdP</th>
+                        <th>OSrc</th>
                         <th align="left">Scope</th>
                     </tr>
                     <xsl:apply-templates select="$nonMembers" mode="count">
@@ -740,17 +739,6 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="count($matchedSPs)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </td>
-            <!-- has Athens IdP access? -->
-            <td align="center">
-                <xsl:choose>
-                    <xsl:when test="@usesAthensIdP = 'true'">
-                        *
-                    </xsl:when>
-                    <xsl:otherwise>
-                        &#160;
                     </xsl:otherwise>
                 </xsl:choose>
             </td>
