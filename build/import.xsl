@@ -387,6 +387,16 @@
 	<!--
 		ds:KeyName
 		
+		Remove empty KeyName elements.
+	-->
+	<xsl:template match="ds:KeyName[.='']">
+		<!-- do nothing -->
+	</xsl:template>
+	
+	
+	<!--
+		ds:KeyName
+		
 		Normalise namespace prefix.
 	-->
 	<xsl:template match="ds:KeyName">
