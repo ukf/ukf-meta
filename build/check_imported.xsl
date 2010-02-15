@@ -38,6 +38,23 @@
 
 
 	<!--
+		OrganizationURL elements should contain actual URLs, or some software
+		will reject the metadata.  This is known to be true for at least the Shibboleth
+		1.3 IdP and the accompanying metadatatool application, because they pass the
+		string to the java.net.URL class.
+		
+		We perform a very cursory test for this by insisting that they start with
+		either "http://" or "https://".
+	-->
+	<xsl:template match="md:OrganizationURL[not(starts-with(., 'http://'))]
+		[not(starts-with(., 'https://'))]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">OrganizationURL '<xsl:value-of select="."/>' does not start with acceptable prefix</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		Checks for an IdP whose KeyDescriptor elements do not include a @use attribute.
 		This causes problems with the Shibboleth 1.3 SP prior to V1.3.1, which
 		interprets this as "no use permitted" rather than "either signing or encryption use
