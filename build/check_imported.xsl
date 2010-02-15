@@ -55,6 +55,31 @@
 	
 	
 	<!--
+		If an IDPSSODescriptor contains a SingleSignOnService with the Shibboleth 1.x
+		authentication request binding, the role descriptor's protocolSupportEnumeration
+		must include both of the following:
+		
+			urn:oasis:names:tc:SAML:1.1:protocol
+			urn:mace:shibboleth:1.0
+		
+		See the Shibboleth Protocols and Profiles document, section 3.4.3, for details.
+	-->
+	<xsl:template match="md:IDPSSODescriptor[md:SingleSignOnService[@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest']]
+		[not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol'))]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">Shibboleth 1.x auth request needs urn:oasis:names:tc:SAML:1.1:protocol in IDPSSODescriptor/@protocolSupportEnumeration</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="md:IDPSSODescriptor[md:SingleSignOnService[@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest']]
+		[not(contains(@protocolSupportEnumeration, 'urn:mace:shibboleth:1.0'))]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">Shibboleth 1.x auth request needs urn:mace:shibboleth:1.0 in IDPSSODescriptor/@protocolSupportEnumeration</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		Checks for an IdP whose KeyDescriptor elements do not include a @use attribute.
 		This causes problems with the Shibboleth 1.3 SP prior to V1.3.1, which
 		interprets this as "no use permitted" rather than "either signing or encryption use
