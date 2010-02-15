@@ -215,6 +215,18 @@
 	
 	
 	<!--
+		md:IDPSSODescriptor
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:IDPSSODescriptor">
+		<IDPSSODescriptor>
+			<xsl:apply-templates select="node()|@*"/>
+		</IDPSSODescriptor>
+	</xsl:template>
+	
+	
+	<!--
 		md:SPSSODescriptor
 		
 		Normalise namespace prefix.
@@ -264,6 +276,19 @@
 	
 	
 	<!--
+		md:SingleSignOnService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:SingleSignOnService">
+		<SingleSignOnService>
+			<xsl:apply-templates select="node()|@*"/>
+		</SingleSignOnService>
+	</xsl:template>
+	
+	
+	
+	<!--
 		md:ManageNameIDService
 		
 		Normalise namespace prefix.
@@ -296,6 +321,54 @@
 		<AssertionConsumerService>
 			<xsl:apply-templates select="node()|@*"/>
 		</AssertionConsumerService>
+	</xsl:template>
+	
+	
+	<!--
+		md:Organization
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:Organization">
+		<Organization>
+			<xsl:apply-templates select="node()|@*"/>
+		</Organization>
+	</xsl:template>
+	
+	
+	<!--
+		md:OrganizationName
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:OrganizationName">
+		<OrganizationName>
+			<xsl:apply-templates select="node()|@*"/>
+		</OrganizationName>
+	</xsl:template>
+	
+	
+	<!--
+		md:OrganizationDisplayName
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:OrganizationDisplayName">
+		<OrganizationDisplayName>
+			<xsl:apply-templates select="node()|@*"/>
+		</OrganizationDisplayName>
+	</xsl:template>
+	
+	
+	<!--
+		md:OrganizationURL
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:OrganizationURL">
+		<OrganizationURL>
+			<xsl:apply-templates select="node()|@*"/>
+		</OrganizationURL>
 	</xsl:template>
 	
 	
