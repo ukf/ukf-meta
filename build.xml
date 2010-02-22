@@ -742,8 +742,12 @@
 		Parameter 'i' is the file to be checked; no assumption is made
 		about its location so this must contain a full path.
 		
-		Parameter 's' is the checking stylesheet to use; assumed to be
+		Parameter 's' is the primary checking stylesheet to use; assumed to be
 		present in the build.dir.
+		
+		A fixed set of additional checking stylesheets are included in every run;
+		the one passed as a parameter should only contain rules specific to the
+		calling context.
 	-->
 	<macrodef name="CHECK">
 		<attribute name="i"/>
@@ -761,6 +765,11 @@
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 				<arg value="@{i}"/>
+				<!-- set of checking stylesheets applied in every case -->
+				<arg value="${build.dir}/check_shibboleth.xsl"/>
+                <arg value="${build.dir}/check_idpdisc.xsl"/>
+                <arg value="${build.dir}/check_misc.xsl"/>
+				<!-- single context-dependent ruleset -->
 				<arg value="${build.dir}/@{s}"/>
 			</java>
 		</sequential>
