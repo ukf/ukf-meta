@@ -321,6 +321,66 @@
                         </li>
                     </xsl:if>
 
+                    <xsl:variable name="httpEntities" select="$entities[starts-with(@entityID, 'http://')]"/>
+                    <xsl:variable name="httpEntityCount" select="count($httpEntities)"/>
+                    <xsl:if test="$httpEntityCount != 0">
+                        <li>
+                            <p>
+                                <xsl:value-of select="$httpEntityCount"/>
+                                (<xsl:value-of select="format-number($httpEntityCount div $entityCount, '0.0%')"/>)
+                                <xsl:choose>
+                                    <xsl:when test="$httpEntityCount = 1">
+                                        has
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        have
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                http:-style entity IDs.
+                            </p>
+                        </li>
+                    </xsl:if>
+                    
+                    <xsl:variable name="urnEntities" select="$entities[starts-with(@entityID, 'urn:')]"/>
+                    <xsl:variable name="urnEntityCount" select="count($urnEntities)"/>
+                    <xsl:if test="$urnEntityCount != 0">
+                        <li>
+                            <p>
+                                <xsl:value-of select="$urnEntityCount"/>
+                                (<xsl:value-of select="format-number($urnEntityCount div $entityCount, '0.0%')"/>)
+                                <xsl:choose>
+                                    <xsl:when test="$urnEntityCount = 1">
+                                        has
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        have
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                urn:-style entity IDs.
+                            </p>
+                        </li>
+                    </xsl:if>
+                    
+                    <xsl:variable name="httpsEntities" select="$entities[starts-with(@entityID, 'https://')]"/>
+                    <xsl:variable name="httpsEntityCount" select="count($httpsEntities)"/>
+                    <xsl:if test="$httpsEntityCount != 0">
+                        <li>
+                            <p>
+                                <xsl:value-of select="$httpsEntityCount"/>
+                                (<xsl:value-of select="format-number($httpsEntityCount div $entityCount, '0.0%')"/>)
+                                <xsl:choose>
+                                    <xsl:when test="$httpsEntityCount = 1">
+                                        has
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        have
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                https:-style entity IDs.
+                            </p>
+                        </li>
+                    </xsl:if>
+                    
                 </ul>
 
                 <xsl:call-template name="entity.breakdown.by.trust">
