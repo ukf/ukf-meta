@@ -157,6 +157,22 @@
 	
 	
 	<!--
+		Check for https:// locations that use an explicit but redundant port specifier.
+	-->
+	<xsl:template match="*[@Location and starts-with(@Location, 'https://')
+			and contains(@Location,':443/')]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">
+				<xsl:value-of select='local-name()'/>
+				<xsl:text> Location </xsl:text>
+				<xsl:value-of select="@Location"/>
+				<xsl:text> not in standard form</xsl:text>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		Check for Locations that aren't valid URLs.
 	-->
 	<xsl:template match="*[@Location and mdxURL:invalidURL(@Location)]">
