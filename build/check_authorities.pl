@@ -88,7 +88,7 @@ while (<>) {
 				$days = (str2time($notAfter)-time())/86400.0;
 				if ($days < 0) {
 					print "   *** EXPIRED ***\n";
-				} elsif ($days < 30) {
+				} elsif ($days < 365) {
 					$days = int($days);
 					print "   *** expires in $days days\n";
 				} elsif ($days < (365*2)) {
