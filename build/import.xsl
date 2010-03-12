@@ -114,7 +114,7 @@
 				<!--
 					Dummy Software element.
 				-->
-				<ukfedlabel:Software name="Shibboleth"
+				<ukfedlabel:Software name="*** FILL IN ***"
 					version="2" fullVersion="*** FILL IN OR REMOVE ***">
 					<xsl:attribute name="date"><xsl:value-of select="mdxDates:date()"/></xsl:attribute>
 				</ukfedlabel:Software>
