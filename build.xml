@@ -775,10 +775,11 @@
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 				<arg value="@{i}"/>
 				<!-- set of checking stylesheets applied in every case -->
-				<arg value="${build.dir}/check_shibboleth.xsl"/>
+                <arg value="${build.dir}/check_adfs.xsl"/>
                 <arg value="${build.dir}/check_idpdisc.xsl"/>
 				<arg value="${build.dir}/check_mdiop.xsl"/>
                 <arg value="${build.dir}/check_misc.xsl"/>
+                <arg value="${build.dir}/check_shibboleth.xsl"/>
 				<!-- single context-dependent ruleset -->
 				<arg value="${build.dir}/@{s}"/>
 			</java>
