@@ -52,6 +52,37 @@
 	</xsl:template>
 
 
+	<!--
+		Common template to call to report a warning on some element within an entity.
+	-->
+	<xsl:template name="warning">
+		<xsl:param name="m"/>
+		<xsl:variable name="entity" select="ancestor-or-self::md:EntityDescriptor"/>
+		<xsl:message terminate='no'>
+			<xsl:text>??? </xsl:text>
+			<!--
+				If we're processing an aggregate, we need to indicate which
+				individual entity we're dealing with.
+			-->
+			<xsl:if test="ancestor-or-self::md:EntitiesDescriptor">
+				<!--
+					Use an ID if available, otherwise the entityID.
+				-->
+				<xsl:choose>
+					<xsl:when test="$entity/@ID">
+						<xsl:value-of select="$entity/@ID"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$entity/@entityID"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>: </xsl:text>
+			</xsl:if>
+			<xsl:value-of select="$m"/>
+		</xsl:message>
+	</xsl:template>
+	
+	
 	<!-- Recurse down through all elements by default. -->
 	<xsl:template match="*">
 		<xsl:apply-templates select="node()|@*"/>
