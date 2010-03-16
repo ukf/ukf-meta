@@ -45,7 +45,7 @@
 			The current UK federation metadata has one entity which breaks this rule at present.
 			Change this from "warning" to "fatal" once that has been resolved.
 		-->
-		<xsl:call-template name="warning">
+		<xsl:call-template name="fatal">
 			<xsl:with-param name="m">ADFS SP role lacks SSO service with appropriate Binding</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
