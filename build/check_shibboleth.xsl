@@ -137,4 +137,16 @@
 	</xsl:template>
 
 
+	<!--
+		Scope elements should not contain space characters.
+		
+		This isn't part of the specification, but is assumed by some software.
+	-->
+	<xsl:template match="shibmd:Scope[contains(., ' ')]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">Scope value contains space character</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+
 </xsl:stylesheet>
