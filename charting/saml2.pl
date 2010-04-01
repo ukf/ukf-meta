@@ -19,6 +19,7 @@ foreach $month (@months) {
 	push @overallRatio, $saml2total/$entities;
 	push @idpRatio, $saml2idp/$idps;
 	push @spRatio, $saml2sp/$sps;
+	push @product, ($saml2idp/$idps)*($saml2sp/$sps);
 	close TXT;
 }
 
@@ -34,6 +35,11 @@ foreach $ratio (@spRatio) {
 
 print "overall\n";
 foreach $ratio (@overallRatio) {
+	print "$ratio\n";
+}
+
+print "product\n";
+foreach $ratio (@product) {
 	print "$ratio\n";
 }
 
