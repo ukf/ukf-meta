@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	uk_master_unsigned.xsl
+	uk_master_export.xsl
 	
 	XSL stylesheet that takes the UK federation master file containing all information
 	about UK federation entities and processes them for the "export" metadata stream.
@@ -19,11 +19,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
-
+	
 	xmlns:date="http://exslt.org/dates-and-times"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:mdxDates="xalan://uk.ac.sdss.xalan.md.Dates"
-	extension-element-prefixes="date mdxDates"
-
+	extension-element-prefixes="date exsl mdxDates"
+	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	exclude-result-prefixes="wayf">
 
@@ -42,6 +43,20 @@
 	<xsl:variable name="validUntil" select="mdxDates:dateAdd($now, $validityDays)"/>
 	
 	<!--
+		documentID
+		
+		This value is generated from a normalised version of the aggregation instant,
+		transformed so that it can be used as an XML ID value.
+		
+		Strict conformance to the SAML 2.0 metadata specification (section 3.1.2) requires
+		that the signature explicitly references an identifier attribute in the element
+		being signed, in this case the document element.
+	-->
+	<xsl:variable name="normalisedNow" select="mdxDates:dateAdd($now, 0)"/>
+	<xsl:variable name="documentID"
+		select="concat('uk', translate($normalisedNow, ':-', ''))"/>
+
+	<!--
 		Document root.
 	-->
 	<xsl:template match="/">
@@ -57,12 +72,15 @@
 			<xsl:attribute name="validUntil">
 				<xsl:value-of select="$validUntil"/>
 			</xsl:attribute>
+			<xsl:attribute name="ID">
+				<xsl:value-of select="$documentID"/>
+			</xsl:attribute>
 			<xsl:apply-templates select="@*"/>
 			<xsl:call-template name="document.comment"/>
 			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!--
 		Comment to be added to the top of the document, and just inside the document element.
 	-->
@@ -84,6 +102,28 @@
 			<xsl:text>&#10;</xsl:text>
 		</xsl:comment>
 		<xsl:text>&#10;</xsl:text>
+	</xsl:template>
+	
+	<!--
+		Handle <md:Extensions> elements.
+		
+		In general, at this stage in the flow we pass through any Extensions unaltered.
+		However, certain changes (such as the filtering we perform on extensions in the
+		uklabel namespace) may cause the Extensions element to become empty, which is not
+		permitted by the schema.  We therefore precompute the resulting Extensions element
+		and suppress it entirely if it would have no child elements.
+	-->
+	<xsl:template match="md:Extensions">
+		<!-- compute result -->
+		<xsl:variable name="ext">
+			<xsl:copy>
+				<xsl:apply-templates select="node()|@*"/>
+			</xsl:copy>
+		</xsl:variable>
+		<!-- copy through only if schema-valid -->
+		<xsl:if test="count(exsl:node-set($ext)/md:Extensions/*) != 0">
+			<xsl:copy-of select="$ext"/>
+		</xsl:if>
 	</xsl:template>
 	
 	<!--
