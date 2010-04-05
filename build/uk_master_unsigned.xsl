@@ -19,8 +19,9 @@
 	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
 	
 	xmlns:date="http://exslt.org/dates-and-times"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:mdxDates="xalan://uk.ac.sdss.xalan.md.Dates"
-	extension-element-prefixes="date mdxDates"
+	extension-element-prefixes="date exsl mdxDates"
 	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	exclude-result-prefixes="wayf">
@@ -81,10 +82,31 @@
 	</xsl:template>
 	
 	<!--
+		Handle <md:Extensions> elements.
+		
+		In general, at this stage in the flow we pass through any Extensions unaltered.
+		However, certain changes (such as the filtering we perform on extensions in the
+		uklabel namespace) may cause the Extensions element to become empty, which is not
+		permitted by the schema.  We therefore precompute the resulting Extensions element
+		and suppress it entirely if it would have no child elements.
+	-->
+	<xsl:template match="md:Extensions">
+		<!-- compute result -->
+		<xsl:variable name="ext">
+			<xsl:copy>
+				<xsl:apply-templates select="node()|@*"/>
+			</xsl:copy>
+		</xsl:variable>
+		<!-- copy through only if schema-valid -->
+		<xsl:if test="count(exsl:node-set($ext)/md:Extensions/*) != 0">
+			<xsl:copy-of select="$ext"/>
+		</xsl:if>
+	</xsl:template>
+	
+	<!--
 		Pass through certain uklabel namespace elements.
 	-->
 	<xsl:template match="uklabel:UKFederationMember |
-		uklabel:SDSSPolicy |
 		uklabel:AccountableUsers">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
