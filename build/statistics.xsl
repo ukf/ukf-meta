@@ -65,8 +65,6 @@
             select="count($idps[md:Extensions/uklabel:AccountableUsers])"/>
         <xsl:variable name="federationMemberEntityCount"
             select="count($entities[md:Extensions/uklabel:UKFederationMember])"/>
-        <xsl:variable name="sdssPolicyCount"
-            select="count($entities[md:Extensions/uklabel:SDSSPolicy])"/>
         
         <xsl:variable name="memberEntities"
             select="dyn:closure($members/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
@@ -268,14 +266,6 @@
                             (<xsl:value-of select="format-number($federationMemberEntityCount div $entityCount, '0.0%')"/>)
                             are labelled as being owned by full
                             federation members.
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <xsl:value-of select="$sdssPolicyCount"/>
-                            (<xsl:value-of select="format-number($sdssPolicyCount div $entityCount, '0.0%')"/>)
-                            are labelled as having been owned by organisations asserting that they would
-                            follow the SDSS Federation policy.
                         </p>
                     </li>
                     <li>
