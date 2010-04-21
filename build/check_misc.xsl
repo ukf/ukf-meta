@@ -83,6 +83,41 @@
 
 
 	<!--
+		Check for distinct index attributes on appropriate elements.
+	-->
+	
+	<xsl:template match="md:SPSSODescriptor">
+		<xsl:variable name="indices" select="md:AssertionConsumerService/@index"/>
+		<xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
+		<xsl:if test="count($indices) != count($distinct.indices)">
+			<xsl:call-template name="fatal">
+				<xsl:with-param name="m">AssertionConsumerService index values not all different</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
+		
+		<!--
+			Perform checks on child elements.
+		-->
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template match="md:IDPSSODescriptor">
+		<xsl:variable name="indices" select="md:ArtifactResolutionService/@index"/>
+		<xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
+		<xsl:if test="count($indices) != count($distinct.indices)">
+			<xsl:call-template name="fatal">
+				<xsl:with-param name="m">ArtifactResolutionService index values not all different</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
+		
+		<!--
+			Perform checks on child elements.
+		-->
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	
+	<!--
 		Check for role descriptors with missing KeyDescriptor elements.
 	-->
 	
