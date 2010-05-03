@@ -36,7 +36,7 @@
 	<property name="tools.ant" value="${tools.dir}/ant"/>
 	<property name="tools.mdcheck" value="${tools.dir}/mdcheck"/>
 	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
-	<property name="tools.xmltool" value="${tools.dir}/xmltool"/>
+	<property name="tools.xmlsectool" value="${tools.dir}/xmlsectool"/>
 	<property name="tools.xalan" value="${tools.dir}/xalan"/>
 	
 	<!--
@@ -264,9 +264,9 @@
 			<MDT.VFY.uk i="temp.xml"/>
 
 			<!--
-				Verify using xmltool.
+				Verify using xmlsectool.
 			-->
-			<XMLTOOL.VFY.uk i="temp.xml"/>
+			<XMLSECTOOL.VFY.uk i="temp.xml"/>
 			
 			<!--
 				Delete the temporary file.
@@ -475,26 +475,26 @@
 	</macrodef>
 		
 	<!--
-		***********************************
-		***                             ***
-		***   X M L T O O L   T O O L   ***
-		***                             ***
-		***********************************
+		*****************************************
+		***                                   ***
+		***   X M L S E C T O O L   T O O L   ***
+		***                                   ***
+		*****************************************
 	-->
 	
-	<macrodef name="XMLTOOL">
+	<macrodef name="XMLSECTOOL">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<element name="args" optional="yes"/>
 		<sequential>
-			<java classname="org.opensaml.xml.util.XmlTool"
+			<java classname="edu.internet2.middleware.security.XmlSecTool"
 				fork="true" failonerror="true" maxmemory="${java.max.memory}">
 				<classpath>
-					<fileset dir="${tools.xmltool}/lib">
+					<fileset dir="${tools.xmlsectool}/lib">
 						<include name="**/*.jar"/>
 					</fileset>
 				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.xmltool}/endorsed"/>
-				<jvmarg value="-Dorg.opensaml.xml.util.XmlTool.home=${tools.xmltool}"/>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.xmlsectool}/endorsed"/>
+				<jvmarg value="-Dedu.internet2.middleware.security.XmlSecTool.home=${tools.xmlsectool}"/>
 				<args/>
 				<arg value="--validateSchema"/>
 				<arg value="--schemaDirectory"/>
@@ -505,11 +505,11 @@
 		</sequential>
 	</macrodef>
 	
-	<macrodef name="XMLTOOL.SIGN.uk">
+	<macrodef name="XMLSECTOOL.SIGN.uk">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<attribute name="o"/><!-- output file, assumed to be in the XML directory -->
 		<sequential>
-			<XMLTOOL i="@{i}">
+			<XMLSECTOOL i="@{i}">
 				<args>
 					<arg value="--sign"/>
 					<arg value="--keystore"/>
@@ -528,14 +528,14 @@
 					<arg value="- -quiet"/>
 					-->
 				</args>
-			</XMLTOOL>
+			</XMLSECTOOL>
 		</sequential>
 	</macrodef>
 	
-	<macrodef name="XMLTOOL.VFY.uk">
+	<macrodef name="XMLSECTOOL.VFY.uk">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<sequential>
-			<XMLTOOL i="@{i}">
+			<XMLSECTOOL i="@{i}">
 				<args>
 					<arg value="--verifySignature"/>
 					<arg value="--certificate"/>
@@ -544,7 +544,7 @@
 					<arg value="- -quiet"/>
 					-->
 				</args>
-			</XMLTOOL>
+			</XMLSECTOOL>
 		</sequential>
 	</macrodef>
 	
@@ -624,7 +624,7 @@
 
 		<echo>Signing UK test metadata.</echo>
 		<!-- [28] -->
-		<XMLTOOL.SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}"/>
+		<XMLSECTOOL.SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}"/>
 
 		<echo>Signing UK export metadata.</echo>
 		<!-- [30] -->
@@ -649,9 +649,9 @@
 			<MDT.VFY.uk i="@{i}"/>
 
 			<!--
-				Verify using xmltool.
+				Verify using xmlsectool.
 			-->
-			<XMLTOOL.VFY.uk i="@{i}"/>
+			<XMLSECTOOL.VFY.uk i="@{i}"/>
 			
 		</sequential>
 	</macrodef>
