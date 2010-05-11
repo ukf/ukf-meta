@@ -221,6 +221,127 @@
                     </li>
                 </ul>
                 
+                <!--
+                    *********************************
+                    ***                           ***
+                    ***   O U T S O U R C I N G   ***
+                    ***                           ***
+                    *********************************
+                -->
+                
+                <!--
+                    Members who are Eduserv.
+                    
+                    This is computed because Eduserv are an exception to the normal
+                    rules about outsourcing because they do not outsource even though
+                    they do use an Athens IdP.
+                -->
+                <xsl:variable name="members.eduserv"
+                    select="$members[md:OrganizationName = 'Eduserv']"/>
+                <xsl:variable name="members.eduserv.count" select="count($members.eduserv)"/>
+                
+                <!--
+                    Members who are deduced as outsourcing as a result of their use
+                    of an Athens IdP.
+                -->
+                <xsl:variable name="members.osrc.athens"
+                    select="$members[@usesAthensIdP = 'true']"/>
+                <xsl:variable name="members.osrc.athens.count" select="count($members.osrc.athens)"/>
+                
+                <!--
+                    Members who are deduced as outsourcing as a result of their use
+                    of an Athens IdP.  This count excludes Eduserv, as clearly they
+                    can not outsource to themselves.
+                -->
+                <xsl:variable name="members.osrc.athens.true"
+                    select="$members[@usesAthensIdP = 'true'][md:OrganizationName != 'Eduserv']"/>
+                <xsl:variable name="members.osrc.athens.true.count" select="count($members.osrc.athens.true)"/>
+                
+                <!--
+                    Members who are deduced as outsourcing as a result of their use
+                    of the mechanism for describing scopes "pushed" to a specific entity.
+                -->
+                <xsl:variable name="members.osrc.scopes.push"
+                    select="$members[members:Scopes/members:Entity]"/>
+                <xsl:variable name="members.osrc.scopes.push.count" select="count($members.osrc.scopes.push)"/>
+                
+                <!--
+                    Members who are deduced as outsourcing.
+                -->
+                <xsl:variable name="members.osrc"
+                    select="set:distinct($members.osrc.athens.true | $members.osrc.scopes.push)"/>
+                <xsl:variable name="members.osrc.count" select="count($members.osrc)"/>
+                
+                <!--
+                    Members whose only representation in the federation is through outsourcing.
+                -->
+                <xsl:variable name="members.osrc.only"
+                    select="set:difference($members.osrc, $membersWithEither)"/>
+                <xsl:variable name="members.osrc.only.count" select="count($members.osrc.only)"/>
+                
+                <!--
+                    Members with no representation, even through outsourcing.
+                -->
+                <xsl:variable name="members.osrc.none"
+                    select="set:difference($membersWithNone, $members.osrc)"/>
+                <xsl:variable name="members.osrc.none.count" select="count($members.osrc.none)"/>
+                
+                <p>Outsourcing worksheet:</p>
+                <ul>
+                    <li>
+                        <p>
+                            Members who are Eduserv: <xsl:value-of select="$members.eduserv.count"/>
+                            (<xsl:value-of select="format-number($members.eduserv.count div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Members using an Athens IdP: <xsl:value-of select="$members.osrc.athens.count"/>
+                            (<xsl:value-of select="format-number($members.osrc.athens.count div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Members (other than Eduserv) using an Athens IdP: <xsl:value-of select="$members.osrc.athens.true.count"/>
+                            (<xsl:value-of select="format-number($members.osrc.athens.true.count div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Members pushing scopes: <xsl:value-of select="$members.osrc.scopes.push.count"/>
+                            (<xsl:value-of select="format-number($members.osrc.scopes.push.count div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Members outsourcing: <xsl:value-of select="$members.osrc.count"/>
+                            (<xsl:value-of select="format-number($members.osrc.count div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Members only outsourcing: <xsl:value-of select="$members.osrc.only.count"/>
+                            (<xsl:value-of select="format-number($members.osrc.only.count div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Members neither deployed nor outsourcing: <xsl:value-of select="$members.osrc.none.count"/>
+                            (<xsl:value-of select="format-number($members.osrc.none.count div $memberCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Chart:
+                            <xsl:value-of select="$membersWithJustIdPsCount"/>,
+                            <xsl:value-of select="$membersWithJustSPsCount"/>,
+                            <xsl:value-of select="$membersWithBothCount"/>,
+                            <xsl:value-of select="$members.osrc.only.count"/>,
+                            <xsl:value-of select="$members.osrc.none.count"/>.                            
+                        </p>
+                    </li>
+                </ul>
+
                 <h3>Additional Non-member Entity Owners</h3>
                 <p>
                     In addition, the UK federation operator maintains agreements with certain
