@@ -170,9 +170,9 @@ while (<>) {
 				next;
 			}
 			
-			if (/^\s*Subject:\s*.*?CN=([a-z0-9\-\.]+).*$/) {
+			if (/^\s*Subject:\s*.*?CN=([a-zA-Z0-9\-\.]+).*$/) {
 				$subjectCN = $1;
-				$names{$subjectCN}++;
+				$names{lc $subjectCN}++;
 				# print "subjectCN = $subjectCN\n";
 				next;
 			}
@@ -248,7 +248,7 @@ while (<>) {
 				#
 				while (@altNames) {
 					my ($type, $altName) = split(":", pop @altNames);
-					$names{$altName}++ if $type eq 'DNS'; 
+					$names{lc $altName}++ if $type eq 'DNS'; 
 				}
 				next;
 			}
@@ -260,7 +260,7 @@ while (<>) {
 		#
 		# Check KeyName if one has been supplied.
 		#
-		if ($hasKeyName && !defined($names{$keyname})) {
+		if ($hasKeyName && !defined($names{lc $keyname})) {
 			my $nameList = join ", ", sort keys %names;
 			error("KeyName mismatch: $keyname not in {$nameList}");
 		}
