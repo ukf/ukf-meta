@@ -26,10 +26,14 @@
 	<xsl:import href="check_framework.xsl"/>
 
 	<!--
-		Look for IdPs which have either attribute authority or artifact resolution locations
-		on the same host:port combination as any of the SSO locations.
+		Checks for IdPs.
 	-->
 	<xsl:template match="md:EntityDescriptor[md:IDPSSODescriptor]">
+		<!--
+			Look for IdPs which have either attribute authority or artifact resolution locations
+			on the same host:port combination as any of the SSO locations.
+		-->
+		
 		<!-- XPath expression to evaluate to extract host:port strings from locations -->
 		<xsl:variable name="extract">substring-before(substring-after(concat(., '/'), 'https://'), '/')</xsl:variable>
 		
@@ -52,6 +56,15 @@
 				<xsl:with-param name="m">at least one SOAP location on same vhost as an SSO location</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
+		
+		<!--
+			IdPs registered with the UK federation are expected to have at least one scope.
+		-->
+		<xsl:if test="not(descendant::shibmd:Scope)">
+			<xsl:call-template name="fatal">
+				<xsl:with-param name="m">this IdP does not have any Scope elements</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>		
 	</xsl:template>
 	
 </xsl:stylesheet>
