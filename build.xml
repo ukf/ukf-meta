@@ -26,7 +26,9 @@
 	    For times when only one remote host is in use, pre-select it
 	    using the following property setting.  Comment this out to allow choice.
 	-->
+	<!--
 	<property name="remote.host" value="${remote.host.1}"/>
+	-->
 	
 	<!--
 	    Common parts of the file layout for the remote systems.
