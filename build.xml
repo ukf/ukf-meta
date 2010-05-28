@@ -13,14 +13,27 @@
     
 	<!--
 		Accessing the remote system.
+		
+		Multiple remote systems are supported, each with its own ssh-accessable
+		location for "push" and its own URL for verification of pushed data.
 	-->
-	<property name="remote.host" value="bodach.ucs.ed.ac.uk"/>
+    <property name="remote.host.1" value="bodach.ucs.ed.ac.uk"/>
+    <property name="remote.url.1" value="http://master.metadata.ukfederation.org.uk"/>
+    <property name="remote.host.2" value="sdssmail.edina.ac.uk"/>
+    <property name="remote.url.2" value="http://master.metadata.ukfederation.org.uk"/>
+	
+	<!--
+	    For times when only one remote host is in use, pre-select it
+	    using the following property setting.  Comment this out to allow choice.
+	-->
+	<property name="remote.host" value="${remote.host.1}"/>
+	
+	<!--
+	    Common parts of the file layout for the remote systems.
+	-->
 	<property name="remote.user" value="sdssweb"/>
 	<property name="remote.dir.sdss" value="dev/fed"/>
-	<property name="remote.loc.sdss" value="${remote.user}@${remote.host}:${remote.dir.sdss}"/>
 	<property name="remote.dir.uk" value="metadata"/>
-	<property name="remote.loc.uk" value="${remote.user}@${remote.host}:${remote.dir.uk}"/>
-	<property name="remote.url" value="http://master.metadata.ukfederation.org.uk"/>
 
 	<!--
 		Local specialised directories.
@@ -192,7 +205,7 @@
 	<!--
 		After standard processing, push: get password, push files, verify them.
 	-->
-	<target name="push" depends="get.remote.pass, push.files, verify.remote.metadata">
+	<target name="push" depends="select.remote.host, get.remote.pass, push.files, verify.remote.metadata">
 		<echo>Data pushed and verified.</echo>
 	</target>
 
@@ -203,6 +216,56 @@
 		***                               ***
 		*************************************
 	-->
+
+	<!--
+	    Select the remote host.
+	-->
+	<target name="select.remote.host">
+		<!--
+		    User dialog to select remote host.
+		-->
+		<input addproperty="remote.host" validargs="${remote.host.1},${remote.host.2}">
+			Please select the remote host to use:
+		</input>
+		
+		<!--
+		    Set details for host 1 if selected.
+		-->
+		<condition property="remote.host.1.selected">
+			<equals arg1="${remote.host}" arg2="${remote.host.1}"/>
+		</condition>
+		<condition property="remote.url" value="${remote.url.1}">
+			<isset property="remote.host.1.selected"/>
+		</condition>
+
+        <!--
+            Set details for host 2 if selected.
+        -->
+		<condition property="remote.host.2.selected">
+            <equals arg1="${remote.host}" arg2="${remote.host.2}"/>
+        </condition>
+        <condition property="remote.url" value="${remote.url.2}">
+            <isset property="remote.host.2.selected"/>
+        </condition>
+
+		<!--
+		    Set derived properties.
+		-->
+		<property name="remote.loc.sdss" value="${remote.user}@${remote.host}:${remote.dir.sdss}"/>
+	    <property name="remote.loc.uk" value="${remote.user}@${remote.host}:${remote.dir.uk}"/>
+
+		<!--
+		    Display relevant properties.
+		-->
+		<echoproperties>
+			<propertyset>
+				<propertyref name="remote.host"/>
+				<propertyref name="remote.url"/>
+				<propertyref name="remote.loc.sdss"/>
+				<propertyref name="remote.loc.uk"/>
+			</propertyset>
+		</echoproperties>
+	</target>
 
 	<!--
 		Acquire the remote password.
@@ -216,7 +279,7 @@
 	<!--
 		Push all generated XML files, and entity fragment files, to the remote machine.
 	-->
-	<target name="push.files" depends="get.remote.pass">
+	<target name="push.files" depends="select.remote.host, get.remote.pass">
 		<!--
 			Push metadata files to the old SDSS federation location.
 			
@@ -278,7 +341,7 @@
 	<!--
 		Verify a metadata file held on the master distribution site.
 	-->
-	<target name="verify.remote.metadata">
+	<target name="verify.remote.metadata" depends="select.remote.host">
 		<echo>Verifying metadata held at ${remote.url}</echo>
 		<VFY.remote i="${md.prod.signed}"/>
 		<VFY.remote i="${md.wayf.signed}"/>
