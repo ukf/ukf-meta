@@ -6,6 +6,18 @@
 use File::stat;
 use Months;
 
+# Parse command line arguments
+use Getopt::Long;
+my $allMonths;
+GetOptions('all' => \$allMonths);
+
+# By default, only show results for the most recent month
+if (!$allMonths) {
+	# reduce months table to one element
+	my $oneMonth = pop @months;
+	@months = ( $oneMonth );
+}
+
 # ingest files
 foreach $month (@months) {
 	my $fn = "cache/$month.xml";
