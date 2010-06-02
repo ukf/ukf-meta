@@ -149,4 +149,14 @@
 	</xsl:template>
 	
 
+	<!--
+		The Shibboleth 1.3f SP, probably along with other software, has
+		problems with comments inside certificate representations.
+	-->
+	<xsl:template match="ds:X509Certificate[comment()]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">X509Certificate contains XML comment</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 </xsl:stylesheet>
