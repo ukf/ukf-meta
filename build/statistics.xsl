@@ -17,14 +17,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:members="http://ukfederation.org.uk/2007/01/members"
     xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
-    xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
+    xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     xmlns:eduservlabel="http://eduserv.org.uk/labels"
     xmlns:math="http://exslt.org/math"
     xmlns:date="http://exslt.org/dates-and-times"
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf uklabel math date dyn set eduservlabel idpdisc"
+    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf ukfedlabel math date dyn set eduservlabel idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
@@ -62,9 +62,9 @@
         
         <xsl:variable name="concealedCount" select="count($idps[md:Extensions/wayf:HideFromWAYF])"/>
         <xsl:variable name="accountableCount"
-            select="count($idps[md:Extensions/uklabel:AccountableUsers])"/>
+            select="count($idps[md:Extensions/ukfedlabel:AccountableUsers])"/>
         <xsl:variable name="federationMemberEntityCount"
-            select="count($entities[md:Extensions/uklabel:UKFederationMember])"/>
+            select="count($entities[md:Extensions/ukfedlabel:UKFederationMember])"/>
         
         <xsl:variable name="memberEntities"
             select="dyn:closure($members/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
@@ -803,7 +803,7 @@
                     but do not assert user accountability:
                 </p>
                 <ul>
-                    <xsl:for-each select="$idps[not(md:Extensions/uklabel:AccountableUsers)]
+                    <xsl:for-each select="$idps[not(md:Extensions/ukfedlabel:AccountableUsers)]
                             [not(md:Extensions/wayf:HideFromWAYF)]">
                         <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
                         <li>
@@ -971,7 +971,7 @@
                         <li>
                             <xsl:value-of select="@ID"/>
                             <xsl:text>:</xsl:text>
-                            <xsl:if test="not(md:Extensions/uklabel:UKFederationMember)"> [not-M]</xsl:if>
+                            <xsl:if test="not(md:Extensions/ukfedlabel:UKFederationMember)"> [not-M]</xsl:if>
                             <xsl:if test="md:IDPSSODescriptor"> [IdP]</xsl:if>
                             <xsl:if test="md:Extensions/wayf:HideFromWAYF"> [H]</xsl:if>
                             <xsl:if test="md:SPSSODescriptor"> [SP]</xsl:if>
@@ -984,7 +984,7 @@
                                 
                                 <xsl:when test="descendant::ds:KeyName"> [PKIX]</xsl:when>
                             </xsl:choose>
-                            <xsl:apply-templates select="md:Extensions/uklabel:Software" mode="short"/>
+                            <xsl:apply-templates select="md:Extensions/ukfedlabel:Software" mode="short"/>
                             <xsl:text> </xsl:text>
                             <code><xsl:value-of select="@entityID"/></code>
                         </li>
@@ -997,7 +997,7 @@
     <!--
         Display a Software label in a short form suitable for text displays
     -->
-    <xsl:template match="uklabel:Software" mode="short">
+    <xsl:template match="ukfedlabel:Software" mode="short">
         <xsl:text> [</xsl:text>
         <xsl:choose>
             <xsl:when test="@name = 'Shibboleth'">
@@ -1110,7 +1110,7 @@
             <xsl:variable name="entities.misc.in" select="$entities"/>
             <xsl:variable name="entities.misc"
                 select="$entities.misc.in[
-                    md:Extensions/uklabel:Software
+                    md:Extensions/ukfedlabel:Software
                         [@name != 'Shibboleth']
                         [@name != 'EZproxy']
                         [@name != 'OpenAthens']
@@ -1128,7 +1128,7 @@
             -->
             <xsl:variable name="entities.ezproxy.in" select="$entities.misc.out"/>
             <xsl:variable name="entities.ezproxy"
-                select="$entities.ezproxy.in[md:Extensions/uklabel:Software/@name='EZproxy']"/>
+                select="$entities.ezproxy.in[md:Extensions/ukfedlabel:Software/@name='EZproxy']"/>
             <xsl:variable name="entities.ezproxy.out"
                 select="set:difference($entities.ezproxy.in, $entities.ezproxy)"/>
 
@@ -1137,7 +1137,7 @@
             -->
             <xsl:variable name="entities.simplesamlphp.in" select="$entities.ezproxy.out"/>
             <xsl:variable name="entities.simplesamlphp"
-                select="$entities.simplesamlphp.in[md:Extensions/uklabel:Software/@name='simpleSAMLphp']"/>
+                select="$entities.simplesamlphp.in[md:Extensions/ukfedlabel:Software/@name='simpleSAMLphp']"/>
             <xsl:variable name="entities.simplesamlphp.out"
                 select="set:difference($entities.simplesamlphp.in, $entities.simplesamlphp)"/>
             
@@ -1146,7 +1146,7 @@
             -->
             <xsl:variable name="entities.atyponsamlsp.in" select="$entities.simplesamlphp.out"/>
             <xsl:variable name="entities.atyponsamlsp"
-                select="$entities.atyponsamlsp.in[md:Extensions/uklabel:Software/@name='Atypon SAML SP 1.1/2.0']"/>
+                select="$entities.atyponsamlsp.in[md:Extensions/ukfedlabel:Software/@name='Atypon SAML SP 1.1/2.0']"/>
             <xsl:variable name="entities.atyponsamlsp.out"
                 select="set:difference($entities.atyponsamlsp.in, $entities.atyponsamlsp)"/>
             
@@ -1155,7 +1155,7 @@
             -->
             <xsl:variable name="entities.openathens.in" select="$entities.atyponsamlsp.out"/>
             <xsl:variable name="entities.openathens"
-                select="$entities.openathens.in[md:Extensions/uklabel:Software/@name='OpenAthens']"/>
+                select="$entities.openathens.in[md:Extensions/ukfedlabel:Software/@name='OpenAthens']"/>
             <xsl:variable name="entities.openathens.out"
                 select="set:difference($entities.openathens.in, $entities.openathens)"/>
             
@@ -1167,7 +1167,7 @@
                 select="$entities.shib.2.in[
                     md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')] |
                     md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, '/Shibboleth.sso/SAML2/POST')] |
-                    md:Extensions/uklabel:Software[@name='Shibboleth'][@version = '2']
+                    md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '2']
                 ]"/>
             <xsl:variable name="entities.shib.2.out"
                 select="set:difference($entities.shib.2.in, $entities.shib.2)"/>
@@ -1178,7 +1178,7 @@
             <xsl:variable name="entities.shib.13.in" select="$entities.shib.2.out"/>
             <xsl:variable name="entities.shib.13"
                 select="$entities.shib.13.in[
-                    md:Extensions/uklabel:Software[@name='Shibboleth'][@version = '1.3'] |
+                    md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '1.3'] |
                     md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '-idp/SSO')] |
                     md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]
                 ]"/>
@@ -1190,7 +1190,7 @@
             -->
             <xsl:variable name="entities.gateways.in" select="$entities.shib.13.out"/>
             <xsl:variable name="entities.gateways"
-                select="$entities.gateways.in[md:Extensions/uklabel:Software/@name='Eduserv Gateway']"/>
+                select="$entities.gateways.in[md:Extensions/ukfedlabel:Software/@name='Eduserv Gateway']"/>
             <xsl:variable name="entities.gateways.out"
                 select="set:difference($entities.gateways.in, $entities.gateways)"/>
             
@@ -1208,7 +1208,7 @@
             -->
             <xsl:variable name="entities.guanxi.in" select="$entities.openathens.virtual.out"/>
             <xsl:variable name="entities.guanxi"
-                select="$entities.guanxi.in[md:Extensions/uklabel:Software/@name='Guanxi']"/>
+                select="$entities.guanxi.in[md:Extensions/ukfedlabel:Software/@name='Guanxi']"/>
             <xsl:variable name="entities.guanxi.out"
                 select="set:difference($entities.guanxi.in, $entities.guanxi)"/>
             
@@ -1217,7 +1217,7 @@
             -->
             <xsl:variable name="entities.athensim.in" select="$entities.guanxi.out"/>
             <xsl:variable name="entities.athensim"
-                select="$entities.athensim.in[md:Extensions/uklabel:Software/@name='AthensIM']"/>
+                select="$entities.athensim.in[md:Extensions/ukfedlabel:Software/@name='AthensIM']"/>
             <xsl:variable name="entities.athensim.out"
                 select="set:difference($entities.athensim.in, $entities.athensim)"/>
             
@@ -1342,8 +1342,8 @@
                                 <code><xsl:value-of select="@entityID"/></code>
                                 <xsl:if test="$show.software != 0">
                                     <xsl:choose>
-                                        <xsl:when test="md:Extensions/uklabel:Software">
-                                            (<xsl:value-of select="md:Extensions/uklabel:Software/@name"/>)
+                                        <xsl:when test="md:Extensions/ukfedlabel:Software">
+                                            (<xsl:value-of select="md:Extensions/ukfedlabel:Software/@name"/>)
                                         </xsl:when>
                                     </xsl:choose>
                                 </xsl:if>
