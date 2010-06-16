@@ -19,7 +19,7 @@
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
-	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
+	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns:members="http://ukfederation.org.uk/2007/01/members"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	exclude-result-prefixes="wayf members">
@@ -111,21 +111,21 @@
 	<!--
 		Drop any deleted entities.
 	-->
-	<xsl:template match="md:EntityDescriptor[md:Extensions/uklabel:DeletedEntity]">
+	<xsl:template match="md:EntityDescriptor[md:Extensions/ukfedlabel:DeletedEntity]">
 		<!-- nothing -->
 	</xsl:template>
 	
 	<!--
 		Drop comments from SDSSPolicy elements.
 	-->
-	<xsl:template match="uklabel:SDSSPolicy/comment()">
+	<xsl:template match="ukfedlabel:SDSSPolicy/comment()">
 		<!-- nothing -->
 	</xsl:template>
 	
 	<!--
 		Drop text nodes from SDSSPolicy elements.
 	-->
-	<xsl:template match="uklabel:SDSSPolicy/text()">
+	<xsl:template match="ukfedlabel:SDSSPolicy/text()">
 		<!-- nothing -->
 	</xsl:template>
 	
