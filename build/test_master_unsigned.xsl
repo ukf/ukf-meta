@@ -16,7 +16,7 @@
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
-	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
+	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	
 	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns:mdxDates="xalan://uk.ac.sdss.xalan.md.Dates"
@@ -89,20 +89,20 @@
 	</xsl:template>
 	
 	<!--
-		Pass through certain uklabel namespace elements.
+		Pass through certain ukfedlabel namespace elements.
 	-->
-	<xsl:template match="uklabel:UKFederationMember |
-		uklabel:SDSSPolicy |
-		uklabel:AccountableUsers">
+	<xsl:template match="ukfedlabel:UKFederationMember |
+		ukfedlabel:SDSSPolicy |
+		ukfedlabel:AccountableUsers">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
 	</xsl:template>
 	
 	<!--
-		Strip all other uklabel namespace elements entirely.
+		Strip all other ukfedlabel namespace elements entirely.
 	-->
-	<xsl:template match="uklabel:*">
+	<xsl:template match="ukfedlabel:*">
 		<!-- do nothing -->
 	</xsl:template>
 	

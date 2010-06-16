@@ -16,7 +16,7 @@
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
-	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label"
+	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	
 	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns:exsl="http://exslt.org/common"
@@ -86,7 +86,7 @@
 		
 		In general, at this stage in the flow we pass through any Extensions unaltered.
 		However, certain changes (such as the filtering we perform on extensions in the
-		uklabel namespace) may cause the Extensions element to become empty, which is not
+		ukfedlabel namespace) may cause the Extensions element to become empty, which is not
 		permitted by the schema.  We therefore precompute the resulting Extensions element
 		and suppress it entirely if it would have no child elements.
 	-->
@@ -104,19 +104,19 @@
 	</xsl:template>
 	
 	<!--
-		Pass through certain uklabel namespace elements.
+		Pass through certain ukfedlabel namespace elements.
 	-->
-	<xsl:template match="uklabel:UKFederationMember |
-		uklabel:AccountableUsers">
+	<xsl:template match="ukfedlabel:UKFederationMember |
+		ukfedlabel:AccountableUsers">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
 	</xsl:template>
 	
 	<!--
-		Strip all other uklabel namespace elements entirely.
+		Strip all other ukfedlabel namespace elements entirely.
 	-->
-	<xsl:template match="uklabel:*">
+	<xsl:template match="ukfedlabel:*">
 		<!-- do nothing -->
 	</xsl:template>
 	
