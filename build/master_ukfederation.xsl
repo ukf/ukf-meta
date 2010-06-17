@@ -78,8 +78,9 @@
 		<xsl:copy>
 		    <xsl:variable name="entityID" select="ancestor::md:EntityDescriptor/@entityID"/>
 		    <xsl:apply-templates select="@*"/>
-			<xsl:text>&#10;        </xsl:text><Extensions>
-			    <!-- copy scopes from EntityDescriptor extensions -->
+			<xsl:text>&#10;        </xsl:text>
+			<xsl:element name="Extensions" namespace="urn:oasis:names:tc:SAML:2.0:metadata">
+				<!-- copy scopes from EntityDescriptor extensions -->
 			    <xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
 					<xsl:text>&#10;            </xsl:text>
 					<xsl:copy-of select="."/>
@@ -87,9 +88,13 @@
 			    <!-- copy scopes from member outsource records -->
 			    <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
 			        <xsl:text>&#10;            </xsl:text>
-			        <shibmeta:Scope regexp="false"><xsl:value-of select="."/></shibmeta:Scope>
+			    	<xsl:element name="shibmeta:Scope">
+			    		<xsl:attribute name="regexp">false</xsl:attribute>
+			    		<xsl:value-of select="."/>
+			    	</xsl:element>
 			    </xsl:for-each>
-			    <xsl:text>&#10;        </xsl:text></Extensions>
+			    <xsl:text>&#10;        </xsl:text>
+			</xsl:element>
 			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
 	</xsl:template>
