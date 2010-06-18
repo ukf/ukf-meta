@@ -13,7 +13,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
+	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
@@ -21,12 +21,12 @@
     xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
 	extension-element-prefixes="mdxTextUtils"
 
-	exclude-result-prefixes="shibmeta md ds wayf">
+	exclude-result-prefixes="shibmd md ds wayf">
 
 	<!-- Output is plain text -->
 	<xsl:output method="text"/>
 
-	<xsl:template match="//md:EntitiesDescriptor/md:Extensions/shibmeta:KeyAuthority//ds:X509Certificate">
+	<xsl:template match="//md:EntitiesDescriptor/md:Extensions/shibmd:KeyAuthority//ds:X509Certificate">
 		<xsl:text>-----BEGIN CERTIFICATE-----&#x0a;</xsl:text>
 		<xsl:value-of select="mdxTextUtils:wrapBase64(.)"/>
 		<xsl:text>&#x0a;-----END CERTIFICATE-----&#x0a;</xsl:text>
