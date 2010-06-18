@@ -16,6 +16,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
@@ -26,7 +27,7 @@
 	extension-element-prefixes="date exsl mdxDates"
 	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-	exclude-result-prefixes="wayf">
+	exclude-result-prefixes="md wayf">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
@@ -68,7 +69,7 @@
 		Document element.
 	-->
 	<xsl:template match="/md:EntitiesDescriptor">
-		<xsl:copy>
+		<EntitiesDescriptor>
 			<xsl:attribute name="validUntil">
 				<xsl:value-of select="$validUntil"/>
 			</xsl:attribute>
@@ -78,7 +79,7 @@
 			<xsl:apply-templates select="@*"/>
 			<xsl:call-template name="document.comment"/>
 			<xsl:apply-templates select="node()"/>
-		</xsl:copy>
+		</EntitiesDescriptor>
 	</xsl:template>
 
 	<!--
