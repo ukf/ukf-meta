@@ -128,13 +128,19 @@
 	</xsl:template>
 	
 	<!--
-		Pass through certain ukfedlabel namespace elements.
+		Normalise and pass through certain ukfedlabel namespace elements.
 	-->
-	<xsl:template match="ukfedlabel:UKFederationMember |
-		ukfedlabel:AccountableUsers">
-		<xsl:copy>
+	
+	<xsl:template match="ukfedlabel:UKFederationMember">
+		<xsl:element name="ukfedlabel:UKFederationMember">
 			<xsl:apply-templates select="node()|@*"/>
-		</xsl:copy>
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:template match="ukfedlabel:AccountableUsers">
+		<xsl:element name="ukfedlabel:AccountableUsers">
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:element>
 	</xsl:template>
 	
 	<!--
