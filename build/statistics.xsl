@@ -12,7 +12,6 @@
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-    xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:members="http://ukfederation.org.uk/2007/01/members"
@@ -24,7 +23,7 @@
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    exclude-result-prefixes="xsl ds shibmeta md xsi members wayf ukfedlabel math date dyn set eduservlabel idpdisc"
+    exclude-result-prefixes="xsl ds md xsi members wayf ukfedlabel math date dyn set eduservlabel idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
