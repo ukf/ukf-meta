@@ -27,7 +27,7 @@
 	extension-element-prefixes="date exsl mdxDates"
 	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-	exclude-result-prefixes="md wayf">
+	exclude-result-prefixes="md">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
