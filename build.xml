@@ -574,6 +574,10 @@
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<attribute name="o"/><!-- output file, assumed to be in the XML directory -->
 		<sequential>
+			<!-- delete the temporary file to be sure we don't use old data -->
+			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+			
+			<!-- perform signing operation into temporary file -->
 			<XMLSECTOOL i="@{i}">
 				<args>
 					<arg value="--sign"/>
@@ -586,7 +590,7 @@
 					<arg value="--keyPassword"/>
 					<arg value="${keystore.pass}"/>
 					<arg value="--outFile"/>
-					<arg value="${xml.dir}/@{o}"/>
+					<arg value="${xml.dir}/temp.xml"/>
 					<arg value="--referenceIdAttributeName"/>
 					<arg value="ID"/>
 					<!--
@@ -594,6 +598,20 @@
 					-->
 				</args>
 			</XMLSECTOOL>
+			
+			<!--
+				Perform identity transform, into the real output file.
+				
+				This will remove some problematic "xml" namespace prefix
+				declarations without affecting the signature.
+			-->
+			<XALAN
+				i="temp.xml"
+				o="@{o}"
+				x="identity.xsl"/>
+			
+			<!-- delete the temporary file now that we're finished with it -->
+			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
 		</sequential>
 	</macrodef>
 	
