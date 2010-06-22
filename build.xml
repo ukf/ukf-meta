@@ -612,6 +612,10 @@
 			
 			<!-- delete the temporary file now that we're finished with it -->
 			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+			
+			<!-- Force the output file to use Unix line endings -->
+			<fixcrlf file="${xml.dir}/@{o}" eol="lf"/>
+
 		</sequential>
 	</macrodef>
 	
