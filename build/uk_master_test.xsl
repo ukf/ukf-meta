@@ -16,6 +16,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
@@ -148,6 +149,22 @@
 	-->
 	<xsl:template match="ukfedlabel:*">
 		<!-- do nothing -->
+	</xsl:template>
+	
+	<!--
+		Normalise namespace on Shibboleth metadata elements.
+	-->
+	
+	<xsl:template match="shibmd:Scope">
+		<shibmd:Scope>
+			<xsl:apply-templates select="node()|@*"/>
+		</shibmd:Scope>
+	</xsl:template>
+	
+	<xsl:template match="shibmd:KeyAuthority">
+		<shibmd:KeyAuthority>
+			<xsl:apply-templates select="node()|@*"/>
+		</shibmd:KeyAuthority>
 	</xsl:template>
 	
 	<!--
