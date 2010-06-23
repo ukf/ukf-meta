@@ -15,6 +15,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+	xmlns:elab="http://eduserv.org.uk/labels"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
@@ -160,6 +161,16 @@
 		<idpdisc:DiscoveryResponse>
 			<xsl:apply-templates select="node()|@*"/>
 		</idpdisc:DiscoveryResponse>
+	</xsl:template>
+	
+	<!--
+		Normalise namespace on Athens PUID elements.
+	-->
+	
+	<xsl:template match="elab:AthensPUIDAuthority">
+		<elab:AthensPUIDAuthority>
+			<xsl:apply-templates select="node()|@*"/>
+		</elab:AthensPUIDAuthority>
 	</xsl:template>
 	
 	<!--
