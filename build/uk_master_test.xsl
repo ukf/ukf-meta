@@ -196,8 +196,24 @@
 		<!-- do nothing -->
 	</xsl:template>
 	
-	<!--By default, copy text blocks, comments and attributes unchanged.-->
-	<xsl:template match="text()|comment()|@*">
+	<!--
+		Retain only certain comments.
+	-->
+	
+	<xsl:template match="md:EntityDescriptor/comment()">
+		<xsl:copy/>
+	</xsl:template>
+	
+	<xsl:template match="shibmd:KeyAuthority//comment()">
+		<xsl:copy/>
+	</xsl:template>
+	
+	<!--
+		Strip all other comments.
+	-->
+	
+	<!--By default, copy text blocks and attributes unchanged.-->
+	<xsl:template match="text()|@*">
 		<xsl:copy/>
 	</xsl:template>
 	
