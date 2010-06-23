@@ -15,6 +15,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
@@ -149,6 +150,16 @@
 	-->
 	<xsl:template match="ukfedlabel:*">
 		<!-- do nothing -->
+	</xsl:template>
+	
+	<!--
+		Normalise namespace on IdP discovery elements.
+	-->
+	
+	<xsl:template match="idpdisc:DiscoveryResponse">
+		<idpdisc:DiscoveryResponse>
+			<xsl:apply-templates select="node()|@*"/>
+		</idpdisc:DiscoveryResponse>
 	</xsl:template>
 	
 	<!--
