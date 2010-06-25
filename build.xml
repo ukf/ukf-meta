@@ -413,6 +413,7 @@
 		<!-- [27] -->
 		<XALAN x="uk_master_test.xsl" i="${uk.master.file}"
 			o="${md.test.unsigned}" />
+		<MDNORM i="${md.test.unsigned}"/>
 		<!-- [29] -->
 		<XALAN x="uk_master_export.xsl" i="${uk.master.file}"
 			o="${md.export.unsigned}" />
