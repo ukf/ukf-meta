@@ -61,7 +61,7 @@ foreach $addr (keys %list) {
 # mailing list.
 #
 $first = 1;
-foreach $addr (keys %have) {
+foreach $addr (sort keys %have) {
 	my $a = $have{$addr};
 	if (defined($wanted{$addr})) {
 		delete $wanted{$addr};
