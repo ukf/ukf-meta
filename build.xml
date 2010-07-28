@@ -405,6 +405,11 @@
 		<CHECK i="${xml.dir}/${uk.master.file}" s="check.xsl"/>
 	</target>
 	
+	<target name="test.uk.future" depends="gen.uk">
+		<echo>Checking against future rulesets.</echo>
+        <CHECK i="${xml.dir}/${uk.master.file}" s="check_future.xsl"/>
+	</target>
+	
 	<target name="gen.uk.unsigned" depends="gen.uk.master">
 		<echo>Generating unsigned UK metadata files.</echo>
 		<!-- [19] -->
