@@ -15,6 +15,7 @@
 	xmlns:elab="http://eduserv.org.uk/labels"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdui="urn:oasis:names:tc:SAML:2.0:metadata:ui"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -27,7 +28,7 @@
 	extension-element-prefixes="date exsl mdxDates"
 	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-	exclude-result-prefixes="md">
+	exclude-result-prefixes="md mdui">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
@@ -145,6 +146,13 @@
 		Strip all other ukfedlabel namespace elements entirely.
 	-->
 	<xsl:template match="ukfedlabel:*">
+		<!-- do nothing -->
+	</xsl:template>
+	
+	<!--
+		Strip all discovery user interface elements entirely.
+	-->
+	<xsl:template match="mdui:*">
 		<!-- do nothing -->
 	</xsl:template>
 	

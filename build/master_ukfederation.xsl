@@ -100,6 +100,27 @@
 	</xsl:template>
 	
 	<!--
+		If an IdP's SSO or AA roles already includes an Extensions element, this may
+		already contain extensions other than scopes.  We need to make sure that
+		if it does not also contain scopes, then any scopes declared at the entity
+		level are copied down.
+	-->
+	<xsl:template match="md:IDPSSODescriptor/md:Extensions |
+						 md:AttributeAuthorityDescriptor/md:Extensions">
+		<xsl:copy>
+			<xsl:apply-templates select="node()"/>
+			<xsl:if test="not(shibmeta:Scope)">
+				<!-- copy scopes from EntityDescriptor extensions -->
+				<xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
+					<xsl:text>    </xsl:text>
+					<xsl:copy-of select="."/>
+					<xsl:text>&#10;        </xsl:text>
+				</xsl:for-each>
+			</xsl:if>			
+		</xsl:copy>
+	</xsl:template>
+
+	<!--
 		Drop any explicit xsi:schemaLocation attributes from imported entity fragments.
 	-->
 	<xsl:template match="@xsi:schemaLocation[parent::md:EntityDescriptor]">
