@@ -624,7 +624,7 @@
 					<arg value="--keyPassword"/>
 					<arg value="${keystore.pass}"/>
 					<arg value="--outFile"/>
-					<arg value="${xml.dir}/temp.xml"/>
+					<arg value="${xml.dir}/@{o}"/>
 					<arg value="--referenceIdAttributeName"/>
 					<arg value="ID"/>
 					<!--
@@ -632,20 +632,6 @@
 					-->
 				</args>
 			</XMLSECTOOL>
-			
-			<!--
-				Perform identity transform, into the real output file.
-				
-				This will remove some problematic "xml" namespace prefix
-				declarations without affecting the signature.
-			-->
-			<XALAN
-				i="temp.xml"
-				o="@{o}"
-				x="identity.xsl"/>
-			
-			<!-- delete the temporary file now that we're finished with it -->
-			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
 			
 			<!-- Force the output file to use Unix line endings -->
 			<fixcrlf file="${xml.dir}/@{o}" eol="lf"/>
