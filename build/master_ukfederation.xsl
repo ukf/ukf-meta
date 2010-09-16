@@ -103,11 +103,13 @@
 		If an IdP's SSO or AA roles already includes an Extensions element, this may
 		already contain extensions other than scopes.  We need to make sure that
 		if it does not also contain scopes, then any scopes declared at the entity
-		level are copied down.
+		level are copied down, and any outsourced scopes provided by the member
+        list are imported.
 	-->
 	<xsl:template match="md:IDPSSODescriptor/md:Extensions |
 						 md:AttributeAuthorityDescriptor/md:Extensions">
 		<xsl:copy>
+            <xsl:variable name="entityID" select="ancestor::md:EntityDescriptor/@entityID"/>
 			<xsl:apply-templates select="node()"/>
 			<xsl:if test="not(shibmeta:Scope)">
 				<!-- copy scopes from EntityDescriptor extensions -->
@@ -116,6 +118,15 @@
 					<xsl:copy-of select="."/>
 					<xsl:text>&#10;        </xsl:text>
 				</xsl:for-each>
+                <!-- copy scopes from member outsource records -->
+                <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
+                    <xsl:text>    </xsl:text>
+                    <xsl:element name="shibmeta:Scope">
+                        <xsl:attribute name="regexp">false</xsl:attribute>
+                        <xsl:value-of select="."/>
+                    </xsl:element>
+                    <xsl:text>&#10;        </xsl:text>
+                </xsl:for-each>
 			</xsl:if>			
 		</xsl:copy>
 	</xsl:template>
