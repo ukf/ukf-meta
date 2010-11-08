@@ -215,6 +215,18 @@
 	
 	
 	<!--
+		md:AttributeConsumingService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:AttributeConsumingService">
+		<AttributeConsumingService>
+			<xsl:apply-templates select="node()|@*"/>
+		</AttributeConsumingService>
+	</xsl:template>
+	
+	
+	<!--
 		md:IDPSSODescriptor
 		
 		Normalise namespace prefix.
@@ -223,6 +235,30 @@
 		<IDPSSODescriptor>
 			<xsl:apply-templates select="node()|@*"/>
 		</IDPSSODescriptor>
+	</xsl:template>
+	
+	
+	<!--
+		md:RequestedAttribute
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:RequestedAttribute">
+		<RequestedAttribute>
+			<xsl:apply-templates select="node()|@*"/>
+		</RequestedAttribute>
+	</xsl:template>
+	
+	
+	<!--
+		md:ServiceName
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:ServiceName">
+		<ServiceName>
+			<xsl:apply-templates select="node()|@*"/>
+		</ServiceName>
 	</xsl:template>
 	
 	
