@@ -176,7 +176,7 @@
 	<!--
 		Verification keystore.
 	-->
-	<property name="keystore.uk.vfy.loc" value="${build.dir}/ukfederation.jks"/>
+	<property name="keystore.uk.vfy.loc" value="${build.dir}/ukfederation-2010.jks"/>
 	<property name="keystore.uk.vfy.alias" value="ukfederation"/>
 	
 	<property name="known.hosts" value="${build.dir}/known_hosts"/>
@@ -646,7 +646,7 @@
 				<args>
 					<arg value="--verifySignature"/>
 					<arg value="--certificate"/>
-					<arg value="${build.dir}/ukfederation-2008.pem"/>
+					<arg value="${build.dir}/ukfederation-2010.pem"/>
 					<!--
 					<arg value="- -quiet"/>
 					-->
