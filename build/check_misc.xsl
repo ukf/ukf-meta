@@ -163,6 +163,16 @@
 
 
 	<!--
+		Check for OrganizationDisplayName elements containing line breaks.
+	-->
+	<xsl:template match="md:OrganizationDisplayName[contains(., '&#10;')]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">OrganizationDisplayName contains line break</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		@Location attributes should not contain space characters.
 		
 		This may be a little strict, and might be better confined to md:* elements.
