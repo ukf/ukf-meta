@@ -13,6 +13,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:members="http://ukfederation.org.uk/2007/01/members"
     xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
@@ -23,7 +24,7 @@
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    exclude-result-prefixes="xsl ds md xsi members wayf ukfedlabel math date dyn set eduservlabel idpdisc"
+    exclude-result-prefixes="xsl ds md mdui xsi members wayf ukfedlabel math date dyn set eduservlabel idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
@@ -364,6 +365,15 @@
                 </table>
                 
 
+                <!--
+                    *********************************************
+                    ***                                       ***
+                    ***   E N T I T Y   S T A T I S T I C S   ***
+                    ***                                       ***
+                    *********************************************
+                -->
+                
+
                 <h2><a name="entities">Entity Statistics</a></h2>
                 <p>Total entities: <xsl:value-of select="$entityCount"/>.  This breaks down into:</p>
                 <ul>
@@ -491,6 +501,26 @@
                         </li>
                     </xsl:if>
                     
+                    <xsl:variable name="uiInfoEntities" select="$entities[descendant::mdui:UIInfo]"/>
+                    <xsl:variable name="uiInfoEntitiesCount" select="count($uiInfoEntities)"/>
+                    <xsl:if test="$uiInfoEntitiesCount != 0">
+                        <li>
+                            <p>
+                                <xsl:value-of select="$uiInfoEntitiesCount"/>
+                                (<xsl:value-of select="format-number($uiInfoEntitiesCount div $entityCount, '0.0%')"/>)
+                                <xsl:choose>
+                                    <xsl:when test="$uiInfoEntitiesCount = 1">
+                                        has
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        have
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                mdui:UIInfo support.
+                            </p>
+                        </li>
+                    </xsl:if>
+                    
                 </ul>
 
                 <xsl:call-template name="entity.breakdown.by.trust">
@@ -502,6 +532,15 @@
 
 
 
+                <!--
+                    ***********************************************
+                    ***                                         ***
+                    ***   I D E N T I T Y   P R O V I D E R S   ***
+                    ***                                         ***
+                    ***********************************************
+                -->
+                
+                
                 <h3>Identity Providers</h3>
                 <p>There are <xsl:value-of select="$idpCount"/> identity providers,
                 including <xsl:value-of select="$dualEntityCount"/>
@@ -522,6 +561,7 @@
                             (<xsl:value-of select="format-number($artifactIdpCount div $idpCount, '0.0%')"/>).
                         </p>
                     </li>
+                    
                     <xsl:variable name="idp.noaa" select="$idps[not(md:AttributeAuthorityDescriptor)]"/>
                     <xsl:variable name="idp.noaa.count" select="count($idp.noaa)"/>
                     <xsl:if test="$idp.noaa.count != 0">
@@ -540,6 +580,18 @@
                             </ul>
                         </li>
                     </xsl:if>
+
+                    <xsl:variable name="idp.uiinfo" select="$idps[descendant::mdui:UIInfo]"/>
+                    <xsl:variable name="idp.uiinfo.count" select="count($idp.uiinfo)"/>
+                    <xsl:if test="$idp.uiinfo.count != 0">
+                        <li>
+                            <p>
+                                Support mdui:UIInfo: <xsl:value-of select="$idp.uiinfo.count"/>
+                                (<xsl:value-of select="format-number($idp.uiinfo.count div $entityCount, '0.0%')"/>).
+                            </p>
+                        </li>
+                    </xsl:if>
+                    
                 </ul>
                 
                 <p>SSO protocol support:</p>
@@ -600,6 +652,15 @@
 
 
 
+                <!--
+                    *********************************************
+                    ***                                       ***
+                    ***   S E R V I C E   P R O V I D E R S   ***
+                    ***                                       ***
+                    *********************************************
+                -->
+                
+                
                 <h3>Service Providers</h3>
                 <p>There are <xsl:value-of select="$spCount"/> service providers,
                     including <xsl:value-of select="$dualEntityCount"/>
@@ -641,6 +702,18 @@
                             (<xsl:value-of select="format-number($sp.idpdisc.count div $spCount, '0.0%')"/>).
                         </p>
                     </li>
+                    
+                    <xsl:variable name="sp.uiinfo" select="$sps[descendant::mdui:UIInfo]"/>
+                    <xsl:variable name="sp.uiinfo.count" select="count($sp.uiinfo)"/>
+                    <xsl:if test="$sp.uiinfo.count != 0">
+                        <li>
+                            <p>
+                                Support mdui:UIInfo: <xsl:value-of select="$sp.uiinfo.count"/>
+                                (<xsl:value-of select="format-number($sp.uiinfo.count div $entityCount, '0.0%')"/>).
+                            </p>
+                        </li>
+                    </xsl:if>
+                    
                 </ul>
                 
                 <p>SSO protocol support:</p>
