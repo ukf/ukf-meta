@@ -41,6 +41,22 @@
 			<xsl:with-param name="m">more than one UIInfo element in one Extensions element</xsl:with-param>
 		</xsl:call-template>		
 	</xsl:template>
+	
+	<!--
+		Section 2.1
+		
+		Restrict the elements in this namespace which can appear directly within md:Extensions
+		to the two defined container elements.  This will catch mis-spelled containers.
+	-->
+	<xsl:template match="md:Extensions/mdui:*
+		[not(local-name()='UIInfo')][not(local-name()='DiscoHints')]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">
+				<xsl:text>misspelled or misplaced mdui element within md:Extensions: </xsl:text>
+				<xsl:value-of select="local-name()"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
 
 	<!--
 		Section 2.1
