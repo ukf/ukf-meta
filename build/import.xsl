@@ -59,6 +59,7 @@
 		<xsl:text>&#10;</xsl:text>
 		<EntityDescriptor ID="uk000000_CHANGE_THIS"
 			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata sstc-saml-schema-metadata-2.0.xsd
+			urn:oasis:names:tc:SAML:metadata:ui ../xml/sstc-saml-metadata-ui-v1.0.xsd
 			urn:mace:shibboleth:metadata:1.0 shibboleth-metadata-1.0.xsd
 			http://ukfederation.org.uk/2006/11/label uk-fed-label.xsd
 			http://www.w3.org/2001/04/xmlenc# xenc-schema.xsd
