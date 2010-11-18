@@ -8,7 +8,7 @@
 
 		http://wiki.oasis-open.org/security/SAML2MetadataUI
 		
-	This ruleset reflects WD04, 4-Nov-2010.
+	This ruleset reflects WD06, 16-Nov-2010.
 	
 	Some of these rules are simply checks on schema validity; those can
 	probably be removed and replaced by direct checks against the schema.
@@ -43,7 +43,7 @@
 	</xsl:template>
 	
 	<!--
-		Section 2.1
+		Section 2.1, 2.2
 		
 		Restrict the elements in this namespace which can appear directly within md:Extensions
 		to the two defined container elements.  This will catch mis-spelled containers.
@@ -59,7 +59,7 @@
 	</xsl:template>
 
 	<!--
-		Section 2.1
+		Section 2.1.1
 		
 		The <mdui:UIInfo> container element [...] MUST appear within the
 		<md:Extensions> element of a role element (one whose type is based on
@@ -95,6 +95,11 @@
 		<!-- unique xml:lang over Description elements -->
 		<xsl:call-template name="uniqueLang">
 			<xsl:with-param name="e" select="mdui:Description"/>
+		</xsl:call-template>
+		
+		<!-- unique xml:lang over Keywords elements -->
+		<xsl:call-template name="uniqueLang">
+			<xsl:with-param name="e" select="mdui:Keywords"/>
 		</xsl:call-template>
 		
 		<!-- unique xml:lang over InformationURL elements -->
@@ -141,9 +146,23 @@
 	</xsl:template>
 	
 	<!--
-		Section 2.1.4 Element <mdui:Logo>
+		Section 2.1.4 Element <mdui:Keywords>
+	-->
+	
+	<!--
+		Section 2.1.5 Element <mdui:Logo>
 	-->
 	<xsl:template match="mdui:Logo">
+		<!--
+			Require that the URL starts with https://
+			
+			This is a SHOULD in the specification; we treat it as a MUST here.
+		-->
+		<xsl:if test="not(starts-with(., 'https://'))">
+			<xsl:call-template name="fatal">
+				<xsl:with-param name="m">mdui:Logo URL does not start with https://</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
 		<!-- Schema validity: must have a height attribute -->
 		<xsl:if test="not(@height)">
 			<xsl:call-template name="fatal">
@@ -159,14 +178,14 @@
 	</xsl:template>
 	
 	<!--
-		Section 2.1.5 Element <mdui:InformationURL>
+		Section 2.1.6 Element <mdui:InformationURL>
 	-->
 	<xsl:template match="mdui:InformationURL">
 		<xsl:call-template name="localisedNameType"/>
 	</xsl:template>
 	
 	<!--
-		Section 2.1.6 Element <mdui:PrivacyStatementURL>
+		Section 2.1.7 Element <mdui:PrivacyStatementURL>
 	-->
 	<xsl:template match="mdui:PrivacyStatementURL">
 		<xsl:call-template name="localisedNameType"/>
