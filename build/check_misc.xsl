@@ -255,5 +255,15 @@
 			<xsl:with-param name="m">empty xml:lang attribute</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
+	
+	
+	<!--
+		A Shibboleth scope shouldn't be just "ac.uk".
+	-->
+	<xsl:template match="shibmd:Scope[.='ac.uk']">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">bare 'ac.uk' scope not permitted</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
 
 </xsl:stylesheet>
