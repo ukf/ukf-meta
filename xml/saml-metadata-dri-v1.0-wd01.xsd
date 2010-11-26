@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema targetNamespace="urn:oasis:names:tc:SAML:metadata:dri"
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:mddri="urn:oasis:names:tc:SAML:metadata:dri"
+    elementFormDefault="unqualified" 
+    attributeFormDefault="unqualified" 
+    blockDefault="substitution" 
+    version="1.0"> 
+
+    <annotation>
+        <documentation>
+            Document title: SAML V2.0 Metadata Extensions for Documentation and Registration Information Version 1.0
+            Document identifier: sstc-saml-metadata-dri-v1.0.xsd
+            Location: http://docs.oasis-open.org/security/saml/Post2.0/
+            Revision history: 
+              24 November 2010
+                Initial Submission
+        </documentation>
+    </annotation>
+    
+    <import namespace="urn:oasis:names:tc:SAML:2.0:metadata" schemaLocation="saml-schema-metadata-2.0.xsd"/>
+    <import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+    
+    <element name="DocumentInfo" type="mddri:DocumentInfoType" />
+    <complexType name="DocumentInfoType">
+        <sequence>
+            <element ref="mddri:UsagePolicy" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="mddri:PublicationPath" minOccurs="0" maxOccurs="1"/>
+            <any namespace="##other" processContents="lax"/>
+        </sequence>
+        <attribute name="creationInstant" type="dateTime" />
+        <attribute name="serialNumber" type="string" />
+        <anyAttribute namespace="##other" processContents="lax" />
+    </complexType>
+    
+    <element name="UsagePolicy" type="md:localizedURIType" />
+    
+    <element name="PublicationPath" type="mddri:PublicationPathType" />
+    <complexType name="PublicationPathType">
+        <sequence>
+            <element ref="mddri:Publication" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+    
+    <element name="Publication" type="mddri:PublicationType" />
+    <complexType name="PublicationType">
+        <attribute name="publisher" type="string" use="required" />
+        <attribute name="creationInstant" type="dateTime" />
+        <attribute name="serialNumber" type="string" />
+    </complexType>
+    
+    <element name="RegistrationInfo" type="mddri:RegistrationInfoType" />
+    <complexType name="RegistrationInfoType">
+        <sequence>
+            <element ref="mddri:RegistrationPolicy" />
+            <any namespace="##other" processContents="lax"/>
+        </sequence>
+        <attribute name="registrationAuthority" type="anyURI" use="required"/>
+        <attribute name="registrationInstant" type="dateTime" />
+        <anyAttribute namespace="##other" processContents="lax" />
+    </complexType>
+    
+    <element name="RegistrationPolicy" type="md:localizedURIType" />
+    
+</schema>
