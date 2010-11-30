@@ -898,12 +898,11 @@
                         <th align="left">Primary Scope</th>
                         <th align="left">Member</th>
                     </tr>
-                    <xsl:variable name="membersWithScopes"
-                        select="$members[descendant::members:Scope[@isPrimary='true']]"/>
+                    <xsl:variable name="membersWithScopes" select="$members[members:PrimaryScope]"/>
                     <xsl:for-each select="$membersWithScopes">
-                        <xsl:sort select="descendant::members:Scope[@isPrimary='true'][position()=1]"/>
+                        <xsl:sort select="members:PrimaryScope"/>
                         <tr>
-                            <td><code><xsl:value-of select="descendant::members:Scope[@isPrimary='true'][position()=1]"/></code></td>
+                            <td><code><xsl:value-of select="members:PrimaryScope"/></code></td>
                             <td><xsl:value-of select="md:OrganizationName"/></td>
                         </tr>
                     </xsl:for-each>
@@ -947,7 +946,7 @@
         <xsl:param name="entities"/>
         <xsl:variable name="myName" select="string(md:OrganizationName)"/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
-        <xsl:variable name="primaryScope" select="members:Scopes/members:Scope[@isPrimary='true'][position()=1]"/>
+        <xsl:variable name="primaryScope" select="members:PrimaryScope"/>
         <tr>
             <td><xsl:value-of select="$myName"/></td>
             <!-- count total entities -->
