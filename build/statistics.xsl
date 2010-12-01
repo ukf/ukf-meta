@@ -41,14 +41,14 @@
         <!-- federation members -->
         <xsl:variable name="members" select="$memberDocument//members:Member"/>
         <xsl:variable name="memberCount" select="count($members)"/>
-        <xsl:variable name="memberNames" select="$members/md:OrganizationName"/>
+        <xsl:variable name="memberNames" select="$members/members:Name"/>
         <!-- federation non-member owners -->
         <xsl:variable name="nonMembers" select="$memberDocument//members:NonMember"/>
         <xsl:variable name="nonMemberCount" select="count($nonMembers)"/>
-        <xsl:variable name="nonMemberNames" select="$nonMembers/md:OrganizationName"/>
+        <xsl:variable name="nonMemberNames" select="$nonMembers/members:Name"/>
         <!-- owners are the union of the above -->
         <xsl:variable name="owners" select="$members | $nonMembers"/>
-        <xsl:variable name="ownerNames" select="$memberDocument//md:OrganizationName"/>
+        <xsl:variable name="ownerNames" select="$memberDocument//members:Name"/>
         
         <xsl:variable name="entities" select="//md:EntityDescriptor"/>
         <xsl:variable name="entityCount" select="count($entities)"/>
@@ -67,7 +67,7 @@
             select="count($entities[md:Extensions/ukfedlabel:UKFederationMember])"/>
         
         <xsl:variable name="memberEntities"
-            select="dyn:closure($members/md:OrganizationName, '$entities[md:Organization/md:OrganizationName = current()]')"/>
+            select="dyn:closure($members/members:Name, '$entities[md:Organization/md:OrganizationName = current()]')"/>
         <xsl:variable name="memberEntityCount"
             select="dyn:sum($memberNames, 'count($entities[md:Organization/md:OrganizationName = current()])')"/>
         
@@ -125,9 +125,9 @@
                     Break down members by whether or not they have entities registered
                 -->
                 <xsl:variable name="membersWithIdPs"
-                    select="$members[md:OrganizationName = $idps//md:OrganizationName]"/>
+                    select="$members[members:Name = $idps//md:OrganizationName]"/>
                 <xsl:variable name="membersWithSps"
-                    select="$members[md:OrganizationName = $sps//md:OrganizationName]"/>
+                    select="$members[members:Name = $sps//md:OrganizationName]"/>
                 <xsl:variable name="membersWithBoth"
                     select="set:intersection($membersWithIdPs, $membersWithSps)"/>
                 <xsl:variable name="membersWithEither"
@@ -237,7 +237,7 @@
                     they do use an Athens IdP.
                 -->
                 <xsl:variable name="members.eduserv"
-                    select="$members[md:OrganizationName = 'Eduserv']"/>
+                    select="$members[members:Name = 'Eduserv']"/>
                 <xsl:variable name="members.eduserv.count" select="count($members.eduserv)"/>
                 
                 <!--
@@ -254,7 +254,7 @@
                     can not outsource to themselves.
                 -->
                 <xsl:variable name="members.osrc.athens.true"
-                    select="$members[@usesAthensIdP = 'true'][md:OrganizationName != 'Eduserv']"/>
+                    select="$members[@usesAthensIdP = 'true'][members:Name != 'Eduserv']"/>
                 <xsl:variable name="members.osrc.athens.true.count" select="count($members.osrc.athens.true)"/>
                 
                 <!--
@@ -903,7 +903,7 @@
                         <xsl:sort select="members:PrimaryScope"/>
                         <tr>
                             <td><code><xsl:value-of select="members:PrimaryScope"/></code></td>
-                            <td><xsl:value-of select="md:OrganizationName"/></td>
+                            <td><xsl:value-of select="members:Name"/></td>
                         </tr>
                     </xsl:for-each>
                 </table>
@@ -934,7 +934,7 @@
                         <xsl:sort select="members:JoinDate"/>
                         <li>
                             <xsl:value-of select="members:JoinDate"/>:
-                            <xsl:value-of select="md:OrganizationName"/>
+                            <xsl:value-of select="members:Name"/>
                         </li>
                     </xsl:for-each>
                 </ul>                
@@ -944,7 +944,7 @@
     
     <xsl:template match="members:Member|members:NonMember" mode="count">
         <xsl:param name="entities"/>
-        <xsl:variable name="myName" select="string(md:OrganizationName)"/>
+        <xsl:variable name="myName" select="string(members:Name)"/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
         <xsl:variable name="primaryScope" select="members:PrimaryScope"/>
         <tr>
@@ -990,7 +990,7 @@
                 <xsl:choose>
                 
                 	<!-- Special case: Eduserv does NOT outsource -->
-                    <xsl:when test="md:OrganizationName = 'Eduserv'">
+                    <xsl:when test="members:Name = 'Eduserv'">
                         &#160;
                     </xsl:when>
                     
@@ -1030,7 +1030,7 @@
         </tr>
     </xsl:template>
     
-    <xsl:template match="md:OrganizationName" mode="enumerate">
+    <xsl:template match="members:Name" mode="enumerate">
         <xsl:param name="entities"/>
         <xsl:variable name="myName" select="."/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
