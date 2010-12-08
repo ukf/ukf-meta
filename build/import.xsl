@@ -490,6 +490,17 @@
 	</xsl:template>
 	
 	
+	<!--
+		shibmd:Scope
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="shibmd:Scope">
+		<shibmd:Scope>
+			<xsl:apply-templates select="node()|@*|text()"/>
+		</shibmd:Scope>
+	</xsl:template>
+	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
