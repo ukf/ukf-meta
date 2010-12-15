@@ -29,6 +29,7 @@
 
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
@@ -39,7 +40,7 @@
 
 	xmlns:xalan="http://xml.apache.org/xalan"
 	
-	exclude-result-prefixes="idpdisc md xalan"
+	exclude-result-prefixes="idpdisc init md xalan"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -60,6 +61,7 @@
 		<EntityDescriptor ID="uk000000_CHANGE_THIS"
 			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata sstc-saml-schema-metadata-2.0.xsd
 			urn:oasis:names:tc:SAML:metadata:ui ../xml/sstc-saml-metadata-ui-v1.0.xsd
+			urn:oasis:names:tc:SAML:profiles:SSO:request-init ../xml/sstc-request-initiation.xsd
 			urn:mace:shibboleth:metadata:1.0 shibboleth-metadata-1.0.xsd
 			http://ukfederation.org.uk/2006/11/label uk-fed-label.xsd
 			http://www.w3.org/2001/04/xmlenc# xenc-schema.xsd
@@ -487,6 +489,18 @@
 			</xsl:if>
 			<xsl:apply-templates select="node()|@*"/>
 		</DiscoveryResponse>
+	</xsl:template>
+	
+	
+	<!--
+		init:RequestInitiator
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="init:RequestInitiator">
+		<init:RequestInitiator>
+			<xsl:apply-templates select="node()|@*"/>
+		</init:RequestInitiator>
 	</xsl:template>
 	
 	
