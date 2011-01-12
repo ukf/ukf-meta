@@ -99,6 +99,7 @@
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
                     <li><p><a href="#membersByScope">Members by Primary Scope</a></p></li>
                     <li><p><a href="#undeployedMembers">Members Lacking Deployment</a></p></li>
+                    <li><p><a href="#shib13">Shibboleth 1.3 Remnants</a></p></li>
                 </ul>
                 
 
@@ -938,6 +939,35 @@
                         </li>
                     </xsl:for-each>
                 </ul>                
+                
+
+
+                <!--
+                    ***************************************************************
+                    ***                                                         ***
+                    ***      S H I B B O L E T H   1 . 3   R E M N A N T S      ***
+                    ***                                                         ***
+                    ***************************************************************
+                -->
+                <h2><a name="shib13">Shibboleth 1.3 Remnants</a></h2>
+                <p>
+                    The following lists show entities that are believed to be running the
+                    Shibboleth 1.3 software, which is now beyond its official end of life
+                    date.  As heuristics have been used to create these lists, they may
+                    not be completely accurate.
+                </p>
+
+                <h3>Shibboleth 1.3 Identity Provider Entities</h3>
+                <xsl:call-template name="list.shibboleth.1.3.entities">
+                    <xsl:with-param name="entities" select="$idps"/>
+                </xsl:call-template>
+
+                <h3>Shibboleth 1.3 Service Provider Entities</h3>
+                <xsl:call-template name="list.shibboleth.1.3.entities">
+                    <xsl:with-param name="entities" select="$sps"/>
+                </xsl:call-template>
+                
+
             </body>
         </html>
     </xsl:template>
@@ -1143,7 +1173,55 @@
 
 
 
-
+    <!--
+        Given a list of entities, extract and list those which are apparently running Shibboleth 1.3.
+    -->
+    <xsl:template name="list.shibboleth.1.3.entities">
+        <xsl:param name="entities"/>
+        <!-- remove everything that says it is something other than Shibboleth -->
+        <xsl:variable name="entities.1"
+            select="set:difference($entities,
+                $entities[md:Extensions/ukfedlabel:Software[@name != 'Shibboleth']])"/>
+        <!-- remove things that look like Shibboleth 2.x -->
+        <xsl:variable name="entities.2"
+            select="set:difference($entities.1,
+                $entities.1[
+                    md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')] |
+                    md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, '/Shibboleth.sso/SAML2/POST')] |
+                    md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '2']
+                ]
+            )"/>
+        <!-- select only remainder that look like Shibboleth 1.3 -->
+        <xsl:variable name="entities.3"
+            select="$entities.2[
+                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '1.3'] |
+                md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '-idp/SSO')] |
+                md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]
+            ]"/>
+        <!-- final set -->
+        <xsl:variable name="entities.out" select="$entities.3"/>
+        <xsl:variable name="entities.out.count" select="count($entities.out)"/>
+        <!-- print the list -->
+        <p>
+            <xsl:value-of select="$entities.out.count"/> entities:
+        </p>
+        <ul>
+            <xsl:for-each select="$entities.out">
+                <li>
+                    <xsl:value-of select="@ID"/>:
+                    <code><xsl:value-of select="@entityID"/></code>
+                    <!-- suspect misclassification if an SP has an encryption key -->
+                    <xsl:if test="md:SPSSODescriptor/md:KeyDescriptor[@use='encryption']">
+                        <xsl:text> [HasEncKey]</xsl:text>
+                    </xsl:if>
+                    <xsl:text> (</xsl:text>
+                    <xsl:value-of select="md:Organization/md:OrganizationName"/>
+                    <xsl:text>)</xsl:text>
+                </li>
+            </xsl:for-each>
+        </ul>
+    </xsl:template>
+    
     <!--
         Break down a set of entities by the software used.
     -->
