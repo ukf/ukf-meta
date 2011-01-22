@@ -531,6 +531,10 @@
                     <xsl:with-param name="entities" select="$entities"/>
                 </xsl:call-template>
 
+                <xsl:call-template name="keydescriptor.breakdown">
+                    <xsl:with-param name="entities" select="$entities"/>
+                </xsl:call-template>
+
 
 
                 <!--
@@ -650,8 +654,11 @@
                     <xsl:with-param name="entities" select="$idps"/>
                 </xsl:call-template>
 
-
-
+                <xsl:call-template name="keydescriptor.breakdown">
+                    <xsl:with-param name="entities" select="$idps"/>
+                </xsl:call-template>
+                
+                
 
                 <!--
                     *********************************************
@@ -844,6 +851,10 @@
                     <xsl:with-param name="entities" select="$sps"/>
                 </xsl:call-template>
 
+                <xsl:call-template name="keydescriptor.breakdown">
+                    <xsl:with-param name="entities" select="$sps"/>
+                </xsl:call-template>
+                
                 
                 
                 <!--
@@ -1502,6 +1513,63 @@
                 </xsl:if>
             </li>
         </xsl:if>
+    </xsl:template>
+    
+    <xsl:template name="keydescriptor.breakdown">
+        <xsl:param name="entities"/>
+        <xsl:variable name="kd" select="$entities//md:KeyDescriptor"/>
+        <xsl:variable name="kd.count" select="count($kd)"/>
+        <p>
+            <code>KeyDescriptor</code> elements: <xsl:value-of select="$kd.count"/>
+            (<xsl:value-of select="format-number($kd.count div count($entities), '0.0')"/> per entity),
+            of which:</p>
+        <ul>
+            <li>
+                With embedded keys:
+                <xsl:call-template name="keydescriptor.line">
+                    <xsl:with-param name="kd.count" select="$kd.count"/>
+                    <xsl:with-param name="sub" select="$kd[descendant::ds:X509Data]"/>
+                </xsl:call-template>
+            </li>
+            <li>
+                With only embedded keys:
+                <xsl:call-template name="keydescriptor.line">
+                    <xsl:with-param name="kd.count" select="$kd.count"/>
+                    <xsl:with-param name="sub" select="$kd[descendant::ds:X509Data][not(descendant::ds:KeyName)]"/>
+                </xsl:call-template>
+            </li>
+            <li>
+                With <code>KeyName</code>:
+                <xsl:call-template name="keydescriptor.line">
+                    <xsl:with-param name="kd.count" select="$kd.count"/>
+                    <xsl:with-param name="sub" select="$kd[descendant::ds:KeyName]"/>
+                </xsl:call-template>
+            </li>
+            <li>
+                With only <code>KeyName</code>:
+                <xsl:call-template name="keydescriptor.line">
+                    <xsl:with-param name="kd.count" select="$kd.count"/>
+                    <xsl:with-param name="sub" select="$kd[not(descendant::ds:X509Data)][descendant::ds:KeyName]"/>
+                </xsl:call-template>
+            </li>
+            <li>
+                With both:
+                <xsl:call-template name="keydescriptor.line">
+                    <xsl:with-param name="kd.count" select="$kd.count"/>
+                    <xsl:with-param name="sub" select="$kd[descendant::ds:X509Data][descendant::ds:KeyName]"/>
+                </xsl:call-template>
+            </li>
+        </ul>
+    </xsl:template>
+    
+    <xsl:template name="keydescriptor.line">
+        <xsl:param name="kd.count"/>
+        <xsl:param name="sub"/>
+        <xsl:variable name="sub.count" select="count($sub)"/>
+        <xsl:value-of select="$sub.count"/>
+        <xsl:text> (</xsl:text>
+        <xsl:value-of select="format-number($sub.count div $kd.count, '0.0%')"/>
+        <xsl:text>)</xsl:text>
     </xsl:template>
     
 </xsl:stylesheet>
