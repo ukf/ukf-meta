@@ -76,13 +76,27 @@ while (<>) {
 				$subject = $1;
 				print "   Subject: $subject\n" unless $subject eq $issuer;
 			}
-			if (/RSA Public Key: \((\d+) bit\)/) {
+			
+			#
+			# Extract the public key size.  This is displayed differently
+			# in different versions of OpenSSL.
+			#
+			if (/RSA Public Key: \((\d+) bit\)/) { # OpenSSL 0.9x
 				$pubSize = $1;
-				print "   Public key size: $pubSize\n";
+				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
-					print "      *** PUBLIC KEY TOO SHORT ***\n";
+					error('PUBLIC KEY TOO SHORT');
 				}
+				next;
+			} elsif (/^\s*Public-Key: \((\d+) bit\)/) { # OpenSSL 1.0
+				$pubSize = $1;
+				# print "   Public key size: $pubSize\n";
+				if ($pubSize < 1024) {
+					error('PUBLIC KEY TOO SHORT');
+				}
+				next;
 			}
+			
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$days = (str2time($notAfter)-time())/86400.0;
