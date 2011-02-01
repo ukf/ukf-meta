@@ -18,43 +18,42 @@
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
-	xmlns:str="http://exslt.org/strings"
-	exclude-result-prefixes="md ds wayf str">
+	xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils">
 
 	<!-- Output is plain text -->
 	<xsl:output method="text"/>
 
-	<xsl:template match="//md:EntityDescriptor//md:KeyDescriptor[.//ds:X509Certificate]">
-		<xsl:variable name="keydesc" select="."/>
-		<xsl:variable name="entity" select="ancestor::md:EntityDescriptor"/>
-		<xsl:for-each select="$keydesc//ds:X509Certificate">
-			<xsl:text>Entity: </xsl:text>
-			<xsl:if test="$entity/@ID">
-				<xsl:text>[</xsl:text>
-				<xsl:value-of select='$entity/@ID'/>
-				<xsl:text>]</xsl:text>
+	<xsl:template match="md:EntityDescriptor">
+		<xsl:variable name="entity" select="."/>
+		<xsl:for-each select="descendant::md:KeyDescriptor">
+			<xsl:variable name="keydesc" select="."/>
+			<xsl:variable name="keyinfo" select="$keydesc/ds:KeyInfo"/>
+			<xsl:variable name="keyname" select="$keyinfo/ds:KeyName"/>
+			<xsl:variable name="cert" select="$keyinfo/ds:X509Data/ds:X509Certificate"/>
+			<xsl:if test="$cert">
+				<xsl:text>Entity: </xsl:text>
+				<xsl:if test="$entity/@ID">
+					<xsl:text>[</xsl:text>
+					<xsl:value-of select='$entity/@ID'/>
+					<xsl:text>]</xsl:text>
+				</xsl:if>
+				<xsl:value-of select="$entity/@entityID"/>
+				<xsl:text> KeyName: </xsl:text>
+				<xsl:choose>
+					<xsl:when test="$keyname">
+						<xsl:value-of select="$keyname"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>(none)</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>&#x0a;</xsl:text>
+				<xsl:text>-----BEGIN CERTIFICATE-----&#x0a;</xsl:text>
+				<xsl:value-of select="mdxTextUtils:wrapBase64($cert)"/>
+				<xsl:text>&#x0a;</xsl:text>
+				<xsl:text>-----END CERTIFICATE-----&#x0a;</xsl:text>
 			</xsl:if>
-			<xsl:value-of select="$entity/@entityID"/>
-			<xsl:text> KeyName: </xsl:text>
-			<xsl:choose>
-				<xsl:when test="$keydesc//ds:KeyName">
-					<xsl:value-of select="$keydesc//ds:KeyName"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>(none)</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>&#x0a;</xsl:text>
-			<xsl:text>-----BEGIN CERTIFICATE-----&#x0a;</xsl:text>
-			<xsl:apply-templates select="str:tokenize(.)"/>
-			<xsl:text>-----END CERTIFICATE-----&#x0a;</xsl:text>
 		</xsl:for-each>
-	</xsl:template>
-	
-	<xsl:template match="token">
-		<xsl:value-of select="."/>
-		<xsl:text>&#x0a;</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="text()">
