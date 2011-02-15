@@ -854,6 +854,7 @@
 				<!-- set of checking stylesheets applied in every case -->
                 <arg value="${build.dir}/check_adfs.xsl"/>
                 <arg value="${build.dir}/check_idpdisc.xsl"/>
+				<arg value="${build.dir}/check_init.xsl"/>
 				<arg value="${build.dir}/check_mdiop.xsl"/>
 				<arg value="${build.dir}/check_mdui.xsl"/>
                 <arg value="${build.dir}/check_misc.xsl"/>
