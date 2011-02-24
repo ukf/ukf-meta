@@ -42,6 +42,7 @@
 	-->
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="entities.dir" value="entities"/>
+	<property name="feds.dir" value="feds"/>
 	<property name="xml.dir" value="xml"/>
 
 	<!--
@@ -874,10 +875,11 @@
 	    *************************************************
 	-->
 	
+	<property name="incommon.dir" value="${feds.dir}/incommon"/>
 	<property name="incommon.metadata.location"
 		value="http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml"/>
 	<property name="incommon.metadata.cert"
-	   value="incommon.pem"/>
+	   value="${incommon.dir}/incommon.pem"/>
 	
     <macrodef name="XMLSECTOOL.VFY.incommon">
         <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
@@ -886,7 +888,7 @@
                 <args>
                     <arg value="--verifySignature"/>
                     <arg value="--certificate"/>
-                    <arg value="${build.dir}/${incommon.metadata.cert}"/>
+                    <arg value="${incommon.metadata.cert}"/>
                     <!--
                     <arg value="- -quiet"/>
                     -->
