@@ -855,7 +855,7 @@
 				<!-- set of checking stylesheets applied in every case -->
                 <arg value="${build.dir}/check_adfs.xsl"/>
                 <arg value="${build.dir}/check_idpdisc.xsl"/>
-				<arg value="${build.dir}/check_init.xsl"/>
+                <arg value="${build.dir}/check_init.xsl"/>
 				<arg value="${build.dir}/check_mdiop.xsl"/>
 				<arg value="${build.dir}/check_mdui.xsl"/>
                 <arg value="${build.dir}/check_misc.xsl"/>
@@ -867,6 +867,64 @@
 		</sequential>
 	</macrodef>
 	
+    <!--
+        ***********************************************
+        ***                                         ***
+        ***   E D U G A T E   F E D E R A T I O N   ***
+        ***                                         ***
+        ***********************************************
+    -->
+    
+    <property name="edugate.dir" value="${feds.dir}/edugate"/>
+    <property name="edugate.metadata.location"
+        value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>
+    <property name="edugate.metadata.cert"
+       value="${edugate.dir}/metadata-signer.crt"/>
+    
+    <macrodef name="XMLSECTOOL.VFY.edugate">
+        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+        <sequential>
+            <XMLSECTOOL i="@{i}">
+                <args>
+                    <arg value="--verifySignature"/>
+                    <arg value="--certificate"/>
+                    <arg value="${edugate.metadata.cert}"/>
+                    <!--
+                    <arg value="- -quiet"/>
+                    -->
+                </args>
+            </XMLSECTOOL>
+        </sequential>
+    </macrodef>
+
+    <target name="verify.edugate">
+        <echo>Verifying metadata held at ${edugate.metadata.location}</echo>
+        <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+        <get src="${edugate.metadata.location}" dest="${xml.dir}/temp.xml"/>
+        
+        <!--
+            Verify using metadatatool.
+        -->
+        <!-- <MDT.VFY.uk i="temp.xml"/> -->
+
+        <!--
+            Verify using xmlsectool.
+        -->
+        <XMLSECTOOL.VFY.edugate i="temp.xml"/>
+        
+        <!--
+            Run UK checking rulesets.
+        -->
+        <CHECK i="${xml.dir}/temp.xml" s="check_imported.xsl"/>
+        
+        <!--
+            Delete the temporary file.
+        -->
+        <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+        
+        <echo>Verification completed.</echo>
+    </target>
+
 	<!--
 	    *************************************************
 	    ***                                           ***
