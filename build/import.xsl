@@ -364,6 +364,18 @@
 	
 	
 	<!--
+		md:NameIDFormat
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:NameIDFormat">
+		<NameIDFormat>
+			<xsl:apply-templates select="node()|@*"/>
+		</NameIDFormat>
+	</xsl:template>
+	
+	
+	<!--
 		md:Organization
 		
 		Normalise namespace prefix.
