@@ -822,6 +822,66 @@
 		***                                   ***
 		*****************************************
 	-->
+
+	<!--
+	    Check a metadata document against a set of conventions.
+	    
+        Parameter 'i' is the file to be checked; no assumption is made
+        about its location so this must contain a full path.
+        
+	    Additional arguments are normally ruleset file names.
+	-->
+	<macrodef name="CHECK.base">
+        <attribute name="i"/>
+        <element name="base.args" implicit="yes"/>
+        <sequential>
+            <java classname="uk.ac.sdss.mdcheck.MetadataCheck"
+                fork="true" failonerror="true" maxmemory="${java.max.memory}">
+                <classpath>
+                    <fileset dir="${tools.mdcheck}/lib">
+                        <include name="**/*.jar"/>
+                    </fileset>
+                    <fileset dir="${tools.xalan}/lib">
+                        <include name="**/*.jar"/>
+                    </fileset>
+                </classpath>
+                <jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
+                <arg value="@{i}"/>
+            	<base.args/>
+            </java>
+        </sequential>
+	</macrodef>
+	
+	<macrodef name="CHECK.one">
+        <attribute name="i"/>
+		<attribute name="s"/>
+        <sequential>
+            <CHECK.base i="@{i}">
+                <arg value="${s}"/>
+            </CHECK.base>
+        </sequential>
+	</macrodef>
+
+	<macrodef name="CHECK.std">
+		<attribute name="i"/>
+		<element name="std.args" implicit="yes"/>
+		<sequential>
+			<CHECK.base i="@{i}">
+                <!-- set of checking stylesheets applied in every case -->
+                <arg value="${build.dir}/check_adfs.xsl"/>
+                <arg value="${build.dir}/check_idpdisc.xsl"/>
+                <arg value="${build.dir}/check_init.xsl"/>
+                <arg value="${build.dir}/check_mdiop.xsl"/>
+                <arg value="${build.dir}/check_mdui.xsl"/>
+                <arg value="${build.dir}/check_misc.xsl"/>
+                <arg value="${build.dir}/check_namespaces.xsl"/>
+                <arg value="${build.dir}/check_shibboleth.xsl"/>
+				
+				<!-- additional arguments -->
+				<std.args/>
+			</CHECK.base>
+		</sequential>
+	</macrodef>
 	
 	<!--
 		Check a metadata document against a set of conventions.
@@ -840,30 +900,10 @@
 		<attribute name="i"/>
 		<attribute name="s"/>
 		<sequential>
-			<java classname="uk.ac.sdss.mdcheck.MetadataCheck"
-				fork="true" failonerror="true" maxmemory="${java.max.memory}">
-				<classpath>
-					<fileset dir="${tools.mdcheck}/lib">
-						<include name="**/*.jar"/>
-					</fileset>
-					<fileset dir="${tools.xalan}/lib">
-						<include name="**/*.jar"/>
-					</fileset>
-				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
-				<arg value="@{i}"/>
-				<!-- set of checking stylesheets applied in every case -->
-                <arg value="${build.dir}/check_adfs.xsl"/>
-                <arg value="${build.dir}/check_idpdisc.xsl"/>
-                <arg value="${build.dir}/check_init.xsl"/>
-				<arg value="${build.dir}/check_mdiop.xsl"/>
-				<arg value="${build.dir}/check_mdui.xsl"/>
-                <arg value="${build.dir}/check_misc.xsl"/>
-				<arg value="${build.dir}/check_namespaces.xsl"/>
-                <arg value="${build.dir}/check_shibboleth.xsl"/>
-				<!-- single context-dependent ruleset -->
-				<arg value="${build.dir}/@{s}"/>
-			</java>
+			<CHECK.std i="@{i}">
+			    <!-- single context-dependent ruleset -->
+			    <arg value="${build.dir}/@{s}"/>
+			</CHECK.std>
 		</sequential>
 	</macrodef>
 	
@@ -897,6 +937,16 @@
         </sequential>
     </macrodef>
 
+    <macrodef name="CHECK.edugate">
+        <attribute name="i"/>
+        <sequential>
+            <CHECK.std i="@{i}">
+                <arg value="${build.dir}/check_imported.xsl"/>
+                <arg value="${build.dir}/check_future.xsl"/>
+            </CHECK.std>
+        </sequential>
+    </macrodef>
+    
     <target name="verify.edugate">
         <echo>Verifying metadata held at ${edugate.metadata.location}</echo>
         <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
@@ -913,9 +963,9 @@
         <XMLSECTOOL.VFY.edugate i="temp.xml"/>
         
         <!--
-            Run UK checking rulesets.
+            Run checking rulesets.
         -->
-        <CHECK i="${xml.dir}/temp.xml" s="check_imported.xsl"/>
+        <CHECK.edugate i="${xml.dir}/temp.xml"/>
         
         <!--
             Delete the temporary file.
