@@ -71,6 +71,23 @@
 	
 	
 	<!--
+		If an IDPSSODescriptor indicates support for Shibboleth by including
+		urn:mace:shibboleth:1.0 in its protocolSupportEnumeration, it must contain at
+		least one appropriate SingleSignOnService.
+		
+		This is theoretically too severe, as in principle additional profiles could be invented
+		in the future which exist in the same protocolSupportEnumeration "family".  However,
+		at present there are no such uses of the value, so we can be more restrictive.
+	-->
+	<xsl:template match="md:IDPSSODescriptor[contains(@protocolSupportEnumeration, 'urn:mace:shibboleth:1.0')]
+		[not(md:SingleSignOnService[@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest'])]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">Shibboleth 1.x support claimed but no appropriate SSO service binding</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		Checks for an IdP whose KeyDescriptor elements do not include a @use attribute.
 		This causes problems with the Shibboleth 1.3 SP prior to V1.3.1, which
 		interprets this as "no use permitted" rather than "either signing or encryption use
