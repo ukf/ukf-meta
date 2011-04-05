@@ -42,14 +42,15 @@
 	-->
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="entities.dir" value="entities"/>
-	<property name="feds.dir" value="feds"/>
-	<property name="xml.dir" value="xml"/>
+	<property name="feds.dir" value="${basedir}/feds"/>
+	<property name="xml.dir" value="${basedir}/xml"/>
 
 	<!--
 		Location of externally supplied tool bundles.
 	-->
 	<property name="tools.dir" value="tools"/>
 	<property name="tools.ant" value="${tools.dir}/ant"/>
+	<property name="tools.mda" value="${tools.dir}/mda"/>
 	<property name="tools.mdcheck" value="${tools.dir}/mdcheck"/>
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
 	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
@@ -485,6 +486,44 @@
         <XALAN x="test_master_unsigned.xsl" i="${test.master.file}"
             o="${test.prod.unsigned}" />
 	</target>
+    
+	<!--
+	    ***************************
+	    ***                     ***
+	    ***   M D A   T O O L   ***
+	    ***                     ***
+	    ***************************
+	-->
+	
+	<!--
+	    Macro to run the mda (metadata aggregator CLI) tool.
+	-->
+    <macrodef name="MDA">
+    	<!-- Spring pipeline configuration file -->
+    	<attribute name="config"/>
+    	<attribute name="out"/>
+        <sequential>
+            <java classname="net.shibboleth.metadata.cli.SimpleCommandLine"
+                fork="true" failonerror="true" maxmemory="${java.max.memory}">
+                <classpath>
+                    <fileset dir="${tools.mda}/lib">
+                        <include name="*.jar"/>
+                    </fileset>
+                	<fileset dir="${tools.dir}/ukf-mda">
+                		<include name="*.jar"/>
+                	</fileset>
+                    <fileset dir="${tools.dir}/ukf-members">
+                        <include name="*.jar"/>
+                    </fileset>
+                </classpath>
+                <jvmarg value="-Djava.endorsed.dirs=${tools.mda}/lib/endorsed"/>
+            	<jvmarg value="-Dlogback.configurationFile=${tools.dir}/ukf-mda/logback.xml"/>
+            	<jvmarg value="-Dbasedir=${basedir}"/>
+            	<arg value="file:@{config}"/>
+            	<arg value="file:@{out}"/>
+            </java>
+        </sequential>
+    </macrodef>
     
     <!--
         *********************************
@@ -953,12 +992,7 @@
         <get src="${edugate.metadata.location}" dest="${xml.dir}/temp.xml"/>
         
         <!--
-            Verify using metadatatool.
-        -->
-        <!-- <MDT.VFY.uk i="temp.xml"/> -->
-
-        <!--
-            Verify using xmlsectool.
+            Verify signature and schema using xmlsectool.
         -->
         <XMLSECTOOL.VFY.edugate i="temp.xml"/>
         
@@ -966,7 +1000,7 @@
             Run checking rulesets.
         -->
         <CHECK.edugate i="${xml.dir}/temp.xml"/>
-        
+    	
         <!--
             Delete the temporary file.
         -->
@@ -975,6 +1009,22 @@
         <echo>Verification completed.</echo>
     </target>
 
+    <target name="fed.edugate.import">
+        <echo>Importing Edugate metadata from ${edugate.metadata.location}</echo>
+        
+        <!--
+            Run the aggregator CLI to import the metadata.
+        -->
+        <MDA config="${edugate.dir}/import.xml" out="${edugate.dir}/imported.xml"/>
+        
+        <!--
+            Run checking rulesets.
+        -->
+        <CHECK.edugate i="${edugate.dir}/imported.xml"/>
+        
+        <echo>Import completed.</echo>
+    </target>
+    
 	<!--
 	    *************************************************
 	    ***                                           ***
@@ -1010,11 +1060,6 @@
         <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
         <get src="${incommon.metadata.location}" dest="${xml.dir}/temp.xml"/>
         
-        <!--
-            Verify using metadatatool.
-        -->
-        <!-- <MDT.VFY.uk i="temp.xml"/> -->
-
         <!--
             Verify using xmlsectool.
         -->
@@ -1055,7 +1100,7 @@
                 <args>
                     <arg value="--verifySignature"/>
                     <arg value="--certificate"/>
-                    <arg value="${edugate.metadata.cert}"/>
+                    <arg value="${edugain.metadata.cert}"/>
                     <!--
                     <arg value="- -quiet"/>
                     -->
@@ -1071,8 +1116,13 @@
         
         <!--
             Verify using xmlsectool.
+            
+            Don't do this for now.  Although the signature verifies, the
+            file as a whole is often not schema-valid.
         -->
+        <!--
         <XMLSECTOOL.VFY.edugain i="temp.xml"/>
+        -->
         
         <!--
             Run UK checking rulesets.
@@ -1087,6 +1137,46 @@
         <echo>Verification completed.</echo>
 	</target>
 	
+    <target name="fed.edugain.import">
+        <echo>Importing eduGAIN metadata from ${edugain.metadata.location}</echo>
+        
+        <!--
+            Run the aggregator CLI to import the metadata.
+        -->
+        <MDA config="${edugain.dir}/import.xml" out="${edugain.dir}/imported.xml"/>
+        
+        <!--
+            Run checking rulesets.
+        -->
+        <CHECK.edugate i="${edugain.dir}/imported.xml"/>
+        
+        <echo>Import completed.</echo>
+    </target>
+    
+	<!--
+	    *************************************************
+	    ***                                           ***
+	    ***   U K   F E D E R A T I O N   R E D U X   ***
+	    ***                                           ***
+	    *************************************************
+	-->
+	
+    <target name="fed.uk.collect">
+        <echo>Collecting UK fragment files.</echo>
+        
+        <!--
+            Run the aggregator CLI to collect the metadata.
+        -->
+        <MDA config="${feds.dir}/uk/collect.xml" out="${feds.dir}/uk/collected.xml"/>
+        
+        <!--
+            Run checking rulesets.
+        -->
+        <CHECK.edugate i="${feds.dir}/uk/collected.xml"/>
+        
+        <echo>Collection completed.</echo>
+    </target>
+    
 	<!--
 		*******************************
 		***                         ***
