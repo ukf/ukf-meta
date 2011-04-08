@@ -9,13 +9,14 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
+    <!--
+        Import commonly used beans.
+    -->
+    <import resource="../common_beans.xml"/>
+    
     <bean id="fetchEduGainExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
         <property name="id" value="fetchEduGainExportAggregate"/>
-        <property name="parserPool">
-            <bean class="org.opensaml.util.xml.BasicParserPool" init-method="initialize">
-                <property name="ignoreComments" value="false"/>
-            </bean>
-        </property>
+        <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://mds.edugain.org"/>
     </bean>
     
@@ -42,72 +43,6 @@
         <property name="id" value="disassemble"/>
     </bean>
     
-    <util:list id="schemaResources">
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <!-- no dependencies -->
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xml.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <!-- no dependencies -->
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig-core-schema.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <!-- dependency on xmldsig-core-schema -->
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <!-- dependencies on xmldsig-core-schema, xenc-schema -->
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-assertion-2.0.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <!-- dependencies on xmldsig-core-schema, xenc-schema, saml-schema-assertion-2.0, xml -->
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-metadata-2.0.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <!-- dependencies on xml, saml-schema-metadata-2.0 -->
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0-wd05.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/shibboleth-metadata-1.0.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-metadata-attr.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-request-initiation.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-idp-discovery.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-algsupport-v1.0.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-ui-v1.0.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/uk-fed-label.xsd"/>
-        </bean>
-        <!--
-            These appear to be redundant duplicates...
-            
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-schema-assertion-2.0.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-schema-metadata-2.0.xsd"/>
-        </bean>
-        -->
-    </util:list>
-    
-    <bean id="checkSchemas" class="net.shibboleth.metadata.dom.stage.XMLSchemaValidationStage">
-        <property name="id" value="checkSchemas"/>
-        <property name="schemaResources" ref="schemaResources"/>
-        <property name="postProcessFilter">
-            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
-        </property>
-    </bean>
-    
     <bean id="assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage">
         <property name="id" value="assemble"/>
     </bean>
@@ -125,6 +60,6 @@
         </property>
     </bean>
     
-    <bean id="serializer" class="net.shibboleth.metadata.dom.DomMetadataSerializer" />
+    <bean id="serializer" class="net.shibboleth.metadata.dom.DomMetadataSerializer"/>
 
 </beans>
