@@ -582,7 +582,7 @@
 				<arg value="--alias"/>
 				<arg value="@{alias}"/>
 				<arg value="--in"/>
-				<arg value="${xml.dir}/@{i}"/>
+				<arg value="file:${xml.dir}/@{i}"/>
 				<arg value="--out"/>
 				<arg value="@{o}"/>
 			</java>
