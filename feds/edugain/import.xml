@@ -22,20 +22,17 @@
     <!--
         eduGAIN signing certificate.
     -->
-    <bean id="edugainSigningCertificate" class="edu.vt.middleware.crypt.util.CryptReader"
-        factory-method="readCertificate">
-        <constructor-arg>
+    <bean id="edugainSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/feds/edugain/edugain-signer.crt"/>
             </bean>
-        </constructor-arg>
+        </property>
     </bean>
-    
-    <bean id="edugainSigningKey" factory-bean="edugainSigningCertificate" factory-method="getPublicKey"/>
     
     <bean id="checkEdugainSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
         <property name="id" value="checkEdugainSignature"/>
-        <property name="verificationKey" ref="edugainSigningKey"/>
+        <property name="verificationCertificate" ref="edugainSigningCertificate"/>
         <property name="postProcessFilter">
             <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
         </property>

@@ -23,20 +23,17 @@
     <!--
         Edugate federation signing certificate.
     -->
-    <bean id="edugateSigningCertificate" class="edu.vt.middleware.crypt.util.CryptReader"
-        factory-method="readCertificate">
-        <constructor-arg>
+    <bean id="edugateSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/feds/edugate/metadata-signer.crt"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/feds/edugate/edugate-signer.crt"/>
             </bean>
-        </constructor-arg>
+        </property>
     </bean>
-    
-    <bean id="edugateSigningKey" factory-bean="edugateSigningCertificate" factory-method="getPublicKey"/>
     
     <bean id="checkEdugateSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
         <property name="id" value="checkEdugateSignature"/>
-        <property name="verificationKey" ref="edugateSigningKey"/>
+        <property name="verificationCertificate" ref="edugateSigningCertificate"/>
     </bean>
     
     <bean id="disassemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorDisassemblerStage">
