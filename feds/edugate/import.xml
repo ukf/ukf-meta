@@ -53,6 +53,7 @@
             <list>
                 <ref bean="fetchEdugateExportAggregate"/>
                 <ref bean="checkEdugateSignature"/>
+                <ref bean="cleanImport"/>
                 <ref bean="disassemble"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="assemble"/>

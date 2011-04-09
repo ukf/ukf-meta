@@ -113,6 +113,22 @@
     </bean>
     
     <!--
+        cleanImport
+        
+        A pipeline stage that can be used in an import pipeline to clean up the metadata
+        presented, for example by removing redundant attributes or elements which only have
+        meaning when added by the UK federation registrar.
+    -->
+    <bean id="cleanImport" class="net.shibboleth.metadata.dom.stage.XSLTStage">
+        <property name="id" value="cleanImport"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/feds/clean_import.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         <bean id="members" class="uk.org.ukfederation.members.Members">
             <constructor-arg>
                 <bean class="java.io.File">
