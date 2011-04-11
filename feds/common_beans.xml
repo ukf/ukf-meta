@@ -76,12 +76,6 @@
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-ui-v1.0.xsd"/>
         </bean>
         <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-schema-assertion-2.0.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-schema-metadata-2.0.xsd"/>
-        </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/uk-fed-label.xsd"/>
         </bean>
         <bean class="org.opensaml.util.resource.FilesystemResource">
