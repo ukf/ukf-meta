@@ -59,13 +59,13 @@
 	<xsl:template match="md:EntityDescriptor">
 		<xsl:text>&#10;</xsl:text>
 		<EntityDescriptor ID="uk000000_CHANGE_THIS"
-			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata sstc-saml-schema-metadata-2.0.xsd
+			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata ../xml/saml-schema-metadata-2.0.xsd
 			urn:oasis:names:tc:SAML:metadata:ui ../xml/sstc-saml-metadata-ui-v1.0.xsd
 			urn:oasis:names:tc:SAML:profiles:SSO:request-init ../xml/sstc-request-initiation.xsd
-			urn:mace:shibboleth:metadata:1.0 shibboleth-metadata-1.0.xsd
-			http://ukfederation.org.uk/2006/11/label uk-fed-label.xsd
-			http://www.w3.org/2001/04/xmlenc# xenc-schema.xsd
-			http://www.w3.org/2000/09/xmldsig# xmldsig-core-schema.xsd">
+			urn:mace:shibboleth:metadata:1.0 ../xml/shibboleth-metadata-1.0.xsd
+			http://ukfederation.org.uk/2006/11/label ../xml/uk-fed-label.xsd
+			http://www.w3.org/2001/04/xmlenc# ../xml/xenc-schema.xsd
+			http://www.w3.org/2000/09/xmldsig# ../xml/xmldsig-core-schema.xsd">
 			
 			<!--
 				Copy across the @entityID attribute.  Other attributes from the input document
