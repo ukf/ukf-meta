@@ -110,6 +110,24 @@
 	
 
 	<!--
+		Check for SAML 1.1 SPs which exclude the Shibboleth transient name identifier format.
+		
+		An SP which has no NameIDFormat elements is fine, but if any are mentioned in a
+		SAML 1.1 SP then the Shibboleth transient must be included in the list as otherwise
+		there will be no name identifier sent to the SP and no attribute query can be
+		performed.
+	-->
+	<xsl:template match="md:SPSSODescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]
+		[md:NameIDFormat]
+		[not(md:NameIDFormat[.='urn:mace:shibboleth:1.0:nameIdentifier'])]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">SAML 1.1 SP excludes Shibboleth transient name identifier format</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
+
+	<!--
 		Check for a construct which is known to cause the Shibboleth 1.3 SP to dump core.
 		
 			<md:KeyDescriptor use="signing">
