@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+    SAML v2.0 Metadata Profile for Algorithm Support Version 1.0
+    Committee Specification 01
+    21 February 2011
+    Copyright (c) OASIS Open 2011.   All rights reserved.
+    Source: http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-metadata-algsupport-v1.0-cs01.xsd
+
+-->
+
 <schema 
   targetNamespace="urn:oasis:names:tc:SAML:metadata:algsupport"
   xmlns="http://www.w3.org/2001/XMLSchema"
