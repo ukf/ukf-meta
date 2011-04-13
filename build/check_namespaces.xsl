@@ -10,6 +10,7 @@
 	
 -->
 <xsl:stylesheet version="1.0"
+	xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:elab="http://eduserv.org.uk/labels"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
@@ -31,6 +32,10 @@
 	<!--
 		Explicitly accept elements in namespaces which we know about.
 	-->
+	
+	<xsl:template match="alg:*">
+		<xsl:apply-templates/>
+	</xsl:template>
 	
 	<xsl:template match="ds:*">
 		<xsl:apply-templates/>
