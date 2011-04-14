@@ -625,15 +625,15 @@
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<element name="args" optional="yes"/>
 		<sequential>
-			<java classname="org.opensaml.xml.util.XmlTool"
+			<java classname="edu.internet2.middleware.security.XmlSecTool"
 				fork="true" failonerror="true" maxmemory="${java.max.memory}">
 				<classpath>
 					<fileset dir="${tools.xmlsectool}/lib">
-						<include name="*.jar"/>
+						<include name="**/*.jar"/>
 					</fileset>
 				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.xmlsectool}/lib/endorsed"/>
-				<jvmarg value="-Dorg.opensaml.xml.util.XmlTool.home=${tools.xmlsectool}"/>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.xmlsectool}/endorsed"/>
+				<jvmarg value="-Dedu.internet2.middleware.security.XmlSecTool.home=${tools.xmlsectool}"/>
 				<args/>
 				<arg value="--validateSchema"/>
 				<arg value="--schemaDirectory"/>
