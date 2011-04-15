@@ -17,6 +17,7 @@
 	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
@@ -58,6 +59,10 @@
 	</xsl:template>
 	
 	<xsl:template match="mdui:*">
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template match="saml:*">
 		<xsl:apply-templates/>
 	</xsl:template>
 	
