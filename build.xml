@@ -409,7 +409,10 @@
 	
 	<target name="test.uk.future" depends="gen.uk">
 		<echo>Checking against future rulesets.</echo>
-        <CHECK.one i="${xml.dir}/${uk.master.file}" s="check_future.xsl"/>
+        <CHECK.base i="${xml.dir}/${uk.master.file}">
+            <arg value="${build.dir}/check_future.xsl"/>
+            <arg value="${build.dir}/check_saml2int.xsl"/>
+        </CHECK.base>
 	</target>
 	
 	<target name="gen.uk.unsigned" depends="gen.uk.master">
@@ -991,6 +994,7 @@
             <CHECK.std i="@{i}">
                 <arg value="${build.dir}/check_imported.xsl"/>
                 <arg value="${build.dir}/check_future.xsl"/>
+                <arg value="${build.dir}/check_saml2int.xsl"/>
             </CHECK.std>
         </sequential>
     </macrodef>

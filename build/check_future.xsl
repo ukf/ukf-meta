@@ -44,19 +44,6 @@
 	</xsl:template>
 	
 	<!--
-		Check for SAML 2.0 SPs which exclude the SAML 2 transient name identifier format.
-	-->
-	
-	<xsl:template match="md:SPSSODescriptor
-		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-		[md:NameIDFormat]
-		[not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
-		<xsl:call-template name="fatal">
-			<xsl:with-param name="m">SAML 2 SP excludes SAML 2 transient name identifier format</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	
-	<!--
 		Check for endpoint locations that include a '%' character,
 		which is symptomatic of their being URL-encoded instead of entity-encoded.
 	-->
