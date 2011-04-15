@@ -35,10 +35,12 @@
         <entry key="mdrpi"      value="urn:oasis:names:tc:SAML:metadata:rpi"/>
         <entry key="mdui"       value="urn:oasis:names:tc:SAML:metadata:ui"/>
         <entry key="saml"       value="urn:oasis:names:tc:SAML:2.0:assertion"/>
+        <entry key="samlp"      value="urn:oasis:names:tc:SAML:2.0:protocol"/>
         <entry key="shibmd"     value="urn:mace:shibboleth:metadata:1.0"/>
         <entry key="ukfedlabel" value="http://ukfederation.org.uk/2006/11/label"/>
         <entry key="wayf"       value="http://sdss.ac.uk/2006/06/WAYF"/>
         <entry key="xenc"       value="http://www.w3.org/2001/04/xmlenc#"/>
+        <entry key="xs"         value="http://www.w3.org/2001/XMLSchema"/>
         <entry key="xsi"        value="http://www.w3.org/2001/XMLSchema-instance"/>
         <entry key="xsl"        value="http://www.w3.org/1999/XSL/Transform"/>
     </util:map>
