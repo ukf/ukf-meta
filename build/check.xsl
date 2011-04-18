@@ -19,7 +19,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:mdxMail="xalan://uk.ac.sdss.xalan.md.Mail"
-	xmlns:ukfxMembers="xalan://uk.ac.sdss.xalan.ukf.Members"
+	xmlns:ukfxMembers="xalan://uk.org.ukfederation.members.Members"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 	<!--
