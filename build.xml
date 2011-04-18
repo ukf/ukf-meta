@@ -850,7 +850,10 @@
 			<arg value="${build.dir}/import.xsl"/>
 		</java>
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
-		<CHECK i="${entities.dir}/imported.xml" s="check_imported.xsl"/>
+        <CHECK.std i="${entities.dir}/imported.xml">
+            <arg value="${build.dir}/check_imported.xsl"/>
+            <arg value="${build.dir}/check_vhosts.xsl"/>
+        </CHECK.std>
 		<echo>Checked.</echo>
 	</target>
 	
@@ -967,7 +970,6 @@
         <attribute name="i"/>
         <sequential>
             <CHECK.std i="@{i}">
-                <arg value="${build.dir}/check_imported.xsl"/>
                 <arg value="${build.dir}/check_future.xsl"/>
                 <arg value="${build.dir}/check_saml2int.xsl"/>
             </CHECK.std>
@@ -1223,13 +1225,10 @@
 	
 	<!--
 	   Check for IdPs using the single-port configuration.
-	   
-	   It just so happens that the check_imported ruleset is exactly what we want
-	   right now.
 	-->
 	<target name="check.ports" depends="gen.uk.master">
 		<echo>Checking vhost use</echo>
-        <CHECK i="${xml.dir}/${uk.master.file}" s="check_imported.xsl"/>
+        <CHECK.one i="${xml.dir}/${uk.master.file}" s="check_vhosts.xsl"/>
         <echo>Checked.</echo>
 	</target>
 
