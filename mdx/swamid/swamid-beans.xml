@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for SWAMID operations.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+    <!--
+        Fetch the SWAMID export metadata aggregate.  For the moment, use the production aggregate in lieu
+        of a designated export aggregate.
+    -->
+    <bean id="fetchSwamidExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+        <property name="id" value="fetchSwamidExportAggregate"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="sourceUrl" value="http://md.swamid.se/md/swamid-1.0.xml"/>        
+    </bean>
+    
+    <!--
+        SWAMID federation signing certificate.
+    -->
+    <bean id="swamidSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/swamid/md-signer.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check SWAMID signing signature.
+    -->
+    <bean id="checkSwamidSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+        <property name="id" value="checkSwamidSignature"/>
+        <property name="verificationCertificate" ref="swamidSigningCertificate"/>
+        <property name="postProcessFilter">
+            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
+        </property>
+    </bean>
+    
+</beans>

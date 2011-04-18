@@ -120,19 +120,23 @@
         <property name="id" value="cleanImport"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/feds/clean_import.xsl"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/clean-import.xsl"/>
             </bean>
         </property>
     </bean>
     
     <!--
-        <bean id="members" class="uk.org.ukfederation.members.Members">
-            <constructor-arg>
-                <bean class="java.io.File">
-                    <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
-                </bean>
-            </constructor-arg>
-        </bean>
+        Basic EntitiesDescriptor disassembler pipeline stage.
     -->
-        
+    <bean id="disassemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorDisassemblerStage">
+        <property name="id" value="disassemble"/>
+    </bean>
+    
+    <!--
+        Basic EntitiesDescriptor assembler pipeline stage.
+    -->
+    <bean id="assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage">
+        <property name="id" value="assemble"/>
+    </bean>
+    
 </beans>

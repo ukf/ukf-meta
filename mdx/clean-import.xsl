@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 	
-	clean_import.xsl
+	clean-import.xsl
 	
 	Clean up imported metadata from a metadata exchange channel.
 	
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:elab="http://eduserv.org.uk/labels"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
+	xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
-	
+	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+	extension-element-prefixes="mdxTextUtils"
 	exclude-result-prefixes="elab ukfedlabel wayf">
 
 	<!--Force UTF-8 encoding for the output.-->
@@ -32,6 +33,28 @@
 	
 	<!-- strip xml:base entirely -->
 	<xsl:template match="@xml:base"/>
+	
+	<!-- remove KeyDescriptor elements which lack embedded key material -->
+	<xsl:template match="md:KeyDescriptor[not(descendant::ds:X509Certificate)]"/>
+	
+	<!-- Remove KeyName elements; they refer to an inaccessable trust fabric -->
+	<xsl:template match="ds:KeyName"/>
+	
+	<!-- Remove <ds:X509SubjectName> elements; long ones cause problems. -->
+	<xsl:template match="ds:X509SubjectName"/>
+	
+	<!--
+		Normalise whitespace in X509Certificate elements.
+	-->
+	<!--
+	<xsl:template match="ds:X509Certificate">
+		<xsl:element name="ds:X509Certificate">
+			<xsl:text>&#10;</xsl:text>
+			<xsl:value-of select="mdxTextUtils:wrapBase64(.)"/>
+			<xsl:text>&#10;</xsl:text>
+		</xsl:element>
+	</xsl:template>
+	-->
 	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">

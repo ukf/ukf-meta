@@ -42,7 +42,7 @@
 	-->
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="entities.dir" value="entities"/>
-	<property name="feds.dir" value="${basedir}/feds"/>
+    <property name="mdx.dir" value="${basedir}/mdx"/>
 	<property name="xml.dir" value="${basedir}/xml"/>
 
 	<!--
@@ -515,9 +515,6 @@
                 	<fileset dir="${tools.dir}/ukf-mda">
                 		<include name="*.jar"/>
                 	</fileset>
-                    <fileset dir="${tools.dir}/ukf-members">
-                        <include name="*.jar"/>
-                    </fileset>
                 </classpath>
                 <jvmarg value="-Djava.endorsed.dirs=${tools.mda}/lib/endorsed"/>
             	<jvmarg value="-Dlogback.configurationFile=${tools.dir}/ukf-mda/logback.xml"/>
@@ -959,36 +956,14 @@
 	</macrodef>
 	
     <!--
-        ***********************************************
-        ***                                         ***
-        ***   E D U G A T E   F E D E R A T I O N   ***
-        ***                                         ***
-        ***********************************************
+        *********************************************
+        ***                                       ***
+        ***   M E T A D A T A   E X C H A N G E   ***
+        ***                                       ***
+        *********************************************
     -->
-    
-    <property name="edugate.dir" value="${feds.dir}/edugate"/>
-    <property name="edugate.metadata.location"
-        value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>
-    <property name="edugate.metadata.cert"
-       value="${edugate.dir}/metadata-signer.crt"/>
-    
-    <macrodef name="XMLSECTOOL.VFY.edugate">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-        <sequential>
-            <XMLSECTOOL i="@{i}">
-                <args>
-                    <arg value="--verifySignature"/>
-                    <arg value="--certificate"/>
-                    <arg value="${edugate.metadata.cert}"/>
-                    <!--
-                    <arg value="- -quiet"/>
-                    -->
-                </args>
-            </XMLSECTOOL>
-        </sequential>
-    </macrodef>
-
-    <macrodef name="CHECK.edugate">
+	
+    <macrodef name="CHECK.imported">
         <attribute name="i"/>
         <sequential>
             <CHECK.std i="@{i}">
@@ -999,43 +974,21 @@
         </sequential>
     </macrodef>
     
-    <target name="verify.edugate">
-        <echo>Verifying metadata held at ${edugate.metadata.location}</echo>
-        <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-        <get src="${edugate.metadata.location}" dest="${xml.dir}/temp.xml"/>
-        
-        <!--
-            Verify signature and schema using xmlsectool.
-        -->
-        <XMLSECTOOL.VFY.edugate i="temp.xml"/>
-        
-        <!--
-            Run checking rulesets.
-        -->
-        <CHECK.edugate i="${xml.dir}/temp.xml"/>
-    	
-        <!--
-            Delete the temporary file.
-        -->
-        <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-        
-        <echo>Verification completed.</echo>
-    </target>
+	<!--
+        ***********************************************
+        ***                                         ***
+        ***   E D U G A T E   F E D E R A T I O N   ***
+        ***                                         ***
+        ***********************************************
+    -->
+    
+    <property name="edugate.dir" value="${mdx.dir}/edugate"/>
 
-    <target name="fed.edugate.import">
-        <echo>Importing Edugate metadata from ${edugate.metadata.location}</echo>
-        
-        <!--
-            Run the aggregator CLI to import the metadata.
-        -->
-        <MDA config="${edugate.dir}/import.xml" out="${edugate.dir}/imported.xml"/>
-        
-        <!--
-            Run checking rulesets.
-        -->
-        <CHECK.edugate i="${edugate.dir}/imported.xml"/>
-        
-        <echo>Import completed.</echo>
+	<target name="flow.edugate.import">
+        <echo>Running Edugate import flow.</echo>
+        <MDA config="${edugate.dir}/edugate-import.xml" out="${edugate.dir}/imported.xml"/>
+        <CHECK.imported i="${edugate.dir}/imported.xml"/>
+        <echo>Completed Edugate import flow.</echo>
     </target>
     
 	<!--
@@ -1046,52 +999,8 @@
 	    *************************************************
 	-->
 	
-	<property name="incommon.dir" value="${feds.dir}/incommon"/>
-	<property name="incommon.metadata.location"
-		value="http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml"/>
-	<property name="incommon.metadata.cert"
-	   value="${incommon.dir}/incommon.pem"/>
-	
-    <macrodef name="XMLSECTOOL.VFY.incommon">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-        <sequential>
-            <XMLSECTOOL i="@{i}">
-                <args>
-                    <arg value="--verifySignature"/>
-                    <arg value="--certificate"/>
-                    <arg value="${incommon.metadata.cert}"/>
-                    <!--
-                    <arg value="- -quiet"/>
-                    -->
-                </args>
-            </XMLSECTOOL>
-        </sequential>
-    </macrodef>
+	<property name="incommon.dir" value="${mdx.dir}/incommon"/>
 
-	<target name="verify.incommon">
-        <echo>Verifying metadata held at ${incommon.metadata.location}</echo>
-        <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-        <get src="${incommon.metadata.location}" dest="${xml.dir}/temp.xml"/>
-        
-        <!--
-            Verify using xmlsectool.
-        -->
-        <XMLSECTOOL.VFY.incommon i="temp.xml"/>
-		
-		<!--
-		    Run UK checking rulesets.
-		-->
-        <CHECK i="${xml.dir}/temp.xml" s="check_imported.xsl"/>
-        
-        <!--
-            Delete the temporary file.
-        -->
-        <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-		
-        <echo>Verification completed.</echo>
-    </target>
-
-	
 	<!--
 	    *************************
 	    ***                   ***
@@ -1100,71 +1009,31 @@
 	    *************************
 	-->
 	
-	<property name="edugain.dir" value="${feds.dir}/edugain"/>
-	<property name="edugain.metadata.location"
-        value="http://mds.edugain.org/"/>
-    <property name="edugain.metadata.cert"
-       value="${edugain.dir}/edugain-signer.crt"/>
+	<property name="edugain.dir" value="${mdx.dir}/edugain"/>
 
-    <macrodef name="XMLSECTOOL.VFY.edugain">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-        <sequential>
-            <XMLSECTOOL i="@{i}">
-                <args>
-                    <arg value="--verifySignature"/>
-                    <arg value="--certificate"/>
-                    <arg value="${edugain.metadata.cert}"/>
-                    <!--
-                    <arg value="- -quiet"/>
-                    -->
-                </args>
-            </XMLSECTOOL>
-        </sequential>
-    </macrodef>
-
-	<target name="verify.edugain">
-        <echo>Verifying metadata held at ${edugain.metadata.location}</echo>
-        <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-        <get src="${edugain.metadata.location}" dest="${xml.dir}/temp.xml"/>
-        
-        <!--
-            Verify using xmlsectool.
-            
-            Don't do this for now.  Although the signature verifies, the
-            file as a whole is often not schema-valid.
-        -->
-        <!--
-        <XMLSECTOOL.VFY.edugain i="temp.xml"/>
-        -->
-        
-        <!--
-            Run UK checking rulesets.
-        -->
-        <CHECK i="${xml.dir}/temp.xml" s="check_imported.xsl"/>
-        
-        <!--
-            Delete the temporary file.
-        -->
-        <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-        
-        <echo>Verification completed.</echo>
-	</target>
-	
-    <target name="fed.edugain.import">
-        <echo>Importing eduGAIN metadata from ${edugain.metadata.location}</echo>
-        
-        <!--
-            Run the aggregator CLI to import the metadata.
-        -->
-        <MDA config="${edugain.dir}/import.xml" out="${edugain.dir}/imported.xml"/>
-        
-        <!--
-            Run checking rulesets.
-        -->
-        <CHECK.edugate i="${edugain.dir}/imported.xml"/>
-        
-        <echo>Import completed.</echo>
+    <target name="flow.edugain.import">
+        <echo>Running eduGAIN import flow.</echo>
+        <MDA config="${edugain.dir}/edugain-import.xml" out="${edugain.dir}/imported.xml"/>
+        <CHECK.imported i="${edugain.dir}/imported.xml"/>
+        <echo>Completed eduGAIN import flow.</echo>
     </target>
+    
+    <!--
+        *********************************************
+        ***                                       ***
+        ***   S W A M I D   F E D E R A T I O N   ***
+        ***                                       ***
+        *********************************************
+    -->
+	
+	<property name="swamid.dir" value="${mdx.dir}/swamid"/>
+	
+	<target name="flow.swamid.import">
+		<echo>Running SWAMID import flow.</echo>
+		<MDA config="${swamid.dir}/swamid-import.xml" out="${swamid.dir}/imported.xml"/>
+		<CHECK.imported i="${swamid.dir}/imported.xml"/>
+		<echo>Completed SWAMID import flow.</echo>
+	</target>
     
 	<!--
 	    *************************************************
@@ -1174,18 +1043,18 @@
 	    *************************************************
 	-->
 	
-    <target name="fed.uk.collect">
+    <target name="flow.uk.collect">
         <echo>Collecting UK fragment files.</echo>
         
         <!--
             Run the aggregator CLI to collect the metadata.
         -->
-        <MDA config="${feds.dir}/uk/collect.xml" out="${feds.dir}/uk/collected.xml"/>
+        <MDA config="${mdx.dir}/uk/uk-collect.xml" out="${mdx.dir}/uk/collected.xml"/>
         
         <!--
             Run checking rulesets.
         -->
-        <CHECK.edugate i="${feds.dir}/uk/collected.xml"/>
+        <CHECK.imported i="${mdx.dir}/uk/collected.xml"/>
         
         <echo>Collection completed.</echo>
     </target>
