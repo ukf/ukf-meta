@@ -1037,6 +1037,23 @@
 		<echo>Completed SWAMID import flow.</echo>
 	</target>
     
+    <!--
+        *********************************************
+        ***                                       ***
+        ***   S W I T C H   F E D E R A T I O N   ***
+        ***                                       ***
+        *********************************************
+    -->
+    
+    <property name="switch.dir" value="${mdx.dir}/switch"/>
+    
+    <target name="flow.switch.import">
+        <echo>Running SWITCH import flow.</echo>
+        <MDA config="${switch.dir}/switch-import.xml" out="${switch.dir}/imported.xml"/>
+        <CHECK.imported i="${switch.dir}/imported.xml"/>
+        <echo>Completed SWITCH import flow.</echo>
+    </target>
+    
 	<!--
 	    *************************************************
 	    ***                                           ***
