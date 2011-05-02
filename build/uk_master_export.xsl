@@ -130,6 +130,18 @@
 	</xsl:template>
 	
 	<!--
+		Patch any @use-less KeyName descriptors in IdP roles
+		for the benefit of Shib SPs pre-1.3.1.
+	-->
+	<xsl:template match="md:IDPSSODescriptor/md:KeyDescriptor[not(@use)] |
+		md:AttributeAuthorityDescriptor/md:KeyDescriptor[not(@use)]">
+		<xsl:copy>
+			<xsl:attribute name="use">signing</xsl:attribute>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<!--
 		Drop text nodes inside the document element.  There's one of these for each
 		EntityDescriptor in the original document, so without this most of the output
 		file is blank.

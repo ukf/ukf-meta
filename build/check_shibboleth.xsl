@@ -88,28 +88,6 @@
 	
 	
 	<!--
-		Checks for an IdP whose KeyDescriptor elements do not include a @use attribute.
-		This causes problems with the Shibboleth 1.3 SP prior to V1.3.1, which
-		interprets this as "no use permitted" rather than "either signing or encryption use
-		permitted".
-		
-		Two checks are required, one for each of the IdP role descriptors.
-	-->
-	
-	<xsl:template match="md:IDPSSODescriptor/md:KeyDescriptor[not(@use)]">
-		<xsl:call-template name="fatal">
-			<xsl:with-param name="m">IdP SSO KeyDescriptor lacking @use</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	
-	<xsl:template match="md:AttributeAuthorityDescriptor/md:KeyDescriptor[not(@use)]">
-		<xsl:call-template name="fatal">
-			<xsl:with-param name="m">IdP AA KeyDescriptor lacking @use</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	
-
-	<!--
 		Check for SAML 1.1 SPs which exclude the Shibboleth transient name identifier format.
 		
 		An SP which has no NameIDFormat elements is fine, but if any are mentioned in a

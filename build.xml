@@ -415,26 +415,51 @@
         </CHECK.base>
 	</target>
 	
+    <!--
+        Check a metadata document for publishability.  This is applied during all
+        publication flows prior to any signature step.
+        
+        At the moment, this is a single test which is no longer being performed elsewhere
+        but should pass by construction.  In the longer term it may make sense to
+        expand this to the fullest battery possible, with the exception of those
+        tests which are registrar-specific.
+        
+        Parameter 'i' is the file to be checked; no assumption is made
+        about its location so this must contain a full path.
+    -->
+    <macrodef name="CHECK.publishable">
+        <attribute name="i"/>
+        <sequential>
+            <CHECK.base i="@{i}">
+                <arg value="${build.dir}/check_fixups.xsl"/>
+            </CHECK.base>
+        </sequential>
+    </macrodef>
+
 	<target name="gen.uk.unsigned" depends="gen.uk.master">
 		<echo>Generating unsigned UK metadata files.</echo>
 		<!-- [19] -->
 		<XALAN x="uk_master_unsigned.xsl" i="${uk.master.file}"
 			o="${md.prod.unsigned}" />
 		<MDNORM i="${md.prod.unsigned}"/>
+        <CHECK.publishable i="${xml.dir}/${md.prod.unsigned}"/>
 		
 		<!-- [27] -->
 		<XALAN x="uk_master_test.xsl" i="${uk.master.file}"
 			o="${md.test.unsigned}" />
 		<MDNORM i="${md.test.unsigned}"/>
+        <CHECK.publishable i="${xml.dir}/${md.test.unsigned}"/>
 		
 		<!-- [29] -->
 		<XALAN x="uk_master_export.xsl" i="${uk.master.file}"
 			o="${md.export.unsigned}" />
 		<MDNORM i="${md.export.unsigned}"/>
+        <CHECK.publishable i="${xml.dir}/${md.export.unsigned}"/>
 		
 		<!-- [31] -->
 		<XALAN x="uk_master_back.xsl" i="${uk.master.file}"
 			o="${md.back.unsigned}" />
+        <CHECK.publishable i="${xml.dir}/${md.back.unsigned}"/>
 	</target>
 	
 	<target name="gen.uk.wayf" depends="gen.uk.unsigned">
@@ -442,6 +467,7 @@
 		<!-- [25] -->
 		<XALAN x="master_to_wayf.xsl" i="${md.prod.unsigned}"
 			o="${md.wayf.unsigned}"/>
+        <CHECK.publishable i="${xml.dir}/${md.wayf.unsigned}"/>
 	</target>
 
     <!--
@@ -900,7 +926,7 @@
         Parameter 'i' is the file to be checked; no assumption is made
         about its location so this must contain a full path.
         
-        Parameter 's' is the primary checking stylesheet to use; assumed to be
+        Parameter 's' is the checking stylesheet to use; assumed to be
         present in the build.dir.
     -->
 	<macrodef name="CHECK.one">
