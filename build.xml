@@ -977,6 +977,23 @@
     </macrodef>
     
     <!--
+        ***************************
+        ***                     ***
+        ***   M D X :   A A F   ***
+        ***                     ***
+        ***************************
+    -->
+    
+    <property name="aaf.dir" value="${mdx.dir}/aaf"/>
+
+    <target name="flow.aaf.import">
+        <echo>Running AAF import flow.</echo>
+        <MDA config="${aaf.dir}/aaf-import.xml" out="${aaf.dir}/imported.xml"/>
+        <CHECK.imported i="${aaf.dir}/imported.xml"/>
+        <echo>Completed AAF import flow.</echo>
+    </target>
+    
+    <!--
         *******************************
         ***                         ***
         ***   M D X :   A R N E S   ***
