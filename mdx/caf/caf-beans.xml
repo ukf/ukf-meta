@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for CAF operations.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+    <!--
+        Fetch the CAF export metadata aggregate.  For the moment, use the production aggregate in lieu
+        of a designated export aggregate.
+    -->
+    <bean id="fetchCafExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+        <property name="id" value="fetchCafExportAggregate"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="sourceUrl" value="https://caf-shibops.ca/CoreServices/cafshib_metadata_signed.xml"/>        
+    </bean>
+    
+    <!--
+        CAF signing certificate.
+    -->
+    <bean id="cafSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/caf/cafshib_metadata_verify.pem"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check CAF signing signature.
+    -->
+    <bean id="checkCafSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+        <property name="id" value="checkCafSignature"/>
+        <property name="verificationCertificate" ref="cafSigningCertificate"/>
+        <property name="postProcessFilter">
+            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
+        </property>
+    </bean>
+    
+</beans>

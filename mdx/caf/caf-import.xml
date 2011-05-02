@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Import pipeline for metadata from CAF.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+    <!--
+        Import commonly used beans.
+    -->
+    <import resource="../common-beans.xml"/>
+        
+    <!--
+        Import CAF-specific beans.
+    -->
+    <import resource="caf-beans.xml"/>
+    
+    <bean id="pipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline">
+        <property name="id" value="pipeline"/>
+        <property name="stages">
+            <list>
+                <ref bean="fetchCafExportAggregate"/>
+                <ref bean="checkCafSignature"/>
+                <ref bean="cleanImport"/>
+                <ref bean="disassemble"/>
+                <ref bean="checkSchemas"/>
+                <ref bean="assemble"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="serializer" class="net.shibboleth.metadata.dom.DomMetadataSerializer"/>
+
+</beans>

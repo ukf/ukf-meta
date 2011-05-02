@@ -976,12 +976,46 @@
         </sequential>
     </macrodef>
     
+    <!--
+        *******************************
+        ***                         ***
+        ***   M D X :   A R N E S   ***
+        ***                         ***
+        *******************************
+    -->
+    
+    <property name="arnes.dir" value="${mdx.dir}/arnes"/>
+
+    <target name="flow.arnes.import">
+        <echo>Running ARNES import flow.</echo>
+        <MDA config="${arnes.dir}/arnes-import.xml" out="${arnes.dir}/imported.xml"/>
+        <CHECK.imported i="${arnes.dir}/imported.xml"/>
+        <echo>Completed ARNES import flow.</echo>
+    </target>
+    
+    <!--
+        ***************************
+        ***                     ***
+        ***   M D X :   C A F   ***
+        ***                     ***
+        ***************************
+    -->
+    
+    <property name="caf.dir" value="${mdx.dir}/caf"/>
+
+    <target name="flow.caf.import">
+        <echo>Running CAF import flow.</echo>
+        <MDA config="${caf.dir}/caf-import.xml" out="${caf.dir}/imported.xml"/>
+        <CHECK.imported i="${caf.dir}/imported.xml"/>
+        <echo>Completed CAF import flow.</echo>
+    </target>
+    
 	<!--
-        ***********************************************
-        ***                                         ***
-        ***   E D U G A T E   F E D E R A T I O N   ***
-        ***                                         ***
-        ***********************************************
+        ***********************************
+        ***                             ***
+        ***   M D X :   E D U G A T E   ***
+        ***                             ***
+        ***********************************
     -->
     
     <property name="edugate.dir" value="${mdx.dir}/edugate"/>
@@ -994,21 +1028,28 @@
     </target>
     
 	<!--
-	    *************************************************
-	    ***                                           ***
-	    ***   I N C O M M O N   F E D E R A T I O N   ***
-	    ***                                           ***
-	    *************************************************
+	    ************************************
+	    ***                              ***
+	    ***   M D X:   I N C O M M O N   ***
+	    ***                              ***
+	    ************************************
 	-->
 	
 	<property name="incommon.dir" value="${mdx.dir}/incommon"/>
 
+    <target name="flow.incommon.import">
+        <echo>Running InCommon import flow.</echo>
+        <MDA config="${incommon.dir}/incommon-import.xml" out="${incommon.dir}/imported.xml"/>
+        <CHECK.imported i="${incommon.dir}/imported.xml"/>
+        <echo>Completed InCommon import flow.</echo>
+    </target>
+    
 	<!--
-	    *************************
-	    ***                   ***
-	    ***   E D U G A I N   ***
-	    ***                   ***
-	    *************************
+	    **********************************
+	    ***                            ***
+	    ***   M D X:   E D U G A I N   ***
+	    ***                            ***
+	    **********************************
 	-->
 	
 	<property name="edugain.dir" value="${mdx.dir}/edugain"/>
@@ -1021,11 +1062,11 @@
     </target>
     
     <!--
-        *********************************************
-        ***                                       ***
-        ***   S W A M I D   F E D E R A T I O N   ***
-        ***                                       ***
-        *********************************************
+        *********************************
+        ***                           ***
+        ***   M D X :   S W A M I D   ***
+        ***                           ***
+        *********************************
     -->
 	
 	<property name="swamid.dir" value="${mdx.dir}/swamid"/>
@@ -1038,11 +1079,11 @@
 	</target>
     
     <!--
-        *********************************************
-        ***                                       ***
-        ***   S W I T C H   F E D E R A T I O N   ***
-        ***                                       ***
-        *********************************************
+        *********************************
+        ***                           ***
+        ***   M D X :   S W I T C H   ***
+        ***                           ***
+        *********************************
     -->
     
     <property name="switch.dir" value="${mdx.dir}/switch"/>

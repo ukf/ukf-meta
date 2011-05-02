@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for ARNES operations.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+    <!--
+        Fetch the ARNES export metadata aggregate.  For the moment, use the production aggregate in lieu
+        of a designated export aggregate.
+    -->
+    <bean id="fetchArnesExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+        <property name="id" value="fetchArnesExportAggregate"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="sourceUrl" value="http://ds.aai.arnes.si/metadata/aai.arnes.si.signed.xml"/>        
+    </bean>
+    
+    <!--
+        ARNES signing certificate.
+    -->
+    <bean id="arnesSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/arnes/aai.arnes.si.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check ARNES signing signature.
+    -->
+    <bean id="checkArnesSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+        <property name="id" value="checkArnesSignature"/>
+        <property name="verificationCertificate" ref="arnesSigningCertificate"/>
+        <property name="postProcessFilter">
+            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
+        </property>
+    </bean>
+    
+</beans>
