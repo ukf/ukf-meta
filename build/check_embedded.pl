@@ -202,10 +202,10 @@ while (<>) {
 				$days = (str2time($notAfter)-time())/86400.0;
 				if ($days < 0) {
 					error("EXPIRED");
-				} elsif ($days < 30) {
+				} elsif ($days < 14) {
 					$days = int($days);
 					error("expires in $days days ($notAfter)");
-				} elsif ($days < 60) {
+				} elsif ($days < 28) {
 					$days = int($days);
 					warning("expires in $days days ($notAfter)");
 				}
