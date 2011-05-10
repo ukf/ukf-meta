@@ -27,6 +27,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
+	xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
@@ -40,7 +41,7 @@
 
 	xmlns:xalan="http://xml.apache.org/xalan"
 	
-	exclude-result-prefixes="idpdisc init md xalan"
+	exclude-result-prefixes="alg idpdisc init md xalan"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -60,6 +61,7 @@
 		<xsl:text>&#10;</xsl:text>
 		<EntityDescriptor ID="uk000000_CHANGE_THIS"
 			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata ../xml/saml-schema-metadata-2.0.xsd
+			urn:oasis:names:tc:SAML:metadata:algsupport ../xml/sstc-saml-metadata-algsupport-v1.0.xsd
 			urn:oasis:names:tc:SAML:metadata:ui ../xml/sstc-saml-metadata-ui-v1.0.xsd
 			urn:oasis:names:tc:SAML:profiles:SSO:request-init ../xml/sstc-request-initiation.xsd
 			urn:mace:shibboleth:metadata:1.0 ../xml/shibboleth-metadata-1.0.xsd
@@ -203,7 +205,6 @@
 		</EntityDescriptor>
 	</xsl:template>
 
-
 	<!--
 		md:AttributeConsumingService
 		
@@ -213,6 +214,18 @@
 		<AttributeConsumingService>
 			<xsl:apply-templates select="node()|@*"/>
 		</AttributeConsumingService>
+	</xsl:template>
+	
+	
+	<!--
+		md:EncryptionMethod
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:EncryptionMethod">
+		<EncryptionMethod>
+			<xsl:apply-templates select="node()|@*"/>
+		</EncryptionMethod>
 	</xsl:template>
 	
 	
@@ -411,6 +424,48 @@
 	
 	
 	<!--
+		*************************************
+		***                               ***
+		***   A L G   N A M E S P A C E   ***
+		***                               ***
+		*************************************
+	-->
+	
+
+	<!--
+		alg:DigestMethod
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="alg:DigestMethod">
+		<alg:DigestMethod>
+			<xsl:apply-templates select="node()|@*"/>
+		</alg:DigestMethod>
+	</xsl:template>
+
+
+	<!--
+		alg:SigningMethod
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="alg:SigningMethod">
+		<alg:SigningMethod>
+			<xsl:apply-templates select="node()|@*"/>
+		</alg:SigningMethod>
+	</xsl:template>
+	
+	
+	<!--
+		***********************************
+		***                             ***
+		***   D S   N A M E S P A C E   ***
+		***                             ***
+		***********************************
+	-->
+	
+	
+	<!--
 		ds:KeyInfo
 		
 		Normalise namespace prefix.
@@ -477,6 +532,15 @@
 	
 	
 	<!--
+		*********************************************
+		***                                       ***
+		***   I D P D I S C   N A M E S P A C E   ***
+		***                                       ***
+		*********************************************
+	-->
+	
+	
+	<!--
 		idpdisc:DiscoveryResponse
 		
 		Normalise namespace prefix, add missing Binding attribute.
@@ -492,6 +556,15 @@
 	
 	
 	<!--
+		***************************************
+		***                                 ***
+		***   I N I T   N A M E S P A C E   ***
+		***                                 ***
+		***************************************
+	-->
+	
+	
+	<!--
 		init:RequestInitiator
 		
 		Normalise namespace prefix.
@@ -504,6 +577,15 @@
 	
 	
 	<!--
+		*******************************************
+		***                                     ***
+		***   S H I B M D   N A M E S P A C E   ***
+		***                                     ***
+		*******************************************
+	-->
+	
+	
+	<!--
 		shibmd:Scope
 		
 		Normalise namespace prefix.
@@ -513,6 +595,16 @@
 			<xsl:apply-templates select="node()|@*|text()"/>
 		</shibmd:Scope>
 	</xsl:template>
+	
+
+	<!--
+		*********************************************
+		***                                       ***
+		***   D E F A U L T   T E M P L A T E S   ***
+		***                                       ***
+		*********************************************
+	-->
+	
 	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
