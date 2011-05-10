@@ -242,6 +242,30 @@
 	
 	
 	<!--
+		md:ContactPerson
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:ContactPerson">
+		<ContactPerson>
+			<xsl:apply-templates select="node()|@*"/>
+		</ContactPerson>
+	</xsl:template>
+	
+	
+	<!--
+		md:EmailAddress
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:EmailAddress">
+		<EmailAddress>
+			<xsl:apply-templates select="node()|@*"/>
+		</EmailAddress>
+	</xsl:template>
+	
+	
+	<!--
 		md:EncryptionMethod
 		
 		Normalise namespace prefix.
@@ -262,6 +286,18 @@
 		<Extensions>
 			<xsl:apply-templates select="node()|@*"/>
 		</Extensions>
+	</xsl:template>
+	
+	
+	<!--
+		md:GivenName
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:GivenName">
+		<GivenName>
+			<xsl:apply-templates select="node()|@*"/>
+		</GivenName>
 	</xsl:template>
 	
 	
@@ -420,6 +456,18 @@
 		<SPSSODescriptor>
 			<xsl:apply-templates select="node()|@*"/>
 		</SPSSODescriptor>
+	</xsl:template>
+	
+	
+	<!--
+		md:SurName
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:SurName">
+		<SurName>
+			<xsl:apply-templates select="node()|@*"/>
+		</SurName>
 	</xsl:template>
 	
 	
