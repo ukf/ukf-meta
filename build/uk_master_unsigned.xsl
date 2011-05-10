@@ -28,7 +28,7 @@
 	extension-element-prefixes="date exsl mdxDates"
 	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-	exclude-result-prefixes="md mdui">
+	exclude-result-prefixes="md">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
@@ -158,13 +158,6 @@
 		Strip all other ukfedlabel namespace elements entirely.
 	-->
 	<xsl:template match="ukfedlabel:*">
-		<!-- do nothing -->
-	</xsl:template>
-	
-	<!--
-		Strip all discovery user interface elements entirely.
-	-->
-	<xsl:template match="mdui:*">
 		<!-- do nothing -->
 	</xsl:template>
 	
