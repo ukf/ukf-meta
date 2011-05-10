@@ -32,6 +32,7 @@
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	
@@ -41,7 +42,7 @@
 
 	xmlns:xalan="http://xml.apache.org/xalan"
 	
-	exclude-result-prefixes="alg idpdisc init md xalan"
+	exclude-result-prefixes="alg idpdisc init md mdui xalan"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -621,6 +622,147 @@
 		<init:RequestInitiator>
 			<xsl:apply-templates select="node()|@*"/>
 		</init:RequestInitiator>
+	</xsl:template>
+	
+	
+	<!--
+		***************************************
+		***                                 ***
+		***   M D U I   N A M E S P A C E   ***
+		***                                 ***
+		***************************************
+	-->
+	
+	
+	<!--
+		mdui:Description
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:Description">
+		<mdui:Description>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:Description>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:DiscoHints
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:DiscoHints">
+		<mdui:DiscoHints>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:DiscoHints>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:DisplayName
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:DisplayName">
+		<mdui:DisplayName>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:DisplayName>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:DomainHint
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:DomainHint">
+		<mdui:DomainHint>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:DomainHint>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:GeolocationHint
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:GeolocationHint">
+		<mdui:GeolocationHint>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:GeolocationHint>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:InformationURL
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:InformationURL">
+		<mdui:InformationURL>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:InformationURL>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:IPHint
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:IPHint">
+		<mdui:IPHint>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:IPHint>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:Keywords
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:Keywords">
+		<mdui:Keywords>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:Keywords>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:Logo
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:Logo">
+		<mdui:Logo>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:Logo>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:PrivacyStatementURL
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:PrivacyStatementURL">
+		<mdui:PrivacyStatementURL>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:PrivacyStatementURL>
+	</xsl:template>
+	
+	
+	<!--
+		mdui:UIInfo
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="mdui:UIInfo">
+		<mdui:UIInfo>
+			<xsl:apply-templates select="node()|@*"/>
+		</mdui:UIInfo>
 	</xsl:template>
 	
 	
