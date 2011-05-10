@@ -206,6 +206,30 @@
 	</xsl:template>
 
 	<!--
+		md:ArtifactResolutionService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:ArtifactResolutionService">
+		<ArtifactResolutionService>
+			<xsl:apply-templates select="node()|@*"/>
+		</ArtifactResolutionService>
+	</xsl:template>
+	
+	
+	<!--
+		md:AssertionConsumerService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:AssertionConsumerService">
+		<AssertionConsumerService>
+			<xsl:apply-templates select="node()|@*"/>
+		</AssertionConsumerService>
+	</xsl:template>
+	
+	
+	<!--
 		md:AttributeConsumingService
 		
 		Normalise namespace prefix.
@@ -230,54 +254,6 @@
 	
 	
 	<!--
-		md:IDPSSODescriptor
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:IDPSSODescriptor">
-		<IDPSSODescriptor>
-			<xsl:apply-templates select="node()|@*"/>
-		</IDPSSODescriptor>
-	</xsl:template>
-	
-	
-	<!--
-		md:RequestedAttribute
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:RequestedAttribute">
-		<RequestedAttribute>
-			<xsl:apply-templates select="node()|@*"/>
-		</RequestedAttribute>
-	</xsl:template>
-	
-	
-	<!--
-		md:ServiceName
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:ServiceName">
-		<ServiceName>
-			<xsl:apply-templates select="node()|@*"/>
-		</ServiceName>
-	</xsl:template>
-	
-	
-	<!--
-		md:SPSSODescriptor
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:SPSSODescriptor">
-		<SPSSODescriptor>
-			<xsl:apply-templates select="node()|@*"/>
-		</SPSSODescriptor>
-	</xsl:template>
-	
-	
-	<!--
 		md:Extensions
 		
 		Normalise namespace prefix.
@@ -286,6 +262,18 @@
 		<Extensions>
 			<xsl:apply-templates select="node()|@*"/>
 		</Extensions>
+	</xsl:template>
+	
+	
+	<!--
+		md:IDPSSODescriptor
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:IDPSSODescriptor">
+		<IDPSSODescriptor>
+			<xsl:apply-templates select="node()|@*"/>
+		</IDPSSODescriptor>
 	</xsl:template>
 	
 	
@@ -302,32 +290,6 @@
 	
 	
 	<!--
-		md:SingleLogoutService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:SingleLogoutService">
-		<SingleLogoutService>
-			<xsl:apply-templates select="node()|@*"/>
-		</SingleLogoutService>
-	</xsl:template>
-	
-	
-	
-	<!--
-		md:SingleSignOnService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:SingleSignOnService">
-		<SingleSignOnService>
-			<xsl:apply-templates select="node()|@*"/>
-		</SingleSignOnService>
-	</xsl:template>
-	
-	
-	
-	<!--
 		md:ManageNameIDService
 		
 		Normalise namespace prefix.
@@ -336,30 +298,6 @@
 		<ManageNameIDService>
 			<xsl:apply-templates select="node()|@*"/>
 		</ManageNameIDService>
-	</xsl:template>
-	
-	
-	<!--
-		md:ArtifactResolutionService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:ArtifactResolutionService">
-		<ArtifactResolutionService>
-			<xsl:apply-templates select="node()|@*"/>
-		</ArtifactResolutionService>
-	</xsl:template>
-	
-	
-	<!--
-		md:AssertionConsumerService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:AssertionConsumerService">
-		<AssertionConsumerService>
-			<xsl:apply-templates select="node()|@*"/>
-		</AssertionConsumerService>
 	</xsl:template>
 	
 	
@@ -420,6 +358,68 @@
 		<OrganizationURL>
 			<xsl:apply-templates select="node()|@*"/>
 		</OrganizationURL>
+	</xsl:template>
+	
+	
+	<!--
+		md:RequestedAttribute
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:RequestedAttribute">
+		<RequestedAttribute>
+			<xsl:apply-templates select="node()|@*"/>
+		</RequestedAttribute>
+	</xsl:template>
+	
+	
+	<!--
+		md:ServiceName
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:ServiceName">
+		<ServiceName>
+			<xsl:apply-templates select="node()|@*"/>
+		</ServiceName>
+	</xsl:template>
+	
+	
+	<!--
+		md:SingleLogoutService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:SingleLogoutService">
+		<SingleLogoutService>
+			<xsl:apply-templates select="node()|@*"/>
+		</SingleLogoutService>
+	</xsl:template>
+	
+	
+	
+	<!--
+		md:SingleSignOnService
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:SingleSignOnService">
+		<SingleSignOnService>
+			<xsl:apply-templates select="node()|@*"/>
+		</SingleSignOnService>
+	</xsl:template>
+	
+	
+	
+	<!--
+		md:SPSSODescriptor
+		
+		Normalise namespace prefix.
+	-->
+	<xsl:template match="md:SPSSODescriptor">
+		<SPSSODescriptor>
+			<xsl:apply-templates select="node()|@*"/>
+		</SPSSODescriptor>
 	</xsl:template>
 	
 	
