@@ -173,15 +173,4 @@
 	</xsl:template>
 	
 	
-	<!--
-		Use of EncryptionMethod within KeyDescriptor causes metadata loading problems
-		for OpenSAML-C 2.0.
-	-->
-	<xsl:template match="md:KeyDescriptor/md:EncryptionMethod">
-		<xsl:call-template name="fatal">
-			<xsl:with-param name="m">KeyDescriptor contains EncryptionMethod: OpenSAML-C 2.0 problem</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	
-	
 </xsl:stylesheet>

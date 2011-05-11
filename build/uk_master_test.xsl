@@ -143,6 +143,16 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	
+	<!--
+		Remove any EncryptionMethod elements within KeyDescriptor elements
+		to avoid triggering a problem in OpenSAML-C 2.0.
+		
+		See https://wiki.shibboleth.net/confluence/display/SHIB2/MetadataCorrectness#MetadataCorrectness-Version2.0
+	-->
+	<xsl:template match="md:KeyDescriptor/md:EncryptionMethod"/>
+	
+	
 	<!--
 		Normalise and pass through certain ukfedlabel namespace elements.
 	-->
