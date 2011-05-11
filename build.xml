@@ -417,7 +417,9 @@
 	
     <!--
         Check a metadata document for publishability.  This is applied during all
-        publication flows prior to any signature step.
+        UK publication flows prior to any signature step.  It is not applied to
+        export flows, for which we desire the closest possible correspondence to
+        the registered metadata.
         
         At the moment, this is a single test which is no longer being performed elsewhere
         but should pass by construction.  In the longer term it may make sense to
@@ -454,7 +456,6 @@
 		<XALAN x="uk_master_export.xsl" i="${uk.master.file}"
 			o="${md.export.unsigned}" />
 		<MDNORM i="${md.export.unsigned}"/>
-        <CHECK.publishable i="${xml.dir}/${md.export.unsigned}"/>
 		
 		<!-- [31] -->
 		<XALAN x="uk_master_back.xsl" i="${uk.master.file}"
