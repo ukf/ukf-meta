@@ -64,6 +64,7 @@
 			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata ../xml/saml-schema-metadata-2.0.xsd
 			urn:oasis:names:tc:SAML:metadata:algsupport ../xml/sstc-saml-metadata-algsupport-v1.0.xsd
 			urn:oasis:names:tc:SAML:metadata:ui ../xml/sstc-saml-metadata-ui-v1.0.xsd
+			urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol ../xml/sstc-saml-idp-discovery.xsd
 			urn:oasis:names:tc:SAML:profiles:SSO:request-init ../xml/sstc-request-initiation.xsd
 			urn:mace:shibboleth:metadata:1.0 ../xml/shibboleth-metadata-1.0.xsd
 			http://ukfederation.org.uk/2006/11/label ../xml/uk-fed-label.xsd
@@ -330,12 +331,12 @@
 		Normalise namespace prefix, add missing Binding attribute.
 	-->
 	<xsl:template match="idpdisc:DiscoveryResponse">
-		<DiscoveryResponse xmlns="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol">
+		<idpdisc:DiscoveryResponse>
 			<xsl:if test="not(@Binding)">
 				<xsl:attribute name="Binding">urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates select="node()|@*"/>
-		</DiscoveryResponse>
+		</idpdisc:DiscoveryResponse>
 	</xsl:template>
 	
 	
