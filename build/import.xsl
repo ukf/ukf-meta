@@ -206,269 +206,16 @@
 		</EntityDescriptor>
 	</xsl:template>
 
+
 	<!--
-		md:ArtifactResolutionService
+		md:*
 		
 		Normalise namespace prefix.
 	-->
-	<xsl:template match="md:ArtifactResolutionService">
-		<ArtifactResolutionService>
+	<xsl:template match="md:*">
+		<xsl:element name="{local-name()}" namespace="urn:oasis:names:tc:SAML:2.0:metadata">
 			<xsl:apply-templates select="node()|@*"/>
-		</ArtifactResolutionService>
-	</xsl:template>
-	
-	
-	<!--
-		md:AssertionConsumerService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:AssertionConsumerService">
-		<AssertionConsumerService>
-			<xsl:apply-templates select="node()|@*"/>
-		</AssertionConsumerService>
-	</xsl:template>
-	
-	
-	<!--
-		md:AttributeConsumingService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:AttributeConsumingService">
-		<AttributeConsumingService>
-			<xsl:apply-templates select="node()|@*"/>
-		</AttributeConsumingService>
-	</xsl:template>
-	
-	
-	<!--
-		md:ContactPerson
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:ContactPerson">
-		<ContactPerson>
-			<xsl:apply-templates select="node()|@*"/>
-		</ContactPerson>
-	</xsl:template>
-	
-	
-	<!--
-		md:EmailAddress
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:EmailAddress">
-		<EmailAddress>
-			<xsl:apply-templates select="node()|@*"/>
-		</EmailAddress>
-	</xsl:template>
-	
-	
-	<!--
-		md:EncryptionMethod
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:EncryptionMethod">
-		<EncryptionMethod>
-			<xsl:apply-templates select="node()|@*"/>
-		</EncryptionMethod>
-	</xsl:template>
-	
-	
-	<!--
-		md:Extensions
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:Extensions">
-		<Extensions>
-			<xsl:apply-templates select="node()|@*"/>
-		</Extensions>
-	</xsl:template>
-	
-	
-	<!--
-		md:GivenName
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:GivenName">
-		<GivenName>
-			<xsl:apply-templates select="node()|@*"/>
-		</GivenName>
-	</xsl:template>
-	
-	
-	<!--
-		md:IDPSSODescriptor
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:IDPSSODescriptor">
-		<IDPSSODescriptor>
-			<xsl:apply-templates select="node()|@*"/>
-		</IDPSSODescriptor>
-	</xsl:template>
-	
-	
-	<!--
-		md:KeyDescriptor
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:KeyDescriptor">
-		<KeyDescriptor>
-			<xsl:apply-templates select="node()|@*"/>
-		</KeyDescriptor>
-	</xsl:template>
-	
-	
-	<!--
-		md:ManageNameIDService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:ManageNameIDService">
-		<ManageNameIDService>
-			<xsl:apply-templates select="node()|@*"/>
-		</ManageNameIDService>
-	</xsl:template>
-	
-	
-	<!--
-		md:NameIDFormat
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:NameIDFormat">
-		<NameIDFormat>
-			<xsl:apply-templates select="node()|@*"/>
-		</NameIDFormat>
-	</xsl:template>
-	
-	
-	<!--
-		md:Organization
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:Organization">
-		<Organization>
-			<xsl:apply-templates select="node()|@*"/>
-		</Organization>
-	</xsl:template>
-	
-	
-	<!--
-		md:OrganizationName
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:OrganizationName">
-		<OrganizationName>
-			<xsl:apply-templates select="node()|@*"/>
-		</OrganizationName>
-	</xsl:template>
-	
-	
-	<!--
-		md:OrganizationDisplayName
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:OrganizationDisplayName">
-		<OrganizationDisplayName>
-			<xsl:apply-templates select="node()|@*"/>
-		</OrganizationDisplayName>
-	</xsl:template>
-	
-	
-	<!--
-		md:OrganizationURL
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:OrganizationURL">
-		<OrganizationURL>
-			<xsl:apply-templates select="node()|@*"/>
-		</OrganizationURL>
-	</xsl:template>
-	
-	
-	<!--
-		md:RequestedAttribute
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:RequestedAttribute">
-		<RequestedAttribute>
-			<xsl:apply-templates select="node()|@*"/>
-		</RequestedAttribute>
-	</xsl:template>
-	
-	
-	<!--
-		md:ServiceName
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:ServiceName">
-		<ServiceName>
-			<xsl:apply-templates select="node()|@*"/>
-		</ServiceName>
-	</xsl:template>
-	
-	
-	<!--
-		md:SingleLogoutService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:SingleLogoutService">
-		<SingleLogoutService>
-			<xsl:apply-templates select="node()|@*"/>
-		</SingleLogoutService>
-	</xsl:template>
-	
-	
-	
-	<!--
-		md:SingleSignOnService
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:SingleSignOnService">
-		<SingleSignOnService>
-			<xsl:apply-templates select="node()|@*"/>
-		</SingleSignOnService>
-	</xsl:template>
-	
-	
-	
-	<!--
-		md:SPSSODescriptor
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:SPSSODescriptor">
-		<SPSSODescriptor>
-			<xsl:apply-templates select="node()|@*"/>
-		</SPSSODescriptor>
-	</xsl:template>
-	
-	
-	<!--
-		md:SurName
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:SurName">
-		<SurName>
-			<xsl:apply-templates select="node()|@*"/>
-		</SurName>
+		</xsl:element>
 	</xsl:template>
 	
 	
@@ -482,29 +229,17 @@
 	
 
 	<!--
-		alg:DigestMethod
+		alg:*
 		
 		Normalise namespace prefix.
 	-->
-	<xsl:template match="alg:DigestMethod">
-		<alg:DigestMethod>
+	<xsl:template match="alg:*">
+		<xsl:element name="alg:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
-		</alg:DigestMethod>
+		</xsl:element>
 	</xsl:template>
 
 
-	<!--
-		alg:SigningMethod
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="alg:SigningMethod">
-		<alg:SigningMethod>
-			<xsl:apply-templates select="node()|@*"/>
-		</alg:SigningMethod>
-	</xsl:template>
-	
-	
 	<!--
 		***********************************
 		***                             ***
@@ -635,134 +370,14 @@
 	
 	
 	<!--
-		mdui:Description
+		mdui:*
 		
 		Normalise namespace prefix.
 	-->
-	<xsl:template match="mdui:Description">
-		<mdui:Description>
+	<xsl:template match="mdui:*">
+		<xsl:element name="mdui:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
-		</mdui:Description>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:DiscoHints
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:DiscoHints">
-		<mdui:DiscoHints>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:DiscoHints>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:DisplayName
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:DisplayName">
-		<mdui:DisplayName>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:DisplayName>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:DomainHint
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:DomainHint">
-		<mdui:DomainHint>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:DomainHint>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:GeolocationHint
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:GeolocationHint">
-		<mdui:GeolocationHint>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:GeolocationHint>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:InformationURL
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:InformationURL">
-		<mdui:InformationURL>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:InformationURL>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:IPHint
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:IPHint">
-		<mdui:IPHint>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:IPHint>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:Keywords
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:Keywords">
-		<mdui:Keywords>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:Keywords>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:Logo
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:Logo">
-		<mdui:Logo>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:Logo>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:PrivacyStatementURL
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:PrivacyStatementURL">
-		<mdui:PrivacyStatementURL>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:PrivacyStatementURL>
-	</xsl:template>
-	
-	
-	<!--
-		mdui:UIInfo
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:UIInfo">
-		<mdui:UIInfo>
-			<xsl:apply-templates select="node()|@*"/>
-		</mdui:UIInfo>
+		</xsl:element>
 	</xsl:template>
 	
 	
