@@ -24,9 +24,6 @@
 
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
 	xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
@@ -43,7 +40,8 @@
 	xmlns:xalan="http://xml.apache.org/xalan"
 	
 	exclude-result-prefixes="alg idpdisc init md mdui xalan"
-
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 	<!--
