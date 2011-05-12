@@ -13,16 +13,17 @@
 
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:members="http://ukfederation.org.uk/2007/01/members"
 	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
-	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
-	xmlns:members="http://ukfederation.org.uk/2007/01/members"
+
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-	exclude-result-prefixes="wayf members">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	exclude-result-prefixes="alg members">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
@@ -145,6 +146,16 @@
 		<!-- nothing -->
 	</xsl:template>
 	
+
+    <!--
+        ***************************************************
+        ***                                             ***
+        ***   U K F E D L A B E L   N A M E S P A C E   ***
+        ***                                             ***
+        ***************************************************
+    -->
+    
+
 	<!--
 		Drop any deleted entities.
 	-->
@@ -166,6 +177,37 @@
 		<!-- nothing -->
 	</xsl:template>
 	
+
+    <!--
+        *************************************
+        ***                               ***
+        ***   A L G   N A M E S P A C E   ***
+        ***                               ***
+        *************************************
+    -->
+    
+
+    <!--
+        alg:*
+        
+        Normalise namespace to not use a prefix.
+    -->
+    <xsl:template match="alg:*">
+        <xsl:element name="{local-name()}" namespace="urn:oasis:names:tc:SAML:metadata:algsupport">
+            <xsl:apply-templates select="node()|@*"/>
+        </xsl:element>
+    </xsl:template>
+
+
+    <!--
+        *********************************************
+        ***                                       ***
+        ***   D E F A U L T   T E M P L A T E S   ***
+        ***                                       ***
+        *********************************************
+    -->
+    
+    
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
