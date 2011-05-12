@@ -13,15 +13,14 @@
 
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:elab="http://eduserv.org.uk/labels"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	
@@ -31,6 +30,8 @@
 	extension-element-prefixes="date exsl mdxDates"
 	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	exclude-result-prefixes="md">
 
 	<!--Force UTF-8 encoding for the output.-->
