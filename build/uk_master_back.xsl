@@ -14,11 +14,9 @@
 
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	
@@ -28,6 +26,8 @@
 	extension-element-prefixes="date exsl mdxDates"
 	
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	exclude-result-prefixes="mdui wayf">
 
 	<!--Force UTF-8 encoding for the output.-->
