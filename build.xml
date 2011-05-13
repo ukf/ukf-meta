@@ -1181,7 +1181,7 @@
 	-->
 	<target name="stats" depends="gen.uk.unsigned">
 		<echo>Generating UK Federation statistics</echo>
-		<XALAN
+		<XALAN.xmldir
 			i="${uk.master.file}"
 			o="ukfederation-stats.html"
 			x="statistics.xsl"/>
@@ -1214,7 +1214,7 @@
 	-->
 	<target name="extract.authorities">
 		<echo>Extracting key authorities</echo>
-		<XALAN
+		<XALAN.xmldir
 			i="master.xml"
 			o="authorities.pem"
 			x="extract_authorities.xsl"/>
@@ -1236,7 +1236,7 @@
 	-->
 	<target name="extract.member.dates">
 		<echo>Extracting member dates</echo>
-		<XALAN
+		<XALAN.xmldir
 			i="members.xml"
 			o="member-dates.txt"
 			x="extract_member_dates.xsl"/>
@@ -1308,7 +1308,7 @@
 	-->
 	<target name="extract.embedded" depends="gen.uk">
 		<echo>Extracting embedded certificates</echo>
-		<XALAN
+		<XALAN.xmldir
 			i="${md.prod.unsigned}"
 			o="embedded.pem"
 			x="extract_embedded.xsl"/>
