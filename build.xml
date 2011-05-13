@@ -402,7 +402,7 @@
 	<target name="gen.uk.master" depends="gen.entities">
 		<echo>Generating UK federation master file.</echo>
 		<!-- [2] -->
-		<XALAN x="master_ukfederation.xsl" i="${master.file.name}"
+		<XALAN.xmldir x="master_ukfederation.xsl" i="${master.file.name}"
 			o="${uk.master.file}" />
 		<CHECK i="${xml.dir}/${uk.master.file}" s="check.xsl"/>
 	</target>
@@ -441,24 +441,24 @@
 	<target name="gen.uk.unsigned" depends="gen.uk.master">
 		<echo>Generating unsigned UK metadata files.</echo>
 		<!-- [19] -->
-		<XALAN x="uk_master_unsigned.xsl" i="${uk.master.file}"
+		<XALAN.xmldir x="uk_master_unsigned.xsl" i="${uk.master.file}"
 			o="${md.prod.unsigned}" />
 		<MDNORM i="${md.prod.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.prod.unsigned}"/>
 		
 		<!-- [27] -->
-		<XALAN x="uk_master_test.xsl" i="${uk.master.file}"
+		<XALAN.xmldir x="uk_master_test.xsl" i="${uk.master.file}"
 			o="${md.test.unsigned}" />
 		<MDNORM i="${md.test.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.test.unsigned}"/>
 		
 		<!-- [29] -->
-		<XALAN x="uk_master_export.xsl" i="${uk.master.file}"
+		<XALAN.xmldir x="uk_master_export.xsl" i="${uk.master.file}"
 			o="${md.export.unsigned}" />
 		<MDNORM i="${md.export.unsigned}"/>
 		
 		<!-- [31] -->
-		<XALAN x="uk_master_back.xsl" i="${uk.master.file}"
+		<XALAN.xmldir x="uk_master_back.xsl" i="${uk.master.file}"
 			o="${md.back.unsigned}" />
         <CHECK.publishable i="${xml.dir}/${md.back.unsigned}"/>
 	</target>
@@ -466,7 +466,7 @@
 	<target name="gen.uk.wayf" depends="gen.uk.unsigned">
 		<echo>Generating unsigned UK WAYF metadata.</echo>
 		<!-- [25] -->
-		<XALAN x="master_to_wayf.xsl" i="${md.prod.unsigned}"
+		<XALAN.xmldir x="master_to_wayf.xsl" i="${md.prod.unsigned}"
 			o="${md.wayf.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.wayf.unsigned}"/>
 	</target>
@@ -506,14 +506,14 @@
 		    Combine the entity list with the trust roots.
 		-->
         <echo>Generating test federation master file.</echo>
-        <XALAN x="master_ukfederation.xsl" i="${master.file.name}"
+        <XALAN.xmldir x="master_ukfederation.xsl" i="${master.file.name}"
             o="${test.master.file}" />
         <CHECK i="${xml.dir}/${test.master.file}" s="check.xsl"/>
 		
 		<!--
             Process through to final form.
         -->
-        <XALAN x="test_master_unsigned.xsl" i="${test.master.file}"
+        <XALAN.xmldir x="test_master_unsigned.xsl" i="${test.master.file}"
             o="${test.prod.unsigned}" />
 	</target>
     
@@ -731,7 +731,7 @@
 	-->
 	
 	<!--
-		Macro to run the Xalan XSLT engine, taking files from pre-defined
+		Macro to run the Xalan XSLT engine, taking files from arbitrary
 		locations.
 	-->
 	<macrodef name="XALAN">
@@ -742,17 +742,30 @@
 			<java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="org.apache.xalan.xslt.Process">
 				<classpath>
 					<fileset dir="${tools.xalan}/lib">
-						<include name="**/*.jar"/>
+						<include name="*.jar"/>
 					</fileset>
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
 				<arg value="-IN"/>
-				<arg value="${xml.dir}/@{i}"/>
+				<arg value="@{i}"/>
 				<arg value="-OUT"/>
-				<arg value="${xml.dir}/@{o}"/>
+				<arg value="@{o}"/>
 				<arg value="-XSL"/>
-				<arg value="${build.dir}/@{x}"/>
+				<arg value="@{x}"/>
 			</java>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Macro to run the Xalan XSLT engine, taking files from pre-defined
+		locations.
+	-->
+	<macrodef name="XALAN.xmldir">
+		<attribute name="i"/>
+		<attribute name="o"/>
+		<attribute name="x"/>
+		<sequential>
+			<XALAN i="${xml.dir}/@{i}" o="${xml.dir}/@{o}" x="${build.dir}/@{x}"/>
 		</sequential>
 	</macrodef>
 
@@ -862,20 +875,8 @@
 	
 	<target name="import.metadata">
 		<echo>Importing metadata from ${entities.dir}/import.xml</echo>
-		<java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="org.apache.xalan.xslt.Process">
-			<classpath>
-				<fileset dir="${tools.xalan}/lib">
-					<include name="**/*.jar"/>
-				</fileset>
-			</classpath>
-			<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
-			<arg value="-IN"/>
-			<arg value="${entities.dir}/import.xml"/>
-			<arg value="-OUT"/>
-			<arg value="${entities.dir}/imported.xml"/>
-			<arg value="-XSL"/>
-			<arg value="${build.dir}/import.xsl"/>
-		</java>
+		<XALAN i="${entities.dir}/import.xml" o="${entities.dir}/imported.xml"
+			x="${build.dir}/import.xsl"/>
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
         <CHECK.std i="${entities.dir}/imported.xml">
             <arg value="${build.dir}/check_imported.xsl"/>
