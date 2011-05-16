@@ -32,6 +32,7 @@
         <entry key="idpdisc"    value="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"/>
         <entry key="init"       value="urn:oasis:names:tc:SAML:profiles:SSO:request-init"/>
         <entry key="md"         value="urn:oasis:names:tc:SAML:2.0:metadata"/>
+        <entry key="mdattr"     value="urn:oasis:names:tc:SAML:metadata:attribute"/>
         <entry key="mdrpi"      value="urn:oasis:names:tc:SAML:metadata:rpi"/>
         <entry key="mdui"       value="urn:oasis:names:tc:SAML:metadata:ui"/>
         <entry key="saml"       value="urn:oasis:names:tc:SAML:2.0:assertion"/>
