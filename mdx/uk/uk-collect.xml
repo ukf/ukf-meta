@@ -19,7 +19,8 @@
     -->
     <import resource="uk-beans.xml"/>
         
-    <bean id="filterDeletedEntities" class="uk.org.ukfederation.mda.XPathFilteringStrategy">
+    <bean id="filterDeletedEntities" class="uk.org.ukfederation.mda.XPathFilteringStage">
+        <property name="id" value="filterDeletedEntities"/>
         <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
         <constructor-arg name="prefixMappings" ref="commonNamespaces"/>
     </bean>
@@ -37,7 +38,6 @@
                 <constructor-arg value="uk\d{6}.xml"/>
             </bean>
         </property>
-        <property name="postProcessFilter" ref="filterDeletedEntities"/>
     </bean>
     
     <bean id="pipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline">
@@ -45,7 +45,9 @@
         <property name="stages">
             <list>
                 <ref bean="fetchUkFragmentFiles"/>
+                <ref bean="filterDeletedEntities"/>
                 <ref bean="checkSchemas"/>
+                <ref bean="errorAnnouncingFilter"/>
                 <ref bean="assemble"/>
             </list>
         </property>

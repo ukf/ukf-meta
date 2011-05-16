@@ -21,9 +21,11 @@
             <list>
                 <ref bean="fetchArnesExportAggregate"/>
                 <ref bean="checkArnesSignature"/>
+                <ref bean="errorAnnouncingFilter"/>
                 <ref bean="cleanImport"/>
                 <ref bean="disassemble"/>
                 <ref bean="checkSchemas"/>
+                <ref bean="errorAnnouncingFilter"/>
                 <ref bean="assemble"/>
             </list>
         </property>

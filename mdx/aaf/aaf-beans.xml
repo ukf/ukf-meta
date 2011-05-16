@@ -32,9 +32,6 @@
     <bean id="checkAafSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
         <property name="id" value="checkAafSignature"/>
         <property name="verificationCertificate" ref="aafSigningCertificate"/>
-        <property name="postProcessFilter">
-            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
-        </property>
     </bean>
     
 </beans>

@@ -99,15 +99,21 @@
     <!--
         checkSchemas
         
-        A pipeline stage that checks against all the common schemas, as above, and then announces
-        and filters any errors encountered.
+        A pipeline stage that checks against all the common schemas, as above.
     -->
     <bean id="checkSchemas" class="net.shibboleth.metadata.dom.stage.XMLSchemaValidationStage">
         <property name="id" value="checkSchemas"/>
         <property name="schemaResources" ref="schemaResources"/>
-        <property name="postProcessFilter">
-            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
-        </property>
+    </bean>
+    
+    <!--
+        errorAnnouncingFilter
+        
+        A pipeline stage that checks for any errors, and then announces
+        and filters any encountered.
+    -->
+    <bean id="errorAnnouncingFilter" class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStage">
+        <property name="id" value="errorAnnouncingFilter"/>
     </bean>
     
     <!--

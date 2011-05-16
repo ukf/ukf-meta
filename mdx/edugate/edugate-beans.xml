@@ -29,9 +29,6 @@
     <bean id="checkEdugateSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
         <property name="id" value="checkEdugateSignature"/>
         <property name="verificationCertificate" ref="edugateSigningCertificate"/>
-        <property name="postProcessFilter">
-            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
-        </property>
     </bean>
     
 </beans>

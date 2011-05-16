@@ -32,9 +32,6 @@
     <bean id="checkInCommonSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
         <property name="id" value="checkInCommonSignature"/>
         <property name="verificationCertificate" ref="inCommonSigningCertificate"/>
-        <property name="postProcessFilter">
-            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
-        </property>
     </bean>
     
 </beans>

@@ -29,9 +29,6 @@
     <bean id="checkSwitchSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
         <property name="id" value="checkSwitchSignature"/>
         <property name="verificationCertificate" ref="switchSigningCertificate"/>
-        <property name="postProcessFilter">
-            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
-        </property>
     </bean>
     
 </beans>

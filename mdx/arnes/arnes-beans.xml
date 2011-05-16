@@ -32,9 +32,6 @@
     <bean id="checkArnesSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
         <property name="id" value="checkArnesSignature"/>
         <property name="verificationCertificate" ref="arnesSigningCertificate"/>
-        <property name="postProcessFilter">
-            <bean class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStrategy"/>
-        </property>
     </bean>
     
 </beans>
