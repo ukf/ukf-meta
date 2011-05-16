@@ -191,7 +191,14 @@
         limit for all of them.
     -->
 	<property name="java.max.memory" value="768m"/>
-	   
+	
+	<!--
+	    Full paths to a couple of temporary file locations.
+	-->
+    <property name="temp.xml" value="${xml.dir}/temp.xml"/>
+    <property name="temp2.xml" value="${xml.dir}/temp2.xml"/>
+	
+	
 	<!--
 		*************************************************
 		***                                           ***
@@ -875,8 +882,15 @@
 	
 	<target name="import.metadata">
 		<echo>Importing metadata from ${entities.dir}/import.xml</echo>
-		<XALAN i="${entities.dir}/import.xml" o="${entities.dir}/imported.xml"
-			x="${build.dir}/import.xsl"/>
+		
+		<!-- Step 1: perform real processing into temporary file -->
+		<XALAN x="${build.dir}/import.xsl"
+			i="${entities.dir}/import.xml" o="${temp.xml}"/>
+		
+		<!-- Step 2: normalise namespaces into result file -->
+        <XALAN x="${build.dir}/ns_norm_fragment.xsl"
+            i="${temp.xml}" o="${entities.dir}/imported.xml"/>
+		
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
         <CHECK.std i="${entities.dir}/imported.xml">
             <arg value="${build.dir}/check_imported.xsl"/>

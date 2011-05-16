@@ -207,39 +207,6 @@
 
 
 	<!--
-		md:*
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="md:*">
-		<xsl:element name="{local-name()}" namespace="urn:oasis:names:tc:SAML:2.0:metadata">
-			<xsl:apply-templates select="node()|@*"/>
-		</xsl:element>
-	</xsl:template>
-	
-	
-	<!--
-		*************************************
-		***                               ***
-		***   A L G   N A M E S P A C E   ***
-		***                               ***
-		*************************************
-	-->
-	
-
-	<!--
-		alg:*
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="alg:*">
-		<xsl:element name="alg:{local-name()}">
-			<xsl:apply-templates select="node()|@*"/>
-		</xsl:element>
-	</xsl:template>
-
-
-	<!--
 		***********************************
 		***                             ***
 		***   D S   N A M E S P A C E   ***
@@ -249,48 +216,12 @@
 	
 	
 	<!--
-		ds:KeyInfo
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="ds:KeyInfo">
-		<ds:KeyInfo>
-			<xsl:apply-templates select="node()|@*"/>
-		</ds:KeyInfo>
-	</xsl:template>
-	
-	
-	<!--
 		ds:KeyName
 		
 		Remove empty KeyName elements.
 	-->
 	<xsl:template match="ds:KeyName[.='']">
 		<!-- do nothing -->
-	</xsl:template>
-	
-	
-	<!--
-		ds:KeyName
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="ds:KeyName">
-		<ds:KeyName>
-			<xsl:apply-templates select="node()|@*"/>
-		</ds:KeyName>
-	</xsl:template>
-	
-	
-	<!--
-		ds:X509Data
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="ds:X509Data">
-		<ds:X509Data>
-			<xsl:apply-templates select="node()|@*"/>
-		</ds:X509Data>
 	</xsl:template>
 	
 	
@@ -326,81 +257,16 @@
 	<!--
 		idpdisc:DiscoveryResponse
 		
-		Normalise namespace prefix, add missing Binding attribute.
+		Add missing Binding attribute.
 	-->
-	<xsl:template match="idpdisc:DiscoveryResponse">
+	<xsl:template match="idpdisc:DiscoveryResponse[not(@Binding)]">
 		<idpdisc:DiscoveryResponse>
-			<xsl:if test="not(@Binding)">
-				<xsl:attribute name="Binding">urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol</xsl:attribute>
-			</xsl:if>
+			<xsl:attribute name="Binding">urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol</xsl:attribute>
 			<xsl:apply-templates select="node()|@*"/>
 		</idpdisc:DiscoveryResponse>
 	</xsl:template>
 	
 	
-	<!--
-		***************************************
-		***                                 ***
-		***   I N I T   N A M E S P A C E   ***
-		***                                 ***
-		***************************************
-	-->
-	
-	
-	<!--
-		init:RequestInitiator
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="init:RequestInitiator">
-		<init:RequestInitiator>
-			<xsl:apply-templates select="node()|@*"/>
-		</init:RequestInitiator>
-	</xsl:template>
-	
-	
-	<!--
-		***************************************
-		***                                 ***
-		***   M D U I   N A M E S P A C E   ***
-		***                                 ***
-		***************************************
-	-->
-	
-	
-	<!--
-		mdui:*
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="mdui:*">
-		<xsl:element name="mdui:{local-name()}">
-			<xsl:apply-templates select="node()|@*"/>
-		</xsl:element>
-	</xsl:template>
-	
-	
-	<!--
-		*******************************************
-		***                                     ***
-		***   S H I B M D   N A M E S P A C E   ***
-		***                                     ***
-		*******************************************
-	-->
-	
-	
-	<!--
-		shibmd:Scope
-		
-		Normalise namespace prefix.
-	-->
-	<xsl:template match="shibmd:Scope">
-		<shibmd:Scope>
-			<xsl:apply-templates select="node()|@*|text()"/>
-		</shibmd:Scope>
-	</xsl:template>
-	
-
 	<!--
 		*********************************************
 		***                                       ***
