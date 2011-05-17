@@ -446,8 +446,15 @@
 		
 		<!-- [19] -->
 		<echo>   Production aggregate...</echo>
-		<XALAN.xmldir x="uk_master_unsigned.xsl" i="${uk.master.file}"
-			o="${md.prod.unsigned}" />
+		<XALAN
+			x="${build.dir}/uk_master_unsigned.xsl"
+			i="${xml.dir}/${uk.master.file}"
+			o="${temp.xml}"/>
+        <echo>      normalising namespaces...</echo>
+        <XALAN
+            x="${build.dir}/ns_norm_uk.xsl"
+            i="${temp.xml}"
+            o="${xml.dir}/${md.prod.unsigned}" />
 		<MDNORM i="${md.prod.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.prod.unsigned}"/>
         <!-- [25] -->
@@ -472,8 +479,15 @@
 		
 		<!-- [29] -->
 		<echo>   Export aggregate...</echo>
-		<XALAN.xmldir x="uk_master_export.xsl" i="${uk.master.file}"
-			o="${md.export.unsigned}" />
+		<XALAN
+			x="${build.dir}/uk_master_export.xsl"
+			i="${xml.dir}/${uk.master.file}"
+			o="${temp.xml}"/>
+        <echo>      normalising namespaces...</echo>
+        <XALAN
+            x="${build.dir}/ns_norm_uk.xsl"
+            i="${temp.xml}"
+            o="${xml.dir}/${md.export.unsigned}" />
 		<MDNORM i="${md.export.unsigned}"/>
 		
 		<!-- [31] -->

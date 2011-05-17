@@ -150,62 +150,20 @@
 	
 	
 	<!--
-		Normalise and pass through certain ukfedlabel namespace elements.
+		Pass through certain ukfedlabel namespace elements.
 	-->
 	
-	<xsl:template match="ukfedlabel:UKFederationMember">
-		<xsl:element name="ukfedlabel:UKFederationMember">
+	<xsl:template match="ukfedlabel:UKFederationMember | ukfedlabel:AccountableUsers">
+		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
-		</xsl:element>
+		</xsl:copy>
 	</xsl:template>
-
-	<xsl:template match="ukfedlabel:AccountableUsers">
-		<xsl:element name="ukfedlabel:AccountableUsers">
-			<xsl:apply-templates select="node()|@*"/>
-		</xsl:element>
-	</xsl:template>
-	
+		
 	<!--
 		Strip all other ukfedlabel namespace elements entirely.
 	-->
 	<xsl:template match="ukfedlabel:*">
 		<!-- do nothing -->
-	</xsl:template>
-	
-	<!--
-		Normalise namespace on IdP discovery elements.
-	-->
-	
-	<xsl:template match="idpdisc:DiscoveryResponse">
-		<idpdisc:DiscoveryResponse>
-			<xsl:apply-templates select="node()|@*"/>
-		</idpdisc:DiscoveryResponse>
-	</xsl:template>
-	
-	<!--
-		Normalise namespace on Athens PUID elements.
-	-->
-	
-	<xsl:template match="elab:AthensPUIDAuthority">
-		<elab:AthensPUIDAuthority>
-			<xsl:apply-templates select="node()|@*"/>
-		</elab:AthensPUIDAuthority>
-	</xsl:template>
-	
-	<!--
-		Normalise namespace on Shibboleth metadata elements.
-	-->
-	
-	<xsl:template match="shibmd:Scope">
-		<shibmd:Scope>
-			<xsl:apply-templates select="node()|@*"/>
-		</shibmd:Scope>
-	</xsl:template>
-	
-	<xsl:template match="shibmd:KeyAuthority">
-		<shibmd:KeyAuthority>
-			<xsl:apply-templates select="node()|@*"/>
-		</shibmd:KeyAuthority>
 	</xsl:template>
 	
 	<!--
