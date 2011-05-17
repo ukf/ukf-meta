@@ -454,8 +454,14 @@
         <CHECK.publishable i="${xml.dir}/${md.prod.unsigned}"/>
 		
 		<!-- [27] -->
-		<XALAN.xmldir x="uk_master_test.xsl" i="${uk.master.file}"
-			o="${md.test.unsigned}" />
+		<XALAN
+			x="${build.dir}/uk_master_test.xsl"
+			i="${xml.dir}/${uk.master.file}"
+			o="${temp.xml}" />
+		<XALAN
+	        x="${build.dir}/ns_norm_uk.xsl"
+		    i="${temp.xml}"
+		    o="${xml.dir}/${md.test.unsigned}"/>
 		<MDNORM i="${md.test.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.test.unsigned}"/>
 		
