@@ -374,7 +374,7 @@
 	<!--
 		Generate unsigned metadata.
 	-->
-	<target name="generate" depends="gen.uk">
+	<target name="generate" depends="gen.uk.unsigned">
 		<echo>Generated unsigned metadata.</echo>
 	</target>
 	
@@ -402,10 +402,6 @@
 		Unsigned metadata generation for the UK Federation.
 	-->
 
-	<target name="gen.uk" depends="gen.uk.unsigned, gen.uk.wayf">
-		<echo>Generated UK unsigned metadata.</echo>
-	</target>
-
 	<target name="gen.uk.master" depends="gen.entities">
 		<echo>Generating UK federation master file.</echo>
 		<!-- [2] -->
@@ -414,7 +410,7 @@
 		<CHECK i="${xml.dir}/${uk.master.file}" s="check.xsl"/>
 	</target>
 	
-	<target name="test.uk.future" depends="gen.uk">
+	<target name="test.uk.future" depends="gen.uk.unsigned">
 		<echo>Checking against future rulesets.</echo>
         <CHECK.base i="${xml.dir}/${uk.master.file}">
             <arg value="${build.dir}/check_future.xsl"/>
@@ -447,17 +443,26 @@
 
 	<target name="gen.uk.unsigned" depends="gen.uk.master">
 		<echo>Generating unsigned UK metadata files.</echo>
+		
 		<!-- [19] -->
+		<echo>   Production aggregate...</echo>
 		<XALAN.xmldir x="uk_master_unsigned.xsl" i="${uk.master.file}"
 			o="${md.prod.unsigned}" />
 		<MDNORM i="${md.prod.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.prod.unsigned}"/>
+        <!-- [25] -->
+		<echo>      DS variant...</echo>
+        <XALAN.xmldir x="master_to_wayf.xsl" i="${md.prod.unsigned}"
+            o="${md.wayf.unsigned}"/>
+        <CHECK.publishable i="${xml.dir}/${md.wayf.unsigned}"/>
 		
 		<!-- [27] -->
+		<echo>   Test aggregate...</echo>
 		<XALAN
 			x="${build.dir}/uk_master_test.xsl"
 			i="${xml.dir}/${uk.master.file}"
 			o="${temp.xml}" />
+		<echo>      normalising namespaces...</echo>
 		<XALAN
 	        x="${build.dir}/ns_norm_uk.xsl"
 		    i="${temp.xml}"
@@ -466,23 +471,20 @@
         <CHECK.publishable i="${xml.dir}/${md.test.unsigned}"/>
 		
 		<!-- [29] -->
+		<echo>   Export aggregate...</echo>
 		<XALAN.xmldir x="uk_master_export.xsl" i="${uk.master.file}"
 			o="${md.export.unsigned}" />
 		<MDNORM i="${md.export.unsigned}"/>
 		
 		<!-- [31] -->
+		<echo>   Fallback aggregate...</echo>
 		<XALAN.xmldir x="uk_master_back.xsl" i="${uk.master.file}"
 			o="${md.back.unsigned}" />
         <CHECK.publishable i="${xml.dir}/${md.back.unsigned}"/>
+		
+        <echo>Generated UK unsigned metadata.</echo>
 	</target>
 	
-	<target name="gen.uk.wayf" depends="gen.uk.unsigned">
-		<echo>Generating unsigned UK WAYF metadata.</echo>
-		<!-- [25] -->
-		<XALAN.xmldir x="master_to_wayf.xsl" i="${md.prod.unsigned}"
-			o="${md.wayf.unsigned}"/>
-        <CHECK.publishable i="${xml.dir}/${md.wayf.unsigned}"/>
-	</target>
 
     <!--
         ***********************************************************
@@ -1326,7 +1328,7 @@
 	<!--
 		Extract embedded certificates
 	-->
-	<target name="extract.embedded" depends="gen.uk">
+	<target name="extract.embedded" depends="gen.uk.unsigned">
 		<echo>Extracting embedded certificates</echo>
 		<XALAN.xmldir
 			i="${md.prod.unsigned}"
