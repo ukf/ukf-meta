@@ -14,11 +14,10 @@
 
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
+	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	
 	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns:exsl="http://exslt.org/common"

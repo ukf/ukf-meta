@@ -12,16 +12,9 @@
 
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-	xmlns:elab="http://eduserv.org.uk/labels"
-	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
-	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
-	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
+	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	
 	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns:exsl="http://exslt.org/common"
@@ -191,10 +184,6 @@
 	-->
 	
 	<xsl:template match="md:EntityDescriptor/comment()">
-		<xsl:copy/>
-	</xsl:template>
-	
-	<xsl:template match="shibmd:KeyAuthority//comment()">
 		<xsl:copy/>
 	</xsl:template>
 	
