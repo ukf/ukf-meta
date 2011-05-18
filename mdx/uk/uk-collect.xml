@@ -52,7 +52,5 @@
             </list>
         </property>
     </bean>
-    
-    <bean id="serializer" class="net.shibboleth.metadata.dom.DomElementSerializer"/>
 
 </beans>

@@ -1195,7 +1195,7 @@
         <!--
             Run checking rulesets.
         -->
-        <CHECK.imported i="${mdx.dir}/uk/collected.xml"/>
+        <CHECK i="${xml.dir}/${uk.master.file}" s="check.xsl"/>
         
         <echo>Collection completed.</echo>
     </target>

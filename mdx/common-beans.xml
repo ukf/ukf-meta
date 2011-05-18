@@ -146,4 +146,9 @@
         <property name="id" value="assemble"/>
     </bean>
     
+    <!--
+        Standard serializer.
+    -->
+    <bean id="serializer" class="net.shibboleth.metadata.dom.DomElementSerializer"/>
+    
 </beans>
