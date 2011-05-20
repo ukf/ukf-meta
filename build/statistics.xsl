@@ -592,7 +592,7 @@
                         <li>
                             <p>
                                 Support mdui:UIInfo: <xsl:value-of select="$idp.uiinfo.count"/>
-                                (<xsl:value-of select="format-number($idp.uiinfo.count div $entityCount, '0.0%')"/>).
+                                (<xsl:value-of select="format-number($idp.uiinfo.count div $idpCount, '0.0%')"/>).
                             </p>
                         </li>
                     </xsl:if>
@@ -717,7 +717,7 @@
                         <li>
                             <p>
                                 Support mdui:UIInfo: <xsl:value-of select="$sp.uiinfo.count"/>
-                                (<xsl:value-of select="format-number($sp.uiinfo.count div $entityCount, '0.0%')"/>).
+                                (<xsl:value-of select="format-number($sp.uiinfo.count div $spCount, '0.0%')"/>).
                             </p>
                         </li>
                     </xsl:if>
