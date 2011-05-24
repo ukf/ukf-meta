@@ -101,7 +101,7 @@
         
         A pipeline stage that checks against all the common schemas, as above.
     -->
-    <bean id="checkSchemas" class="net.shibboleth.metadata.dom.stage.XMLSchemaValidationStage">
+    <bean id="checkSchemas" class="net.shibboleth.metadata.dom.XMLSchemaValidationStage">
         <property name="id" value="checkSchemas"/>
         <property name="schemaResources" ref="schemaResources"/>
     </bean>
@@ -123,7 +123,7 @@
         presented, for example by removing redundant attributes or elements which only have
         meaning when added by the UK federation registrar.
     -->
-    <bean id="cleanImport" class="net.shibboleth.metadata.dom.stage.XSLTStage">
+    <bean id="cleanImport" class="net.shibboleth.metadata.dom.XSLTStage">
         <property name="id" value="cleanImport"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">

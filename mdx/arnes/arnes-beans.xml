@@ -9,7 +9,7 @@
         Fetch the ARNES export metadata aggregate.  For the moment, use the production aggregate in lieu
         of a designated export aggregate.
     -->
-    <bean id="fetchArnesExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+    <bean id="fetchArnesExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
         <property name="id" value="fetchArnesExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://ds.aai.arnes.si/metadata/aai.arnes.si.signed.xml"/>        
@@ -29,7 +29,7 @@
     <!--
         Check ARNES signing signature.
     -->
-    <bean id="checkArnesSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+    <bean id="checkArnesSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
         <property name="id" value="checkArnesSignature"/>
         <property name="verificationCertificate" ref="arnesSigningCertificate"/>
     </bean>

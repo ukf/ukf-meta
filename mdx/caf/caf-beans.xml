@@ -9,7 +9,7 @@
         Fetch the CAF export metadata aggregate.  For the moment, use the production aggregate in lieu
         of a designated export aggregate.
     -->
-    <bean id="fetchCafExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+    <bean id="fetchCafExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
         <property name="id" value="fetchCafExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="https://caf-shibops.ca/CoreServices/cafshib_metadata_signed.xml"/>        
@@ -29,7 +29,7 @@
     <!--
         Check CAF signing signature.
     -->
-    <bean id="checkCafSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+    <bean id="checkCafSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
         <property name="id" value="checkCafSignature"/>
         <property name="verificationCertificate" ref="cafSigningCertificate"/>
     </bean>

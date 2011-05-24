@@ -9,7 +9,7 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
-    <bean id="fetchEduGainExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+    <bean id="fetchEduGainExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
         <property name="id" value="fetchEduGainExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://mds.edugain.org"/>
@@ -26,7 +26,7 @@
         </property>
     </bean>
     
-    <bean id="checkEdugainSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+    <bean id="checkEdugainSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
         <property name="id" value="checkEdugainSignature"/>
         <property name="verificationCertificate" ref="edugainSigningCertificate"/>
     </bean>

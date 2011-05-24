@@ -9,7 +9,7 @@
         Fetch the SWITCH metadata aggregate.  For the moment, use the production aggregate in lieu
         of a designated export aggregate.
     -->
-    <bean id="fetchSwitchExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+    <bean id="fetchSwitchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
         <property name="id" value="fetchSwitchExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://switch.ch/aai/federation/SWITCHaai/metadata.switchaai_signed.xml"/>        
@@ -26,7 +26,7 @@
         </property>
     </bean>
     
-    <bean id="checkSwitchSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+    <bean id="checkSwitchSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
         <property name="id" value="checkSwitchSignature"/>
         <property name="verificationCertificate" ref="switchSigningCertificate"/>
     </bean>

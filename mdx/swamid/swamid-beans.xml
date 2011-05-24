@@ -9,7 +9,7 @@
         Fetch the SWAMID export metadata aggregate.  For the moment, use the production aggregate in lieu
         of a designated export aggregate.
     -->
-    <bean id="fetchSwamidExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+    <bean id="fetchSwamidExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
         <property name="id" value="fetchSwamidExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://md.swamid.se/md/swamid-1.0.xml"/>        
@@ -29,7 +29,7 @@
     <!--
         Check SWAMID signing signature.
     -->
-    <bean id="checkSwamidSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+    <bean id="checkSwamidSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
         <property name="id" value="checkSwamidSignature"/>
         <property name="verificationCertificate" ref="swamidSigningCertificate"/>
     </bean>

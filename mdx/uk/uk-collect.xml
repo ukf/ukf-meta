@@ -25,7 +25,7 @@
         <constructor-arg name="prefixMappings" ref="commonNamespaces"/>
     </bean>
     
-    <bean id="fetchUkFragmentFiles" class="net.shibboleth.metadata.dom.stage.DomFilesystemSourceStage">
+    <bean id="fetchUkFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage">
         <property name="id" value="fetchUkFragmentFiles"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="source">

@@ -9,7 +9,7 @@
         Fetch the InCommon export metadata aggregate.  For the moment, use the production aggregate in lieu
         of a designated export aggregate.
     -->
-    <bean id="fetchInCommonExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+    <bean id="fetchInCommonExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
         <property name="id" value="fetchInCommonExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml"/>        
@@ -29,7 +29,7 @@
     <!--
         Check InCommon signing signature.
     -->
-    <bean id="checkInCommonSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+    <bean id="checkInCommonSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
         <property name="id" value="checkInCommonSignature"/>
         <property name="verificationCertificate" ref="inCommonSigningCertificate"/>
     </bean>

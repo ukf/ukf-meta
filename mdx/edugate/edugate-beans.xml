@@ -9,7 +9,7 @@
         Fetch the Edugate metadata aggregate.  For the moment, use the production aggregate in lieu
         of a designated export aggregate.
     -->
-    <bean id="fetchEdugateExportAggregate" class="net.shibboleth.metadata.dom.stage.DomHttpSourceStage">
+    <bean id="fetchEdugateExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
         <property name="id" value="fetchEdugateExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>        
@@ -26,7 +26,7 @@
         </property>
     </bean>
     
-    <bean id="checkEdugateSignature" class="net.shibboleth.metadata.dom.stage.XMLSignatureValidationStage">
+    <bean id="checkEdugateSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
         <property name="id" value="checkEdugateSignature"/>
         <property name="verificationCertificate" ref="edugateSigningCertificate"/>
     </bean>
