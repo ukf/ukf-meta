@@ -22,13 +22,13 @@
 	
 
 	<!--
-		Common template to call to report a fatal error on some element within an entity.
+		Common template to call to report an error on some element within an entity.
 	-->
-	<xsl:template name="fatal">
+	<xsl:template name="error">
 		<xsl:param name="m"/>
 		<xsl:variable name="entity" select="ancestor-or-self::md:EntityDescriptor"/>
 		<xsl:message terminate='no'>
-			<xsl:text>*** </xsl:text>
+			<xsl:text>[ERROR] </xsl:text>
 			<!--
 				If we're processing an aggregate, we need to indicate which
 				individual entity we're dealing with.
@@ -59,7 +59,38 @@
 		<xsl:param name="m"/>
 		<xsl:variable name="entity" select="ancestor-or-self::md:EntityDescriptor"/>
 		<xsl:message terminate='no'>
-			<xsl:text>??? </xsl:text>
+			<xsl:text>[WARN] </xsl:text>
+			<!--
+				If we're processing an aggregate, we need to indicate which
+				individual entity we're dealing with.
+			-->
+			<xsl:if test="ancestor-or-self::md:EntitiesDescriptor">
+				<!--
+					Use an ID if available, otherwise the entityID.
+				-->
+				<xsl:choose>
+					<xsl:when test="$entity/@ID">
+						<xsl:value-of select="$entity/@ID"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$entity/@entityID"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>: </xsl:text>
+			</xsl:if>
+			<xsl:value-of select="$m"/>
+		</xsl:message>
+	</xsl:template>
+	
+	
+	<!--
+		Common template to call to report an informational message on some element within an entity.
+	-->
+	<xsl:template name="info">
+		<xsl:param name="m"/>
+		<xsl:variable name="entity" select="ancestor-or-self::md:EntityDescriptor"/>
+		<xsl:message terminate='no'>
+			<xsl:text>[INFO] </xsl:text>
 			<!--
 				If we're processing an aggregate, we need to indicate which
 				individual entity we're dealing with.

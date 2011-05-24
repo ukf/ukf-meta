@@ -83,7 +83,7 @@
 	-->
 	
 	<xsl:template match="*">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">
 				<xsl:text>Unknown namespace: </xsl:text>
 				<xsl:value-of select="namespace-uri()"/>

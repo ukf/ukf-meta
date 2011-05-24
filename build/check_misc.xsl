@@ -45,7 +45,7 @@
 		<xsl:for-each select="$dup.entityIDs">
 			<xsl:variable name="dup.entityID" select="."/>
 			<xsl:for-each select="$entities[@entityID = $dup.entityID]">
-				<xsl:call-template name="fatal">
+				<xsl:call-template name="error">
 					<xsl:with-param name="m">duplicate entityID: <xsl:value-of select='$dup.entityID'/></xsl:with-param>
 				</xsl:call-template>
 			</xsl:for-each>
@@ -59,7 +59,7 @@
 		<xsl:for-each select="$dup.ODNs">
 			<xsl:variable name="dup.ODN" select="."/>
 			<xsl:for-each select="$idps[md:Organization/md:OrganizationDisplayName = $dup.ODN]">
-				<xsl:call-template name="fatal">
+				<xsl:call-template name="error">
 					<xsl:with-param name="m">duplicate OrganisationDisplayName: <xsl:value-of select='$dup.ODN'/></xsl:with-param>
 				</xsl:call-template>
 			</xsl:for-each>
@@ -76,7 +76,7 @@
 		Check for entities which do not have an OrganizationName at all.
 	-->
 	<xsl:template match="md:EntityDescriptor[not(md:Organization/md:OrganizationName)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">entity lacks OrganizationName</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -87,19 +87,19 @@
 	-->
 	
 	<xsl:template match="md:IDPSSODescriptor[not(md:KeyDescriptor)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">IdP SSO Descriptor lacking KeyDescriptor</xsl:with-param>
 		</xsl:call-template>    
 	</xsl:template>
 	
 	<xsl:template match="md:SPSSODescriptor[not(md:KeyDescriptor)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SP SSO Descriptor lacking KeyDescriptor</xsl:with-param>
 		</xsl:call-template>    
 	</xsl:template>
 	
 	<xsl:template match="md:AttributeAuthorityDescriptor[not(md:KeyDescriptor)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">IdP AA Descriptor lacking KeyDescriptor</xsl:with-param>
 		</xsl:call-template>    
 	</xsl:template>
@@ -113,7 +113,7 @@
 		<xsl:variable name="indices" select="md:AssertionConsumerService/@index"/>
 		<xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
 		<xsl:if test="count($indices) != count($distinct.indices)">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">AssertionConsumerService index values not all different</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
@@ -128,7 +128,7 @@
 		<xsl:variable name="indices" select="md:ArtifactResolutionService/@index"/>
 		<xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
 		<xsl:if test="count($indices) != count($distinct.indices)">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">ArtifactResolutionService index values not all different</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
@@ -144,7 +144,7 @@
 		Entity IDs should not contain space characters.
 	-->
 	<xsl:template match="md:EntityDescriptor[contains(@entityID, ' ')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">entity ID contains space character</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -156,7 +156,7 @@
 	<xsl:template match="md:EntityDescriptor[not(starts-with(@entityID, 'urn:mace:'))]
 		[not(starts-with(@entityID, 'http://'))]
 		[not(starts-with(@entityID, 'https://'))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">entity ID <xsl:value-of select="@entityID"/> does not start with acceptable prefix</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -166,7 +166,7 @@
 		Check for OrganizationDisplayName elements containing line breaks.
 	-->
 	<xsl:template match="md:OrganizationDisplayName[contains(., '&#10;')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">OrganizationDisplayName contains line break</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -179,7 +179,7 @@
 		At present, however, this produces no false positives.
 	-->
 	<xsl:template match="*[contains(@Location, ' ')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location contains space character</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -195,7 +195,7 @@
 		At present, however, this simpler rule produces no false positives.
 	-->
 	<xsl:template match="*[@Location and not(starts-with(@Location,'https://'))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location does not start with https://</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -206,7 +206,7 @@
 	-->
 	<xsl:template match="*[@Location and starts-with(@Location, 'https://')
 			and contains(@Location,':443/')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">
 				<xsl:value-of select='local-name()'/>
 				<xsl:text> Location </xsl:text>
@@ -221,7 +221,7 @@
 		Check for Locations that aren't valid URLs.
 	-->
 	<xsl:template match="*[@Location and mdxURL:invalidURL(@Location)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">
 				<xsl:value-of select='local-name()'/>
 				<xsl:text> Location is not a valid URL: </xsl:text>
@@ -238,7 +238,7 @@
 		At present, however, this produces no false positives.
 	-->
 	<xsl:template match="*[contains(@Binding, ' ')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> Binding contains space character</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -251,7 +251,7 @@
 		but it's nice to have a clear error message earlier in the process.
 	-->
 	<xsl:template match="@xml:lang[.='']">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">empty xml:lang attribute</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -261,7 +261,7 @@
 		A Shibboleth scope shouldn't be just "ac.uk".
 	-->
 	<xsl:template match="shibmd:Scope[.='ac.uk']">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">bare 'ac.uk' scope not permitted</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>

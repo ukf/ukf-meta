@@ -31,7 +31,7 @@
 
 	
 	<xsl:template match="md:EntityDescriptor[md:IDPSSODescriptor][not(descendant::ds:KeyName)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">
 				<xsl:if test="descendant::md:Extensions/wayf:HideFromWAYF">
 					<xsl:text>(hidden) </xsl:text>
@@ -39,7 +39,7 @@
 				<xsl:text>identity provider lacks PKIX validatable credential</xsl:text>
 			</xsl:with-param>
 		</xsl:call-template>
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">
 				<xsl:value-of select="descendant::md:OrganizationDisplayName"/>
 				<xsl:text>: </xsl:text>

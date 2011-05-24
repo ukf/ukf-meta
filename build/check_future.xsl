@@ -38,7 +38,7 @@
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
 		[not(md:KeyDescriptor[descendant::ds:X509Data][@use='encryption'])]
 		[not(md:KeyDescriptor[descendant::ds:X509Data][not(@use)])]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SAML 2 SP has no encryption key</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -49,7 +49,7 @@
 	-->
 	
 	<xsl:template match="@Location[contains(., '%')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">URL-encoded Location attribute; should be entity-encoded</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>

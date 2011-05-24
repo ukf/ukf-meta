@@ -36,7 +36,7 @@
 		[not(ds:KeyInfo/ds:KeyName)]
 		[not(ds:KeyInfo/ds:KeyValue)]
 		[not(ds:KeyInfo/ds:X509Data/ds:X509Certificate)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">KeyDescriptor does not contain a key representation</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -45,7 +45,7 @@
 		Section 2.5.1: only one X.509 certificate may appear in any KeyDescriptor.
 	-->
 	<xsl:template match="md:KeyDescriptor[count(ds:KeyInfo/ds:X509Data/ds:X509Certificate)>1]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">KeyDescriptor contains more than one X509Certificate</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>

@@ -35,13 +35,13 @@
 	-->
 	
 	<xsl:template match="md:IDPSSODescriptor/md:KeyDescriptor[not(@use)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">IdP SSO KeyDescriptor lacking @use</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
 	<xsl:template match="md:AttributeAuthorityDescriptor/md:KeyDescriptor[not(@use)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">IdP AA KeyDescriptor lacking @use</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -54,7 +54,7 @@
 		See https://wiki.shibboleth.net/confluence/display/SHIB2/MetadataCorrectness#MetadataCorrectness-Version2.0
 	-->
 	<xsl:template match="md:KeyDescriptor/md:EncryptionMethod">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">KeyDescriptor contains EncryptionMethod: OpenSAML-C 2.0 problem</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>

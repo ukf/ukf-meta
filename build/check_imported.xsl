@@ -33,7 +33,7 @@
 			IdPs registered with the UK federation are expected to have at least one scope.
 		-->
 		<xsl:if test="not(descendant::shibmd:Scope)">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">this IdP does not have any Scope elements</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>		

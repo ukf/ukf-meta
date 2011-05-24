@@ -39,7 +39,7 @@
 	-->
 	<xsl:template match="md:OrganizationURL[not(starts-with(., 'http://'))]
 		[not(starts-with(., 'https://'))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">OrganizationURL '<xsl:value-of select="."/>' does not start with acceptable prefix</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -57,14 +57,14 @@
 	-->
 	<xsl:template match="md:IDPSSODescriptor[md:SingleSignOnService[@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest']]
 		[not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol'))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">Shibboleth 1.x auth request needs urn:oasis:names:tc:SAML:1.1:protocol in IDPSSODescriptor/@protocolSupportEnumeration</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
 	<xsl:template match="md:IDPSSODescriptor[md:SingleSignOnService[@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest']]
 		[not(contains(@protocolSupportEnumeration, 'urn:mace:shibboleth:1.0'))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">Shibboleth 1.x auth request needs urn:mace:shibboleth:1.0 in IDPSSODescriptor/@protocolSupportEnumeration</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -81,7 +81,7 @@
 	-->
 	<xsl:template match="md:IDPSSODescriptor[contains(@protocolSupportEnumeration, 'urn:mace:shibboleth:1.0')]
 		[not(md:SingleSignOnService[@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest'])]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">Shibboleth 1.x support claimed but no appropriate SSO service binding</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -99,7 +99,7 @@
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]
 		[md:NameIDFormat]
 		[not(md:NameIDFormat[.='urn:mace:shibboleth:1.0:nameIdentifier'])]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SAML 1.1 SP excludes Shibboleth transient name identifier format</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -117,7 +117,7 @@
 		The issue here is that the KeyName does not have the ds: namespace.
 	-->
 	<xsl:template match="ds:KeyInfo/*[namespace-uri() != 'http://www.w3.org/2000/09/xmldsig#']">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">ds:KeyInfo child element not in ds namespace</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -133,7 +133,7 @@
 		See https://bugs.internet2.edu/jira/browse/SIDPO-34
 	-->
 	<xsl:template match="md:IDPSSODescriptor[descendant::saml:Attribute[not(@NameFormat)]]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SIDPO-34: Attribute lacking NameFormat in IDPSSODescriptor</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -144,7 +144,7 @@
 		This has a default in the schema so omitting it can cause signing brittleness.
 	-->
 	<xsl:template match="shibmd:Scope[not(@regexp)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">Scope <xsl:value-of select="."/> lacks @regexp</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -156,7 +156,7 @@
 		This isn't part of the specification, but is assumed by some software.
 	-->
 	<xsl:template match="shibmd:Scope[contains(., ' ')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">Scope value contains space character</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -167,7 +167,7 @@
 		problems with comments inside certificate representations.
 	-->
 	<xsl:template match="ds:X509Certificate[comment()]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">X509Certificate contains XML comment</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>

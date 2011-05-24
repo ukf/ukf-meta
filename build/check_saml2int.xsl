@@ -42,7 +42,7 @@
 		[md:NameIDFormat]
 		[not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'])]
 		[not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SAML2Int: SP excludes both SAML 2 name identifier formats</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -58,7 +58,7 @@
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
 		[md:NameIDFormat]
 		[not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SAML2Int: IdP excludes SAML 2 transient name identifier format</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -70,12 +70,12 @@
 		Check for correct NameFormat on Attribute elements.
 	-->
 	<xsl:template match="saml:Attribute[not(@NameFormat)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SAML2Int: Attribute element lacks NameFormat attribute</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	<xsl:template match="saml:Attribute[@NameFormat][not(@NameFormat='urn:oasis:names:tc:SAML:2.0:attrname-format:uri')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SAML2Int: Attribute element has incorrect NameFormat attribute</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -86,12 +86,12 @@
 		might be added in future.
 	-->
 	<xsl:template match="md:RequestedAttribute[not(@NameFormat)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SAML2IntX: RequestedAttribute element lacks NameFormat attribute</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	<xsl:template match="md:RequestedAttribute[@NameFormat][not(@NameFormat='urn:oasis:names:tc:SAML:2.0:attrname-format:uri')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">SAML2IntX: RequestedAttribute element has incorrect NameFormat attribute</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>

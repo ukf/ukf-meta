@@ -29,7 +29,7 @@
 	<xsl:template match="md:IDPSSODescriptor
 		[contains(@protocolSupportEnumeration, 'http://schemas.xmlsoap.org/ws/2003/07/secext')]
 		[not(md:SingleSignOnService/@Binding = 'http://schemas.xmlsoap.org/ws/2003/07/secext')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">ADFS IdP role lacks SSO service with appropriate Binding</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -45,7 +45,7 @@
 			The current UK federation metadata has one entity which breaks this rule at present.
 			Change this from "warning" to "fatal" once that has been resolved.
 		-->
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">ADFS SP role lacks SSO service with appropriate Binding</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -57,7 +57,7 @@
 	<xsl:template match="md:SingleSignOnService
 		[@Binding='http://schemas.xmlsoap.org/ws/2003/07/secext']
 		[not(contains(../@protocolSupportEnumeration, 'http://schemas.xmlsoap.org/ws/2003/07/secext'))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">ADFS SingleSignOnService requires appropriate protocolSupportEnumeration</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -65,7 +65,7 @@
 	<xsl:template match="md:AssertionConsumerService
 		[@Binding='http://schemas.xmlsoap.org/ws/2003/07/secext']
 		[not(contains(../@protocolSupportEnumeration, 'http://schemas.xmlsoap.org/ws/2003/07/secext'))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">ADFS AssertionConsumerService requires appropriate protocolSupportEnumeration</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -73,7 +73,7 @@
 	<xsl:template match="md:SingleLogoutService
 		[@Binding='http://schemas.xmlsoap.org/ws/2003/07/secext']
 		[not(contains(../@protocolSupportEnumeration, 'http://schemas.xmlsoap.org/ws/2003/07/secext'))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">ADFS SingleLogoutService requires appropriate protocolSupportEnumeration</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>

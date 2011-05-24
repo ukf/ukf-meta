@@ -37,7 +37,7 @@
 		<mdui:UIInfo> MUST NOT appear more than once within a given <md:Extensions> element.
 	-->
 	<xsl:template match="md:Extensions/mdui:UIInfo[position()>1]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">more than one UIInfo element in one Extensions element</xsl:with-param>
 		</xsl:call-template>		
 	</xsl:template>
@@ -50,7 +50,7 @@
 	-->
 	<xsl:template match="md:Extensions/mdui:*
 		[not(local-name()='UIInfo')][not(local-name()='DiscoHints')]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">
 				<xsl:text>misspelled or misplaced mdui element within md:Extensions: </xsl:text>
 				<xsl:value-of select="local-name()"/>
@@ -69,13 +69,13 @@
 		SPSSODescriptor elements, which are the ones we'll actually make use of.]
 	-->
 	<xsl:template match="mdui:UIInfo[not(parent::md:Extensions)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">UIInfo appearing outside Extensions element</xsl:with-param>
 		</xsl:call-template>        
 	</xsl:template>
 	<xsl:template match="md:Extensions[mdui:UIInfo]
 		[not(parent::md:IDPSSODescriptor)][not(parent::md:SPSSODescriptor)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">UIInfo appearing outside role descriptor element</xsl:with-param>
 		</xsl:call-template>        
 	</xsl:template>
@@ -120,7 +120,7 @@
 		<xsl:variable name="l" select="$e/@xml:lang"></xsl:variable>
 		<xsl:variable name="u" select="set:distinct($l)"/>
 		<xsl:if test="count($l) != count($u)">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">
 					<xsl:text>non-unique lang values on </xsl:text>
 					<xsl:value-of select="name($e)"/>
@@ -159,19 +159,19 @@
 			This is a SHOULD in the specification; we treat it as a MUST here.
 		-->
 		<xsl:if test="not(starts-with(., 'https://'))">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">mdui:Logo URL does not start with https://</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
 		<!-- Schema validity: must have a height attribute -->
 		<xsl:if test="not(@height)">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">missing @height on <xsl:value-of select="name()"/></xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
 		<!-- Schema validity: must have a width attribute -->
 		<xsl:if test="not(@width)">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">missing @width on <xsl:value-of select="name()"/></xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>   
@@ -197,7 +197,7 @@
 	<xsl:template name="localisedNameType">
 		<!-- Schema validity: must have an xml:lang attribute -->
 		<xsl:if test="not(@xml:lang)">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">missing @xml:lang on <xsl:value-of select="name()"/></xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>	
@@ -210,12 +210,12 @@
 		<md:Extensions> element of an <md:IDPSSODescriptor> element.
 	-->
 	<xsl:template match="mdui:DiscoHints[not(parent::md:Extensions)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">DiscoHints appearing outside Extensions element</xsl:with-param>
 		</xsl:call-template>        
 	</xsl:template>
 	<xsl:template match="md:Extensions[mdui:DiscoHints][not(parent::md:IDPSSODescriptor)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">DiscoHints appearing outside IDPSSODescriptor element</xsl:with-param>
 		</xsl:call-template>        
 	</xsl:template>
@@ -226,7 +226,7 @@
 		<mdui:DiscoHints> MUST NOT appear more than once within a given <md:Extensions> element.
 	-->
 	<xsl:template match="md:Extensions/mdui:DiscoHints[position()>1]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">more than one DiscoHints element in one Extensions element</xsl:with-param>
 		</xsl:call-template>        
 	</xsl:template>

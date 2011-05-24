@@ -49,7 +49,7 @@
 		<!-- we expect these two sets to be disjoint -->
 		<xsl:variable name="bothHosts" select="set:distinct($ssoHosts | $soapHosts)"/>
 		<xsl:if test="count($bothHosts) != count($ssoHosts) + count($soapHosts)">
-			<xsl:call-template name="fatal">
+			<xsl:call-template name="error">
 				<xsl:with-param name="m">at least one SOAP location on same vhost as an SSO location</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>

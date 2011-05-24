@@ -41,7 +41,7 @@
 	-->
 	<xsl:template match="md:EntityDescriptor[md:Organization/md:OrganizationName]
 		[not(ukfxMembers:isOwnerName($members, md:Organization/md:OrganizationName))]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">unknown owner name: <xsl:value-of select="md:Organization/md:OrganizationName"/></xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -51,7 +51,7 @@
 		Check for badly formatted e-mail addresses.
 	-->
 	<xsl:template match="md:EmailAddress[mdxMail:dodgyAddress(.)]">
-		<xsl:call-template name="fatal">
+		<xsl:call-template name="error">
 			<xsl:with-param name="m">badly formatted e-mail address: '<xsl:value-of select='.'/>'</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
