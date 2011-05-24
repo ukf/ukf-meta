@@ -80,4 +80,20 @@
 		</xsl:call-template>
 	</xsl:template>
 	
+
+	<!--
+		The following are not part of the current draft, but something like these
+		might be added in future.
+	-->
+	<xsl:template match="md:RequestedAttribute[not(@NameFormat)]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">SAML2IntX: RequestedAttribute element lacks NameFormat attribute</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	<xsl:template match="md:RequestedAttribute[@NameFormat][not(@NameFormat='urn:oasis:names:tc:SAML:2.0:attrname-format:uri')]">
+		<xsl:call-template name="fatal">
+			<xsl:with-param name="m">SAML2IntX: RequestedAttribute element has incorrect NameFormat attribute</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
 </xsl:stylesheet>
