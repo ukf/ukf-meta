@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	ns_norm_fragment.xsl
+	ns_norm_uk.xsl
 	
 	Normalise the namespaces in a metadata file for publication to UK federation members.
 	
