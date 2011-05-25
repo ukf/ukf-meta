@@ -22,10 +22,10 @@
                 <ref bean="fetchEdugateExportAggregate"/>
                 <ref bean="checkEdugateSignature"/>
                 <ref bean="errorAnnouncingFilter"/>
-                <ref bean="cleanImport"/>
                 <ref bean="disassemble"/>
-                <ref bean="checkSchemas"/>
-                <ref bean="errorAnnouncingFilter"/>
+                
+                <ref bean="standardImportActions"/>
+                
                 <ref bean="assemble"/>
             </list>
         </property>

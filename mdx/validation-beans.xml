@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common validation bean definitions.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <!--
+        check_adfs
+    -->
+    <bean id="check_adfs" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        lazy-init="true" init-method="initialize">
+        <property name="id" value="check_adfs"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_adfs.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_fixups
+    -->
+    <bean id="check_fixups" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_fixups"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_fixups.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future
+    -->
+    <bean id="check_future" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_future"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_future.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_idpdisc
+    -->
+    <bean id="check_idpdisc" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_idpdisc"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_idpdisc.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_imported
+    -->
+    <bean id="check_imported" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_imported"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_imported.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_init
+    -->
+    <bean id="check_init" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_init"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_init.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_mdiop
+    -->
+    <bean id="check_mdiop" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_mdiop"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdiop.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_mdui
+    -->
+    <bean id="check_mdui" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_mdui"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdui.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_misc
+    -->
+    <bean id="check_misc" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_misc"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_misc.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_namespaces
+    -->
+    <bean id="check_namespaces" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_namespaces"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_namespaces.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_nokeyname
+    -->
+    <bean id="check_nokeyname" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_nokeyname"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_nokeyname.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_saml2int
+    -->
+    <bean id="check_saml2int" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_saml2int"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml2int.xsl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--
+        check_shibboleth
+    -->
+    <bean id="check_shibboleth" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_shibboleth"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_shibboleth.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_vhosts
+    -->
+    <bean id="check_vhosts" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_vhosts"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_vhosts.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_check
+    -->
+    <bean id="check_check" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_check"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        CHECK.std
+    -->
+    <bean id="CHECK.std" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="CHECK.std"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="check_adfs"/>
+                <ref bean="check_idpdisc"/>
+                <ref bean="check_init"/>
+                <ref bean="check_mdiop"/>
+                <ref bean="check_mdui"/>
+                <ref bean="check_misc"/>
+                <ref bean="check_namespaces"/>
+                <ref bean="check_shibboleth"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        CHECK.imported
+    -->
+    <bean id="CHECK.imported" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="CHECK.imported"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="CHECK.std"/>
+                <ref bean="check_future"/>
+                <ref bean="check_saml2int"/>
+            </list>
+        </property>
+    </bean>
+    
+</beans>

@@ -571,6 +571,12 @@
                 	<fileset dir="${tools.dir}/ukf-mda">
                 		<include name="*.jar"/>
                 	</fileset>
+                	<fileset dir="${tools.dir}/xalan/lib">
+                		<include name="sdss-xalan-md-*.jar"/>
+                	</fileset>
+                    <fileset dir="${tools.dir}/xalan/lib">
+                        <include name="ukf-members-*.jar"/>
+                    </fileset>
                 </classpath>
                 <jvmarg value="-Djava.endorsed.dirs=${tools.mda}/lib/endorsed"/>
             	<jvmarg value="-Dlogback.configurationFile=${tools.dir}/ukf-mda/logback.xml"/>
@@ -1030,16 +1036,6 @@
         *********************************************
     -->
 	
-    <macrodef name="CHECK.imported">
-        <attribute name="i"/>
-        <sequential>
-            <CHECK.std i="@{i}">
-                <arg value="${build.dir}/check_future.xsl"/>
-                <arg value="${build.dir}/check_saml2int.xsl"/>
-            </CHECK.std>
-        </sequential>
-    </macrodef>
-    
     <!--
         ***************************
         ***                     ***
@@ -1053,7 +1049,6 @@
     <target name="flow.aaf.import">
         <echo>Running AAF import flow.</echo>
         <MDA config="${aaf.dir}/aaf-import.xml" out="${aaf.dir}/imported.xml"/>
-        <CHECK.imported i="${aaf.dir}/imported.xml"/>
         <echo>Completed AAF import flow.</echo>
     </target>
     
@@ -1070,7 +1065,6 @@
     <target name="flow.arnes.import">
         <echo>Running ARNES import flow.</echo>
         <MDA config="${arnes.dir}/arnes-import.xml" out="${arnes.dir}/imported.xml"/>
-        <CHECK.imported i="${arnes.dir}/imported.xml"/>
         <echo>Completed ARNES import flow.</echo>
     </target>
     
@@ -1087,7 +1081,6 @@
     <target name="flow.caf.import">
         <echo>Running CAF import flow.</echo>
         <MDA config="${caf.dir}/caf-import.xml" out="${caf.dir}/imported.xml"/>
-        <CHECK.imported i="${caf.dir}/imported.xml"/>
         <echo>Completed CAF import flow.</echo>
     </target>
     
@@ -1104,7 +1097,6 @@
 	<target name="flow.edugate.import">
         <echo>Running Edugate import flow.</echo>
         <MDA config="${edugate.dir}/edugate-import.xml" out="${edugate.dir}/imported.xml"/>
-        <CHECK.imported i="${edugate.dir}/imported.xml"/>
         <echo>Completed Edugate import flow.</echo>
     </target>
     
@@ -1121,7 +1113,6 @@
     <target name="flow.incommon.import">
         <echo>Running InCommon import flow.</echo>
         <MDA config="${incommon.dir}/incommon-import.xml" out="${incommon.dir}/imported.xml"/>
-        <CHECK.imported i="${incommon.dir}/imported.xml"/>
         <echo>Completed InCommon import flow.</echo>
     </target>
     
@@ -1138,7 +1129,6 @@
     <target name="flow.edugain.import">
         <echo>Running eduGAIN import flow.</echo>
         <MDA config="${edugain.dir}/edugain-import.xml" out="${edugain.dir}/imported.xml"/>
-        <CHECK.imported i="${edugain.dir}/imported.xml"/>
         <echo>Completed eduGAIN import flow.</echo>
     </target>
     
@@ -1155,7 +1145,6 @@
 	<target name="flow.swamid.import">
 		<echo>Running SWAMID import flow.</echo>
 		<MDA config="${swamid.dir}/swamid-import.xml" out="${swamid.dir}/imported.xml"/>
-		<CHECK.imported i="${swamid.dir}/imported.xml"/>
 		<echo>Completed SWAMID import flow.</echo>
 	</target>
     
@@ -1172,7 +1161,6 @@
     <target name="flow.switch.import">
         <echo>Running SWITCH import flow.</echo>
         <MDA config="${switch.dir}/switch-import.xml" out="${switch.dir}/imported.xml"/>
-        <CHECK.imported i="${switch.dir}/imported.xml"/>
         <echo>Completed SWITCH import flow.</echo>
     </target>
     
@@ -1186,17 +1174,7 @@
 	
     <target name="flow.uk.collect">
         <echo>Collecting UK fragment files.</echo>
-        
-        <!--
-            Run the aggregator CLI to collect the metadata.
-        -->
         <MDA config="${mdx.dir}/uk/uk-collect.xml" out="${mdx.dir}/uk/collected.xml"/>
-        
-        <!--
-            Run checking rulesets.
-        -->
-        <CHECK i="${xml.dir}/${uk.master.file}" s="check.xsl"/>
-        
         <echo>Collection completed.</echo>
     </target>
     

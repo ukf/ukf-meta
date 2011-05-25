@@ -10,11 +10,17 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
+        Import beans related to metadata validation.
+    -->
+    <import resource="validation-beans.xml"/>
+    
+    <!--
         parserPool
         
         A pre-configured parser pool for use by source stages.
     -->
-    <bean id="parserPool" class="org.opensaml.util.xml.BasicParserPool" init-method="initialize">
+    <bean id="parserPool" class="org.opensaml.util.xml.BasicParserPool"
+        init-method="initialize" lazy-init="true">
         <property name="ignoreComments" value="false"/>
         <property name="ignoreElementContentWhitespace" value="false"/>
     </bean>
@@ -101,7 +107,8 @@
         
         A pipeline stage that checks against all the common schemas, as above.
     -->
-    <bean id="checkSchemas" class="net.shibboleth.metadata.dom.XMLSchemaValidationStage">
+    <bean id="checkSchemas" class="net.shibboleth.metadata.dom.XMLSchemaValidationStage"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="checkSchemas"/>
         <property name="schemaResources" ref="schemaResources"/>
     </bean>
@@ -112,7 +119,8 @@
         A pipeline stage that checks for any errors, and then announces
         and filters any encountered.
     -->
-    <bean id="errorAnnouncingFilter" class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStage">
+    <bean id="errorAnnouncingFilter" class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStage"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="errorAnnouncingFilter"/>
     </bean>
     
@@ -123,7 +131,8 @@
         presented, for example by removing redundant attributes or elements which only have
         meaning when added by the UK federation registrar.
     -->
-    <bean id="cleanImport" class="net.shibboleth.metadata.dom.XSLTStage">
+    <bean id="cleanImport" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="cleanImport"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
@@ -135,14 +144,45 @@
     <!--
         Basic EntitiesDescriptor disassembler pipeline stage.
     -->
-    <bean id="disassemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorDisassemblerStage">
+    <bean id="disassemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorDisassemblerStage"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="disassemble"/>
+    </bean>
+    
+    <!--
+        Populate ItemId values from entities.
+    -->
+    <bean id="populateItemIds" class="net.shibboleth.metadata.dom.saml.EntityDescriptorItemIdPopulationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="populateItemIds"/>
+    </bean>
+    
+    <!--
+        standardImportActions
+        
+        Standard actions performed on any metadata import channel.  Assumes that the
+        collection has been acquired, had its signature validated, and disassembled into
+        individual entities.
+    -->
+    <bean id="standardImportActions" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="standardImportActions"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="populateItemIds"/>
+                <ref bean="cleanImport"/>
+                <ref bean="checkSchemas"/>
+                <ref bean="CHECK.imported"/>
+                <ref bean="errorAnnouncingFilter"/>
+            </list>
+        </property>
     </bean>
     
     <!--
         Basic EntitiesDescriptor assembler pipeline stage.
     -->
-    <bean id="assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage">
+    <bean id="assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="assemble"/>
     </bean>
     

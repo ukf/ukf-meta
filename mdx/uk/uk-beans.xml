@@ -10,13 +10,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
-        <bean id="members" class="uk.org.ukfederation.members.Members">
-        <constructor-arg>
-        <bean class="java.io.File">
-        <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
-        </bean>
-        </constructor-arg>
-        </bean>
+        members
+        
+        This bean implements an API for access to the contents of the members.xml document.
     -->
+    <bean id="members" class="uk.org.ukfederation.members.Members" lazy-init="true">
+        <constructor-arg>
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
+            </bean>
+        </constructor-arg>
+    </bean>
     
 </beans>

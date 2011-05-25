@@ -18,14 +18,23 @@
         Import UK-specific beans.
     -->
     <import resource="uk-beans.xml"/>
+
+    <!--
+        filterDeletedEntities
         
-    <bean id="filterDeletedEntities" class="uk.org.ukfederation.mda.XPathFilteringStage">
+        Remove entity items which have the ukfedlabel:DeletedEntity label on them.
+        This convention will be replaced at some point by the files not being available
+        for collection in the first place.
+    -->
+    <bean id="filterDeletedEntities" class="uk.org.ukfederation.mda.XPathFilteringStage"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="filterDeletedEntities"/>
         <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
         <constructor-arg name="prefixMappings" ref="commonNamespaces"/>
     </bean>
     
-    <bean id="fetchUkFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage">
+    <bean id="fetchUkFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="fetchUkFragmentFiles"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
@@ -47,8 +56,17 @@
                 <ref bean="fetchUkFragmentFiles"/>
                 <ref bean="filterDeletedEntities"/>
                 <ref bean="checkSchemas"/>
-                <ref bean="errorAnnouncingFilter"/>
+                <ref bean="CHECK.std"/>
+                <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
                 <ref bean="assemble"/>
+                
+                <!--
+                    It's much faster to run this check on the EntitiesDescriptor because it
+                    loads up a copy of members.xml every time it is used.  This should be
+                    fixed to use a parameter.
+                -->
+                <ref bean="check_check"/>
+                <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
             </list>
         </property>
     </bean>
