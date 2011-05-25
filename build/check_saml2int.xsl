@@ -71,12 +71,21 @@
 	-->
 	<xsl:template match="saml:Attribute[not(@NameFormat)]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML2Int: Attribute element lacks NameFormat attribute</xsl:with-param>
+			<xsl:with-param name="m">
+				<xsl:text>Attribute </xsl:text>
+				<xsl:value-of select="@Name"/>
+				<xsl:text> lacks NameFormat attribute</xsl:text>
+			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	<xsl:template match="saml:Attribute[@NameFormat][not(@NameFormat='urn:oasis:names:tc:SAML:2.0:attrname-format:uri')]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML2Int: Attribute element has incorrect NameFormat attribute</xsl:with-param>
+			<xsl:with-param name="m">
+				<xsl:text>Attribute </xsl:text>
+				<xsl:value-of select="@Name"/>
+				<xsl:text> has incorrect NameFormat </xsl:text>
+				<xsl:value-of select="@NameFormat"/>
+			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
@@ -87,12 +96,21 @@
 	-->
 	<xsl:template match="md:RequestedAttribute[not(@NameFormat)]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML2IntX: RequestedAttribute element lacks NameFormat attribute</xsl:with-param>
+			<xsl:with-param name="m">
+				<xsl:text>(X) RequestedAttribute </xsl:text>
+				<xsl:value-of select="@Name"/>
+				<xsl:text> lacks NameFormat attribute</xsl:text>
+			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	<xsl:template match="md:RequestedAttribute[@NameFormat][not(@NameFormat='urn:oasis:names:tc:SAML:2.0:attrname-format:uri')]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML2IntX: RequestedAttribute element has incorrect NameFormat attribute</xsl:with-param>
+			<xsl:with-param name="m">
+				<xsl:text>(X) RequestedAttribute </xsl:text>
+				<xsl:value-of select="@Name"/>
+				<xsl:text>  has incorrect NameFormat </xsl:text>
+				<xsl:value-of select="@NameFormat"/>
+			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 
