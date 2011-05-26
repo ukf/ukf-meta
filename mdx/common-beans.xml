@@ -187,6 +187,40 @@
     </bean>
     
     <!--
+        normaliseNamespaces
+        
+        A pipeline stage that can be used before serialisation to normalise the namespaces
+        used in an XML document.
+    -->
+    <bean id="normaliseNamespaces" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="normaliseNamespaces"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/ns_norm.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        standardImportTail
+        
+        Standard actions performed at the end of any metadata import channel.  As imports
+        are currently ending up in files, build an EntitiesDescriptor and normalise the
+        namespaces in the document ready for serialisation.
+    -->
+    <bean id="standardImportTail" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="standardImportTail"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="assemble"/>
+                <ref bean="normaliseNamespaces"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         Standard serializer.
     -->
     <bean id="serializer" class="net.shibboleth.metadata.dom.DomElementSerializer"/>

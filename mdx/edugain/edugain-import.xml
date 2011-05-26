@@ -25,12 +25,12 @@
             <list>
                 <ref bean="fetchEduGainExportAggregate"/>
                 <ref bean="checkEdugainSignature"/>
-                <ref bean="errorAnnouncingFilter"/>
+                <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
                 <ref bean="disassemble"/>
                 
                 <ref bean="standardImportActions"/>
                 
-                <ref bean="assemble"/>
+                <ref bean="standardImportTail"/>
             </list>
         </property>
     </bean>
