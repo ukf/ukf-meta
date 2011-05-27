@@ -26,7 +26,7 @@
         This convention will be replaced at some point by the files not being available
         for collection in the first place.
     -->
-    <bean id="filterDeletedEntities" class="uk.org.ukfederation.mda.XPathFilteringStage"
+    <bean id="filterDeletedEntities" class="net.shibboleth.metadata.dom.XPathFilteringStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="filterDeletedEntities"/>
         <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
