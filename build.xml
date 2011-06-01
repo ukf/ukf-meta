@@ -560,9 +560,10 @@
     <macrodef name="MDA">
     	<!-- Spring pipeline configuration file -->
     	<attribute name="config"/>
+    	<!-- output file -->
     	<attribute name="out"/>
         <sequential>
-            <java classname="net.shibboleth.metadata.cli.SimpleCommandLine"
+            <java classname="uk.org.ukfederation.mda.SimpleCommandLine"
                 fork="true" failonerror="true" maxmemory="${java.max.memory}">
                 <classpath>
                     <fileset dir="${tools.mda}/lib">
@@ -581,8 +582,8 @@
                 <jvmarg value="-Djava.endorsed.dirs=${tools.mda}/lib/endorsed"/>
             	<jvmarg value="-Dlogback.configurationFile=${tools.dir}/ukf-mda/logback.xml"/>
             	<jvmarg value="-Dbasedir=${basedir}"/>
-            	<arg value="file:@{config}"/>
-            	<arg value="file:@{out}"/>
+            	<arg value="@{config}"/>
+            	<arg value="@{out}"/>
             </java>
         </sequential>
     </macrodef>
