@@ -13,7 +13,7 @@ $date = new Date::Manip::Date;
 $date->parse_date('2006-12-01') && die('could not parse base date');
 
 $now = new Date::Manip::Date;
-$now->parse('today') && die('could not parse today');
+$now->parse('now') && die('could not parse now');
 
 $oneMonth =  new Date::Manip::Delta;
 $oneMonth->parse("1 month") && die('could not parse delta');
