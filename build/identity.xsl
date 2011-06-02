@@ -10,6 +10,11 @@
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<!--
+		Force UTF-8 encoding for the output.
+	-->
+	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8"/>
+		
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
