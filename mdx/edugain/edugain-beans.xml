@@ -9,8 +9,24 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
-    <bean id="fetchEduGainExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
-        <property name="id" value="fetchEduGainExportAggregate"/>
+    <!--
+        fetchEduGainTestAggregate
+        
+        Fetches the eduGAIN test aggregate.
+    -->
+    <bean id="fetchEduGainTestAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
+        <property name="id" value="fetchEduGainTestAggregate"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="sourceUrl" value="http://mds-test.edugain.org"/>
+    </bean>
+
+    <!--
+        fetchEduGainAggregate
+        
+        Fetches the eduGAIN production aggregate.
+    -->
+    <bean id="fetchEduGainAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
+        <property name="id" value="fetchEduGainAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://mds.edugain.org"/>
     </bean>

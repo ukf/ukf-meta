@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Import pipeline for metadata from eduGAIN.
+    Import pipeline for test metadata from eduGAIN.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:util="http://www.springframework.org/schema/util"
@@ -23,7 +23,7 @@
         <property name="id" value="pipeline"/>
         <property name="stages">
             <list>
-                <ref bean="fetchEduGainAggregate"/>
+                <ref bean="fetchEduGainTestAggregate"/>
                 <ref bean="checkEdugainSignature"/>
                 <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
                 <ref bean="disassemble"/>

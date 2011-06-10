@@ -1133,6 +1133,12 @@
         <echo>Completed eduGAIN import flow.</echo>
     </target>
     
+    <target name="flow.edugain.test.import">
+        <echo>Running eduGAIN test import flow.</echo>
+        <MDA config="${edugain.dir}/edugain-test-import.xml" out="${edugain.dir}/test-imported.xml"/>
+        <echo>Completed eduGAIN test import flow.</echo>
+    </target>
+    
     <!--
         *********************************
         ***                           ***
