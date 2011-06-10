@@ -112,6 +112,11 @@
                 <ref bean="processScopes"/>
                 
                 <!--
+                    Add the federation trust roots.
+                -->
+                <ref bean="addUKTrustRoots"/>
+                
+                <!--
                     It's much faster to run this check on the EntitiesDescriptor because it
                     loads up a copy of members.xml every time it is used.  This should be
                     fixed to use a parameter.

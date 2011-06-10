@@ -41,4 +41,39 @@
         </constructor-arg>
     </bean>
     
+    <!--
+        ukTrustRootsDocument
+        
+        This bean contains the contents of the master.xml file as a DOM Document.
+    -->
+    <bean id="ukTrustRootsDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean"
+        lazy-init="true">
+        <property name="parserPool" ref="parserPool"/>
+        <property name="documentResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/xml/master.xml"/>
+            </bean>
+        </property>
+    </bean>    
+    
+    <!--
+        addUKTrustRoots
+        
+        This stage adds the UK federation trust roots to an EntitiesDescriptor.
+    -->
+    <bean id="addUKTrustRoots" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="addUKTrustRoots"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust_roots.xsl"/>
+            </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="trustRootsDocument" value-ref="ukTrustRootsDocument"/>
+            </map>
+        </property>
+    </bean>
+    
 </beans>
