@@ -20,21 +20,15 @@
     <import resource="uk-beans.xml"/>
 
     <!--
-        filterDeletedEntities
+        fetchUkFragmentFiles
         
-        Remove entity items which have the ukfedlabel:DeletedEntity label on them.
-        This convention will be replaced at some point by the files not being available
-        for collection in the first place.
+        Collects all the UK metadata "fragment files" from the /entities directory.
+        
+        Each fragment file contains a single EntityDescriptor.  The name of each
+        eligible file matches a particular regular expression.
     -->
-    <bean id="filterDeletedEntities" class="net.shibboleth.metadata.dom.XPathFilteringStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="filterDeletedEntities"/>
-        <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
-        <constructor-arg name="prefixMappings" ref="commonNamespaces"/>
-    </bean>
-    
     <bean id="fetchUkFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
-        init-method="initialize" lazy-init="true">
+        init-method="initialize">
         <property name="id" value="fetchUkFragmentFiles"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
@@ -49,6 +43,52 @@
         </property>
     </bean>
     
+    <!--
+        filterDeletedEntities
+        
+        Remove entity items which have the ukfedlabel:DeletedEntity label on them.
+        This convention will be replaced at some point by the files not being available
+        for collection in the first place.
+    -->
+    <bean id="filterDeletedEntities" class="net.shibboleth.metadata.dom.XPathFilteringStage"
+        init-method="initialize">
+        <property name="id" value="filterDeletedEntities"/>
+        <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
+        <constructor-arg name="prefixMappings" ref="commonNamespaces"/>
+    </bean>
+    
+    <!--
+        processScopes
+        
+        This stage normalises scope handling in two ways particular to the UK
+        federation:
+        
+        * we make all three potential scope lists equivalent (on the entity, on
+          the IDPSSODescriptor and on the AttributeAuthority)
+          
+        * we inject scopes "pushed" to entities from the members.xml file
+        
+        This transform can be run on individual EntityDescriptors or on an
+        aggregate EntitiesDescriptor.
+    -->
+    <bean id="processScopes" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize">
+        <property name="id" value="processScopes"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/scopes.xsl"/>
+            </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="membersDocument" value-ref="membersDocument"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
+        pipeline
+    -->
     <bean id="pipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline">
         <property name="id" value="pipeline"/>
         <property name="stages">
@@ -59,6 +99,17 @@
                 <ref bean="CHECK.std"/>
                 <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
                 <ref bean="assemble"/>
+
+                <!--
+                    Process scopes on the entities.  Because the transform performs
+                    a fairly heavyweight extraction operation on the members document
+                    before applying the results, this is best done on the resulting
+                    aggregate so that the extraction happens only once.
+                    
+                    A better long-term alternative would be to build support for
+                    this on a per-entity or per-owner basis into the Members bean.
+                -->
+                <ref bean="processScopes"/>
                 
                 <!--
                     It's much faster to run this check on the EntitiesDescriptor because it

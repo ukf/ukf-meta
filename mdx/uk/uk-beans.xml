@@ -10,6 +10,25 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
+        membersResource
+        
+        A Resource referencing the members.xml document.
+    -->
+    <bean id="membersResource" class="org.opensaml.util.resource.FilesystemResource" lazy-init="true">
+        <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
+    </bean>
+    
+    <!--
+        membersDocument
+        
+        This bean contains the contents of the members.xml file as a DOM Document.
+    -->
+    <bean id="membersDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean" lazy-init="true">
+        <property name="documentResource" ref="membersResource"/>
+        <property name="parserPool" ref="parserPool"/>
+    </bean>
+    
+    <!--
         members
         
         This bean implements an API for access to the contents of the members.xml document.
