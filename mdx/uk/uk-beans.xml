@@ -76,4 +76,21 @@
         </property>
     </bean>
     
+
+    <!--
+        processFragment
+        
+        This stage performs any standard cleanup required for UK federation fragment files.
+    -->
+    <bean id="processFragment" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="processFragment"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fragment.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    
 </beans>
