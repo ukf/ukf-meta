@@ -66,7 +66,7 @@
         <property name="id" value="addUKTrustRoots"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust_roots.xsl"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust-roots.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">

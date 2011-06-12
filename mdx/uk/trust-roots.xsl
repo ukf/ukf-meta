@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	trust_roots.xsl
+	trust-roots.xsl
 	
 	XSL stylesheet that adds the UK federation's trust roots in to an
 	EntitiesDescriptor aggregate.
