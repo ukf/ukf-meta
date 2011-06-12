@@ -455,7 +455,7 @@
             x="${build.dir}/ns_norm_uk.xsl"
             i="${temp.xml}"
             o="${xml.dir}/${md.prod.unsigned}" />
-		<MDNORM i="${md.prod.unsigned}"/>
+		<MDNORM i="${xml.dir}/${md.prod.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.prod.unsigned}"/>
         <!-- [25] -->
 		<echo>      DS variant...</echo>
@@ -474,7 +474,7 @@
 	        x="${build.dir}/ns_norm_uk.xsl"
 		    i="${temp.xml}"
 		    o="${xml.dir}/${md.test.unsigned}"/>
-		<MDNORM i="${md.test.unsigned}"/>
+		<MDNORM i="${xml.dir}/${md.test.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.test.unsigned}"/>
 		
 		<!-- [29] -->
@@ -488,7 +488,7 @@
             x="${build.dir}/ns_norm_uk.xsl"
             i="${temp.xml}"
             o="${xml.dir}/${md.export.unsigned}" />
-		<MDNORM i="${md.export.unsigned}"/>
+		<MDNORM i="${xml.dir}/${md.export.unsigned}"/>
 		
 		<!-- [31] -->
 		<echo>   Fallback aggregate...</echo>
@@ -596,16 +596,25 @@
         *********************************
     -->
     
+	<!--
+	    MDNORM
+	    
+	    Macro to call tool to perform textual normalisation on an XML file
+	    containing a metadata aggregate.
+        
+        Parameter 'i' is the file to be normalised; no assumption is made
+        about its location so this must contain a full path.
+	-->
     <macrodef name="MDNORM">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+        <attribute name="i"/><!-- input file -->
         <sequential>
             <java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="uk.ac.sdss.mdnorm.Normalise">
                 <classpath>
                     <fileset dir="${tools.mdnorm}/lib">
-                        <include name="**/*.jar"/>
+                        <include name="*.jar"/>
                     </fileset>
                 </classpath>
-                <arg value="${xml.dir}/@{i}"/>
+                <arg value="@{i}"/>
             </java>
         </sequential>
     </macrodef>
@@ -1185,6 +1194,22 @@
         <echo>Collection completed.</echo>
     </target>
     
+	<target name="flow.uk.pub.production">
+        <echo>UK production aggregate flow started.</echo>
+        <XALAN
+            x="${build.dir}/uk_master_unsigned.xsl"
+            i="${mdx.dir}/uk/collected.xml"
+            o="${temp.xml}"/>
+        <echo>      normalising namespaces...</echo>
+        <XALAN
+            x="${build.dir}/ns_norm_uk.xsl"
+            i="${temp.xml}"
+            o="${mdx.dir}/uk/${md.prod.unsigned}" />
+        <MDNORM i="${mdx.dir}/uk/${md.prod.unsigned}"/>
+        <CHECK.publishable i="${mdx.dir}/uk/${md.prod.unsigned}"/>
+        <echo>UK production aggregate flow completed.</echo>
+	</target>
+
 	<!--
 		*******************************
 		***                         ***
