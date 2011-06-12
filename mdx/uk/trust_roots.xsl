@@ -18,20 +18,21 @@
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
     <!--
-        The key authorities document is passed in as a parmeter.  This is an EntitiesDescriptor
-        with the KeyAuthority list as a child Extensions element.
+        The trust roots document is passed in as a parameter.  This is an EntitiesDescriptor
+        with the KeyAuthority list in a child Extensions element.
     -->
     <xsl:param name="trustRootsDocument"/>
 
 	<!--
-		Inject the key authorities into the document EntitiesDescriptor element.
+		Inject the trust roots into the document's EntitiesDescriptor document element.
 	-->
 	<xsl:template match="/md:EntitiesDescriptor">
 		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
 			<xsl:text>&#10;</xsl:text>
 			<xsl:apply-templates select="$trustRootsDocument//md:Extensions"/>
 			<xsl:text>&#10;</xsl:text>
-			<xsl:apply-templates/>
+			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
 	</xsl:template>
 	
