@@ -93,4 +93,14 @@
     </bean>
     
     
+    <!--
+        UK federation EntitiesDescriptor assembler pipeline stage.
+    -->
+    <bean id="assemble.uk" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="assemble.uk"/>
+        <property name="descriptorName" value="http://ukfederation.org.uk"/>
+    </bean>
+    
+
 </beans>

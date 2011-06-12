@@ -100,7 +100,7 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK.std"/>
                 <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
-                <ref bean="assemble"/>
+                <ref bean="assemble.uk"/>
 
                 <!--
                     Process scopes on the entities.  Because the transform performs
