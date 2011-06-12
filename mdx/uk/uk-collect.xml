@@ -96,6 +96,7 @@
                 <ref bean="fetchUkFragmentFiles"/>
                 <ref bean="filterDeletedEntities"/>
                 <ref bean="processFragment"/>
+                <ref bean="populateItemIds"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK.std"/>
                 <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
