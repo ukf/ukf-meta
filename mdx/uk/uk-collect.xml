@@ -99,7 +99,10 @@
                 <ref bean="populateItemIds"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK.std"/>
-                <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
+                
+                <!-- failure of any check on registered metadata is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
                 <ref bean="assemble.uk"/>
 
                 <!--
@@ -124,7 +127,9 @@
                     fixed to use a parameter.
                 -->
                 <ref bean="check_check"/>
-                <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
+                
+                <!-- failure of any check on registered metadata is fatal -->
+                <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="normaliseNamespaces"/>
             </list>

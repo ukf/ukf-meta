@@ -125,6 +125,18 @@
     </bean>
     
     <!--
+        errorTerminatingFilter
+        
+        A pipeline stage that checks for any errors, and then announces
+        and filters any encountered.
+    -->
+    <bean id="errorTerminatingFilter" class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="errorTerminatingFilter"/>
+        <property name="terminating" value="true"/>
+    </bean>
+    
+    <!--
         cleanImport
         
         A pipeline stage that can be used in an import pipeline to clean up the metadata

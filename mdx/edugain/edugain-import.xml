@@ -25,7 +25,10 @@
             <list>
                 <ref bean="fetchEduGainAggregate"/>
                 <ref bean="checkEdugainSignature"/>
-                <ref bean="errorAnnouncingFilter"/><!-- should be fatal -->
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
                 <ref bean="disassemble"/>
                 
                 <ref bean="standardImportActions"/>
