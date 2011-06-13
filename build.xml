@@ -1040,138 +1040,77 @@
         *********************************************
     -->
 	
+	<!--
+	    CHANNEL.do
+	    
+	    Run a particular flow in the named channel.
+	-->
+    <macrodef name="CHANNEL.do">
+        <attribute name="channel"/><!-- channel name -->
+    	<attribute name="verb"/><!-- verb to perform -->
+    	<attribute name="out"/><!-- output file name -->
+        <sequential>
+            <echo>Running @{channel} @{verb} flow.</echo>
+            <MDA config="${mdx.dir}/@{channel}/@{verb}.xml"
+                out="${mdx.dir}/@{channel}/@{out}.xml"/>
+            <echo>Completed @{channel} @{verb} flow.</echo>
+        </sequential>
+    </macrodef>
+	
+	<!--
+	    CHANNEL.import
+	    
+	    Run the import flow from the named channel.
+	-->
+	<macrodef name="CHANNEL.import">
+		<attribute name="channel"/><!-- channel name -->
+		<sequential>
+			<CHANNEL.do channel="@{channel}" verb="import" out="imported"/>
+		</sequential>
+	</macrodef>
+	
     <!--
-        ***************************
-        ***                     ***
-        ***   M D X :   A A F   ***
-        ***                     ***
-        ***************************
+        *******************************************************************
+        ***                                                             ***
+        ***   M D X :   N O N - P R O D U C T I O N   C H A N N E L S   ***
+        ***                                                             ***
+        *******************************************************************
     -->
     
-    <property name="aaf.dir" value="${mdx.dir}/aaf"/>
-
     <target name="flow.aaf.import">
-        <echo>Running AAF import flow.</echo>
-        <MDA config="${aaf.dir}/aaf-import.xml" out="${aaf.dir}/imported.xml"/>
-        <echo>Completed AAF import flow.</echo>
+    	<CHANNEL.import channel="aaf"/>
     </target>
     
-    <!--
-        *******************************
-        ***                         ***
-        ***   M D X :   A R N E S   ***
-        ***                         ***
-        *******************************
-    -->
-    
-    <property name="arnes.dir" value="${mdx.dir}/arnes"/>
-
     <target name="flow.arnes.import">
-        <echo>Running ARNES import flow.</echo>
-        <MDA config="${arnes.dir}/arnes-import.xml" out="${arnes.dir}/imported.xml"/>
-        <echo>Completed ARNES import flow.</echo>
+        <CHANNEL.import channel="arnes"/>
     </target>
     
-    <!--
-        ***************************
-        ***                     ***
-        ***   M D X :   C A F   ***
-        ***                     ***
-        ***************************
-    -->
-    
-    <property name="caf.dir" value="${mdx.dir}/caf"/>
-
     <target name="flow.caf.import">
-        <echo>Running CAF import flow.</echo>
-        <MDA config="${caf.dir}/caf-import.xml" out="${caf.dir}/imported.xml"/>
-        <echo>Completed CAF import flow.</echo>
+        <CHANNEL.import channel="caf"/>
     </target>
     
-	<!--
-        ***********************************
-        ***                             ***
-        ***   M D X :   E D U G A T E   ***
-        ***                             ***
-        ***********************************
-    -->
-    
-    <property name="edugate.dir" value="${mdx.dir}/edugate"/>
-
 	<target name="flow.edugate.import">
-        <echo>Running Edugate import flow.</echo>
-        <MDA config="${edugate.dir}/edugate-import.xml" out="${edugate.dir}/imported.xml"/>
-        <echo>Completed Edugate import flow.</echo>
+        <CHANNEL.import channel="edugate"/>
     </target>
     
-	<!--
-	    ************************************
-	    ***                              ***
-	    ***   M D X:   I N C O M M O N   ***
-	    ***                              ***
-	    ************************************
-	-->
-	
-	<property name="incommon.dir" value="${mdx.dir}/incommon"/>
-
     <target name="flow.incommon.import">
-        <echo>Running InCommon import flow.</echo>
-        <MDA config="${incommon.dir}/incommon-import.xml" out="${incommon.dir}/imported.xml"/>
-        <echo>Completed InCommon import flow.</echo>
+        <CHANNEL.import channel="incommon"/>
     </target>
     
-	<!--
-	    **********************************
-	    ***                            ***
-	    ***   M D X:   E D U G A I N   ***
-	    ***                            ***
-	    **********************************
-	-->
-	
-	<property name="edugain.dir" value="${mdx.dir}/edugain"/>
-
     <target name="flow.edugain.import">
-        <echo>Running eduGAIN import flow.</echo>
-        <MDA config="${edugain.dir}/edugain-import.xml" out="${edugain.dir}/imported.xml"/>
-        <echo>Completed eduGAIN import flow.</echo>
+        <CHANNEL.import channel="edugain"/>
     </target>
     
     <target name="flow.edugain.test.import">
-        <echo>Running eduGAIN test import flow.</echo>
-        <MDA config="${edugain.dir}/edugain-test-import.xml" out="${edugain.dir}/test-imported.xml"/>
-        <echo>Completed eduGAIN test import flow.</echo>
+    	<CHANNEL.do channel="edugain" verb="test-import" out="test-imported"/>
     </target>
     
-    <!--
-        *********************************
-        ***                           ***
-        ***   M D X :   S W A M I D   ***
-        ***                           ***
-        *********************************
-    -->
-	
-	<property name="swamid.dir" value="${mdx.dir}/swamid"/>
-	
 	<target name="flow.swamid.import">
-		<echo>Running SWAMID import flow.</echo>
-		<MDA config="${swamid.dir}/swamid-import.xml" out="${swamid.dir}/imported.xml"/>
-		<echo>Completed SWAMID import flow.</echo>
+        <CHANNEL.import channel="swamid"/>
 	</target>
     
-    <!--
-        *********************************
-        ***                           ***
-        ***   M D X :   S W I T C H   ***
-        ***                           ***
-        *********************************
-    -->
-    
-    <property name="switch.dir" value="${mdx.dir}/switch"/>
-    
     <target name="flow.switch.import">
-        <echo>Running SWITCH import flow.</echo>
-        <MDA config="${switch.dir}/switch-import.xml" out="${switch.dir}/imported.xml"/>
-        <echo>Completed SWITCH import flow.</echo>
+        <CHANNEL.import channel="switch"/>
     </target>
     
 	<!--
@@ -1183,9 +1122,7 @@
 	-->
 	
     <target name="flow.uk.collect">
-        <echo>Collecting UK fragment files.</echo>
-        <MDA config="${mdx.dir}/uk/uk-collect.xml" out="${mdx.dir}/uk/collected.xml"/>
-        <echo>Collection completed.</echo>
+    	<CHANNEL.do channel="uk" verb="collect" out="collected"/>
     </target>
     
 	<target name="flow.uk.pub.production">
