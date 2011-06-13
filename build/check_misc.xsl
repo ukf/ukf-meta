@@ -73,16 +73,6 @@
 	
 	
 	<!--
-		Check for entities which do not have an OrganizationName at all.
-	-->
-	<xsl:template match="md:EntityDescriptor[not(md:Organization/md:OrganizationName)]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">entity lacks OrganizationName</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-
-
-	<!--
 		Check for role descriptors with missing KeyDescriptor elements.
 	-->
 	
@@ -197,22 +187,6 @@
 	<xsl:template match="*[@Location and not(starts-with(@Location,'https://'))]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location does not start with https://</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	
-	
-	<!--
-		Check for https:// locations that use an explicit but redundant port specifier.
-	-->
-	<xsl:template match="*[@Location and starts-with(@Location, 'https://')
-			and contains(@Location,':443/')]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">
-				<xsl:value-of select='local-name()'/>
-				<xsl:text> Location </xsl:text>
-				<xsl:value-of select="@Location"/>
-				<xsl:text> not in standard form</xsl:text>
-			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	

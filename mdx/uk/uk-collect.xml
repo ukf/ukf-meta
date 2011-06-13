@@ -100,6 +100,7 @@
                 <ref bean="populateUKIds"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK.std"/>
+                <ref bean="check_ukreg"/>
                 
                 <!-- failure of any check on registered metadata is fatal -->
                 <ref bean="errorTerminatingFilter"/>

@@ -42,6 +42,21 @@
     </bean>
     
     <!--
+        check_ukreg
+        
+        Checks specific to the UK registrar function.
+    -->
+    <bean id="check_ukreg" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_ukreg"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_ukreg.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         ukTrustRootsDocument
         
         This bean contains the contents of the master.xml file as a DOM Document.
