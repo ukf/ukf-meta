@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Import pipeline for metadata from Edugate.
+    Import pipeline for this channel.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
@@ -11,24 +11,16 @@
     <import resource="../common-beans.xml"/>
         
     <!--
-        Import Edugate-specific beans.
+        Import channel-specific beans.
     -->
     <import resource="beans.xml"/>
     
-    <bean id="pipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline">
+    <bean id="pipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="pipeline"/>
         <property name="stages">
             <list>
-                <ref bean="fetchEdugateExportAggregate"/>
-                <ref bean="checkEdugateSignature"/>
-                
-                <!-- failure to validate signature is fatal -->
-                <ref bean="errorTerminatingFilter"/>
-                
-                <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
+                <ref bean="ie-edugate.exportedEntities"/>
                 <ref bean="standardImportTail"/>
             </list>
         </property>

@@ -1093,8 +1093,8 @@
 		<CHANNEL.import channel="cz-eduid"/>
 	</target>
 
-	<target name="flow.edugate.import">
-        <CHANNEL.import channel="edugate"/>
+	<target name="flow.ie-edugate.import">
+        <CHANNEL.import channel="ie-edugate"/>
     </target>
     
     <target name="flow.incommon.import">
