@@ -46,7 +46,6 @@
 	<!--
 		Normalise whitespace in X509Certificate elements.
 	-->
-	<!--
 	<xsl:template match="ds:X509Certificate">
 		<xsl:element name="ds:X509Certificate">
 			<xsl:text>&#10;</xsl:text>
@@ -54,7 +53,6 @@
 			<xsl:text>&#10;</xsl:text>
 		</xsl:element>
 	</xsl:template>
-	-->
 	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
