@@ -6,6 +6,16 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
 
     <!--
+        Metadata locations:
+        
+        for SP (set of IdP only): https://metadata.eduid.cz/entities/eduid+idp
+        for IdP (set of SP only): https://metadata.eduid.cz/entities/eduid+sp
+        complete set of IdP and SP: https://metadata.eduid.cz/entities/eduid
+        
+        See: http://www.eduid.cz/wiki/en/eduid/tech/details/index
+    -->
+    
+    <!--
         Fetch the export metadata aggregate.
         
         For the moment, use the production aggregate in lieu of a designated export aggregate.
