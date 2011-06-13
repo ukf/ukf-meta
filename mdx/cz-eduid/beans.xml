@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for this channel.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+    <!--
+        Fetch the export metadata aggregate.
+        
+        For the moment, use the production aggregate in lieu of a designated export aggregate.
+    -->
+    <bean id="cz-eduid.fetchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="cz-eduid.fetchExportAggregate"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="sourceUrl" value="https://metadata.eduid.cz/entities/eduid"/>        
+    </bean>
+    
+    <!--
+        Metadata signing certificate.
+    -->
+    <bean id="cz-eduid.signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/cz-eduid/metadata.eduid.cz.crt.pem"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check the signature on a document.
+    -->
+    <bean id="cz-eduid.checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="cz-eduid.checkSignature"/>
+        <property name="verificationCertificate" ref="cz-eduid.signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the exported entities as a collection.
+    -->
+    <bean id="cz-eduid.exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="cz-eduid.exportedEntities"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="cz-eduid.fetchExportAggregate"/>
+                <ref bean="cz-eduid.checkSignature"/>
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+</beans>

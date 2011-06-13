@@ -1089,6 +1089,10 @@
         <CHANNEL.import channel="caf"/>
     </target>
     
+	<target name="flow.cz-eduid.import">
+		<CHANNEL.import channel="cz-eduid"/>
+	</target>
+
 	<target name="flow.edugate.import">
         <CHANNEL.import channel="edugate"/>
     </target>
