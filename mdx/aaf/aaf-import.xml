@@ -13,7 +13,7 @@
     <!--
         Import AAF-specific beans.
     -->
-    <import resource="aaf-beans.xml"/>
+    <import resource="beans.xml"/>
     
     <bean id="pipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline">
         <property name="id" value="pipeline"/>

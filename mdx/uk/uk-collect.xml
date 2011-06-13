@@ -17,7 +17,7 @@
     <!--
         Import UK-specific beans.
     -->
-    <import resource="uk-beans.xml"/>
+    <import resource="beans.xml"/>
 
     <!--
         fetchUkFragmentFiles
