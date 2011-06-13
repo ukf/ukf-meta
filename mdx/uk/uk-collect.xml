@@ -97,6 +97,7 @@
                 <ref bean="filterDeletedEntities"/>
                 <ref bean="processFragment"/>
                 <ref bean="populateItemIds"/>
+                <ref bean="populateUKIds"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK.std"/>
                 

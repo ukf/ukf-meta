@@ -94,12 +94,24 @@
     
     
     <!--
+        Populate UKId values from entities.
+    -->
+    <bean id="populateUKIds" class="uk.org.ukfederation.mda.EntityDescriptorUKIdPopulationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="populateUKIds"/>
+    </bean>
+    
+
+    <!--
         UK federation EntitiesDescriptor assembler pipeline stage.
     -->
     <bean id="assemble.uk" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="assemble.uk"/>
         <property name="descriptorName" value="http://ukfederation.org.uk"/>
+        <property name="itemOrderingStrategy">
+            <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
+        </property>
     </bean>
     
 
