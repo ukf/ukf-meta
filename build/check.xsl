@@ -38,12 +38,17 @@
 	<!--
 		Check for entities with OrganizationName elements which don't correspond to
 		a canonical owner name.
+		
+		Care needs to be taken if moving this template to another ruleset file, as it
+		matches all EntityDescriptor elements (with OrganizationName descendants)
+		whether or not the test will fail.
 	-->
-	<xsl:template match="md:EntityDescriptor[md:Organization/md:OrganizationName]
-		[not(ukfxMembers:isOwnerName($members, md:Organization/md:OrganizationName))]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">unknown owner name: <xsl:value-of select="md:Organization/md:OrganizationName"/></xsl:with-param>
-		</xsl:call-template>
+	<xsl:template match="md:EntityDescriptor[md:Organization/md:OrganizationName]">
+		<xsl:if test="not(ukfxMembers:isOwnerName($members, md:Organization/md:OrganizationName))">
+			<xsl:call-template name="error">
+				<xsl:with-param name="m">unknown owner name: <xsl:value-of select="md:Organization/md:OrganizationName"/></xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
 	
 	
