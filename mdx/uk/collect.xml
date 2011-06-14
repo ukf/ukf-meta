@@ -123,13 +123,6 @@
                 -->
                 <ref bean="addUKTrustRoots"/>
                 
-                <!--
-                    It's much faster to run this check on the EntitiesDescriptor because it
-                    loads up a copy of members.xml every time it is used.  This should be
-                    fixed to use a parameter.
-                -->
-                <ref bean="check_check"/>
-                
                 <!-- failure of any check on registered metadata is fatal -->
                 <ref bean="errorTerminatingFilter"/>
 

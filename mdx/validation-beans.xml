@@ -192,19 +192,6 @@
     </bean>
     
     <!--
-        check_check
-    -->
-    <bean id="check_check" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_check"/>
-        <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check.xsl"/>
-            </bean>
-        </property>
-    </bean>
-    
-    <!--
         CHECK.std
     -->
     <bean id="CHECK.std" class="net.shibboleth.metadata.pipeline.CompositeStage"

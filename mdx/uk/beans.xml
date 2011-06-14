@@ -51,8 +51,13 @@
         <property name="id" value="check_ukreg"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_ukreg.xsl"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_ukreg_mda.xsl"/>
             </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="members" value-ref="members"/>
+            </map>
         </property>
     </bean>
     

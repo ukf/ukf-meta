@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	check_ukreg.xsl
+	check_ukreg_mda.xsl
 	
 	Checking ruleset containing rules that only apply to metadata registered
 	by the UK federation's registrar function.
+	
+	Identical to check_ukreg except that it assumes a members bean passed
+	as parameter rather than loading one itself.
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
@@ -26,10 +29,9 @@
 
 	
 	<!--
-		Pick up the members.xml document, and create a Members class instance.
+		Parameters.
 	-->
-	<xsl:variable name="memberDocument" select="document('../xml/members.xml')"/>
-	<xsl:variable name="members" select="ukfxMembers:new($memberDocument)"/>
+	<xsl:param name="members"/>
 	
 	
 	<!--

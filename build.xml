@@ -1027,7 +1027,6 @@
 		<sequential>
 			<CHECK.std i="@{i}">
                 <arg value="${build.dir}/check_ukreg.xsl"/>
-			    <arg value="${build.dir}/check.xsl"/>
 			</CHECK.std>
 		</sequential>
 	</macrodef>
