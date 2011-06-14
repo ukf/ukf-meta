@@ -20,21 +20,23 @@
 	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 
+	xmlns:ukfxMembers="xalan://uk.org.ukfederation.members.Members"
+	extension-element-prefixes="ukfxMembers"
+
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	exclude-result-prefixes="alg members">
+	exclude-result-prefixes="alg members ukfxMembers">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
     <!--
-        Pick up "members" document and extract outsourced scope lists from it.
+        Pick up "members" document and build an API bean from it.
     -->
     <xsl:variable name="memberDocument" select="document('../xml/members.xml')"/>
-    <xsl:variable name="outsourcedScopes"
-        select="$memberDocument//members:Member/members:Scopes[members:Entity]"/>
-
+	<xsl:variable name="members" select="ukfxMembers:new($memberDocument)"/>
+	
     <!--
 		Root EntitiesDescriptor element.
 		
@@ -58,7 +60,7 @@
             <xsl:apply-templates select="node()"/>
             <!-- copy scopes from member outsource records -->
             <xsl:variable name="entityID" select="ancestor::md:EntityDescriptor/@entityID"/>
-            <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
+            <xsl:for-each select="ukfxMembers:scopesForEntity($members, $entityID)/shibmeta:Scope">
                 <xsl:text>    </xsl:text>
                 <xsl:element name="shibmeta:Scope">
                     <xsl:attribute name="regexp">false</xsl:attribute>
@@ -87,7 +89,7 @@
 					<xsl:copy-of select="."/>
 				</xsl:for-each>
 			    <!-- copy scopes from member outsource records -->
-			    <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
+				<xsl:for-each select="ukfxMembers:scopesForEntity($members, $entityID)/shibmeta:Scope">
 			        <xsl:text>&#10;            </xsl:text>
 			    	<xsl:element name="shibmeta:Scope">
 			    		<xsl:attribute name="regexp">false</xsl:attribute>
@@ -120,7 +122,7 @@
 					<xsl:text>&#10;        </xsl:text>
 				</xsl:for-each>
                 <!-- copy scopes from member outsource records -->
-                <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
+				<xsl:for-each select="ukfxMembers:scopesForEntity($members, $entityID)/shibmeta:Scope">
                     <xsl:text>    </xsl:text>
                     <xsl:element name="shibmeta:Scope">
                         <xsl:attribute name="regexp">false</xsl:attribute>

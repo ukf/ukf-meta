@@ -81,7 +81,7 @@
         </property>
         <property name="transformParameters">
             <map>
-                <entry key="membersDocument" value-ref="membersDocument"/>
+                <entry key="members" value-ref="members"/>
             </map>
         </property>
     </bean>
@@ -96,6 +96,7 @@
                 <ref bean="fetchUkFragmentFiles"/>
                 <ref bean="filterDeletedEntities"/>
                 <ref bean="processFragment"/>
+                <ref bean="processScopes"/>
                 <ref bean="populateItemIds"/>
                 <ref bean="populateUKIds"/>
                 <ref bean="checkSchemas"/>
@@ -108,24 +109,10 @@
                 <ref bean="assemble.uk"/>
 
                 <!--
-                    Process scopes on the entities.  Because the transform performs
-                    a fairly heavyweight extraction operation on the members document
-                    before applying the results, this is best done on the resulting
-                    aggregate so that the extraction happens only once.
-                    
-                    A better long-term alternative would be to build support for
-                    this on a per-entity or per-owner basis into the Members bean.
-                -->
-                <ref bean="processScopes"/>
-                
-                <!--
                     Add the federation trust roots.
                 -->
                 <ref bean="addUKTrustRoots"/>
                 
-                <!-- failure of any check on registered metadata is fatal -->
-                <ref bean="errorTerminatingFilter"/>
-
                 <ref bean="normaliseNamespaces"/>
             </list>
         </property>

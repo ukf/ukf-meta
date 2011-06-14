@@ -10,7 +10,10 @@
 <xsl:stylesheet version="1.0"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:members="http://ukfederation.org.uk/2007/01/members"
-	xmlns:shibmeta="urn:mace:shibboleth:metadata:1.0"
+	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
+
+	xmlns:ukfxMembers="xalan://uk.org.ukfederation.members.Members"
+	extension-element-prefixes="ukfxMembers"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -20,12 +23,10 @@
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
-    <!--
-        The "members" document is passed in as a parmeter; extract outsourced scope lists from it.
-    -->
-    <xsl:param name="membersDocument"/>
-    <xsl:variable name="outsourcedScopes"
-        select="$membersDocument//members:Member/members:Scopes[members:Entity]"/>
+	<!--
+		Parameters.
+	-->
+	<xsl:param name="members"/>
 
     <!--
         Extend the scope list contained within an IdP's entity-level Extensions element
@@ -37,9 +38,9 @@
             <xsl:apply-templates select="node()"/>
             <!-- copy scopes from member outsource records -->
             <xsl:variable name="entityID" select="ancestor::md:EntityDescriptor/@entityID"/>
-            <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
-                <xsl:text>    </xsl:text>
-                <xsl:element name="shibmeta:Scope">
+        	<xsl:for-each select="ukfxMembers:scopesForEntity($members, $entityID)/shibmd:Scope">
+        		<xsl:text>    </xsl:text>
+                <xsl:element name="shibmd:Scope">
                     <xsl:attribute name="regexp">false</xsl:attribute>
                     <xsl:value-of select="."/>
                 </xsl:element>
@@ -61,14 +62,14 @@
 			<xsl:text>&#10;        </xsl:text>
 			<xsl:element name="Extensions" namespace="urn:oasis:names:tc:SAML:2.0:metadata">
 				<!-- copy scopes from EntityDescriptor extensions -->
-			    <xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
+			    <xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmd:Scope">
 					<xsl:text>&#10;            </xsl:text>
 					<xsl:copy-of select="."/>
 				</xsl:for-each>
 			    <!-- copy scopes from member outsource records -->
-			    <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
-			        <xsl:text>&#10;            </xsl:text>
-			    	<xsl:element name="shibmeta:Scope">
+				<xsl:for-each select="ukfxMembers:scopesForEntity($members, $entityID)/shibmd:Scope">
+					<xsl:text>&#10;            </xsl:text>
+			    	<xsl:element name="shibmd:Scope">
 			    		<xsl:attribute name="regexp">false</xsl:attribute>
 			    		<xsl:value-of select="."/>
 			    	</xsl:element>
@@ -91,17 +92,17 @@
 		<xsl:copy>
             <xsl:variable name="entityID" select="ancestor::md:EntityDescriptor/@entityID"/>
 			<xsl:apply-templates select="node()"/>
-			<xsl:if test="not(shibmeta:Scope)">
+			<xsl:if test="not(shibmd:Scope)">
 				<!-- copy scopes from EntityDescriptor extensions -->
-				<xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmeta:Scope">
+				<xsl:for-each select="ancestor::md:EntityDescriptor/md:Extensions/shibmd:Scope">
 					<xsl:text>    </xsl:text>
 					<xsl:copy-of select="."/>
 					<xsl:text>&#10;        </xsl:text>
 				</xsl:for-each>
                 <!-- copy scopes from member outsource records -->
-                <xsl:for-each select="$outsourcedScopes[members:Entity = $entityID]/members:Scope">
-                    <xsl:text>    </xsl:text>
-                    <xsl:element name="shibmeta:Scope">
+				<xsl:for-each select="ukfxMembers:scopesForEntity($members, $entityID)/shibmd:Scope">
+					<xsl:text>    </xsl:text>
+                    <xsl:element name="shibmd:Scope">
                         <xsl:attribute name="regexp">false</xsl:attribute>
                         <xsl:value-of select="."/>
                     </xsl:element>
