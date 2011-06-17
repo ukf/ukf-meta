@@ -15,7 +15,7 @@
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	
@@ -27,7 +27,7 @@
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	exclude-result-prefixes="mdui wayf">
+	exclude-result-prefixes="md">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
@@ -44,6 +44,20 @@
 	<xsl:variable name="validUntil" select="mdxDates:dateAdd($now, $validityDays)"/>
 	
 	<!--
+		documentID
+		
+		This value is generated from a normalised version of the aggregation instant,
+		transformed so that it can be used as an XML ID value.
+		
+		Strict conformance to the SAML 2.0 metadata specification (section 3.1.2) requires
+		that the signature explicitly references an identifier attribute in the element
+		being signed, in this case the document element.
+	-->
+	<xsl:variable name="normalisedNow" select="mdxDates:dateAdd($now, 0)"/>
+	<xsl:variable name="documentID"
+		select="concat('uk', translate($normalisedNow, ':-', ''))"/>
+
+	<!--
 		Document root.
 	-->
 	<xsl:template match="/">
@@ -55,20 +69,24 @@
 		Document element.
 	-->
 	<xsl:template match="/md:EntitiesDescriptor">
-		<xsl:copy>
+		<EntitiesDescriptor>
 			<xsl:attribute name="validUntil">
 				<xsl:value-of select="$validUntil"/>
+			</xsl:attribute>
+			<xsl:attribute name="ID">
+				<xsl:value-of select="$documentID"/>
 			</xsl:attribute>
 			<xsl:apply-templates select="@*"/>
 			<xsl:call-template name="document.comment"/>
 			<xsl:apply-templates select="node()"/>
-		</xsl:copy>
+		</EntitiesDescriptor>
 	</xsl:template>
 
 	<!--
 		Comment to be added to the top of the document, and just inside the document element.
 	-->
 	<xsl:template name="document.comment">
+		<xsl:text>&#10;</xsl:text>
 		<xsl:comment>
 			<xsl:text>&#10;&#9;U K   F E D E R A T I O N   M E T A D A T A&#10;</xsl:text>
 			<xsl:text>&#10;</xsl:text>
@@ -84,6 +102,7 @@
 			<xsl:value-of select="$validUntil"/>
 			<xsl:text>&#10;</xsl:text>
 		</xsl:comment>
+		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 	
 	<!--
@@ -133,9 +152,8 @@
 	<!--
 		Pass through certain ukfedlabel namespace elements.
 	-->
-	<xsl:template match="ukfedlabel:UKFederationMember |
-		ukfedlabel:SDSSPolicy |
-		ukfedlabel:AccountableUsers">
+	
+	<xsl:template match="ukfedlabel:UKFederationMember | ukfedlabel:AccountableUsers">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
@@ -149,21 +167,30 @@
 	</xsl:template>
 	
 	<!--
-		Strip all discovery user interface elements entirely.
-	-->
-	<xsl:template match="mdui:*">
-		<!-- do nothing -->
-	</xsl:template>
-	
-	<!--
 		Remove administrative contacts.
 	-->
 	<xsl:template match="md:ContactPerson[@contactType='administrative']">
 		<!-- do nothing -->
 	</xsl:template>
 	
-	<!--By default, copy text blocks, comments and attributes unchanged.-->
-	<xsl:template match="text()|comment()|@*">
+	<!--
+		Retain only certain comments.
+	-->
+	
+	<xsl:template match="md:EntityDescriptor/comment()">
+		<xsl:copy/>
+	</xsl:template>
+	
+	<xsl:template match="shibmd:KeyAuthority//comment()">
+		<xsl:copy/>
+	</xsl:template>
+	
+	<!--
+		Strip all other comments.
+	-->
+	
+	<!--By default, copy text blocks and attributes unchanged.-->
+	<xsl:template match="text()|@*">
 		<xsl:copy/>
 	</xsl:template>
 	

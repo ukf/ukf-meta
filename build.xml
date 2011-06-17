@@ -492,8 +492,16 @@
 		
 		<!-- [31] -->
 		<echo>   Fallback aggregate...</echo>
-		<XALAN.xmldir x="uk_master_back.xsl" i="${uk.master.file}"
-			o="${md.back.unsigned}" />
+        <XALAN
+            x="${build.dir}/uk_master_back.xsl"
+            i="${xml.dir}/${uk.master.file}"
+            o="${temp.xml}"/>
+        <echo>      normalising namespaces...</echo>
+        <XALAN
+            x="${build.dir}/ns_norm_uk.xsl"
+            i="${temp.xml}"
+            o="${xml.dir}/${md.back.unsigned}" />
+        <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.back.unsigned}"/>
 		
         <echo>Generated UK unsigned metadata.</echo>
@@ -864,7 +872,7 @@
 
 		<echo>Signing UK fallback metadata.</echo>
 		<!-- [32] -->
-		<MDT.SIGN.uk i="${md.back.unsigned}" o="${md.back.signed}"/>
+		<SIGN.uk i="${md.back.unsigned}" o="${md.back.signed}"/>
 		
 		<echo>Generated signed UK metadata.</echo>
 	</target>
