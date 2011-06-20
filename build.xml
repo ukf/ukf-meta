@@ -1124,6 +1124,10 @@
         <CHANNEL.import channel="switch"/>
     </target>
     
+    <target name="flow.uk-eduserv.import">
+        <CHANNEL.import channel="uk-eduserv"/>
+    </target>
+    
 	<!--
 	    *************************************************
 	    ***                                           ***
