@@ -15,7 +15,19 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="pipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline">
+    <bean id="switch.serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="switch.serializeImported"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/switch/imported.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="switch.import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
         <property name="id" value="pipeline"/>
         <property name="stages">
             <list>
@@ -30,6 +42,8 @@
                 <ref bean="standardImportActions"/>
                 
                 <ref bean="standardImportTail"/>
+                
+                <ref bean="switch.serializeImported"/>
             </list>
         </property>
     </bean>

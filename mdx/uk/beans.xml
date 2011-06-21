@@ -18,7 +18,7 @@
         eligible file matches a particular regular expression.
     -->
     <bean id="uk.fetchFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
-        init-method="initialize">
+        init-method="initialize" lazy-init="true">
         <property name="id" value="fetchUkFragmentFiles"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
@@ -42,7 +42,7 @@
         for collection in the first place.
     -->
     <bean id="uk.filterDeletedEntities" class="net.shibboleth.metadata.dom.XPathFilteringStage"
-        init-method="initialize">
+        init-method="initialize" lazy-init="true">
         <property name="id" value="filterDeletedEntities"/>
         <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
         <constructor-arg name="prefixMappings" ref="commonNamespaces"/>
@@ -64,7 +64,7 @@
         aggregate EntitiesDescriptor.
     -->
     <bean id="uk.processScopes" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize">
+        init-method="initialize" lazy-init="true">
         <property name="id" value="processScopes"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">

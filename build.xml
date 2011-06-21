@@ -568,10 +568,10 @@
     <macrodef name="MDA">
     	<!-- Spring pipeline configuration file -->
     	<attribute name="config"/>
-    	<!-- output file -->
-    	<attribute name="out"/>
+    	<!-- pipeline bean ID -->
+    	<attribute name="pipeline"/>
         <sequential>
-            <java classname="uk.org.ukfederation.mda.SimpleCommandLine"
+            <java classname="net.shibboleth.metadata.cli.SimpleCommandLine"
                 fork="true" failonerror="true" maxmemory="${java.max.memory}">
                 <classpath>
                     <fileset dir="${tools.mda}/lib">
@@ -591,7 +591,7 @@
             	<jvmarg value="-Dlogback.configurationFile=${tools.dir}/ukf-mda/logback.xml"/>
             	<jvmarg value="-Dbasedir=${basedir}"/>
             	<arg value="@{config}"/>
-            	<arg value="@{out}"/>
+            	<arg value="@{pipeline}"/>
             </java>
         </sequential>
     </macrodef>
@@ -1048,6 +1048,19 @@
     -->
 	
 	<!--
+	    Aggregator based work is divided into channels, each of
+	    which lives in a directory under /mdx/.  Channels are
+	    mostly named country-source, but there are exceptions
+	    to this rule.  Some of the exceptions may be rationalised
+	    in the future.
+	    
+	    Each channel can have a number of verbs which can be
+	    executed.  The convention is that the verb names a
+	    configuration file, and that the pipeline to execute
+	    is named as channel.pipeline.
+	-->
+	
+	<!--
 	    CHANNEL.do
 	    
 	    Run a particular flow in the named channel.
@@ -1055,11 +1068,10 @@
     <macrodef name="CHANNEL.do">
         <attribute name="channel"/><!-- channel name -->
     	<attribute name="verb"/><!-- verb to perform -->
-    	<attribute name="out"/><!-- output file name -->
         <sequential>
             <echo>Running @{channel} @{verb} flow.</echo>
             <MDA config="${mdx.dir}/@{channel}/@{verb}.xml"
-                out="${mdx.dir}/@{channel}/@{out}.xml"/>
+                pipeline="@{channel}.@{verb}"/>
             <echo>Completed @{channel} @{verb} flow.</echo>
         </sequential>
     </macrodef>
@@ -1072,7 +1084,7 @@
 	<macrodef name="CHANNEL.import">
 		<attribute name="channel"/><!-- channel name -->
 		<sequential>
-			<CHANNEL.do channel="@{channel}" verb="import" out="imported"/>
+			<CHANNEL.do channel="@{channel}" verb="import"/>
 		</sequential>
 	</macrodef>
 	
@@ -1113,7 +1125,7 @@
     </target>
     
     <target name="flow.edugain.test.import">
-    	<CHANNEL.do channel="edugain" verb="test-import" out="test-imported"/>
+    	<CHANNEL.do channel="edugain" verb="test-import"/>
     </target>
     
 	<target name="flow.swamid.import">
@@ -1137,7 +1149,7 @@
 	-->
 	
     <target name="flow.uk.collect">
-    	<CHANNEL.do channel="uk" verb="collect" out="collected"/>
+    	<CHANNEL.do channel="uk" verb="collect"/>
     </target>
     
 	<target name="flow.uk.pub.production">

@@ -15,13 +15,25 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="pipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="cz-eduid.serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="cz-eduid.serializeImported"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/cz-eduid/imported.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="cz-eduid.import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
         <property name="id" value="pipeline"/>
         <property name="stages">
             <list>                
                 <ref bean="cz-eduid.exportedEntities"/>
                 <ref bean="standardImportTail"/>
+                <ref bean="cz-eduid.serializeImported"/>
             </list>
         </property>
     </bean>
