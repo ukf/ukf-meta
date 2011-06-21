@@ -192,11 +192,11 @@
     </bean>
     
     <!--
-        CHECK.std
+        CHECK_std
     -->
-    <bean id="CHECK.std" class="net.shibboleth.metadata.pipeline.CompositeStage"
+    <bean id="CHECK_std" class="net.shibboleth.metadata.pipeline.CompositeStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="CHECK.std"/>
+        <property name="id" value="CHECK_std"/>
         <property name="composedStages">
             <list>
                 <ref bean="check_adfs"/>
@@ -212,14 +212,14 @@
     </bean>
     
     <!--
-        CHECK.imported
+        CHECK_imported
     -->
-    <bean id="CHECK.imported" class="net.shibboleth.metadata.pipeline.CompositeStage"
+    <bean id="CHECK_imported" class="net.shibboleth.metadata.pipeline.CompositeStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="CHECK.imported"/>
+        <property name="id" value="CHECK_imported"/>
         <property name="composedStages">
             <list>
-                <ref bean="CHECK.std"/>
+                <ref bean="CHECK_std"/>
                 <ref bean="check_future"/>
                 <ref bean="check_saml2int"/>
             </list>

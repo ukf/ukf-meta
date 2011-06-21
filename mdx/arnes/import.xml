@@ -15,9 +15,9 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="arnes.serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="arnes_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="arnes.serializeImported"/>
+        <property name="id" value="arnes_serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
@@ -26,9 +26,9 @@
         </property>
     </bean>
     
-    <bean id="arnes.import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="arnes_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="pipeline"/>
+        <property name="id" value="arnes_import"/>
         <property name="stages">
             <list>
                 <ref bean="fetchArnesExportAggregate"/>
@@ -43,7 +43,7 @@
                 
                 <ref bean="standardImportTail"/>
                 
-                <ref bean="arnes.serializeImported"/>
+                <ref bean="arnes_serializeImported"/>
             </list>
         </property>
     </bean>

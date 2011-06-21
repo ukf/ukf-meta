@@ -15,25 +15,25 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="uk-eduserv.serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="cz_eduid_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk-eduserv.serializeImported"/>
+        <property name="id" value="cz_eduid_serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk-eduserv/imported.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/cz_eduid/imported.xml"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="uk-eduserv.import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="cz_eduid_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="pipeline"/>
+        <property name="id" value="cz_eduid_import"/>
         <property name="stages">
-            <list>
-                <ref bean="uk-eduserv.exportedEntities"/>
+            <list>                
+                <ref bean="cz_eduid_exportedEntities"/>
                 <ref bean="standardImportTail"/>
-                <ref bean="uk-eduserv.serializeImported"/>
+                <ref bean="cz_eduid_serializeImported"/>
             </list>
         </property>
     </bean>

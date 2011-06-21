@@ -6,24 +6,35 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
 
     <!--
+        Metadata locations:
+        
+        for SP (set of IdP only): https://metadata.eduid.cz/entities/eduid+idp
+        for IdP (set of SP only): https://metadata.eduid.cz/entities/eduid+sp
+        complete set of IdP and SP: https://metadata.eduid.cz/entities/eduid
+        
+        See: http://www.eduid.cz/wiki/en/eduid/tech/details/index
+    -->
+    
+    <!--
         Fetch the export metadata aggregate.
         
         For the moment, use the production aggregate in lieu of a designated export aggregate.
     -->
-    <bean id="ie-edugate.fetchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="cz_eduid_fetchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="ie-edugate.fetchExportAggregate"/>
+        <property name="id" value="cz_eduid_fetchExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>        
+        <property name="sourceUrl" value="https://metadata.eduid.cz/entities/eduid"/>        
     </bean>
     
     <!--
         Metadata signing certificate.
     -->
-    <bean id="ie-edugate.signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="cz_eduid_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ie-edugate/metadata-signer.crt"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/cz_eduid/metadata.eduid.cz.crt.pem"/>
             </bean>
         </property>
     </bean>
@@ -31,22 +42,22 @@
     <!--
         Check the signature on a document.
     -->
-    <bean id="ie-edugate.checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="cz_eduid_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="ie-edugate.checkSignature"/>
-        <property name="verificationCertificate" ref="ie-edugate.signingCertificate"/>
+        <property name="id" value="cz_eduid_checkSignature"/>
+        <property name="verificationCertificate" ref="cz_eduid_signingCertificate"/>
     </bean>
     
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="ie-edugate.exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+    <bean id="cz_eduid_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="ie-edugate.exportedEntities"/>
+        <property name="id" value="cz_eduid_exportedEntities"/>
         <property name="composedStages">
             <list>
-                <ref bean="ie-edugate.fetchExportAggregate"/>
-                <ref bean="ie-edugate.checkSignature"/>
+                <ref bean="cz_eduid_fetchExportAggregate"/>
+                <ref bean="cz_eduid_checkSignature"/>
                 
                 <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>

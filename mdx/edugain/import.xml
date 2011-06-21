@@ -19,9 +19,9 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="edugain.serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="edugain_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="edugain.serializeImported"/>
+        <property name="id" value="edugain_serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
@@ -30,9 +30,9 @@
         </property>
     </bean>
     
-    <bean id="edugain.import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="edugain_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="pipeline"/>
+        <property name="id" value="edugain_import"/>
         <property name="stages">
             <list>
                 <ref bean="fetchEduGainAggregate"/>
@@ -47,7 +47,7 @@
                 
                 <ref bean="standardImportTail"/>
                 
-                <ref bean="edugain.serializeImported"/>
+                <ref bean="edugain_serializeImported"/>
             </list>
         </property>
     </bean>

@@ -19,9 +19,9 @@
     -->
     <import resource="beans.xml"/>
 
-    <bean id="uk.serializeCollected" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="uk_serializeCollected" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk.serializeCollected"/>
+        <property name="id" value="uk_serializeCollected"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
@@ -30,16 +30,16 @@
         </property>
     </bean>
 
-    <bean id="uk.collect" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="uk_collect" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="pipeline"/>
+        <property name="id" value="uk_collect"/>
         <property name="stages">
             <list>
-                <ref bean="uk.registeredEntities"/>
-                <ref bean="uk.assemble"/>
-                <ref bean="uk.addTrustRoots"/>
+                <ref bean="uk_registeredEntities"/>
+                <ref bean="uk_assemble"/>
+                <ref bean="uk_addTrustRoots"/>
                 <ref bean="normaliseNamespaces"/>
-                <ref bean="uk.serializeCollected"/>
+                <ref bean="uk_serializeCollected"/>
             </list>
         </property>
     </bean>

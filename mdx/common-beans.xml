@@ -184,7 +184,7 @@
                 <ref bean="populateItemIds"/>
                 <ref bean="cleanImport"/>
                 <ref bean="checkSchemas"/>
-                <ref bean="CHECK.imported"/>
+                <ref bean="CHECK_imported"/>
                 <ref bean="errorAnnouncingFilter"/>
             </list>
         </property>

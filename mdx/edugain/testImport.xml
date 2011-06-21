@@ -19,20 +19,20 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="edugain.serializeTestImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="edugain_serializeTestImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="edugain.serializeTestImported"/>
+        <property name="id" value="edugain_serializeTestImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/edugain/test-imported.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/edugain/testImported.xml"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="edugain.test-import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="edugain_testImport" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="pipeline"/>
+        <property name="id" value="edugain_testImport"/>
         <property name="stages">
             <list>
                 <ref bean="fetchEduGainTestAggregate"/>
@@ -47,7 +47,7 @@
                 
                 <ref bean="standardImportTail"/>
                 
-                <ref bean="edugain.serializeTestImported"/>
+                <ref bean="edugain_serializeTestImported"/>
             </list>
         </property>
     </bean>

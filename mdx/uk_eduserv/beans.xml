@@ -8,9 +8,9 @@
     <!--
         Fetch the export metadata aggregate.
     -->
-    <bean id="uk-eduserv.fetchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="uk_eduserv_fetchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk-eduserv.fetchExportAggregate"/>
+        <property name="id" value="uk_eduserv_fetchExportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="https://auth.athensams.net/saml/metadata?name=ukfederation"/>
     </bean>
@@ -18,10 +18,10 @@
     <!--
         Metadata signing certificate.
     -->
-    <bean id="uk-eduserv.signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="uk_eduserv_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk-eduserv/metadata-signer.crt"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk_eduserv/metadata-signer.crt"/>
             </bean>
         </property>
     </bean>
@@ -29,22 +29,22 @@
     <!--
         Check the signature on a document.
     -->
-    <bean id="uk-eduserv.checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="uk_eduserv_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk-eduserv.checkSignature"/>
-        <property name="verificationCertificate" ref="uk-eduserv.signingCertificate"/>
+        <property name="id" value="uk_eduserv_checkSignature"/>
+        <property name="verificationCertificate" ref="uk_eduserv_signingCertificate"/>
     </bean>
     
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="uk-eduserv.exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+    <bean id="uk_eduserv_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk-eduserv.exportedEntities"/>
+        <property name="id" value="uk_eduserv_exportedEntities"/>
         <property name="composedStages">
             <list>
-                <ref bean="uk-eduserv.fetchExportAggregate"/>
-                <ref bean="uk-eduserv.checkSignature"/>
+                <ref bean="uk_eduserv_fetchExportAggregate"/>
+                <ref bean="uk_eduserv_checkSignature"/>
                 
                 <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>

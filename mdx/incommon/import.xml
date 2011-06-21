@@ -15,9 +15,9 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="incommon.serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="incommon_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="incommon.serializeImported"/>
+        <property name="id" value="incommon_serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
@@ -26,9 +26,9 @@
         </property>
     </bean>
     
-    <bean id="incommon.import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="incommon_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="pipeline"/>
+        <property name="id" value="incommon_import"/>
         <property name="stages">
             <list>
                 <ref bean="fetchInCommonExportAggregate"/>
@@ -43,7 +43,7 @@
                 
                 <ref bean="standardImportTail"/>
                 
-                <ref bean="incommon.serializeImported"/>
+                <ref bean="incommon_serializeImported"/>
             </list>
         </property>
     </bean>

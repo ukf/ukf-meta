@@ -10,16 +10,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
-        uk.fetchFragmentFiles
+        uk_fetchFragmentFiles
         
         Collects all the UK metadata "fragment files" from the /entities directory.
         
         Each fragment file contains a single EntityDescriptor.  The name of each
         eligible file matches a particular regular expression.
     -->
-    <bean id="uk.fetchFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
+    <bean id="uk_fetchFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk.fetchFragmentFiles"/>
+        <property name="id" value="uk_fetchFragmentFiles"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
@@ -35,22 +35,22 @@
     
     
     <!--
-        uk.filterDeletedEntities
+        uk_filterDeletedEntities
         
         Remove entity items which have the ukfedlabel:DeletedEntity label on them.
         This convention will be replaced at some point by the files not being available
         for collection in the first place.
     -->
-    <bean id="uk.filterDeletedEntities" class="net.shibboleth.metadata.dom.XPathFilteringStage"
+    <bean id="uk_filterDeletedEntities" class="net.shibboleth.metadata.dom.XPathFilteringStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="filterDeletedEntities"/>
+        <property name="id" value="uk_filterDeletedEntities"/>
         <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
         <constructor-arg name="prefixMappings" ref="commonNamespaces"/>
     </bean>
     
     
     <!--
-        uk.processScopes
+        uk_processScopes
         
         This stage normalises scope handling in two ways particular to the UK
         federation:
@@ -63,9 +63,9 @@
         This transform can be run on individual EntityDescriptors or on an
         aggregate EntitiesDescriptor.
     -->
-    <bean id="uk.processScopes" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+    <bean id="uk_processScopes" class="net.shibboleth.metadata.dom.XSLTransformationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="processScopes"/>
+        <property name="id" value="uk_processScopes"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/scopes.xsl"/>
@@ -73,39 +73,39 @@
         </property>
         <property name="transformParameters">
             <map>
-                <entry key="members" value-ref="uk.members"/>
+                <entry key="members" value-ref="uk_members"/>
             </map>
         </property>
     </bean>
     
     
     <!--
-        uk.membersResource
+        uk_membersResource
         
         A Resource referencing the members.xml document.
     -->
-    <bean id="uk.membersResource" class="org.opensaml.util.resource.FilesystemResource" lazy-init="true">
+    <bean id="uk_membersResource" class="org.opensaml.util.resource.FilesystemResource" lazy-init="true">
         <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
     </bean>
     
     
     <!--
-        uk.membersDocument
+        uk_membersDocument
         
         This bean contains the contents of the members.xml file as a DOM Document.
     -->
-    <bean id="uk.membersDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean" lazy-init="true">
-        <property name="documentResource" ref="uk.membersResource"/>
+    <bean id="uk_membersDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean" lazy-init="true">
+        <property name="documentResource" ref="uk_membersResource"/>
         <property name="parserPool" ref="parserPool"/>
     </bean>
     
     
     <!--
-        uk.members
+        uk_members
         
         This bean implements an API for access to the contents of the members.xml document.
     -->
-    <bean id="uk.members" class="uk.org.ukfederation.members.Members" lazy-init="true">
+    <bean id="uk_members" class="uk.org.ukfederation.members.Members" lazy-init="true">
         <constructor-arg>
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
@@ -129,18 +129,18 @@
         </property>
         <property name="transformParameters">
             <map>
-                <entry key="members" value-ref="uk.members"/>
+                <entry key="members" value-ref="uk_members"/>
             </map>
         </property>
     </bean>
     
     
     <!--
-        uk.trustRootsDocument
+        uk_trustRootsDocument
         
         This bean contains the contents of the master.xml file as a DOM Document.
     -->
-    <bean id="uk.trustRootsDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean"
+    <bean id="uk_trustRootsDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean"
         lazy-init="true">
         <property name="parserPool" ref="parserPool"/>
         <property name="documentResource">
@@ -152,13 +152,13 @@
     
     
     <!--
-        uk.addTrustRoots
+        uk_addTrustRoots
         
         This stage adds the UK federation trust roots to an EntitiesDescriptor.
     -->
-    <bean id="uk.addTrustRoots" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+    <bean id="uk_addTrustRoots" class="net.shibboleth.metadata.dom.XSLTransformationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk.addUKTrustRoots"/>
+        <property name="id" value="uk_addTrustRoots"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust-roots.xsl"/>
@@ -166,20 +166,20 @@
         </property>
         <property name="transformParameters">
             <map>
-                <entry key="trustRootsDocument" value-ref="uk.trustRootsDocument"/>
+                <entry key="trustRootsDocument" value-ref="uk_trustRootsDocument"/>
             </map>
         </property>
     </bean>
     
 
     <!--
-        uk.processFragment
+        uk_processFragment
         
         This stage performs any standard cleanup required for UK federation fragment files.
     -->
-    <bean id="uk.processFragment" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+    <bean id="uk_processFragment" class="net.shibboleth.metadata.dom.XSLTransformationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk.processFragment"/>
+        <property name="id" value="uk_processFragment"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fragment.xsl"/>
@@ -191,18 +191,18 @@
     <!--
         Populate UKId values from entities.
     -->
-    <bean id="uk.populateIds" class="uk.org.ukfederation.mda.EntityDescriptorUKIdPopulationStage"
+    <bean id="uk_populateIds" class="uk.org.ukfederation.mda.EntityDescriptorUKIdPopulationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk.populateIds"/>
+        <property name="id" value="uk_populateIds"/>
     </bean>
     
 
     <!--
         UK federation EntitiesDescriptor assembler pipeline stage.
     -->
-    <bean id="uk.assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
+    <bean id="uk_assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk.assemble"/>
+        <property name="id" value="uk_assemble"/>
         <property name="descriptorName" value="http://ukfederation.org.uk"/>
         <property name="itemOrderingStrategy">
             <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
@@ -213,19 +213,19 @@
     <!--
         Fetch and process the registered entities as a collection.
     -->
-    <bean id="uk.registeredEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+    <bean id="uk_registeredEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk.registeredEntities"/>
+        <property name="id" value="uk_registeredEntities"/>
         <property name="composedStages">
             <list>
-                <ref bean="uk.fetchFragmentFiles"/>
-                <ref bean="uk.filterDeletedEntities"/>
-                <ref bean="uk.processFragment"/>
-                <ref bean="uk.processScopes"/>
+                <ref bean="uk_fetchFragmentFiles"/>
+                <ref bean="uk_filterDeletedEntities"/>
+                <ref bean="uk_processFragment"/>
+                <ref bean="uk_processScopes"/>
                 <ref bean="populateItemIds"/>
-                <ref bean="uk.populateIds"/>
+                <ref bean="uk_populateIds"/>
                 <ref bean="checkSchemas"/>
-                <ref bean="CHECK.std"/>
+                <ref bean="CHECK_std"/>
                 <ref bean="check_ukreg"/>
                 
                 <!-- failure of any check on registered metadata is fatal -->

@@ -1050,14 +1050,19 @@
 	<!--
 	    Aggregator based work is divided into channels, each of
 	    which lives in a directory under /mdx/.  Channels are
-	    mostly named country-source, but there are exceptions
+	    mostly named country_source, but there are exceptions
 	    to this rule.  Some of the exceptions may be rationalised
 	    in the future.
 	    
 	    Each channel can have a number of verbs which can be
 	    executed.  The convention is that the verb names a
 	    configuration file, and that the pipeline to execute
-	    is named as channel.pipeline.
+	    is named as channel_pipeline.
+	    
+	    Note that these conventions, which derive from identifier
+	    names in the Spring Expression Language, in combination
+	    mean that pipelines may be named in the form
+	    country_source_pipeline.
 	-->
 	
 	<!--
@@ -1071,7 +1076,7 @@
         <sequential>
             <echo>Running @{channel} @{verb} flow.</echo>
             <MDA config="${mdx.dir}/@{channel}/@{verb}.xml"
-                pipeline="@{channel}.@{verb}"/>
+                pipeline="@{channel}_@{verb}"/>
             <echo>Completed @{channel} @{verb} flow.</echo>
         </sequential>
     </macrodef>
@@ -1108,12 +1113,12 @@
         <CHANNEL.import channel="caf"/>
     </target>
     
-	<target name="flow.cz-eduid.import">
-		<CHANNEL.import channel="cz-eduid"/>
+	<target name="flow.cz_eduid.import">
+		<CHANNEL.import channel="cz_eduid"/>
 	</target>
 
-	<target name="flow.ie-edugate.import">
-        <CHANNEL.import channel="ie-edugate"/>
+	<target name="flow.ie_edugate.import">
+        <CHANNEL.import channel="ie_edugate"/>
     </target>
     
     <target name="flow.incommon.import">
@@ -1125,7 +1130,7 @@
     </target>
     
     <target name="flow.edugain.test.import">
-    	<CHANNEL.do channel="edugain" verb="test-import"/>
+    	<CHANNEL.do channel="edugain" verb="testImport"/>
     </target>
     
 	<target name="flow.swamid.import">
@@ -1136,8 +1141,8 @@
         <CHANNEL.import channel="switch"/>
     </target>
     
-    <target name="flow.uk-eduserv.import">
-        <CHANNEL.import channel="uk-eduserv"/>
+    <target name="flow.uk_eduserv.import">
+        <CHANNEL.import channel="uk_eduserv"/>
     </target>
     
 	<!--

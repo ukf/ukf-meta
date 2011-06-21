@@ -15,9 +15,9 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="aaf.serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="aaf_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="aaf.serializeImported"/>
+        <property name="id" value="aaf_serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
@@ -26,9 +26,9 @@
         </property>
     </bean>
     
-    <bean id="aaf.import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="aaf_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="pipeline"/>
+        <property name="id" value="aaf_import"/>
         <property name="stages">
             <list>
                 <ref bean="fetchAafExportAggregate"/>
@@ -43,7 +43,7 @@
                 
                 <ref bean="standardImportTail"/>
                 
-                <ref bean="aaf.serializeImported"/>
+                <ref bean="aaf_serializeImported"/>
             </list>
         </property>
     </bean>
