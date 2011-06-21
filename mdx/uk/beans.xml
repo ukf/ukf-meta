@@ -19,7 +19,7 @@
     -->
     <bean id="uk.fetchFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="fetchUkFragmentFiles"/>
+        <property name="id" value="uk.fetchFragmentFiles"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
