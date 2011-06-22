@@ -1105,8 +1105,8 @@
     	<CHANNEL.import channel="au_aaf"/>
     </target>
     
-    <target name="flow.caf.import">
-        <CHANNEL.import channel="caf"/>
+    <target name="flow.ca_caf.import">
+        <CHANNEL.import channel="ca_caf"/>
     </target>
     
 	<target name="flow.cz_eduid.import">
