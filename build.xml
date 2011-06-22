@@ -1109,6 +1109,10 @@
         <CHANNEL.import channel="ca_caf"/>
     </target>
     
+    <target name="flow.ch_switchaai.import">
+        <CHANNEL.import channel="ch_switchaai"/>
+    </target>
+    
 	<target name="flow.cz_eduid.import">
 		<CHANNEL.import channel="cz_eduid"/>
 	</target>
@@ -1131,10 +1135,6 @@
     
     <target name="flow.si_arnes.import">
         <CHANNEL.import channel="si_arnes"/>
-    </target>
-    
-    <target name="flow.switch.import">
-        <CHANNEL.import channel="switch"/>
     </target>
     
     <target name="flow.uk_eduserv.import">
