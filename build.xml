@@ -1125,13 +1125,13 @@
     	<CHANNEL.do channel="edugain" verb="testImport"/>
     </target>
     
+    <target name="flow.se_swamid.import">
+        <CHANNEL.import channel="se_swamid"/>
+    </target>
+    
     <target name="flow.si_arnes.import">
         <CHANNEL.import channel="si_arnes"/>
     </target>
-    
-	<target name="flow.swamid.import">
-        <CHANNEL.import channel="swamid"/>
-	</target>
     
     <target name="flow.switch.import">
         <CHANNEL.import channel="switch"/>
