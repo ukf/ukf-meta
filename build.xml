@@ -1117,10 +1117,6 @@
         <CHANNEL.import channel="ie_edugate"/>
     </target>
     
-    <target name="flow.incommon.import">
-        <CHANNEL.import channel="incommon"/>
-    </target>
-    
     <target name="flow.edugain.import">
         <CHANNEL.import channel="edugain"/>
     </target>
@@ -1143,6 +1139,10 @@
     
     <target name="flow.uk_eduserv.import">
         <CHANNEL.import channel="uk_eduserv"/>
+    </target>
+    
+    <target name="flow.us_incommon.import">
+        <CHANNEL.import channel="us_incommon"/>
     </target>
     
 	<!--
