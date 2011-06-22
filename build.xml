@@ -1101,8 +1101,8 @@
         *******************************************************************
     -->
     
-    <target name="flow.aaf.import">
-    	<CHANNEL.import channel="aaf"/>
+    <target name="flow.au_aaf.import">
+    	<CHANNEL.import channel="au_aaf"/>
     </target>
     
     <target name="flow.caf.import">
