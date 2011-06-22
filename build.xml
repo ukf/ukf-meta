@@ -1105,10 +1105,6 @@
     	<CHANNEL.import channel="aaf"/>
     </target>
     
-    <target name="flow.arnes.import">
-        <CHANNEL.import channel="arnes"/>
-    </target>
-    
     <target name="flow.caf.import">
         <CHANNEL.import channel="caf"/>
     </target>
@@ -1131,6 +1127,10 @@
     
     <target name="flow.edugain.test.import">
     	<CHANNEL.do channel="edugain" verb="testImport"/>
+    </target>
+    
+    <target name="flow.si_arnes.import">
+        <CHANNEL.import channel="si_arnes"/>
     </target>
     
 	<target name="flow.swamid.import">

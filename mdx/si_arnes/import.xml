@@ -15,20 +15,20 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="arnes_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="si_arnes_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="arnes_serializeImported"/>
+        <property name="id" value="si_arnes_serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/arnes/imported.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/si_arnes/imported.xml"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="arnes_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="si_arnes_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="arnes_import"/>
+        <property name="id" value="si_arnes_import"/>
         <property name="stages">
             <list>
                 <ref bean="fetchArnesExportAggregate"/>
@@ -43,7 +43,7 @@
                 
                 <ref bean="standardImportTail"/>
                 
-                <ref bean="arnes_serializeImported"/>
+                <ref bean="si_arnes_serializeImported"/>
             </list>
         </property>
     </bean>
