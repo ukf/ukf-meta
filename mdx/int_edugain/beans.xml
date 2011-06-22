@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Common beans for eduGAIN operations.
+    Common beans for this channel.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:util="http://www.springframework.org/schema/util"
@@ -37,7 +37,7 @@
     <bean id="edugainSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/edugain/edugain-signer.crt"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_edugain/edugain-signer.crt"/>
             </bean>
         </property>
     </bean>

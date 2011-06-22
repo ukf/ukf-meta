@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Import pipeline for test metadata from eduGAIN.
+    Import pipeline for this channel.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:util="http://www.springframework.org/schema/util"
@@ -15,27 +15,27 @@
     <import resource="../common-beans.xml"/>
     
     <!--
-        Import eduGAIN-specific beans.
+        Import channel-specific beans.
     -->
     <import resource="beans.xml"/>
     
-    <bean id="edugain_serializeTestImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="int_edugain_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="edugain_serializeTestImported"/>
+        <property name="id" value="int_edugain_serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/edugain/testImported.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_edugain/imported.xml"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="edugain_testImport" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="int_edugain_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="edugain_testImport"/>
+        <property name="id" value="int_edugain_import"/>
         <property name="stages">
             <list>
-                <ref bean="fetchEduGainTestAggregate"/>
+                <ref bean="fetchEduGainAggregate"/>
                 <ref bean="checkEdugainSignature"/>
                 
                 <!-- failure to validate signature is fatal -->
@@ -47,7 +47,7 @@
                 
                 <ref bean="standardImportTail"/>
                 
-                <ref bean="edugain_serializeTestImported"/>
+                <ref bean="int_edugain_serializeImported"/>
             </list>
         </property>
     </bean>
