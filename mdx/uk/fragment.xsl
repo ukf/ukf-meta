@@ -8,7 +8,8 @@
 	
 -->
 <xsl:stylesheet version="1.0"
-    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -25,7 +26,16 @@
 	<xsl:template match="@xsi:schemaLocation"/>
 
 
-    <!--
+	<!--
+		Discard various ds:X509 elements.  Several of these are known to
+		cause problems with software systems, and they don't affect trust
+		establishment so are safe to remove.
+	-->
+	<xsl:template match="ds:X509SerialNumber"/><!-- libxml2 has problems with long ones -->
+	<xsl:template match="ds:X509IssuerSerial"/><!-- must remove this if we remove SerialNumber -->
+	
+
+	<!--
         *********************************************
         ***                                       ***
         ***   D E F A U L T   T E M P L A T E S   ***

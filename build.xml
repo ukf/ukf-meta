@@ -424,7 +424,7 @@
         export flows, for which we desire the closest possible correspondence to
         the registered metadata.
         
-        At the moment, this is a single test which is no longer being performed elsewhere
+        At the moment, this consists of a few tests which are no longer being performed elsewhere
         but should pass by construction.  In the longer term it may make sense to
         expand this to the fullest battery possible, with the exception of those
         tests which are registrar-specific.
@@ -436,6 +436,7 @@
         <attribute name="i"/>
         <sequential>
             <CHECK.base i="@{i}">
+            	<arg value="${build.dir}/check_filtered.xsl"/>
                 <arg value="${build.dir}/check_fixups.xsl"/>
             </CHECK.base>
         </sequential>

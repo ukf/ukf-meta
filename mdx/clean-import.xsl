@@ -54,6 +54,14 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<!--
+		Discard various ds:X509 elements.  Several of these are known to
+		cause problems with software systems, and they don't affect trust
+		establishment so are safe to remove.
+	-->
+	<xsl:template match="ds:X509SerialNumber"/><!-- libxml2 has problems with long ones -->
+	<xsl:template match="ds:X509IssuerSerial"/><!-- must remove this if we remove SerialNumber -->
+	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>

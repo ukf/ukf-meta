@@ -23,6 +23,19 @@
     </bean>
     
     <!--
+        check_filtered
+    -->
+    <bean id="check_filtered" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_filtered"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_filtered.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         check_fixups
     -->
     <bean id="check_fixups" class="net.shibboleth.metadata.dom.XSLValidationStage"
@@ -236,6 +249,20 @@
                 <ref bean="CHECK_std"/>
                 <ref bean="check_future"/>
                 <ref bean="check_saml2int"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        CHECK_publishable
+    -->
+    <bean id="CHECK_publishable" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="CHECK_publishable"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="check_filtered"/>
+                <ref bean="check_fixups"/>
             </list>
         </property>
     </bean>

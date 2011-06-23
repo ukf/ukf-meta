@@ -201,7 +201,25 @@
     </xsl:template>
 
 
-    <!--
+	<!--
+		***********************************
+		***                             ***
+		***   D S   N A M E S P A C E   ***
+		***                             ***
+		***********************************
+	-->
+	
+	
+	<!--
+		Discard various ds:X509 elements.  Several of these are known to
+		cause problems with software systems, and they don't affect trust
+		establishment so are safe to remove.
+	-->
+	<xsl:template match="ds:X509SerialNumber"/><!-- libxml2 has problems with long ones -->
+	<xsl:template match="ds:X509IssuerSerial"/><!-- must remove this if we remove SerialNumber -->
+	
+		
+	<!--
         *********************************************
         ***                                       ***
         ***   D E F A U L T   T E M P L A T E S   ***
