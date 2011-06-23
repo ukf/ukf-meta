@@ -96,41 +96,6 @@
 	
 	
 	<!--
-		Check for distinct index attributes on appropriate elements.
-	-->
-	
-	<xsl:template match="md:SPSSODescriptor">
-		<xsl:variable name="indices" select="md:AssertionConsumerService/@index"/>
-		<xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
-		<xsl:if test="count($indices) != count($distinct.indices)">
-			<xsl:call-template name="error">
-				<xsl:with-param name="m">AssertionConsumerService index values not all different</xsl:with-param>
-			</xsl:call-template>
-		</xsl:if>
-		
-		<!--
-			Perform checks on child elements.
-		-->
-		<xsl:apply-templates/>
-	</xsl:template>
-	
-	<xsl:template match="md:IDPSSODescriptor">
-		<xsl:variable name="indices" select="md:ArtifactResolutionService/@index"/>
-		<xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
-		<xsl:if test="count($indices) != count($distinct.indices)">
-			<xsl:call-template name="error">
-				<xsl:with-param name="m">ArtifactResolutionService index values not all different</xsl:with-param>
-			</xsl:call-template>
-		</xsl:if>
-		
-		<!--
-			Perform checks on child elements.
-		-->
-		<xsl:apply-templates/>
-	</xsl:template>
-	
-	
-	<!--
 		Entity IDs should not contain space characters.
 	-->
 	<xsl:template match="md:EntityDescriptor[contains(@entityID, ' ')]">
@@ -191,20 +156,6 @@
 	</xsl:template>
 	
 	
-	<!--
-		Check for Locations that aren't valid URLs.
-	-->
-	<xsl:template match="*[@Location and mdxURL:invalidURL(@Location)]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">
-				<xsl:value-of select='local-name()'/>
-				<xsl:text> Location is not a valid URL: </xsl:text>
-				<xsl:value-of select="mdxURL:whyInvalid(@Location)"/>
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-
-
 	<!--
 		@Binding attributes should not contain space characters.
 		
