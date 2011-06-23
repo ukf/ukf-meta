@@ -149,7 +149,7 @@
 					<Organization>
 						<OrganizationName xml:lang="en">*** FILL IN ***</OrganizationName>
 						<OrganizationDisplayName xml:lang="en">*** FILL IN ***</OrganizationDisplayName>
-						<OrganizationURL xml:lang="en">http://*** FILL IN ***/</OrganizationURL>
+						<OrganizationURL xml:lang="en">*** FILL IN ***</OrganizationURL>
 					</Organization>
 				</xsl:otherwise>
 			</xsl:choose>
