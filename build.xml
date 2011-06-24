@@ -1123,6 +1123,10 @@
 		<CHANNEL.import channel="cz_eduid"/>
 	</target>
 
+    <target name="flow.fr_renater.import">
+        <CHANNEL.import channel="fr_renater"/>
+    </target>
+
 	<target name="flow.ie_edugate.import">
         <CHANNEL.import channel="ie_edugate"/>
     </target>
