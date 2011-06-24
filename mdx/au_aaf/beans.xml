@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
 
     <!--
-        Fetch the AAF export metadata aggregate.  For the moment, use the production aggregate in lieu
-        of a designated export aggregate.
+        Fetch the AAF production aggregate.
     -->
-    <bean id="fetchAafExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
-        <property name="id" value="fetchAafExportAggregate"/>
+    <bean id="au_aaf_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="au_aaf_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://manager.aaf.edu.au/metadata/metadata.aaf.signed.xml"/>        
     </bean>
@@ -18,7 +18,8 @@
     <!--
         AAF signing certificate.
     -->
-    <bean id="aafSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="au_aaf_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/au_aaf/aaf-metadata-cert.pem"/>
@@ -29,9 +30,32 @@
     <!--
         Check AAF signing signature.
     -->
-    <bean id="checkAafSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
-        <property name="id" value="checkAafSignature"/>
-        <property name="verificationCertificate" ref="aafSigningCertificate"/>
+    <bean id="au_aaf_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="au_aaf_checkSignature"/>
+        <property name="verificationCertificate" ref="au_aaf_signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the exported entities as a collection.
+    -->
+    <bean id="au_aaf_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="au_aaf_exportedEntities"/>
+        <property name="composedStages">
+            <list>
+                <!-- no export aggregate; use the production one instead -->
+                <ref bean="au_aaf_productionAggregate"/>
+                <ref bean="au_aaf_checkSignature"/>
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
     </bean>
     
 </beans>

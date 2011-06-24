@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Import pipeline for this channel.
+    Verb definitions for this channel.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
@@ -15,37 +15,27 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="ch_switchaai_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="ch_switchaai_serializeImported"/>
+        <property name="id" value="serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ch_switchaai/imported.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ie_edugate/imported.xml"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="ch_switchaai_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="ch_switchaai_import"/>
+        <property name="id" value="import"/>
         <property name="stages">
             <list>
-                <ref bean="fetchSwitchExportAggregate"/>
-                <ref bean="checkSwitchSignature"/>
-                
-                <!-- failure to validate signature is fatal -->
-                <ref bean="errorTerminatingFilter"/>
-                
-                <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
+                <ref bean="ie_edugate_exportedEntities"/>
                 <ref bean="standardImportTail"/>
-                
-                <ref bean="ch_switchaai_serializeImported"/>
+                <ref bean="serializeImported"/>
             </list>
         </property>
     </bean>
-
+    
 </beans>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Pipeline to collect UK-registered entities.
+    Verb to collect UK-registered entities.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:util="http://www.springframework.org/schema/util"
@@ -19,9 +19,9 @@
     -->
     <import resource="beans.xml"/>
 
-    <bean id="uk_serializeCollected" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="serializeCollected" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_serializeCollected"/>
+        <property name="id" value="serializeCollected"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
@@ -30,16 +30,16 @@
         </property>
     </bean>
 
-    <bean id="uk_collect" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="collect" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_collect"/>
+        <property name="id" value="collect"/>
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="normaliseNamespaces"/>
-                <ref bean="uk_serializeCollected"/>
+                <ref bean="serializeCollected"/>
             </list>
         </property>
     </bean>

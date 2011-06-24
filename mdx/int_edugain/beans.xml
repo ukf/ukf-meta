@@ -10,23 +10,21 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
-        fetchEduGainTestAggregate
-        
-        Fetches the eduGAIN test aggregate.
+        Fetch the eduGAIN test aggregate.
     -->
-    <bean id="fetchEduGainTestAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
-        <property name="id" value="fetchEduGainTestAggregate"/>
+    <bean id="int_edugain_testAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="int_edugain_testAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://mds-test.edugain.org"/>
     </bean>
 
     <!--
-        fetchEduGainAggregate
-        
         Fetches the eduGAIN production aggregate.
     -->
-    <bean id="fetchEduGainAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
-        <property name="id" value="fetchEduGainAggregate"/>
+    <bean id="int_edugain_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="int_edugain_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://mds.edugain.org"/>
     </bean>
@@ -34,7 +32,8 @@
     <!--
         eduGAIN signing certificate.
     -->
-    <bean id="edugainSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="int_edugain_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_edugain/edugain-signer.crt"/>
@@ -42,9 +41,55 @@
         </property>
     </bean>
     
-    <bean id="checkEdugainSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
-        <property name="id" value="checkEdugainSignature"/>
-        <property name="verificationCertificate" ref="edugainSigningCertificate"/>
+    <!--
+        Check a signature against the eduGAIN signing certificate.
+    -->
+    <bean id="int_edugain_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="int_edugain_checkSignature"/>
+        <property name="verificationCertificate" ref="int_edugain_signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the exported entities as a collection.
+    -->
+    <bean id="int_edugain_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="int_edugain_exportedEntities"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="int_edugain_productionAggregate"/>
+                <ref bean="int_edugain_checkSignature"/>
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch and process the test entities as a collection.
+    -->
+    <bean id="int_edugain_testEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="int_edugain_testEntities"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="int_edugain_testAggregate"/>
+                <ref bean="int_edugain_checkSignature"/>
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
     </bean>
     
 </beans>

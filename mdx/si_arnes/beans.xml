@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
 
     <!--
-        Fetch the ARNES export metadata aggregate.  For the moment, use the production aggregate in lieu
-        of a designated export aggregate.
+        Fetch the ARNES production aggregate.
     -->
-    <bean id="fetchArnesExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
-        <property name="id" value="fetchArnesExportAggregate"/>
+    <bean id="si_arnes_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="si_arnes_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://ds.aai.arnes.si/metadata/aai.arnes.si.signed.xml"/>        
     </bean>
@@ -18,7 +18,8 @@
     <!--
         ARNES signing certificate.
     -->
-    <bean id="arnesSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="si_arnes_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/si_arnes/aai.arnes.si.crt"/>
@@ -29,9 +30,32 @@
     <!--
         Check ARNES signing signature.
     -->
-    <bean id="checkArnesSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
-        <property name="id" value="checkArnesSignature"/>
-        <property name="verificationCertificate" ref="arnesSigningCertificate"/>
+    <bean id="si_arnes_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="si_arnes_checkSignature"/>
+        <property name="verificationCertificate" ref="si_arnes_signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the exported entities as a collection.
+    -->
+    <bean id="si_arnes_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="si_arnes_exportedEntities"/>
+        <property name="composedStages">
+            <list>
+                <!-- no export aggregate; use the production one instead -->
+                <ref bean="si_arnes_productionAggregate"/>
+                <ref bean="si_arnes_checkSignature"/>
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
     </bean>
     
 </beans>

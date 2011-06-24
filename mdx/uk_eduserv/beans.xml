@@ -8,9 +8,9 @@
     <!--
         Fetch the export metadata aggregate.
     -->
-    <bean id="uk_eduserv_fetchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="uk_eduserv_exportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_eduserv_fetchExportAggregate"/>
+        <property name="id" value="uk_eduserv_exportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="https://auth.athensams.net/saml/metadata?name=ukfederation"/>
     </bean>
@@ -43,7 +43,7 @@
         <property name="id" value="uk_eduserv_exportedEntities"/>
         <property name="composedStages">
             <list>
-                <ref bean="uk_eduserv_fetchExportAggregate"/>
+                <ref bean="uk_eduserv_exportAggregate"/>
                 <ref bean="uk_eduserv_checkSignature"/>
                 
                 <!-- failure to validate signature is fatal -->

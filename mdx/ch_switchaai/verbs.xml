@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Import pipeline for this channel.
+    Verb definitions for this channel.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
@@ -15,27 +15,27 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="uk_eduserv_serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_eduserv_serializeImported"/>
+        <property name="id" value="serializeImported"/>
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk_eduserv/imported.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ch_switchaai/imported.xml"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="uk_eduserv_import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+    <bean id="import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="pipeline"/>
+        <property name="id" value="import"/>
         <property name="stages">
             <list>
-                <ref bean="uk_eduserv_exportedEntities"/>
+                <ref bean="ch_switchaai_exportedEntities"/>
                 <ref bean="standardImportTail"/>
-                <ref bean="uk_eduserv_serializeImported"/>
+                <ref bean="serializeImported"/>
             </list>
         </property>
     </bean>
-    
+
 </beans>

@@ -1051,20 +1051,11 @@
 	
 	<!--
 	    Aggregator based work is divided into channels, each of
-	    which lives in a directory under /mdx/.  Channels are
-	    mostly named country_source, but there are exceptions
-	    to this rule.  Some of the exceptions may be rationalised
-	    in the future.
+	    which lives in a directory under /mdx/.  Each channel
+	    can have a number of verbs which can be executed.
 	    
-	    Each channel can have a number of verbs which can be
-	    executed.  The convention is that the verb names a
-	    configuration file, and that the pipeline to execute
-	    is named as channel_pipeline.
-	    
-	    Note that these conventions, which derive from identifier
-	    names in the Spring Expression Language, in combination
-	    mean that pipelines may be named in the form
-	    country_source_pipeline.
+	    Conventions for this system are documented in
+	    /mdx/conventions.txt.
 	-->
 	
 	<!--
@@ -1077,8 +1068,17 @@
     	<attribute name="verb"/><!-- verb to perform -->
         <sequential>
             <echo>Running @{channel} @{verb} flow.</echo>
-            <MDA config="${mdx.dir}/@{channel}/@{verb}.xml"
-                pipeline="@{channel}_@{verb}"/>
+        	<if>
+        		<available file="${mdx.dir}/@{channel}/@{verb}.xml"/>
+            	<then>
+            	    <MDA config="${mdx.dir}/@{channel}/@{verb}.xml"
+            	        pipeline="@{verb}"/>
+            	</then>
+            	<else>
+                    <MDA config="${mdx.dir}/@{channel}/verbs.xml"
+                        pipeline="@{verb}"/>
+            	</else>
+        	</if>
             <echo>Completed @{channel} @{verb} flow.</echo>
         </sequential>
     </macrodef>

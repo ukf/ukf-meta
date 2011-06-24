@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
 
     <!--
-        Fetch the CAF export metadata aggregate.  For the moment, use the production aggregate in lieu
-        of a designated export aggregate.
+        Fetch the CAF production aggregate.
     -->
-    <bean id="fetchCafExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
-        <property name="id" value="fetchCafExportAggregate"/>
+    <bean id="ca_caf_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="ca_caf_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="https://caf-shibops.ca/CoreServices/cafshib_metadata_signed.xml"/>        
     </bean>
@@ -18,7 +18,8 @@
     <!--
         CAF signing certificate.
     -->
-    <bean id="cafSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="ca_caf_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ca_caf/cafshib_metadata_verify.pem"/>
@@ -29,9 +30,32 @@
     <!--
         Check CAF signing signature.
     -->
-    <bean id="checkCafSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
-        <property name="id" value="checkCafSignature"/>
-        <property name="verificationCertificate" ref="cafSigningCertificate"/>
+    <bean id="ca_caf_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="ca_caf_checkSignature"/>
+        <property name="verificationCertificate" ref="ca_caf_signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the exported entities as a collection.
+    -->
+    <bean id="ca_caf_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="ca_caf_exportedEntities"/>
+        <property name="composedStages">
+            <list>
+                <!-- no export aggregate; use the production one instead -->
+                <ref bean="ca_caf_productionAggregate"/>
+                <ref bean="ca_caf_checkSignature"/>
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
     </bean>
     
 </beans>

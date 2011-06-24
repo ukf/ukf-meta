@@ -6,13 +6,11 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
 
     <!--
-        Fetch the export metadata aggregate.
-        
-        For the moment, use the production aggregate in lieu of a designated export aggregate.
+        Fetch the production aggregate.
     -->
-    <bean id="ie_edugate_fetchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="ie_edugate_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="ie_edugate_fetchExportAggregate"/>
+        <property name="id" value="ie_edugate_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>        
     </bean>
@@ -45,7 +43,8 @@
         <property name="id" value="ie_edugate_exportedEntities"/>
         <property name="composedStages">
             <list>
-                <ref bean="ie_edugate_fetchExportAggregate"/>
+                <!-- no export aggregate; use the production one instead -->
+                <ref bean="ie_edugate_productionAggregate"/>
                 <ref bean="ie_edugate_checkSignature"/>
                 
                 <!-- failure to validate signature is fatal -->

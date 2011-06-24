@@ -16,13 +16,11 @@
     -->
     
     <!--
-        Fetch the export metadata aggregate.
-        
-        For the moment, use the production aggregate in lieu of a designated export aggregate.
+        Fetch the production aggregate.
     -->
-    <bean id="cz_eduid_fetchExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="cz_eduid_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="cz_eduid_fetchExportAggregate"/>
+        <property name="id" value="cz_eduid_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="https://metadata.eduid.cz/entities/eduid"/>        
     </bean>
@@ -56,7 +54,8 @@
         <property name="id" value="cz_eduid_exportedEntities"/>
         <property name="composedStages">
             <list>
-                <ref bean="cz_eduid_fetchExportAggregate"/>
+                <!-- no export aggregate; use the production one instead -->
+                <ref bean="cz_eduid_productionAggregate"/>
                 <ref bean="cz_eduid_checkSignature"/>
                 
                 <!-- failure to validate signature is fatal -->

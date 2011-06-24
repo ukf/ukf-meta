@@ -6,11 +6,11 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
 
     <!--
-        Fetch the SWAMID export metadata aggregate.  For the moment, use the production aggregate in lieu
-        of a designated export aggregate.
+        Fetch the SWAMID production.
     -->
-    <bean id="fetchSwamidExportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage">
-        <property name="id" value="fetchSwamidExportAggregate"/>
+    <bean id="se_swamid_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="se_swamid_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
         <property name="sourceUrl" value="http://md.swamid.se/md/swamid-1.0.xml"/>        
     </bean>
@@ -18,7 +18,8 @@
     <!--
         SWAMID federation signing certificate.
     -->
-    <bean id="swamidSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="se_swamid_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/se_swamid/md-signer.crt"/>
@@ -29,9 +30,32 @@
     <!--
         Check SWAMID signing signature.
     -->
-    <bean id="checkSwamidSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
-        <property name="id" value="checkSwamidSignature"/>
-        <property name="verificationCertificate" ref="swamidSigningCertificate"/>
+    <bean id="se_swamid_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="se_swamid_checkSignature"/>
+        <property name="verificationCertificate" ref="se_swamid_signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the exported entities as a collection.
+    -->
+    <bean id="se_swamid_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="se_swamid_exportedEntities"/>
+        <property name="composedStages">
+            <list>
+                <!-- no export aggregate; use the production one instead -->
+                <ref bean="se_swamid_productionAggregate"/>
+                <ref bean="se_swamid_checkSignature"/>
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
     </bean>
     
 </beans>
