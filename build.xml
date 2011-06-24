@@ -1103,6 +1103,10 @@
         *******************************************************************
     -->
     
+    <target name="flow.at_aconet.import">
+        <CHANNEL.import channel="at_aconet"/>
+    </target>
+    
     <target name="flow.au_aaf.import">
     	<CHANNEL.import channel="au_aaf"/>
     </target>
