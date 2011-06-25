@@ -810,6 +810,30 @@
 		</sequential>
 	</macrodef>
 
+    <!--
+        Macro to run the Xalan XSLT engine, taking files from arbitrary
+        locations.  No output specified, so the result of the transform
+        will be sent to standard output.
+    -->
+    <macrodef name="XALAN.noout">
+        <attribute name="i"/>
+        <attribute name="x"/>
+        <sequential>
+            <java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="org.apache.xalan.xslt.Process">
+                <classpath>
+                    <fileset dir="${tools.xalan}/lib">
+                        <include name="*.jar"/>
+                    </fileset>
+                </classpath>
+                <jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
+                <arg value="-IN"/>
+                <arg value="@{i}"/>
+                <arg value="-XSL"/>
+                <arg value="@{x}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
 	<!--
 		Macro to run the Xalan XSLT engine, taking files from pre-defined
 		locations.
@@ -1187,6 +1211,23 @@
         <echo>UK production aggregate flow completed.</echo>
 	</target>
 
+    <!--
+        *******************************
+        ***                         ***
+        ***   M D U I   S T A T S   ***
+        ***                         ***
+        *******************************
+    -->
+	
+	<target name="mdui.stats">
+        <input addproperty="channel">
+            Please select the channel to use (e.g., us_incommon):
+        </input>
+		<CHANNEL.import channel="${channel}"/>
+		<XALAN.noout i="${mdx.dir}/${channel}/imported.xml"
+		   x="${build.dir}/statistics_mdui.xsl"/>
+	</target>
+    
 	<!--
 		*******************************
 		***                         ***
