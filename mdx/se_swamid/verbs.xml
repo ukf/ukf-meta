@@ -38,4 +38,15 @@
         </property>
     </bean>
 
+    <bean id="importRaw" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="importRaw"/>
+        <property name="stages">
+            <list>
+                <ref bean="se_swamid_productionAggregate"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
 </beans>

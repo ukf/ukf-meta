@@ -42,6 +42,17 @@
         </property>
     </bean>
 
+    <bean id="importRaw" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="importRaw"/>
+        <property name="stages">
+            <list>
+                <ref bean="int_edugain_productionAggregate"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
     <bean id="testImport" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
         <property name="id" value="testImport"/>
