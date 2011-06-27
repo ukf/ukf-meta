@@ -1227,9 +1227,19 @@
         <input addproperty="channel">
             Please select the channel to use (e.g., us_incommon):
         </input>
-		<CHANNEL.do verb="importRaw" channel="${channel}"/>
-		<XALAN.noout i="${mdx.dir}/${channel}/imported.xml"
-		   x="${build.dir}/statistics_mdui.xsl"/>
+		<if>
+			<equals arg1="${channel}" arg2="uk"/>
+			<then>
+				<CHANNEL.do verb="collect" channel="uk"/>
+                <XALAN.noout i="${mdx.dir}/uk/collected.xml"
+                       x="${build.dir}/statistics_mdui.xsl"/>
+			</then>
+			<else>
+			    <CHANNEL.do verb="importRaw" channel="${channel}"/>
+                <XALAN.noout i="${mdx.dir}/${channel}/imported.xml"
+                       x="${build.dir}/statistics_mdui.xsl"/>
+			</else>
+		</if>
 	</target>
     
 	<!--
