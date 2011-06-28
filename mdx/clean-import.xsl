@@ -43,6 +43,9 @@
 	<!-- Remove <ds:X509SubjectName> elements; long ones cause problems. -->
 	<xsl:template match="ds:X509SubjectName"/>
 	
+	<!-- Remove any embedded signatures -->
+	<xsl:template match="ds:Signature"/>
+	
 	<!--
 		Normalise whitespace in X509Certificate elements.
 	-->
