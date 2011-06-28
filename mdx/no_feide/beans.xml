@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for this channel.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+
+    <!--
+        Fetch the IdP metadata.
+    -->
+    <bean id="no_feide_idpMetadata" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="no_feide_idpMetadata"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="sourceUrl" value="https://idp.feide.no/simplesaml/saml2/idp/metadata.php"/>        
+    </bean>
+    
+    <!--
+        Fetch and process the exported entities as a collection.
+    -->
+    <bean id="no_feide_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="no_feide_exportedEntities"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="no_feide_idpMetadata"/>
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+</beans>
