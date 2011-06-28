@@ -1179,6 +1179,10 @@
         <CHANNEL.import channel="jp_gakunin"/>
     </target>
     
+    <target name="flow.lv_laife.import">
+        <CHANNEL.import channel="lv_laife"/>
+    </target>
+    
     <target name="flow.se_swamid.import">
         <CHANNEL.import channel="se_swamid"/>
     </target>
