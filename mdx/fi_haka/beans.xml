@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for this channel.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+    <!--
+        Fetch the production aggregate.
+    -->
+    <bean id="fi_haka_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="fi_haka_productionAggregate"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="sourceUrl" value="https://haka.funet.fi/metadata/haka-metadata.xml"/>        
+    </bean>
+    
+    <!--
+        Signing certificate.
+    -->
+    <bean id="fi_haka_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fi_haka/haka-sign.csc.fi.pem"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check signing signature.
+    -->
+    <bean id="fi_haka_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="fi_haka_checkSignature"/>
+        <property name="verificationCertificate" ref="fi_haka_signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the exported entities as a collection.
+    -->
+    <bean id="fi_haka_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="fi_haka_exportedEntities"/>
+        <property name="composedStages">
+            <list>
+                <!-- no export aggregate; use the production one instead -->
+                <ref bean="fi_haka_productionAggregate"/>
+                <ref bean="fi_haka_checkSignature"/>
+                
+                <!-- failure to validate signature is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+</beans>

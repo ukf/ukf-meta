@@ -1151,6 +1151,10 @@
         <CHANNEL.import channel="es_sir"/>
     </target>
 
+    <target name="flow.fi_haka.import">
+        <CHANNEL.import channel="fi_haka"/>
+    </target>
+
     <target name="flow.fr_renater.import">
         <CHANNEL.import channel="fr_renater"/>
     </target>
