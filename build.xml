@@ -1127,80 +1127,15 @@
         *******************************************************************
     -->
     
-    <target name="flow.at_aconet.import">
-        <CHANNEL.import channel="at_aconet"/>
-    </target>
-    
-    <target name="flow.au_aaf.import">
-    	<CHANNEL.import channel="au_aaf"/>
-    </target>
-    
-    <target name="flow.ca_caf.import">
-        <CHANNEL.import channel="ca_caf"/>
-    </target>
-    
-    <target name="flow.ch_switchaai.import">
-        <CHANNEL.import channel="ch_switchaai"/>
-    </target>
-    
-	<target name="flow.cz_eduid.import">
-		<CHANNEL.import channel="cz_eduid"/>
-	</target>
-
-    <target name="flow.de_dfnaai.import">
-        <CHANNEL.import channel="de_dfnaai"/>
-    </target>
-
-    <target name="flow.es_sir.import">
-        <CHANNEL.import channel="es_sir"/>
-    </target>
-
-    <target name="flow.fi_haka.import">
-        <CHANNEL.import channel="fi_haka"/>
-    </target>
-
-    <target name="flow.fr_renater.import">
-        <CHANNEL.import channel="fr_renater"/>
-    </target>
-
-    <target name="flow.hu_eduid.import">
-        <CHANNEL.import channel="hu_eduid"/>
-    </target>
-
-	<target name="flow.ie_edugate.import">
-        <CHANNEL.import channel="ie_edugate"/>
-    </target>
-    
-    <target name="flow.int_edugain.import">
-        <CHANNEL.import channel="int_edugain"/>
+    <target name="flow.import">
+        <input addproperty="channel">
+            Please select the channel to use (e.g., us_incommon):
+        </input>
+        <CHANNEL.import channel="${channel}"/>
     </target>
     
     <target name="flow.int_edugain.testImport">
         <CHANNEL.do channel="int_edugain" verb="testImport"/>
-    </target>
-    
-    <target name="flow.jp_gakunin.import">
-        <CHANNEL.import channel="jp_gakunin"/>
-    </target>
-    
-    <target name="flow.lv_laife.import">
-        <CHANNEL.import channel="lv_laife"/>
-    </target>
-    
-    <target name="flow.se_swamid.import">
-        <CHANNEL.import channel="se_swamid"/>
-    </target>
-    
-    <target name="flow.si_arnes.import">
-        <CHANNEL.import channel="si_arnes"/>
-    </target>
-    
-    <target name="flow.uk_eduserv.import">
-        <CHANNEL.import channel="uk_eduserv"/>
-    </target>
-    
-    <target name="flow.us_incommon.import">
-        <CHANNEL.import channel="us_incommon"/>
     </target>
     
 	<!--
