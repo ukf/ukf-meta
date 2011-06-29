@@ -17,10 +17,10 @@
 		Multiple remote systems are supported, each with its own ssh-accessable
 		location for "push" and its own URL for verification of pushed data.
 	-->
-    <property name="remote.host.1" value="bodach.ucs.ed.ac.uk"/>
-    <property name="remote.url.1" value="http://bodach.ucs.ed.ac.uk:9524"/>
-    <property name="remote.host.2" value="sdssmail.edina.ac.uk"/>
-    <property name="remote.url.2" value="http://sdssmail.edina.ac.uk:82"/>
+    <property name="remote.host.1" value="sdssmail.edina.ac.uk"/>
+    <property name="remote.url.1" value="http://sdssmail.edina.ac.uk:82"/>
+    <property name="remote.host.2" value="sdssmail-at.edina.ac.uk"/>
+    <property name="remote.url.2" value="http://sdssmail-at.edina.ac.uk:82"/>
 	
 	<!--
 	    For times when only one remote host is in use, pre-select it
