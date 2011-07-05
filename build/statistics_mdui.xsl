@@ -39,37 +39,43 @@
         <xsl:value-of select="$entityCount"/>
         <xsl:text>&#10;</xsl:text>
 
-        <xsl:variable name="uiInfoEntities" select="$entities[descendant::mdui:UIInfo]"/>
-        <xsl:variable name="uiInfoEntitiesCount" select="count($uiInfoEntities)"/>
-        <xsl:text>   mdui:UIInfo: </xsl:text>
-        <xsl:value-of select="$uiInfoEntitiesCount"/>
-        <xsl:text> (</xsl:text>
-        <xsl:value-of select="format-number($uiInfoEntitiesCount div $entityCount, '0.0%')"/>
-        <xsl:text>)&#10;</xsl:text>
+        <xsl:if test="$entityCount > 0">
+            <xsl:variable name="uiInfoEntities" select="$entities[descendant::mdui:UIInfo]"/>
+            <xsl:variable name="uiInfoEntitiesCount" select="count($uiInfoEntities)"/>
+            <xsl:text>   mdui:UIInfo: </xsl:text>
+            <xsl:value-of select="$uiInfoEntitiesCount"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="format-number($uiInfoEntitiesCount div $entityCount, '0.0%')"/>
+            <xsl:text>)&#10;</xsl:text>
+        </xsl:if>
         
         <xsl:text>Identity providers: </xsl:text>
         <xsl:value-of select="$idpCount"/>
         <xsl:text>&#10;</xsl:text>
-        
-        <xsl:variable name="idp.uiinfo" select="$idps[descendant::mdui:UIInfo]"/>
-        <xsl:variable name="idp.uiinfo.count" select="count($idp.uiinfo)"/>
-        <xsl:text>   mdui:UIInfo: </xsl:text>
-        <xsl:value-of select="$idp.uiinfo.count"/>
-        <xsl:text> (</xsl:text>
-        <xsl:value-of select="format-number($idp.uiinfo.count div $idpCount, '0.0%')"/>
-        <xsl:text>)&#10;</xsl:text>
+
+        <xsl:if test="$idpCount > 0">
+            <xsl:variable name="idp.uiinfo" select="$idps[descendant::mdui:UIInfo]"/>
+            <xsl:variable name="idp.uiinfo.count" select="count($idp.uiinfo)"/>
+            <xsl:text>   mdui:UIInfo: </xsl:text>
+            <xsl:value-of select="$idp.uiinfo.count"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="format-number($idp.uiinfo.count div $idpCount, '0.0%')"/>
+            <xsl:text>)&#10;</xsl:text>
+        </xsl:if>
 
         <xsl:text>Service providers: </xsl:text>
         <xsl:value-of select="$spCount"/>
         <xsl:text>&#10;</xsl:text>
                 
-        <xsl:variable name="sp.uiinfo" select="$sps[descendant::mdui:UIInfo]"/>
-        <xsl:variable name="sp.uiinfo.count" select="count($sp.uiinfo)"/>
-        <xsl:text>   mdui:UIInfo: </xsl:text>
-        <xsl:value-of select="$sp.uiinfo.count"/>
-        <xsl:text> (</xsl:text>
-        <xsl:value-of select="format-number($sp.uiinfo.count div $spCount, '0.0%')"/>
-        <xsl:text>)&#10;</xsl:text>
+        <xsl:if test="$spCount > 0">
+            <xsl:variable name="sp.uiinfo" select="$sps[descendant::mdui:UIInfo]"/>
+            <xsl:variable name="sp.uiinfo.count" select="count($sp.uiinfo)"/>
+            <xsl:text>   mdui:UIInfo: </xsl:text>
+            <xsl:value-of select="$sp.uiinfo.count"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="format-number($sp.uiinfo.count div $spCount, '0.0%')"/>
+            <xsl:text>)&#10;</xsl:text>
+        </xsl:if>
 
     </xsl:template>
 
