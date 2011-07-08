@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Verb to generate all UK aggregates.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <!--
+        Import commonly used beans.
+    -->
+    <import resource="../common-beans.xml"/>
+    
+    <!--
+        Import channel-specific beans.
+    -->
+    <import resource="beans.xml"/>
+
+    <bean id="everythingSelector" class="net.shibboleth.metadata.AlwaysItemSelectionStrategy"/>
+    
+    <bean id="uk_stripExtensions" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_stripExtensions"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_extensions.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        ***************************************************
+        ***                                             ***
+        ***   P R O D U C T I O N   A G G R E G A T E   ***
+        ***                                             ***
+        ***************************************************
+    -->
+    
+    <bean id="uk_finaliseProduction" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_finaliseProduction"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="serializeUnsignedProductionAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="serializeUnsignedProductionAggregate"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-metadata-unsigned.xml"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="uk_productionPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_productionPipeline"/>
+        <property name="stages">
+            <list>
+                <ref bean="uk_assemble"/>
+                <ref bean="uk_addTrustRoots"/>
+                <ref bean="uk_finaliseProduction"/>
+                <ref bean="uk_normaliseNamespaces"/>
+                
+                <!-- production aggregate MUST pass publishability test -->
+                <ref bean="CHECK_publishable"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="serializeUnsignedProductionAggregate"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        ***************************************
+        ***                                 ***
+        ***   W A Y F   A G G R E G A T E   ***
+        ***                                 ***
+        ***************************************
+    -->
+    
+    <bean id="uk_wayfSelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy"
+        lazy-init="true">
+        <constructor-arg value="/md:EntityDescriptor[not(md:Extensions/wayf:HideFromWAYF)]"/>
+        <constructor-arg ref="commonNamespaces"/>
+    </bean>
+    
+    <bean id="serializeUnsignedWayfAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="serializeUnsignedWayfAggregate"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-wayf-unsigned.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="uk_wayfPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_wayfPipeline"/>
+        <property name="stages">
+            <list>
+                <ref bean="uk_assemble"/>
+                <ref bean="uk_finaliseProduction"/>
+                <ref bean="uk_normaliseNamespaces"/>
+
+                <!-- WAYF aggregate MUST pass publishability test -->
+                <ref bean="CHECK_publishable"/>
+                <ref bean="errorTerminatingFilter"/>
+
+                <ref bean="serializeUnsignedWayfAggregate"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        ***********************************************
+        ***                                         ***
+        ***   F A L L B A C K   A G G R E G A T E   ***
+        ***                                         ***
+        ***********************************************
+    -->
+    
+    <bean id="uk_finaliseFallback" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_finaliseFallback"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
+            </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="extraText" value="Feature fallback metadata; not for production use"/>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="serializeUnsignedFallbackAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="serializeUnsignedFallbackAggregate"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-back-unsigned.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="uk_fallbackPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_fallbackPipeline"/>
+        <property name="stages">
+            <list>
+                <ref bean="uk_assemble"/>
+                <ref bean="uk_addTrustRoots"/>
+                <ref bean="uk_finaliseFallback"/>
+                <ref bean="uk_normaliseNamespaces"/>
+                
+                <!-- fallback aggregate MUST pass publishability test -->
+                <ref bean="CHECK_publishable"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="serializeUnsignedFallbackAggregate"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        ***************************************
+        ***                                 ***
+        ***   T E S T   A G G R E G A T E   ***
+        ***                                 ***
+        ***************************************
+    -->
+    
+    <bean id="uk_finaliseTest" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_finaliseTest"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
+            </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="extraText" value="Feature test metadata; not for production use"/>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="serializeUnsignedTestAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="serializeUnsignedTestAggregate"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-test-unsigned.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        *******************************************
+        ***                                     ***
+        ***   E X P O R T   A G G R E G A T E   ***
+        ***                                     ***
+        *******************************************
+    -->
+    
+    <bean id="uk_finaliseExport" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_finaliseExport"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
+            </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="extraText" value="Prototype export metadata; not for production use"/>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="uk_exportSelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy"
+        lazy-init="true">
+        <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:ExportOptIn]"/>
+        <constructor-arg ref="commonNamespaces"/>
+    </bean>
+    
+    <bean id="serializeUnsignedExportAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="serializeUnsignedExportAggregate"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-export-unsigned.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="uk_exportPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_exportPipeline"/>
+        <property name="stages">
+            <list>
+                <ref bean="uk_stripExtensions"/>
+                <ref bean="uk_assemble"/>
+                <ref bean="uk_finaliseExport"/>
+                <ref bean="uk_normaliseNamespaces"/>
+                <ref bean="serializeUnsignedExportAggregate"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        *************************************
+        ***                               ***
+        ***   M A I N   P I P E L I N E   ***
+        ***                               ***
+        *************************************
+    -->
+    
+    <bean id="generate" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="generate"/>
+        <property name="stages">
+            <list>
+                <!--
+                    Acquire metadata for all UK-registered entities.
+                -->
+                <ref bean="uk_registeredEntities"/>
+                
+                <!--
+                    Fork into a new pipeline for the export aggregate.
+                    
+                    The export aggregate only includes UK-registered entities,
+                    so the fork needs to occur before any others are introduced.
+                    
+                    The export aggregate is also intended to reflect the registered
+                    metadata as closely as possible, so the fork must happen before
+                    too many UK-specific transformations are performed.
+                -->
+                <bean id="exportDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+                    init-method="initialize" lazy-init="true">
+                    <property name="id" value="exportDemux"/>
+                    <property name="pipelineAndSelectionStrategies">
+                        <list>
+                            <bean class="org.opensaml.util.Pair">
+                                <constructor-arg ref="uk_exportPipeline"/>
+                                <constructor-arg ref="uk_exportSelector"/>
+                            </bean>
+                        </list>
+                    </property>
+                    <property name="waitingForPipelines" value="true"/>
+                </bean>
+                
+                <!--
+                    Strip out those ukfedlabel extensions that we don't publish.
+                    
+                    This is performed independently on the export pipeline because
+                    selection for that pipeline is based on these same extensions.
+                -->
+                <ref bean="uk_stripExtensions"/>
+                
+                <!--
+                    Perform fixups on UK federation entities.  We need to make sure
+                    this is also performed on all inbound metadata too, but that is
+                    done elsewhere.
+                -->
+                <ref bean="uk_performFixups"/>
+                
+                <!--
+                    Fork into new pipelines for the production, fallback and WAYF aggregates.
+                -->
+                <bean id="wayfDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+                    init-method="initialize" lazy-init="true">
+                    <property name="id" value="wayfDemux"/>
+                    <property name="pipelineAndSelectionStrategies">
+                        <list>
+                            <bean class="org.opensaml.util.Pair">
+                                <constructor-arg ref="uk_productionPipeline"/>
+                                <constructor-arg ref="everythingSelector"/>
+                            </bean>
+                            <bean class="org.opensaml.util.Pair">
+                                <constructor-arg ref="uk_fallbackPipeline"/>
+                                <constructor-arg ref="everythingSelector"/>
+                            </bean>
+                            <bean class="org.opensaml.util.Pair">
+                                <constructor-arg ref="uk_wayfPipeline"/>
+                                <constructor-arg ref="uk_wayfSelector"/>
+                            </bean>
+                        </list>
+                    </property>
+                    <property name="waitingForPipelines" value="true"/>
+                </bean>
+                
+                <!-- merge in entities from other metadata sources -->
+                
+                <!-- pipeline continues to generate test aggregate -->
+                <ref bean="uk_assemble"/>
+                <ref bean="uk_addTrustRoots"/>
+                <ref bean="uk_finaliseTest"/>
+                <ref bean="uk_normaliseNamespaces"/>
+                
+                <!-- test aggregate MUST pass publishability test -->
+                <ref bean="CHECK_publishable"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="serializeUnsignedTestAggregate"/>
+
+            </list>
+        </property>
+    </bean>
+
+</beans>

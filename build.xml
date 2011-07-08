@@ -1150,21 +1150,25 @@
     	<CHANNEL.do channel="uk" verb="collect"/>
     </target>
     
-	<target name="flow.uk.pub.production">
-        <echo>UK production aggregate flow started.</echo>
-        <XALAN
-            x="${build.dir}/uk_master_unsigned.xsl"
-            i="${mdx.dir}/uk/collected.xml"
-            o="${temp.xml}"/>
-        <echo>      normalising namespaces...</echo>
-        <XALAN
-            x="${build.dir}/ns_norm_uk.xsl"
-            i="${temp.xml}"
-            o="${mdx.dir}/uk/${md.prod.unsigned}" />
-        <MDNORM i="${mdx.dir}/uk/${md.prod.unsigned}"/>
-        <CHECK.publishable i="${mdx.dir}/uk/${md.prod.unsigned}"/>
-        <echo>UK production aggregate flow completed.</echo>
+    <target name="flow.uk.generate">
+        <CHANNEL.do channel="uk" verb="generate"/>
 	</target>
+
+    <target name="generate.redux">
+        <CHANNEL.do channel="uk" verb="generate"/>
+
+        <MDNORM i="${mdx.dir}/uk/${md.prod.unsigned}"/>
+        <MDNORM i="${mdx.dir}/uk/${md.wayf.unsigned}"/>
+        <MDNORM i="${mdx.dir}/uk/${md.back.unsigned}"/>
+        <MDNORM i="${mdx.dir}/uk/${md.test.unsigned}"/>
+        <MDNORM i="${mdx.dir}/uk/${md.export.unsigned}"/>
+
+        <echo>final checks...</echo>
+        <CHECK.publishable i="${mdx.dir}/uk/${md.prod.unsigned}"/>
+        <CHECK.publishable i="${mdx.dir}/uk/${md.wayf.unsigned}"/>
+        <CHECK.publishable i="${mdx.dir}/uk/${md.back.unsigned}"/>
+        <CHECK.publishable i="${mdx.dir}/uk/${md.test.unsigned}"/>
+    </target>
 
     <!--
         *******************************

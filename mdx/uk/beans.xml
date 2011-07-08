@@ -45,7 +45,7 @@
         init-method="initialize" lazy-init="true">
         <property name="id" value="uk_filterDeletedEntities"/>
         <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
-        <constructor-arg name="prefixMappings" ref="commonNamespaces"/>
+        <constructor-arg name="context" ref="commonNamespaces"/>
     </bean>
     
     
@@ -189,6 +189,22 @@
     
     
     <!--
+        uk_performFixups
+        
+        This stage performs any fixup actions required before publication to UK federation members.
+    -->
+    <bean id="uk_performFixups" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_performFixups"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fixups.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    
+    <!--
         Populate UKId values from entities.
     -->
     <bean id="uk_populateIds" class="uk.org.ukfederation.mda.EntityDescriptorUKIdPopulationStage"
@@ -234,4 +250,23 @@
         </property>
     </bean>
     
+
+    <!--
+        uk_normaliseNamespaces
+        
+        A pipeline stage that can be used before serialisation to normalise the namespaces
+        used in an XML document.  This one is UK-specific, as it makes specific choices
+        in order to limit the number of prefixes used.
+    -->
+    <bean id="uk_normaliseNamespaces" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_normaliseNamespaces"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/ns_norm_uk.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+
 </beans>
