@@ -46,6 +46,56 @@
     
 
     <!--
+        *******************************************************************
+        ***                                                             ***
+        ***   S T R U C T U R E D   A G G R E G A T E   B U I L D E R   ***
+        ***                                                             ***
+        *******************************************************************
+    -->
+    
+    
+    <!--
+        Assemble a nested EntitiesDescriptor structure with the
+        UK federation entities inside an inner element.
+    -->
+    <bean id="uk_assembleStructuredAggregate" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_assembleStructuredAggregate"/>
+        <property name="composedStages">
+            <list>
+                <!--
+                    Step 1: put all UK entities inside a UK-named EntitiesDescriptor
+                -->
+                <bean id="uk_buildNestedEntitiesDescriptor" class="net.shibboleth.metadata.pipeline.SplitMergeStage"
+                    init-method="initialize" lazy-init="true">
+                    <property name="id" value="uk_buildNestedEntitiesDescriptor"/>
+                    <property name="selectionStrategy">
+                        <bean class="uk.org.ukfederation.mda.UKEntitySelectionStrategy"/>
+                    </property>
+                    <property name="selectedItemPipeline">
+                        <bean name="uk_assemblePipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+                            init-method="initialize" lazy-init="true">
+                            <property name="id" value="uk_assemblePipeline"/>
+                            <property name="stages">
+                                <list>
+                                    <ref bean="uk_assemble"/>
+                                </list>
+                            </property>
+                        </bean>
+                    </property>
+                </bean>
+                
+                <!--
+                    Step 2: put that EntitiesDescriptor plus all remaining entities inside an
+                    anonymous outer EntitiesDescriptor.
+                -->
+                <ref bean="assemble"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <!--
         ***************************************************
         ***                                             ***
         ***   P R O D U C T I O N   A G G R E G A T E   ***
