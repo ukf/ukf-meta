@@ -59,9 +59,19 @@
         <property name="composedStages">
             <list>
                 <ref bean="int_edugain_productionAggregate"/>
+
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <!--
+                    no validUntil element is present at the moment
+                -->
+                <!--
+                <ref bean="check_validUntil"/>
+                -->
                 <ref bean="int_edugain_checkSignature"/>
-                
-                <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
@@ -80,9 +90,19 @@
         <property name="composedStages">
             <list>
                 <ref bean="int_edugain_testAggregate"/>
+
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <!--
+                    no validUntil element is present at the moment
+                -->
+                <!--
+                <ref bean="check_validUntil"/>
+                -->
                 <ref bean="int_edugain_checkSignature"/>
-                
-                <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>

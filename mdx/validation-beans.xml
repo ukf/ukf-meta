@@ -203,6 +203,26 @@
             </bean>
         </property>
     </bean>
+
+    <!--
+        check_validUntil
+        
+        Check that an aggregate has a validUntil instant specified, and that it has not
+        yet expired.  Does not put an upper bound on validUntil intervals.
+    -->
+    <bean id="check_validUntil" class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_validUntil"/>
+        <!--
+            The validUntil attribute must be present.
+        -->
+        <property name="requireValidUntil" value="true"/>
+        <!--
+            Do not constrain the validity interval in this general stage.
+            Constrain in necessary on a per-channel basis.
+        -->
+        <property name="maxValidityInterval" value="0"/>
+    </bean>
     
     <!--
         check_vhosts

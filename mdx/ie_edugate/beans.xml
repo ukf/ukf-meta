@@ -46,6 +46,25 @@
     </bean>
     
     <!--
+        ie_edugate_validUntil
+        
+        Check that an aggregate has a validUntil instant specified, and that it has not
+        yet expired.  Sets a bound of 30 days on the validity interval.
+    -->
+    <bean id="ie_edugate_validUntil" class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="ie_edugate_validUntil"/>
+        <!--
+            The validUntil attribute must be present.
+        -->
+        <property name="requireValidUntil" value="true"/>
+        <!--
+            Validity interval must not exceed 30 days.
+        -->
+        <property name="maxValidityInterval" value="#{ 1000L * 60 * 60 * 24 * 30 }"/>
+    </bean>
+    
+    <!--
         Fetch and process the exported entities as a collection.
     -->
     <bean id="ie_edugate_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
@@ -54,9 +73,14 @@
         <property name="composedStages">
             <list>
                 <ref bean="ie_edugate_exportAggregate"/>
+
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="ie_edugate_validUntil"/>
                 <ref bean="ie_edugate_checkSignature"/>
-                
-                <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>

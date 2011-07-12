@@ -26,9 +26,13 @@
                 <!-- no export aggregate; use the production one instead -->
                 <ref bean="lv_laife_productionAggregate"/>
                 
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
                 <!-- this metadata is not signed -->
-                
-                <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>

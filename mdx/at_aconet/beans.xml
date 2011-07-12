@@ -46,9 +46,14 @@
             <list>
                 <!-- no export aggregate; use the production one instead -->
                 <ref bean="at_aconet_productionAggregate"/>
-                <ref bean="at_aconet_checkSignature"/>
                 
-                <!-- failure to validate signature is fatal -->
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="at_aconet_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>

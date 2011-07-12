@@ -56,9 +56,14 @@
             <list>
                 <!-- no export aggregate; use the production one instead -->
                 <ref bean="fr_renater_productionAggregate"/>
+
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
                 <ref bean="fr_renater_checkSignature"/>
-                
-                <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>

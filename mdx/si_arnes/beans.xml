@@ -46,9 +46,19 @@
             <list>
                 <!-- no export aggregate; use the production one instead -->
                 <ref bean="si_arnes_productionAggregate"/>
+
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <!--
+                    No validUntil attribute in this metadata
+                -->
+                <!--
+                <ref bean="check_validUntil"/>
+                -->
                 <ref bean="si_arnes_checkSignature"/>
-                
-                <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>

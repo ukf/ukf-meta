@@ -24,6 +24,21 @@
         <property name="composedStages">
             <list>
                 <ref bean="eu_clarin_exportAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <!--
+                    Check for validUntil fails because this is a static file.
+                    No signature check, because the file is also unsigned.
+                -->
+                <!--
+                <ref bean="check_validUntil"/>
+                <ref bean="errorTerminatingFilter"/>
+                -->
+                
                 <ref bean="disassemble"/>
                 <ref bean="standardImportActions"/>
             </list>

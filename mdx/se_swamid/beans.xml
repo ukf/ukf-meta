@@ -46,9 +46,19 @@
             <list>
                 <!-- no export aggregate; use the production one instead -->
                 <ref bean="se_swamid_productionAggregate"/>
+
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <!--
+                	No validUntil attribute at present.
+                -->
+                <!--
+                <ref bean="check_validUntil"/>
+                -->
                 <ref bean="se_swamid_checkSignature"/>
-                
-                <!-- failure to validate signature is fatal -->
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
