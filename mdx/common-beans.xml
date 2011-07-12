@@ -237,6 +237,13 @@
     </bean>
     
     <!--
+        everythingSelector
+        
+        An item selection strategy that selects all items.
+    -->
+    <bean id="everythingSelector" class="net.shibboleth.metadata.AlwaysItemSelectionStrategy"/>
+    
+    <!--
         Standard serializer.
     -->
     <bean id="serializer" class="net.shibboleth.metadata.dom.DomElementSerializer"/>

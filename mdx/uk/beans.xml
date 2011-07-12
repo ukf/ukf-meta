@@ -269,4 +269,20 @@
     </bean>
     
 
+    <!--
+        uk_stripExtensions
+        
+        Strip those UK federation extensions which we never publish.
+    -->
+    <bean id="uk_stripExtensions" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_stripExtensions"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_extensions.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+
 </beans>

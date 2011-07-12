@@ -18,19 +18,33 @@
         Import channel-specific beans.
     -->
     <import resource="beans.xml"/>
-
-    <bean id="everythingSelector" class="net.shibboleth.metadata.AlwaysItemSelectionStrategy"/>
     
-    <bean id="uk_stripExtensions" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+    <!--
+        Import beans from other channels.
+    -->
+    <import resource="../ie_edugate/beans.xml"/>
+
+
+    <!--
+        *******************************************
+        ***                                     ***
+        ***   I M P O R T   P I P E L I N E S   ***
+        ***                                     ***
+        *******************************************
+    -->
+    
+    <bean id="uk_ie_edugate_importPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_stripExtensions"/>
-        <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_extensions.xsl"/>
-            </bean>
+        <property name="id" value="uk_ie_edugate_importPipeline"/>
+        <property name="stages">
+            <list>
+                <ref bean="ie_edugate_exportedEntities"/>
+                <ref bean="uk_performFixups"/>
+            </list>
         </property>
     </bean>
     
+
     <!--
         ***************************************************
         ***                                             ***
@@ -323,9 +337,9 @@
                 <!--
                     Fork into new pipelines for the production, fallback and WAYF aggregates.
                 -->
-                <bean id="wayfDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+                <bean id="otherDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
                     init-method="initialize" lazy-init="true">
-                    <property name="id" value="wayfDemux"/>
+                    <property name="id" value="otherDemux"/>
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="org.opensaml.util.Pair">
@@ -345,7 +359,22 @@
                     <property name="waitingForPipelines" value="true"/>
                 </bean>
                 
-                <!-- merge in entities from other metadata sources -->
+                <!--
+                    Merge in entities from other metadata sources.
+                -->
+                <bean id="mergeImportedEntities" class="net.shibboleth.metadata.pipeline.PipelineMergeStage"
+                    init-method="initialize" lazy-init="true">
+                    <property name="id" value="mergeImportedEntities"/>
+                    <property name="collectionMergeStrategy">
+                        <bean id="deduplicateMergeStrategy" class="net.shibboleth.metadata.DeduplicatingItemIdMergeStrategy"
+                            lazy-init="true"/>
+                    </property>
+                    <property name="mergedPipelines">
+                        <list>
+                            <ref bean="uk_ie_edugate_importPipeline"/>
+                        </list>
+                    </property>
+                </bean>
                 
                 <!-- pipeline continues to generate test aggregate -->
                 <ref bean="uk_assemble"/>
