@@ -1137,6 +1137,34 @@
     <target name="flow.int_edugain.testImport">
         <CHANNEL.do channel="int_edugain" verb="testImport"/>
     </target>
+	
+	<target name="flow.test.all">
+		<CHANNEL.import channel="at_aconet"/>
+        <CHANNEL.import channel="au_aaf"/>
+        <CHANNEL.import channel="ca_caf"/>
+        <CHANNEL.import channel="ch_switchaai"/>
+        <CHANNEL.import channel="cz_eduid"/>
+        <CHANNEL.import channel="de_dfnaai"/>
+        <CHANNEL.import channel="dk_wayf"/>
+        <CHANNEL.import channel="es_sir"/>
+        <CHANNEL.import channel="eu_clarin"/>
+        <CHANNEL.import channel="fi_haka"/>
+        <CHANNEL.import channel="fr_renater"/>
+        <CHANNEL.import channel="gr_grnet"/>
+        <CHANNEL.import channel="hu_eduid"/>
+        <CHANNEL.import channel="ie_edugate"/>
+        <CHANNEL.import channel="int_edugain"/>
+		<CHANNEL.do channel="int_edugain" verb="testImport"/>
+        <CHANNEL.import channel="it_idem"/>
+        <CHANNEL.import channel="jp_gakunin"/>
+        <CHANNEL.import channel="lv_laife"/>
+        <CHANNEL.import channel="nl_surfnet"/>
+        <CHANNEL.import channel="no_feide"/>
+        <CHANNEL.import channel="se_swamid"/>
+        <CHANNEL.import channel="si_arnes"/>
+        <CHANNEL.import channel="uk_eduserv"/>
+        <CHANNEL.import channel="us_incommon"/>
+	</target>
     
 	<!--
 	    *************************************************
