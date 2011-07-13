@@ -328,6 +328,47 @@
     </bean>
     
     <!--
+        *********************************************
+        ***                                       ***
+        ***   S T A T I S T I C S   O U T P U T   ***
+        ***                                       ***
+        *********************************************
+    -->
+    
+    <bean id="serializeStatistics" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="serializeStatistics"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-stats.html"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="uk_generateStatistics" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_generateStatistics"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/statistics.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="uk_statisticsPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_statisticsPipeline"/>
+        <property name="stages">
+            <list>
+                <ref bean="assemble"/>
+                <ref bean="uk_generateStatistics"/>
+                <ref bean="serializeStatistics"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         *************************************
         ***                               ***
         ***   M A I N   P I P E L I N E   ***
@@ -346,7 +387,8 @@
                 <ref bean="uk_registeredEntities"/>
                 
                 <!--
-                    Fork into a new pipeline for the export aggregate.
+                    Fork into new pipelines for the export aggregate and for
+                    the registrar statistics.
                     
                     The export aggregate only includes UK-registered entities,
                     so the fork needs to occur before any others are introduced.
@@ -355,14 +397,18 @@
                     metadata as closely as possible, so the fork must happen before
                     too many UK-specific transformations are performed.
                 -->
-                <bean id="exportDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+                <bean id="registrarDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
                     init-method="initialize" lazy-init="true">
-                    <property name="id" value="exportDemux"/>
+                    <property name="id" value="registrarDemux"/>
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="org.opensaml.util.Pair">
                                 <constructor-arg ref="uk_exportPipeline"/>
                                 <constructor-arg ref="uk_exportSelector"/>
+                            </bean>
+                            <bean class="org.opensaml.util.Pair">
+                                <constructor-arg ref="uk_statisticsPipeline"/>
+                                <constructor-arg ref="everythingSelector"/>
                             </bean>
                         </list>
                     </property>

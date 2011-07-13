@@ -44,8 +44,8 @@
     <bean id="uk_filterDeletedEntities" class="net.shibboleth.metadata.dom.XPathFilteringStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="uk_filterDeletedEntities"/>
-        <constructor-arg name="expression" value="//ukfedlabel:DeletedEntity"/>
-        <constructor-arg name="context" ref="commonNamespaces"/>
+        <property name="xpathExpression" value="//ukfedlabel:DeletedEntity"/>
+        <property name="namespaceContext" ref="commonNamespaces"/>
     </bean>
     
     
