@@ -29,15 +29,21 @@
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
     
+    <!--
+        memberDocument
+        
+        The members.xml file, as a DOM document, is passed as a parameter.
+    -->
+    <xsl:param name="memberDocument"/>
+    
     <xsl:template match="md:EntitiesDescriptor">
         
         <xsl:variable name="now" select="date:date-time()"/>
 
         <!--
-            Pick up and break down the "members" document, which despite its name
+            Break down the "members" document, which despite its name
             describes all known entity owners, whether members or non-members.
         -->
-        <xsl:variable name="memberDocument" select="document('../xml/members.xml')"/>
         <!-- federation members -->
         <xsl:variable name="members" select="$memberDocument//members:Member"/>
         <xsl:variable name="memberCount" select="count($members)"/>

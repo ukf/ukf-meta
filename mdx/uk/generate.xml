@@ -328,47 +328,6 @@
     </bean>
     
     <!--
-        *********************************************
-        ***                                       ***
-        ***   S T A T I S T I C S   O U T P U T   ***
-        ***                                       ***
-        *********************************************
-    -->
-    
-    <bean id="serializeStatistics" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeStatistics"/>
-        <property name="serializer" ref="serializer"/>
-        <property name="outputFile">
-            <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-stats.html"/>
-            </bean>
-        </property>
-    </bean>
-    
-    <bean id="uk_generateStatistics" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_generateStatistics"/>
-        <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/statistics.xsl"/>
-            </bean>
-        </property>
-    </bean>
-    
-    <bean id="uk_statisticsPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_statisticsPipeline"/>
-        <property name="stages">
-            <list>
-                <ref bean="assemble"/>
-                <ref bean="uk_generateStatistics"/>
-                <ref bean="serializeStatistics"/>
-            </list>
-        </property>
-    </bean>
-    
-    <!--
         *************************************
         ***                               ***
         ***   M A I N   P I P E L I N E   ***

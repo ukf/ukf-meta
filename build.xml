@@ -1236,16 +1236,12 @@
 	<!--
 		Statistics generation
 		
-		Note that statistics are generated from the UK federation master file,
-		so that the statistics process has access to information that will not
+		Note that statistics are generated from the full registered fragment
+		data, so that the statistics process has access to information that will not
 		be included in published metadata.
 	-->
-	<target name="stats" depends="gen.uk.unsigned">
-		<echo>Generating UK Federation statistics</echo>
-		<XALAN.xmldir
-			i="${uk.master.file}"
-			o="ukfederation-stats.html"
-			x="statistics.xsl"/>
+	<target name="stats">
+		<CHANNEL.do channel="uk" verb="statistics"/>
 		<fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf"/>
 	</target>
 	

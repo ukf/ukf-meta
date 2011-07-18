@@ -285,4 +285,69 @@
     </bean>
     
 
+    <!--
+        *********************************************
+        ***                                       ***
+        ***   S T A T I S T I C S   O U T P U T   ***
+        ***                                       ***
+        *********************************************
+    -->
+    
+    <!--
+        uk_serializeStatistics
+        
+        Serialise the (assumed HTML) DomDocumentItem into the UK federation statistics
+        output file in the production XML directory.
+    -->
+    <bean id="uk_serializeStatistics" class="net.shibboleth.metadata.pipeline.SerializationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_serializeStatistics"/>
+        <property name="serializer" ref="serializer"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-stats.html"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        uk_generateStatistics
+        
+        Input is an aggregate of all registered entities, output is the HTML statistics.
+    -->
+    <bean id="uk_generateStatistics" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_generateStatistics"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/statistics.xsl"/>
+            </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="memberDocument" value-ref="uk_membersDocument"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
+        uk_statisticsPipeline
+        
+        Pipeline to generate the registrar statistics for the UK federation's
+        registered entities.  Input is assumed to be a collection of the entities in question;
+        resulting HTML output is written into the appropriate file in the production
+        XML directory.
+    -->
+    <bean id="uk_statisticsPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_statisticsPipeline"/>
+        <property name="stages">
+            <list>
+                <ref bean="assemble"/>
+                <ref bean="uk_generateStatistics"/>
+                <ref bean="uk_serializeStatistics"/>
+            </list>
+        </property>
+    </bean>
+    
 </beans>

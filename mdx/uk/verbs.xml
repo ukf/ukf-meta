@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Verb to generate all UK aggregates.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <!--
+        Import commonly used beans.
+    -->
+    <import resource="../common-beans.xml"/>
+    
+    <!--
+        Import channel-specific beans.
+    -->
+    <import resource="beans.xml"/>
+    
+    <!--
+        ***************************************
+        ***                                 ***
+        ***   V E R B   P I P E L I N E S   ***
+        ***                                 ***
+        ***************************************
+    -->
+    
+    <!--
+        statistics
+        
+        Stand-alone statistics generation.
+    -->
+    <bean id="statistics" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="statistics"/>
+        <property name="stages">
+            <list>
+                <ref bean="uk_registeredEntities"/>
+                <ref bean="assemble"/>
+                <ref bean="uk_generateStatistics"/>
+                <ref bean="uk_serializeStatistics"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
