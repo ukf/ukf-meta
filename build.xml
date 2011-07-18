@@ -670,23 +670,6 @@
 		</sequential>
 	</macrodef>
 	
-	<macrodef name="MDT.SIGN.uk">
-		<attribute name="i"/>
-		<attribute name="o"/>
-		<sequential>
-			<MDT i="@{i}" o="${xml.dir}/@{o}"
-				keystore="${keystore.uk.sign.loc}"
-				storetype="${keystore.uk.sign.type}"
-				alias="${keystore.uk.sign.alias}">
-				<args>
-					<arg value="--sign"/>
-					<arg value="--password"/>
-					<arg value="${keystore.pass}"/>
-				</args>
-			</MDT>
-		</sequential>
-	</macrodef>
-	
 	<macrodef name="MDT.VFY.uk">
 		<attribute name="i"/>
 		<sequential>
