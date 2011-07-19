@@ -8,12 +8,8 @@
 
 		http://wiki.oasis-open.org/security/SAML2MetadataUI
 		
-	This ruleset reflects WD06, 16-Nov-2010.
+	This ruleset reflects WD08, 17-Jul-2011.
 	
-	Some of these rules are simply checks on schema validity; those can
-	probably be removed and replaced by direct checks against the schema.
-	They are marked with comments to that effect.
-
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -132,24 +128,6 @@
 	
 	
 	<!--
-		Section 2.1.2 Element <mdui:DisplayName>
-	-->
-	<xsl:template match="mdui:DisplayName">
-		<xsl:call-template name="localisedNameType"/>
-	</xsl:template>
-
-	<!--
-		Section 2.1.3 Element <mdui:Description>
-	-->
-	<xsl:template match="mdui:Description">
-		<xsl:call-template name="localisedNameType"/>
-	</xsl:template>
-	
-	<!--
-		Section 2.1.4 Element <mdui:Keywords>
-	-->
-	
-	<!--
 		Section 2.1.5 Element <mdui:Logo>
 	-->
 	<xsl:template match="mdui:Logo">
@@ -163,44 +141,6 @@
 				<xsl:with-param name="m">mdui:Logo URL does not start with https://</xsl:with-param>
 			</xsl:call-template>
 		</xsl:if>
-		<!-- Schema validity: must have a height attribute -->
-		<xsl:if test="not(@height)">
-			<xsl:call-template name="error">
-				<xsl:with-param name="m">missing @height on <xsl:value-of select="name()"/></xsl:with-param>
-			</xsl:call-template>
-		</xsl:if>
-		<!-- Schema validity: must have a width attribute -->
-		<xsl:if test="not(@width)">
-			<xsl:call-template name="error">
-				<xsl:with-param name="m">missing @width on <xsl:value-of select="name()"/></xsl:with-param>
-			</xsl:call-template>
-		</xsl:if>   
-	</xsl:template>
-	
-	<!--
-		Section 2.1.6 Element <mdui:InformationURL>
-	-->
-	<xsl:template match="mdui:InformationURL">
-		<xsl:call-template name="localisedNameType"/>
-	</xsl:template>
-	
-	<!--
-		Section 2.1.7 Element <mdui:PrivacyStatementURL>
-	-->
-	<xsl:template match="mdui:PrivacyStatementURL">
-		<xsl:call-template name="localisedNameType"/>
-	</xsl:template>
-	
-	<!--
-		Common ruleset for elements derived from localisedNameType.
-	-->
-	<xsl:template name="localisedNameType">
-		<!-- Schema validity: must have an xml:lang attribute -->
-		<xsl:if test="not(@xml:lang)">
-			<xsl:call-template name="error">
-				<xsl:with-param name="m">missing @xml:lang on <xsl:value-of select="name()"/></xsl:with-param>
-			</xsl:call-template>
-		</xsl:if>	
 	</xsl:template>
 	
 	<!--
