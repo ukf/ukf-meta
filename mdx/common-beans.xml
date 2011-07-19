@@ -63,7 +63,7 @@
     -->
     <util:list id="schemaResources">
         <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0-wd05.xsd"/>
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0-wd06.xsd"/>
         </bean>
         <bean class="org.opensaml.util.resource.FilesystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-assertion-2.0.xsd"/>
