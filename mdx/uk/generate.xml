@@ -268,7 +268,7 @@
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-test-unsigned.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-test-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -308,7 +308,7 @@
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ukfederation-export-unsigned.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-export-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -392,6 +392,7 @@
                 <!--
                     Fork into new pipelines for the production, fallback and WAYF aggregates.
                 -->
+                <!--
                 <bean id="otherDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
                     init-method="initialize" lazy-init="true">
                     <property name="id" value="otherDemux"/>
@@ -413,6 +414,7 @@
                     </property>
                     <property name="waitingForPipelines" value="true"/>
                 </bean>
+                -->
                 
                 <!--
                     Merge in entities from other metadata sources.
