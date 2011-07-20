@@ -210,7 +210,7 @@
 	<!--
 		Standard processing: generate, sign, then verify.
 	-->
-	<target name="process" depends="get.keystore.pass, generate, sign, verify, stats">
+	<target name="process" depends="get.keystore.pass, generate, sign, verify">
 		<echo>Processing complete.</echo>
 	</target>
 	
@@ -351,7 +351,7 @@
 	</macrodef>
 	
 	<!--
-		Verify a metadata file held on the master distribution site.
+		Verify metadata files held on the master distribution site.
 	-->
 	<target name="verify.remote.metadata" depends="select.remote.host">
 		<echo>Verifying metadata held at ${remote.url}</echo>
@@ -464,33 +464,6 @@
             o="${md.wayf.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.wayf.unsigned}"/>
 		
-		<!-- [27] -->
-		<echo>   Test aggregate...</echo>
-		<XALAN
-			x="${build.dir}/uk_master_test.xsl"
-			i="${xml.dir}/${uk.master.file}"
-			o="${temp.xml}" />
-		<echo>      normalising namespaces...</echo>
-		<XALAN
-	        x="${build.dir}/ns_norm_uk.xsl"
-		    i="${temp.xml}"
-		    o="${xml.dir}/${md.test.unsigned}"/>
-		<MDNORM i="${xml.dir}/${md.test.unsigned}"/>
-        <CHECK.publishable i="${xml.dir}/${md.test.unsigned}"/>
-		
-		<!-- [29] -->
-		<echo>   Export aggregate...</echo>
-		<XALAN
-			x="${build.dir}/uk_master_export.xsl"
-			i="${xml.dir}/${uk.master.file}"
-			o="${temp.xml}"/>
-        <echo>      normalising namespaces...</echo>
-        <XALAN
-            x="${build.dir}/ns_norm_uk.xsl"
-            i="${temp.xml}"
-            o="${xml.dir}/${md.export.unsigned}" />
-		<MDNORM i="${xml.dir}/${md.export.unsigned}"/>
-		
 		<!-- [31] -->
 		<echo>   Fallback aggregate...</echo>
         <XALAN
@@ -504,6 +477,23 @@
             o="${xml.dir}/${md.back.unsigned}" />
         <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
         <CHECK.publishable i="${xml.dir}/${md.back.unsigned}"/>
+
+		<!--
+		    Call the generate verb in the uk mdx channel
+		    to generate everything else:
+		    
+               test aggregate   [27]
+		       export aggregate [29]
+		       statistics
+		-->
+        <CHANNEL.do channel="uk" verb="generate"/>
+		
+		<!--
+		    Post-process mda-generated output files.
+		-->
+        <MDNORM i="${xml.dir}/${md.test.unsigned}"/>
+        <MDNORM i="${xml.dir}/${md.export.unsigned}"/>
+        <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf"/>
 		
         <echo>Generated UK unsigned metadata.</echo>
 	</target>
@@ -1222,6 +1212,9 @@
 		Note that statistics are generated from the full registered fragment
 		data, so that the statistics process has access to information that will not
 		be included in published metadata.
+		
+		This target does stand-alone statistics generation; in normal use, the
+		statistics are generated as a side-effect of the generate target.
 	-->
 	<target name="stats">
 		<CHANNEL.do channel="uk" verb="statistics"/>
