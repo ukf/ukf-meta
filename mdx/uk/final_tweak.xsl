@@ -86,6 +86,7 @@
 		Comment to be added to the top of the document, and just inside the document element.
 	-->
 	<xsl:template name="document.comment">
+        <xsl:text>&#10;</xsl:text>
 		<xsl:comment>
 			<xsl:text>&#10;&#9;U K   F E D E R A T I O N   M E T A D A T A&#10;</xsl:text>
 			<xsl:text>&#10;</xsl:text>

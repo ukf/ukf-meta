@@ -29,7 +29,7 @@
 	<xsl:template match="/md:EntitiesDescriptor">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
-			<xsl:text>&#10;</xsl:text>
+			<xsl:text>&#10;&#10;&#10;    </xsl:text>
 			<xsl:apply-templates select="$trustRootsDocument//md:Extensions"/>
 			<xsl:text>&#10;</xsl:text>
 			<xsl:apply-templates select="node()"/>
