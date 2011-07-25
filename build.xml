@@ -499,52 +499,6 @@
 	</target>
 	
 
-    <!--
-        ***********************************************************
-        ***                                                     ***
-        ***   T E S T   M E T A D A T A   G E N E R A T I O N   ***
-        ***                                                     ***
-        ***********************************************************
-    -->
-	
-    <property name="test.master.file" value="test-metadata-master.xml"/>
-    <property name="test.prod.unsigned" value="test-metadata.xml"/>
-
-	<!--
-        Generates a set of test metadata based on the same trust roots
-        (plus any local modifications) and a set of designated test
-        entities.
-	-->
-	<target name="gen.test">
-		<!--
-            Concatenate the entity fragment files named testNNNNNN.xml into
-            an entities list.
-        -->
-        <echo>Composing entity fragment files.</echo>
-        <concat destfile="${entities.file}" append="no" force="yes" fixlastline="no">
-            <header filtering="no">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#10;&lt;Entities&gt;&#10;</header>
-            <fileset dir="${entities.dir}" includes="test*.xml"/>
-            <footer>&lt;/Entities&gt;&#10;</footer>
-            <filterchain>
-                <replaceregex pattern="&lt;\?[xX][mM][lL] .*&gt;" />
-            </filterchain>
-        </concat>
-		
-		<!--
-		    Combine the entity list with the trust roots.
-		-->
-        <echo>Generating test federation master file.</echo>
-        <XALAN.xmldir x="master_ukfederation.xsl" i="${master.file.name}"
-            o="${test.master.file}" />
-        <CHECK.ukreg i="${xml.dir}/${test.master.file}"/>
-		
-		<!--
-            Process through to final form.
-        -->
-        <XALAN.xmldir x="test_master_unsigned.xsl" i="${test.master.file}"
-            o="${test.prod.unsigned}" />
-	</target>
-    
 	<!--
 	    ***************************
 	    ***                     ***
