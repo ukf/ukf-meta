@@ -378,6 +378,23 @@
 		<echo>Generated unsigned metadata.</echo>
 	</target>
 	
+    <!--
+        uk.collected
+        
+        This is where the flow.uk.collect places its output.
+    -->
+    <property name="uk.collected" value="${mdx.dir}/uk/collected.xml"/>
+    
+	<!--
+	    flow.uk.collect
+	    
+	    Runs the mda code to collect all entities registered with the
+	    UK federation registrar.
+	-->
+    <target name="flow.uk.collect">
+        <CHANNEL.do channel="uk" verb="collect"/>
+    </target>
+    
 	<!--
 		gen.entities
 		
@@ -410,9 +427,15 @@
 		<CHECK.ukreg i="${xml.dir}/${uk.master.file}"/>
 	</target>
 	
-	<target name="test.uk.future" depends="gen.uk.unsigned">
+	<!--
+	    test.uk.future
+	    
+	    Run a set of possible future rulesets against the existing collection
+	    of UK-federation registered metadata.
+	-->
+	<target name="test.uk.future" depends="flow.uk.collect">
 		<echo>Checking against future rulesets.</echo>
-        <CHECK.base i="${xml.dir}/${uk.master.file}">
+        <CHECK.base i="${uk.collected}">
             <arg value="${build.dir}/check_future.xsl"/>
             <arg value="${build.dir}/check_saml2int.xsl"/>
         </CHECK.base>
@@ -1101,17 +1124,6 @@
 	    *************************************************
 	-->
 	
-    <!--
-        uk.collected
-        
-        This is where the flow.uk.collect places its output.
-    -->
-    <property name="uk.collected" value="${mdx.dir}/uk/collected.xml"/>
-    
-    <target name="flow.uk.collect">
-    	<CHANNEL.do channel="uk" verb="collect"/>
-    </target>
-    
     <target name="flow.uk.generate">
         <CHANNEL.do channel="uk" verb="generate"/>
 	</target>
