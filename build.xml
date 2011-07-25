@@ -1241,7 +1241,7 @@
 	<!--
 		Extract TLS locations from the UK federation metadata.
 	-->
-	<target name="extract.locs" depends="gen.uk.unsigned">
+	<target name="extract.locs" depends="flow.uk.collect">
 		<echo>Extracting TLS locations</echo>
 		<exec executable="perl" dir="${build.dir}"
 			output="${build.dir}/locations.txt">

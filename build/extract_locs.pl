@@ -2,7 +2,7 @@
 
 use Xalan;
 
-open(XML, xalanCall . " -IN ../xml/ukfederation-metadata-unsigned.xml -XSL extract_locs.xsl|") || die "could not open input file";
+open(XML, xalanCall . " -IN ../mdx/uk/collected.xml -XSL extract_locs.xsl|") || die "could not open input file";
 while (<XML>) {
 	chop;
 	if (/^https:\/\/([^\/:]+(:\d+)?)(\/|$)/) {
