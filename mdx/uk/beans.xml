@@ -189,6 +189,22 @@
     
     
     <!--
+        uk_stripAdminContacts
+        
+        Remove any md:ContactPerson elements with contactType of "administrative".
+    -->
+    <bean id="uk_stripAdminContacts" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_stripAdminContacts"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_admin.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    
+    <!--
         uk_performFixups
         
         This stage performs any fixup actions required before publication to UK federation members.

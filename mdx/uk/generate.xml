@@ -346,6 +346,11 @@
                 <ref bean="uk_registeredEntities"/>
                 
                 <!--
+                    Remove all "administrative" contacts.
+                -->
+                <ref bean="uk_stripAdminContacts"/>
+                
+                <!--
                     Fork into new pipelines for the export aggregate and for
                     the registrar statistics.
                     

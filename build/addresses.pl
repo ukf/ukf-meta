@@ -33,7 +33,7 @@ close EXTRAS;
 #
 # UK addresses
 #
-open(XML, xalanCall . " -IN ../xml/ukfederation-metadata-master.xml -XSL extract_addresses.xsl|") || die "could not open input file";
+open(XML, xalanCall . " -IN ../mdx/uk/collected.xml -XSL extract_addresses.xsl|") || die "could not open input file";
 while (<XML>) {
 	if (/<EmailAddress>(mailto:)?(.*)<\/EmailAddress>/) {
 		$metadata{$2} = 1;
