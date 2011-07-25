@@ -1147,6 +1147,13 @@
 	    *************************************************
 	-->
 	
+    <!--
+        uk.collected
+        
+        This is where the flow.uk.collect places its output.
+    -->
+    <property name="uk.collected" value="${mdx.dir}/uk/collected.xml"/>
+    
     <target name="flow.uk.collect">
     	<CHANNEL.do channel="uk" verb="collect"/>
     </target>
@@ -1339,12 +1346,12 @@
 	<!--
 		Extract embedded certificates
 	-->
-	<target name="extract.embedded" depends="gen.uk.unsigned">
+	<target name="extract.embedded" depends="flow.uk.collect">
 		<echo>Extracting embedded certificates</echo>
-		<XALAN.xmldir
-			i="${md.prod.unsigned}"
-			o="embedded.pem"
-			x="extract_embedded.xsl"/>
+		<XALAN
+			i="${uk.collected}"
+			o="${xml.dir}/embedded.pem"
+			x="${build.dir}/extract_embedded.xsl"/>
 	</target>
 	
 	<!--
@@ -1362,9 +1369,9 @@
 	<!--
 	   Check for IdPs using the single-port configuration.
 	-->
-	<target name="check.ports" depends="gen.uk.master">
+	<target name="check.ports" depends="flow.uk.collect">
 		<echo>Checking vhost use</echo>
-        <CHECK.one i="${xml.dir}/${uk.master.file}" s="check_vhosts.xsl"/>
+        <CHECK.one i="${uk.collected}" s="check_vhosts.xsl"/>
         <echo>Checked.</echo>
 	</target>
 
