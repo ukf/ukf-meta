@@ -108,7 +108,7 @@
 			<xsl:with-param name="m">
 				<xsl:text>(X) RequestedAttribute </xsl:text>
 				<xsl:value-of select="@Name"/>
-				<xsl:text>  has incorrect NameFormat </xsl:text>
+				<xsl:text> has incorrect NameFormat </xsl:text>
 				<xsl:value-of select="@NameFormat"/>
 			</xsl:with-param>
 		</xsl:call-template>
