@@ -660,10 +660,10 @@
 				fork="true" failonerror="true" maxmemory="${java.max.memory}">
 				<classpath>
 					<fileset dir="${tools.xmlsectool}/lib">
-						<include name="**/*.jar"/>
+						<include name="*.jar"/>
 					</fileset>
 				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.xmlsectool}/endorsed"/>
+				<jvmarg value="-Djava.endorsed.dirs=${tools.xmlsectool}/lib/endorsed"/>
 				<jvmarg value="-Dedu.internet2.middleware.security.XmlSecTool.home=${tools.xmlsectool}"/>
 				<args/>
 				<arg value="--validateSchema"/>
