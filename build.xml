@@ -67,42 +67,10 @@
 	</taskdef>
 	
 	<!--
-		The first phase in the signing process is to concatenate the
-		individual entity fragment files (uk*.xml in the entities directory)
-		together and enclose them in an <Entities> element.
+		There are five separate processing "streams":  production, test, export,
+		fallback and "wayf".
 		
-		The resulting file [1] entities.xml contains *all* entities,
-		even deleted ones, and contains some information we don't ultimately
-		want to publish.  entities.xml itself is neither stored
-		in the repository nor published.
-	-->
-	<property name="entities.file.dir" value="${xml.dir}"/>
-	<property name="entities.file.name" value="entities.xml"/>
-	<property name="entities.file" value="${entities.file.dir}/${entities.file.name}"/>
-
-	<!--
-		The master file contains the UK federation's KeyAuthority descriptors.
-	-->
-	<property name="master.file.dir" value="${xml.dir}"/>
-	<property name="master.file.name" value="master.xml"/>
-	<property name="master.file" value="${master.file.dir}/${master.file.name}"/>
-	
-	<!--
-		The full, unfiltered entities.xml is combined with the UK federation
-		trust roots (from master.xml) to produce the "UK federation master file"
-		([2] ukfederation-metadata-master.xml).  This drops entities marked as
-		deleted.  Although the file by this stage conforms to UK federation
-		conventions, it may still contain information not intended for
-		publication.
-	-->
-	<property name="uk.master.file" value="ukfederation-metadata-master.xml"/>
-	
-	<!--
-		The UK federation master file acts as the parent to four separate processing
-		"streams":  production, test, export and fallback.  The fifth "wayf" stream
-		is derived from the production stream.
-		
-		Each stream has its own XSLT transform and its own unsigned file, as follows:
+		Each stream has its own unsigned file, as follows:
 	-->
 	<property name="md.prod.unsigned"   value="ukfederation-metadata-unsigned.xml"/>
 	<property name="md.test.unsigned"   value="ukfederation-test-unsigned.xml"/>
@@ -119,27 +87,6 @@
 	<property name="md.back.signed"     value="ukfederation-back.xml"/>
 	<property name="md.wayf.signed"     value="ukfederation-wayf.xml"/>
 	
-	<!--
-		The process (with indentation implying the creation
-		hierarchy) is:
-		
-		[19]	ukfederation-metadata-unsigned.xml
-		[20]		ukfederation-metadata.xml
-		[25]		ukfederation-wayf-unsigned.xml
-		[26]			ukfederation-wayf.xml
-		
-		[27]	ukfederation-test-unsigned.xml
-		[28]		ukfederation-test.xml
-		[29]	ukfederation-export-unsigned.xml
-		[30]		ukfederation-export.xml
-		[31]    ukfederation-back-unsigned.xml
-		[32]        ukfederation-back.xml
-		
-		The numbers in brackets are duplicated in the script where the file in
-		question is created.  Some numbers are missing because some old format
-		files are no longer being generated.
-	-->
-
 	<!--
 		Null device location.
 	-->
@@ -395,52 +342,6 @@
         <CHANNEL.do channel="uk" verb="collect"/>
     </target>
     
-	<!--
-		gen.entities
-		
-		Concatenates the (potentially many) entity fragment files together into a single file
-		wrapping the entities in an <Entities> element.  This can then be dragged in by the document
-		function in XSLT.
-	-->
-	<target name="gen.entities">
-		<echo>Composing entity fragment files.</echo>
-		<!-- [1] -->
-		<concat destfile="${entities.file}" append="no" force="yes" fixlastline="no">
-			<header filtering="no">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#10;&lt;Entities&gt;&#10;</header>
-			<fileset dir="${entities.dir}" includes="uk*.xml"/>
-			<footer>&lt;/Entities&gt;&#10;</footer>
-			<filterchain>
-				<replaceregex pattern="&lt;\?[xX][mM][lL] .*&gt;" />
-			</filterchain>
-		</concat>
-	</target>
-	
-	<!--
-		Unsigned metadata generation for the UK Federation.
-	-->
-
-	<target name="gen.uk.master" depends="gen.entities">
-		<echo>Generating UK federation master file.</echo>
-		<!-- [2] -->
-		<XALAN.xmldir x="master_ukfederation.xsl" i="${master.file.name}"
-			o="${uk.master.file}" />
-		<CHECK.ukreg i="${xml.dir}/${uk.master.file}"/>
-	</target>
-	
-	<!--
-	    test.uk.future
-	    
-	    Run a set of possible future rulesets against the existing collection
-	    of UK-federation registered metadata.
-	-->
-	<target name="test.uk.future" depends="flow.uk.collect">
-		<echo>Checking against future rulesets.</echo>
-        <CHECK.base i="${uk.collected}">
-            <arg value="${build.dir}/check_future.xsl"/>
-            <arg value="${build.dir}/check_saml2int.xsl"/>
-        </CHECK.base>
-	</target>
-	
     <!--
         Check a metadata document for publishability.  This is applied during all
         UK publication flows prior to any signature step.  It is not applied to
@@ -465,48 +366,27 @@
         </sequential>
     </macrodef>
 
-	<target name="gen.uk.unsigned" depends="gen.uk.master">
+    <!--
+        Unsigned metadata generation for the UK Federation.
+    -->
+	<target name="gen.uk.unsigned">
+        <!--
+            Delete intermediate files from the old system.
+        -->
+        <delete file="${xml.dir}/entities.xml" quiet="true" verbose="false"/>
+        <delete file="${xml.dir}/ukfederation-metadata-master.xml" quiet="true" verbose="false"/>
+
 		<echo>Generating unsigned UK metadata files.</echo>
 		
-		<!-- [19] -->
-		<echo>   Production aggregate...</echo>
-		<XALAN
-			x="${build.dir}/uk_master_unsigned.xsl"
-			i="${xml.dir}/${uk.master.file}"
-			o="${temp.xml}"/>
-        <echo>      normalising namespaces...</echo>
-        <XALAN
-            x="${build.dir}/ns_norm_uk.xsl"
-            i="${temp.xml}"
-            o="${xml.dir}/${md.prod.unsigned}" />
-		<MDNORM i="${xml.dir}/${md.prod.unsigned}"/>
-        <CHECK.publishable i="${xml.dir}/${md.prod.unsigned}"/>
-        <!-- [25] -->
-		<echo>      DS variant...</echo>
-        <XALAN.xmldir x="master_to_wayf.xsl" i="${md.prod.unsigned}"
-            o="${md.wayf.unsigned}"/>
-        <CHECK.publishable i="${xml.dir}/${md.wayf.unsigned}"/>
-		
-		<!-- [31] -->
-		<echo>   Fallback aggregate...</echo>
-        <XALAN
-            x="${build.dir}/uk_master_back.xsl"
-            i="${xml.dir}/${uk.master.file}"
-            o="${temp.xml}"/>
-        <echo>      normalising namespaces...</echo>
-        <XALAN
-            x="${build.dir}/ns_norm_uk.xsl"
-            i="${temp.xml}"
-            o="${xml.dir}/${md.back.unsigned}" />
-        <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
-        <CHECK.publishable i="${xml.dir}/${md.back.unsigned}"/>
-
 		<!--
 		    Call the generate verb in the uk mdx channel
-		    to generate everything else:
+		    to generate the following:
 		    
-               test aggregate   [27]
-		       export aggregate [29]
+		       production aggregate
+		       WAYF/DS aggregate
+               test aggregate
+		       export aggregate
+		       fallback aggregate
 		       statistics
 		-->
         <CHANNEL.do channel="uk" verb="generate"/>
@@ -514,8 +394,11 @@
 		<!--
 		    Post-process mda-generated output files.
 		-->
+        <MDNORM i="${xml.dir}/${md.prod.unsigned}"/>
+        <MDNORM i="${xml.dir}/${md.wayf.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.test.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.export.unsigned}"/>
+        <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
         <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf"/>
 		
         <echo>Generated UK unsigned metadata.</echo>
@@ -1116,34 +999,6 @@
         <CHANNEL.import channel="us_incommon"/>
 	</target>
     
-	<!--
-	    *************************************************
-	    ***                                           ***
-	    ***   U K   F E D E R A T I O N   R E D U X   ***
-	    ***                                           ***
-	    *************************************************
-	-->
-	
-    <target name="flow.uk.generate">
-        <CHANNEL.do channel="uk" verb="generate"/>
-	</target>
-
-    <target name="generate.redux">
-        <CHANNEL.do channel="uk" verb="generate"/>
-
-        <MDNORM i="${mdx.dir}/uk/${md.prod.unsigned}"/>
-        <MDNORM i="${mdx.dir}/uk/${md.wayf.unsigned}"/>
-        <MDNORM i="${mdx.dir}/uk/${md.back.unsigned}"/>
-        <MDNORM i="${mdx.dir}/uk/${md.test.unsigned}"/>
-        <MDNORM i="${mdx.dir}/uk/${md.export.unsigned}"/>
-
-        <echo>final checks...</echo>
-        <CHECK.publishable i="${mdx.dir}/uk/${md.prod.unsigned}"/>
-        <CHECK.publishable i="${mdx.dir}/uk/${md.wayf.unsigned}"/>
-        <CHECK.publishable i="${mdx.dir}/uk/${md.back.unsigned}"/>
-        <CHECK.publishable i="${mdx.dir}/uk/${md.test.unsigned}"/>
-    </target>
-
     <!--
         *******************************
         ***                         ***
@@ -1341,4 +1196,18 @@
         <echo>Checked.</echo>
 	</target>
 
+    <!--
+        check.uk.future
+        
+        Run a set of possible future rulesets against the existing collection
+        of UK-federation registered metadata.
+    -->
+    <target name="check.uk.future" depends="flow.uk.collect">
+        <echo>Checking against future rulesets.</echo>
+        <CHECK.base i="${uk.collected}">
+            <arg value="${build.dir}/check_future.xsl"/>
+            <arg value="${build.dir}/check_saml2int.xsl"/>
+        </CHECK.base>
+    </target>
+    
 </project>
