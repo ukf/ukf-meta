@@ -618,7 +618,7 @@
 				fork="true" failonerror="true" maxmemory="${java.max.memory}">
 				<classpath>
 					<fileset dir="${tools.metadatatool}/lib">
-						<include name="**/*.jar"/>
+						<include name="*.jar"/>
 					</fileset>
 				</classpath>
 				<jvmarg value="-Djava.endorsed.dirs=${tools.metadatatool}/endorsed"/>
@@ -944,10 +944,10 @@
                 fork="true" failonerror="true" maxmemory="${java.max.memory}">
                 <classpath>
                     <fileset dir="${tools.mdcheck}/lib">
-                        <include name="**/*.jar"/>
+                        <include name="*.jar"/>
                     </fileset>
                     <fileset dir="${tools.xalan}/lib">
-                        <include name="**/*.jar"/>
+                        <include name="*.jar"/>
                     </fileset>
                 </classpath>
                 <jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
