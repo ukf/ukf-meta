@@ -8,10 +8,7 @@
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
-	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
-	
+
 	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns:mdxDates="xalan://uk.ac.sdss.xalan.md.Dates"
 	extension-element-prefixes="date mdxDates"
