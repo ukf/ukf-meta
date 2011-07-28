@@ -992,6 +992,7 @@
         <CHANNEL.import channel="jp_gakunin"/>
         <CHANNEL.import channel="lv_laife"/>
         <CHANNEL.import channel="nl_surfnet"/>
+		<CHANNEL.import channel="nz_tuakiri"/>
         <CHANNEL.import channel="no_feide"/>
         <CHANNEL.import channel="se_swamid"/>
         <CHANNEL.import channel="si_arnes"/>
