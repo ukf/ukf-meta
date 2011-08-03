@@ -7,10 +7,10 @@
 #
 
 # This line indicates that the old certificate is present
-$old_cert_line = 'MIID7jCCA1egAwIBAgIQHJ62fRr9Z6oWeYtsoVKvgzANBgkqhkiG9w0BAQUFADCB';
+$old_cert_line = 'MIID3TCCA0agAwIBAgIQCnFfdSGulBNKkPb/stl3IDANBgkqhkiG9w0BAQUFADCB';
 
 # This line indicates that the new certificate is present
-$new_cert_line = 'MIID3TCCA0agAwIBAgIQCnFfdSGulBNKkPb/stl3IDANBgkqhkiG9w0BAQUFADCB';
+$new_cert_line = 'MIIEiTCCA3GgAwIBAgIRAPzB04tYcniZc/0mSMRCfXgwDQYJKoZIhvcNAQEFBQAw';
 
 # The new certificate data
 $new_cert = <<EOF;
@@ -19,27 +19,31 @@ $new_cert = <<EOF;
                 <ds:KeyName>gateway.athensams.net</ds:KeyName>
                 <ds:X509Data>
                     <ds:X509Certificate>
-                        MIID3TCCA0agAwIBAgIQCnFfdSGulBNKkPb/stl3IDANBgkqhkiG9w0BAQUFADCB
-                        zjELMAkGA1UEBhMCWkExFTATBgNVBAgTDFdlc3Rlcm4gQ2FwZTESMBAGA1UEBxMJ
-                        Q2FwZSBUb3duMR0wGwYDVQQKExRUaGF3dGUgQ29uc3VsdGluZyBjYzEoMCYGA1UE
-                        CxMfQ2VydGlmaWNhdGlvbiBTZXJ2aWNlcyBEaXZpc2lvbjEhMB8GA1UEAxMYVGhh
-                        d3RlIFByZW1pdW0gU2VydmVyIENBMSgwJgYJKoZIhvcNAQkBFhlwcmVtaXVtLXNl
-                        cnZlckB0aGF3dGUuY29tMB4XDTEwMDYxNjAwMDAwMFoXDTExMDgxNTIzNTk1OVow
-                        XjELMAkGA1UEBhMCR0IxDjAMBgNVBAgTBUJBTkVTMQ0wCwYDVQQHFARCYXRoMRAw
-                        DgYDVQQKFAdFZHVzZXJ2MR4wHAYDVQQDFBVnYXRld2F5LmF0aGVuc2Ftcy5uZXQw
-                        ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDBjvSyxeNiVQBJuXquzjcw
-                        4VXHsTNgexaiJIrIgEpdoUUkDV0ElNQonMeZsR3jQZsaUQBHBkkSe7OCo3dbp9z+
-                        1dPTbE99+vn0rIIQUWE57IiQxVDkmAZLNh5tufcLaYgIhIbHevyN4HrqBWdiYM5R
-                        NHiwDLDFVnjVHmoml2+E+Ld76RcfBZzsyDGTGyRk+1RU9GIUX654v1E2L8h+7DFu
-                        0s/gIyV1GHgwPo4cQCBTgz9WCe8ka4WC2ruURJDAtnenJ1G+fVwV8+8sckDTJ31k
-                        YIsc9VsdPhy0iUX1NUisJ8ioiiv5BRYRpN7mS9XQo7wrtvTsab8ebmxqTYvCns+9
-                        AgMBAAGjgaYwgaMwDAYDVR0TAQH/BAIwADBABgNVHR8EOTA3MDWgM6Axhi9odHRw
-                        Oi8vY3JsLnRoYXd0ZS5jb20vVGhhd3RlU2VydmVyUHJlbWl1bUNBLmNybDAdBgNV
-                        HSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwMgYIKwYBBQUHAQEEJjAkMCIGCCsG
-                        AQUFBzABhhZodHRwOi8vb2NzcC50aGF3dGUuY29tMA0GCSqGSIb3DQEBBQUAA4GB
-                        AJEUjauWEO0PxgTpQOHt1MhWTNjZ1xYDU5LgbV+5Dgk4SaRE8MiFe+TvKayDtjOE
-                        U82y/51lIeA73wB30urypdrXZ/DcexJSzl5uLeaDdh+aTc9CUcLxGvWxE+Zwry9P
-                        2hzpuFAg/YwBMQWK2k6bYcNtSwViWkn9iizXMJ232qZN
+                        MIIEiTCCA3GgAwIBAgIRAPzB04tYcniZc/0mSMRCfXgwDQYJKoZIhvcNAQEFBQAw
+                        NjELMAkGA1UEBhMCTkwxDzANBgNVBAoTBlRFUkVOQTEWMBQGA1UEAxMNVEVSRU5B
+                        IFNTTCBDQTAeFw0xMTA3MjgwMDAwMDBaFw0xMjA3MjcyMzU5NTlaMF4xCzAJBgNV
+                        BAYTAkdCMQ4wDAYDVQQIEwVCQU5FUzENMAsGA1UEBxMEQmF0aDEQMA4GA1UEChMH
+                        RWR1c2VydjEeMBwGA1UEAxMVZ2F0ZXdheS5hdGhlbnNhbXMubmV0MIIBIjANBgkq
+                        hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoLbk2y/QGq7FEcReCQDcP0dDxk68Ufw0
+                        QH5mh46CzkPuGtxB6Q96YTUc3lVw7h9K9YHNXvVB6MlMYN2oiMYQGWuyMqMxQCzZ
+                        jmwjIRiphg3+sRV3XmIFyoJej+sWbrBKzcZUAPmxYqbR8xgoizoo+vVkicKJ9V3d
+                        mhyrUhSXUhJv14zgruO6RCp2XFyVSH2uKprE3Fn4qRPI/kiYe7rtTlnsKdZk9cQE
+                        z+8/70QKIWfpdJCJuJfb2uLoJ8oaY9AnwCvkjuSYS9xMhbsSQFiCUJK8T/jV1gGK
+                        fc7BQ58WOODkCVXWFXkSsxOGvouQ8o0El/9Uq/2d3DIAGXeczlJRhQIDAQABo4IB
+                        aDCCAWQwHwYDVR0jBBgwFoAUDL2TaAzz3qujSWsrN1dH6pDjue0wHQYDVR0OBBYE
+                        FNdxQBp34i4gpWGofRhgPrkvWmW/MA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8E
+                        AjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAYBgNVHSAEETAPMA0G
+                        CysGAQQBsjEBAgIdMDoGA1UdHwQzMDEwL6AtoCuGKWh0dHA6Ly9jcmwudGNzLnRl
+                        cmVuYS5vcmcvVEVSRU5BU1NMQ0EuY3JsMG0GCCsGAQUFBwEBBGEwXzA1BggrBgEF
+                        BQcwAoYpaHR0cDovL2NydC50Y3MudGVyZW5hLm9yZy9URVJFTkFTU0xDQS5jcnQw
+                        JgYIKwYBBQUHMAGGGmh0dHA6Ly9vY3NwLnRjcy50ZXJlbmEub3JnMCAGA1UdEQQZ
+                        MBeCFWdhdGV3YXkuYXRoZW5zYW1zLm5ldDANBgkqhkiG9w0BAQUFAAOCAQEAvC1+
+                        GswAC8giviw+HoLadvdWBBKi4lTbj2IXLehAApg7Mci1jYZAQCvLjI7aqF7PkZ2l
+                        2MqubMwsNQr1G6x4V4Yubvm++5d5CMjihuZWPoCuNRwhryzMilumHH0TiBifSKbe
+                        VY0oAsCQJRTL6W3uMB5085iuRe1H+FlecvQivxoDLyk2CSK1AuTXXPUZ6ILtWWBW
+                        ba9krg5Lhvv84W+3c3vOVcb4X3KV80QxtCd5UQ26ddCrM7kMLx5qKzvMX8UqoNld
+                        hNdOuL+Kxy0FQroaPsECcaeliAXYukv2vvY1poWwczjyX7eTa/WqreCf9CgraUYE
+                        H2/AKOc/SSnYXhcupg==
                     </ds:X509Certificate>
                 </ds:X509Data>
             </ds:KeyInfo>
