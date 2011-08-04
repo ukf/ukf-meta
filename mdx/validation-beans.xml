@@ -179,6 +179,19 @@
     </bean>
 
     <!--
+        check_saml2
+    -->
+    <bean id="check_saml2" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_saml2"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml2.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         check_saml2meta
     -->
     <bean id="check_saml2meta" class="net.shibboleth.metadata.dom.XSLValidationStage"
@@ -252,6 +265,7 @@
                 <ref bean="check_mdui"/>
                 <ref bean="check_misc"/>
                 <ref bean="check_namespaces"/>
+                <ref bean="check_saml2"/>
                 <ref bean="check_saml2meta"/>
                 <ref bean="check_shibboleth"/>
             </list>

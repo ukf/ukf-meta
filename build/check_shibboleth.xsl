@@ -19,7 +19,6 @@
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 	<!--
@@ -83,6 +82,18 @@
 		[not(md:SingleSignOnService[@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest'])]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">Shibboleth 1.x support claimed but no appropriate SSO service binding</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
+		It does not make sense for an IdP to have more than one SingleSignOnService
+		with the Shibboleth authentication request binding, because this is a
+		front-channel binding.
+	-->
+	<xsl:template match="md:SingleSignOnService[@Binding='urn:mace:shibboleth:1.0:profiles:AuthnRequest'][position()>1]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">more than one SingleSignOnService with Shibboleth binding</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	

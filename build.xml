@@ -872,6 +872,7 @@
                 <arg value="${build.dir}/check_mdui.xsl"/>
                 <arg value="${build.dir}/check_misc.xsl"/>
                 <arg value="${build.dir}/check_namespaces.xsl"/>
+				<arg value="${build.dir}/check_saml2.xsl"/>
 				<arg value="${build.dir}/check_saml2meta.xsl"/>
                 <arg value="${build.dir}/check_shibboleth.xsl"/>
 				
