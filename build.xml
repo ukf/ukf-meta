@@ -343,30 +343,6 @@
     </target>
     
     <!--
-        Check a metadata document for publishability.  This is applied during all
-        UK publication flows prior to any signature step.  It is not applied to
-        export flows, for which we desire the closest possible correspondence to
-        the registered metadata.
-        
-        At the moment, this consists of a few tests which are no longer being performed elsewhere
-        but should pass by construction.  In the longer term it may make sense to
-        expand this to the fullest battery possible, with the exception of those
-        tests which are registrar-specific.
-        
-        Parameter 'i' is the file to be checked; no assumption is made
-        about its location so this must contain a full path.
-    -->
-    <macrodef name="CHECK.publishable">
-        <attribute name="i"/>
-        <sequential>
-            <CHECK.base i="@{i}">
-            	<arg value="${build.dir}/check_filtered.xsl"/>
-                <arg value="${build.dir}/check_fixups.xsl"/>
-            </CHECK.base>
-        </sequential>
-    </macrodef>
-
-    <!--
         Unsigned metadata generation for the UK Federation.
     -->
 	<target name="gen.uk.unsigned">

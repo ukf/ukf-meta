@@ -23,6 +23,19 @@
     </bean>
     
     <!--
+        check_aggregate
+    -->
+    <bean id="check_aggregate" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        lazy-init="true" init-method="initialize">
+        <property name="id" value="check_aggregate"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_aggregate.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         check_filtered
     -->
     <bean id="check_filtered" class="net.shibboleth.metadata.dom.XSLValidationStage"
@@ -289,12 +302,18 @@
     
     <!--
         CHECK_publishable
+
+        Check an aggregate metadata document for publishability.  This is applied during
+        all UK publication flows prior to any signature step.  It is not applied to
+        export flows, for which we desire the closest possible correspondence to
+        the registered metadata.
     -->
     <bean id="CHECK_publishable" class="net.shibboleth.metadata.pipeline.CompositeStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="CHECK_publishable"/>
         <property name="composedStages">
             <list>
+                <ref bean="check_aggregate"/>
                 <ref bean="check_filtered"/>
                 <ref bean="check_fixups"/>
             </list>
