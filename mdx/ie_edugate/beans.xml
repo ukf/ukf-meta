@@ -79,9 +79,17 @@
                         missing or expired validUntil attribute
                         invalid signature
                 -->
-                <ref bean="ie_edugate_validUntil"/>
+                <!-- <ref bean="ie_edugate_validUntil"/> -->
                 <ref bean="ie_edugate_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
+                
+                <!--
+                    For now, regard expired validUntil as an error which
+                    is serious enough to cause this metadata to be discarded
+                    but not enough to cause our signing process to terminate.
+                -->
+                <ref bean="ie_edugate_validUntil"/>
+                <ref bean="errorAnnouncingFilter"/>
                 
                 <ref bean="disassemble"/>
                 
