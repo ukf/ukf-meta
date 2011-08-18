@@ -49,7 +49,8 @@
         ie_edugate_validUntil
         
         Check that an aggregate has a validUntil instant specified, and that it has not
-        yet expired.  Sets a bound of 30 days on the validity interval.
+        yet expired.  Sets a bound of 14 days on the validity interval; 9 days is the
+        expected value.
     -->
     <bean id="ie_edugate_validUntil" class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage"
         init-method="initialize" lazy-init="true">
@@ -61,7 +62,7 @@
         <!--
             Validity interval must not exceed 30 days.
         -->
-        <property name="maxValidityInterval" value="#{ 1000L * 60 * 60 * 24 * 30 }"/>
+        <property name="maxValidityInterval" value="#{ 1000L * 60 * 60 * 24 * 14 }"/>
     </bean>
     
     <!--
@@ -79,17 +80,9 @@
                         missing or expired validUntil attribute
                         invalid signature
                 -->
-                <!-- <ref bean="ie_edugate_validUntil"/> -->
+                <ref bean="ie_edugate_validUntil"/>
                 <ref bean="ie_edugate_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
-                
-                <!--
-                    For now, regard expired validUntil as an error which
-                    is serious enough to cause this metadata to be discarded
-                    but not enough to cause our signing process to terminate.
-                -->
-                <ref bean="ie_edugate_validUntil"/>
-                <ref bean="errorAnnouncingFilter"/>
                 
                 <ref bean="disassemble"/>
                 
