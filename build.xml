@@ -774,6 +774,7 @@
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
         <CHECK.std i="${entities.dir}/imported.xml">
             <arg value="${build.dir}/check_imported.xsl"/>
+        	<arg value="${build.dir}/check_reqattr.xsl"/>
             <arg value="${build.dir}/check_vhosts.xsl"/>
         </CHECK.std>
 		<echo>Checked.</echo>
@@ -1173,6 +1174,7 @@
         <echo>Checking against future rulesets.</echo>
         <CHECK.base i="${uk.collected}">
             <arg value="${build.dir}/check_future.xsl"/>
+        	<arg value="${build.dir}/check_reqattr.xsl"/>
             <arg value="${build.dir}/check_saml2int.xsl"/>
         </CHECK.base>
     </target>

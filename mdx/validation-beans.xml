@@ -179,6 +179,19 @@
     </bean>
     
     <!--
+        check_reqattr
+    -->
+    <bean id="check_reqattr" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_reqattr"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_reqattr.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         check_saml2int
     -->
     <bean id="check_saml2int" class="net.shibboleth.metadata.dom.XSLValidationStage"
@@ -295,6 +308,7 @@
             <list>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_future"/>
+                <ref bean="check_reqattr"/>
                 <ref bean="check_saml2int"/>
             </list>
         </property>

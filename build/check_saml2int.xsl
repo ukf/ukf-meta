@@ -89,29 +89,4 @@
 		</xsl:call-template>
 	</xsl:template>
 	
-
-	<!--
-		The following are not part of the current draft, but something like these
-		might be added in future.
-	-->
-	<xsl:template match="md:RequestedAttribute[not(@NameFormat)]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">
-				<xsl:text>(X) RequestedAttribute </xsl:text>
-				<xsl:value-of select="@Name"/>
-				<xsl:text> lacks NameFormat attribute</xsl:text>
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	<xsl:template match="md:RequestedAttribute[@NameFormat][not(@NameFormat='urn:oasis:names:tc:SAML:2.0:attrname-format:uri')]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">
-				<xsl:text>(X) RequestedAttribute </xsl:text>
-				<xsl:value-of select="@Name"/>
-				<xsl:text> has incorrect NameFormat </xsl:text>
-				<xsl:value-of select="@NameFormat"/>
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-
 </xsl:stylesheet>
