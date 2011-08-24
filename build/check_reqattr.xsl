@@ -9,22 +9,22 @@
 	of a RequestedAttribute element together designate a real SAML attribute, either
 	explicitly or implicitly covered by some specification.  Other combinations
 	of Name+NameFormat are presumptively erroneous.
+	
+	Attribute profiles we make use of here:
+	
+	* eduPerson 2008
+	
+	* MACE-Dir SAML Attribute Profiles, April 2008
+	
+	* SWITCHaai Attribute Specification, 2010-06-23
+	
 
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
-	xmlns:set="http://exslt.org/sets"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-
-	xmlns:mdxURL="xalan://uk.ac.sdss.xalan.md.URLchecker"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -235,6 +235,62 @@
 			</xsl:when>
 			
 			<!--
+				SWITCHaai SAML 1.x names are prefixed by 'urn:mace:switch.ch:attribute-def:'
+				
+				Arranged in order of appearance in the specification.
+			-->
+			<xsl:when test="
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonUniqueID' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonMatriculationNumber' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonCardUID' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonDateOfBirth' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonGender' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonHomeOrganization' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonHomeOrganizationType' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonStudyBranch1' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonStudyBranch2' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonStudyBranch3' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonStudyLevel' or
+				@Name='urn:mace:switch.ch:attribute-def:swissEduPersonStaffCategory'
+				">
+				<!-- OK -->
+			</xsl:when>
+			
+			<!--
+				SWITCHaai SAML 2.0 names are oid-based, and should not appear
+				with the SAML 1.x NameFormat.
+				
+				Arranged in order of appearance in the specification.
+			-->
+			<xsl:when test="
+				@Name='urn:oid:2.16.756.1.2.5.1.1.1' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.11' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.12' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.2' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.3' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.4' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.5' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.6' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.7' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.8' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.9' or
+				@Name='urn:oid:2.16.756.1.2.5.1.1.10'
+				">
+				<xsl:call-template name="error">
+					<xsl:with-param name="m">
+						<xsl:text>RequestedAttribute uses OID name </xsl:text>
+						<xsl:value-of select="@Name"/>
+						<xsl:text> with SAML 1.x NameFormat: should use urn:mace name or SAML 2.0 NameFormat</xsl:text>
+						<xsl:if test="@FriendlyName">
+							<xsl:text> (</xsl:text>
+							<xsl:value-of select="@FriendlyName"/>
+							<xsl:text>)</xsl:text>
+						</xsl:if>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			
+			<!--
 				MACE-Dir Attribute Profile for SAML 1.x
 				
 				Forward-looking "urn:oid:" names are permitted, which is to say
@@ -277,12 +333,30 @@
 		<xsl:choose>
 
 			<!--
-				Common error: using the legacy name with the SAML 2.0 NameFormat.
+				Common error: using the legacy MACEAttr name with the SAML 2.0 NameFormat.
 			-->
 			<xsl:when test="starts-with(@Name, 'urn:mace:dir:attribute-def:')">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">
 						<xsl:text>RequestedAttribute uses legacy MACEAttr name </xsl:text>
+						<xsl:value-of select="@Name"/>
+						<xsl:text> with SAML 2.0 NameFormat: should use urn:oid name or SAML 1.x NameFormat</xsl:text>
+						<xsl:if test="@FriendlyName">
+							<xsl:text> (</xsl:text>
+							<xsl:value-of select="@FriendlyName"/>
+							<xsl:text>)</xsl:text>
+						</xsl:if>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			
+			<!--
+				Common error: using the legacy SWITCHaai name with the SAML 2.0 NameFormat.
+			-->
+			<xsl:when test="starts-with(@Name, 'urn:mace:switch.ch:attribute-def:')">
+				<xsl:call-template name="error">
+					<xsl:with-param name="m">
+						<xsl:text>RequestedAttribute uses legacy SWITCHaai name </xsl:text>
 						<xsl:value-of select="@Name"/>
 						<xsl:text> with SAML 2.0 NameFormat: should use urn:oid name or SAML 1.x NameFormat</xsl:text>
 						<xsl:if test="@FriendlyName">
