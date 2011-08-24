@@ -38,6 +38,18 @@
         </property>
     </bean>
     
+    <bean id="importAll" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="importAll"/>
+        <property name="stages">
+            <list>
+                <ref bean="ie_edugate_allEntities"/>
+                <ref bean="standardImportTail"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
     <bean id="importRaw" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
         <property name="id" value="importRaw"/>

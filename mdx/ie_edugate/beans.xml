@@ -66,6 +66,32 @@
     </bean>
     
     <!--
+        Fetch and process all entities as a collection.
+    -->
+    <bean id="ie_edugate_allEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="ie_edugate_allEntities"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="ie_edugate_productionAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="ie_edugate_validUntil"/>
+                <ref bean="ie_edugate_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         Fetch and process the exported entities as a collection.
     -->
     <bean id="ie_edugate_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"

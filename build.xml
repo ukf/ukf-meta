@@ -964,6 +964,7 @@
         <CHANNEL.import channel="gr_grnet"/>
         <CHANNEL.import channel="hu_eduid"/>
         <CHANNEL.import channel="ie_edugate"/>
+		<CHANNEL.do channel="ie_edugate" verb="importAll"/>
         <CHANNEL.import channel="int_edugain"/>
 		<CHANNEL.do channel="int_edugain" verb="testImport"/>
         <CHANNEL.import channel="it_idem"/>
