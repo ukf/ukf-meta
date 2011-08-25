@@ -859,23 +859,6 @@
 		</sequential>
 	</macrodef>
 	
-	<!--
-		Check a metadata document against the full set of conventions used by the
-		UK federation's registrar function.
-		
-		Parameter 'i' is the file to be checked; no assumption is made
-		about its location so this must contain a full path.
-		
-	-->
-	<macrodef name="CHECK.ukreg">
-		<attribute name="i"/>
-		<sequential>
-			<CHECK.std i="@{i}">
-                <arg value="${build.dir}/check_ukreg.xsl"/>
-			</CHECK.std>
-		</sequential>
-	</macrodef>
-	
     <!--
         *********************************************
         ***                                       ***
