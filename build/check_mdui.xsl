@@ -62,7 +62,7 @@
 		md:RoleDescriptorType).
 		
 		[The rule here further restricts the location to within either IDPSSODescriptor or
-		SPSSODescriptor elements, which are the ones we'll actually make use of.]
+		SPSSODescriptor elements, which are the ones it actually makes sense to use today.]
 	-->
 	<xsl:template match="mdui:UIInfo[not(parent::md:Extensions)]">
 		<xsl:call-template name="error">
@@ -72,7 +72,11 @@
 	<xsl:template match="md:Extensions[mdui:UIInfo]
 		[not(parent::md:IDPSSODescriptor)][not(parent::md:SPSSODescriptor)]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">UIInfo appearing outside role descriptor element</xsl:with-param>
+			<xsl:with-param name="m">
+				<xsl:text>UIInfo appearing outside SSO descriptor element (</xsl:text>
+				<xsl:value-of select="name(..)"/>
+				<xsl:text>)</xsl:text>
+			</xsl:with-param>
 		</xsl:call-template>        
 	</xsl:template>
 
