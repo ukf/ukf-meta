@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for this channel.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+
+    <!--
+        Fetch the aggregate aggregate.
+    -->
+    <bean id="test_aggregate" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="test_aggregate"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="source">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/test/input.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch and process the entities as a collection.
+    -->
+    <bean id="test_entities" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="test_entities"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="test_aggregate"/>
+                <ref bean="disassemble"/>
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+</beans>
