@@ -291,6 +291,7 @@
                 <ref bean="check_mdui"/>
                 <ref bean="check_misc"/>
                 <ref bean="check_namespaces"/>
+                <ref bean="check_reqattr"/>
                 <ref bean="check_saml2"/>
                 <ref bean="check_saml2meta"/>
                 <ref bean="check_shibboleth"/>
@@ -308,7 +309,6 @@
             <list>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_future"/>
-                <ref bean="check_reqattr"/>
                 <ref bean="check_saml2int"/>
             </list>
         </property>
