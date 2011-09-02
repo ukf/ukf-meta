@@ -45,4 +45,40 @@
         </property>
     </bean>
 
+    <!--
+        sp_mdui_test
+        
+        Generates a page of links to discovery services, for each SP that
+        has mdui:uiinfo metadata.
+    -->
+    <bean id="sp_mdui_test" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="sp_mdui_test"/>
+        <property name="stages">
+            <list>
+                <ref bean="uk_registeredEntities"/>
+                <ref bean="assemble"/>
+                <bean id="process" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+                    init-method="initialize" lazy-init="true">
+                    <property name="id" value="process"/>
+                    <property name="xslResource">
+                        <bean class="org.opensaml.util.resource.FilesystemResource">
+                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/sp_mdui_test.xsl"/>
+                        </bean>
+                    </property>
+                </bean>
+                <bean id="serialize" class="net.shibboleth.metadata.pipeline.SerializationStage"
+                    init-method="initialize" lazy-init="true">
+                    <property name="id" value="serialize"/>
+                    <property name="serializer" ref="serializer"/>
+                    <property name="outputFile">
+                        <bean class="java.io.File">
+                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/temp.html"/>
+                        </bean>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
 </beans>
