@@ -773,6 +773,7 @@
 		
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
         <CHECK.std i="${entities.dir}/imported.xml">
+        	<arg value="${build.dir}/check_future.xsl"/>
             <arg value="${build.dir}/check_imported.xsl"/>
             <arg value="${build.dir}/check_vhosts.xsl"/>
         </CHECK.std>
