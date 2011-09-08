@@ -979,6 +979,20 @@
 	</target>
     
     <!--
+        *********************************
+        ***                           ***
+        ***   U I I N F O   L I S T   ***
+        ***                           ***
+        *********************************
+    -->
+    
+    <target name="uiinfo.list">
+    	<CHANNEL.do channel="uk" verb="collect"/>
+        <XALAN.noout i="${mdx.dir}/uk/collected.xml"
+               x="${build.dir}/list_uiinfo.xsl"/>
+    </target>
+    
+    <!--
         *******************************
         ***                         ***
         ***   M D U I   S T A T S   ***
