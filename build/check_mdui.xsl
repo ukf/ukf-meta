@@ -175,4 +175,15 @@
 		</xsl:call-template>        
 	</xsl:template>
 	
+	<!--
+		Section 2.2.4
+		
+		Coordinates are given in URI form using the geo URI scheme [RFC5870].
+	-->
+	<xsl:template match="mdui:GeolocationHint[not(starts-with(., 'geo:'))]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">GeolocationHint must be RFC5870 URI starting with 'geo:'</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 </xsl:stylesheet>
