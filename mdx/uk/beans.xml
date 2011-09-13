@@ -35,21 +35,6 @@
     
     
     <!--
-        uk_filterDeletedEntities
-        
-        Remove entity items which have the ukfedlabel:DeletedEntity label on them.
-        This convention will be replaced at some point by the files not being available
-        for collection in the first place.
-    -->
-    <bean id="uk_filterDeletedEntities" class="net.shibboleth.metadata.dom.XPathFilteringStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_filterDeletedEntities"/>
-        <property name="xpathExpression" value="//ukfedlabel:DeletedEntity"/>
-        <property name="namespaceContext" ref="commonNamespaces"/>
-    </bean>
-    
-    
-    <!--
         uk_processScopes
         
         This stage normalises scope handling in two ways particular to the UK
@@ -251,7 +236,6 @@
         <property name="composedStages">
             <list>
                 <ref bean="uk_fetchFragmentFiles"/>
-                <ref bean="uk_filterDeletedEntities"/>
                 <ref bean="uk_processFragment"/>
                 <ref bean="uk_processScopes"/>
                 <ref bean="populateItemIds"/>
