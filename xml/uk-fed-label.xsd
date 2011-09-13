@@ -72,18 +72,6 @@
         </annotation>
     </element>
     
-    <element name="DeletedEntity" type="ukfedlabel:datedLabel">
-        <annotation>
-            <documentation>
-                Marks an entity which should not appear in the federation's
-                public metadata.  This label is used during maintenance of
-                the federation's metadata, and consumers of the published
-                metadata should never encounter it (and have no need to
-                check for its presence).
-            </documentation>
-        </annotation>
-    </element>
-
     <element name="Software">
         <annotation>
             <documentation>
