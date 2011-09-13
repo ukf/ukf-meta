@@ -16,6 +16,7 @@
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
 	xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
 	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
@@ -56,6 +57,10 @@
 	</xsl:template>
 	
 	<xsl:template match="md:*">
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template match="mdattr:*">
 		<xsl:apply-templates/>
 	</xsl:template>
 	
