@@ -1147,6 +1147,32 @@
 	-->
 	
 	<!--
+	    Utility to apply a one-off change to every fragment file.
+	    
+	    The perl script is applied in "-i" mode to perform in-place
+	    editing; this only works well on Unix-like systems.
+	    
+	    Comment this out when not in use to avoid accidents.
+	-->
+	<!--
+	<target name="fix.fragments">
+        <for param="file">
+            <path>
+                <fileset dir="${entities.dir}" includes="uk*.xml"/>
+            </path>
+            <sequential>
+            	<echo>processing @{file}</echo>
+                <exec executable="perl" dir="${entities.dir}">
+                    <arg value="-i"/>
+                    <arg value="${build.dir}/fix_fragment.pl"/>
+                    <arg value="@{file}"/>
+                </exec>
+            </sequential>
+        </for>
+    </target>
+    -->
+
+	<!--
 		Extract embedded certificates
 	-->
 	<target name="extract.embedded" depends="flow.uk.collect">
