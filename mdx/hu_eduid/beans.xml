@@ -37,6 +37,15 @@
     </bean>
     
     <!--
+        Remove the eduID.hu custom metadata tagging namespace.
+    -->
+    <bean id="hu_eduid_stripEntityAttributesNamespace" class="uk.org.ukfederation.mda.NamespaceStrippingStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="hu_eduid_stripEntityAttributesNamespace"/>
+        <property name="namespace" value="urn:geant:niif.hu:eduid.hu:entity-attributes:processing-info"/>
+    </bean>
+
+    <!--
         Fetch and process the exported entities as a collection.
     -->
     <bean id="hu_eduid_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
@@ -57,6 +66,8 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
+                
+                <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
                 
                 <ref bean="standardImportActions"/>
             </list>
