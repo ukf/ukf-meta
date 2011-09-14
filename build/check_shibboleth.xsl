@@ -174,6 +174,19 @@
 	
 
 	<!--
+		Scope elements should not contain line breaks.
+		
+		This isn't part of the specification, but is assumed by some software,
+		including the Shibboleth 2.4.3 SP.
+	-->
+	<xsl:template match="shibmd:Scope[contains(., '&#10;')]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">Scope value contains line break</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	
+	<!--
 		The Shibboleth 1.3f SP, probably along with other software, has
 		problems with comments inside certificate representations.
 	-->
