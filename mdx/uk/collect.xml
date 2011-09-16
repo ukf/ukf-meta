@@ -40,7 +40,7 @@
                 <ref bean="uk_assemble"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="normaliseNamespaces"/>
-                <ref bean="CHECK_publishable"/>
+                <ref bean="uk_checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 <ref bean="serializeCollected"/>
             </list>

@@ -18,28 +18,6 @@
 	exclude-result-prefixes="md">
 
 	<!--
-		Handle <md:Extensions> elements.
-		
-		In general, at this stage in the flow we pass through any Extensions unaltered.
-		However, certain changes (such as the filtering we perform on extensions in the
-		ukfedlabel namespace) may cause the Extensions element to become empty, which is not
-		permitted by the schema.  We therefore precompute the resulting Extensions element
-		and suppress it entirely if it would have no child elements.
-	-->
-	<xsl:template match="md:Extensions">
-		<!-- compute result -->
-		<xsl:variable name="ext">
-			<xsl:copy>
-				<xsl:apply-templates select="node()|@*"/>
-			</xsl:copy>
-		</xsl:variable>
-		<!-- copy through only if schema-valid -->
-		<xsl:if test="count(exsl:node-set($ext)/md:Extensions/*) != 0">
-			<xsl:copy-of select="$ext"/>
-		</xsl:if>
-	</xsl:template>
-	
-	<!--
 		Pass through certain ukfedlabel namespace elements.
 	-->
 	<xsl:template match="ukfedlabel:UKFederationMember | ukfedlabel:AccountableUsers">

@@ -135,7 +135,7 @@
                 <ref bean="uk_normaliseNamespaces"/>
                 
                 <!-- production aggregate MUST pass publishability test -->
-                <ref bean="CHECK_publishable"/>
+                <ref bean="uk_checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedProductionAggregate"/>
@@ -178,7 +178,7 @@
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- WAYF aggregate MUST pass publishability test -->
-                <ref bean="CHECK_publishable"/>
+                <ref bean="uk_checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="serializeUnsignedWayfAggregate"/>
@@ -231,7 +231,7 @@
                 <ref bean="uk_normaliseNamespaces"/>
                 
                 <!-- fallback aggregate MUST pass publishability test -->
-                <ref bean="CHECK_publishable"/>
+                <ref bean="uk_checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedFallbackAggregate"/>
@@ -320,8 +320,14 @@
             <list>
                 <ref bean="uk_stripExtensions"/>
                 <ref bean="uk_assemble"/>
+                <ref bean="removeEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
                 <ref bean="uk_normaliseNamespaces"/>
+                
+                <!-- schema validity check MUST pass -->
+                <ref bean="checkSchemas"/>
+                <ref bean="errorTerminatingFilter"/>
+                
                 <ref bean="serializeUnsignedExportAggregate"/>
             </list>
         </property>
@@ -386,6 +392,7 @@
                     selection for that pipeline is based on these same extensions.
                 -->
                 <ref bean="uk_stripExtensions"/>
+                <ref bean="removeEmptyExtensions"/>
                 
                 <!--
                     Perform fixups on UK federation entities.  We need to make sure
@@ -443,7 +450,7 @@
                 <ref bean="uk_normaliseNamespaces"/>
                 
                 <!-- test aggregate MUST pass publishability test -->
-                <ref bean="CHECK_publishable"/>
+                <ref bean="uk_checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedTestAggregate"/>

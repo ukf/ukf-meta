@@ -314,24 +314,4 @@
         </property>
     </bean>
     
-    <!--
-        CHECK_publishable
-
-        Check an aggregate metadata document for publishability.  This is applied during
-        all UK publication flows prior to any signature step.  It is not applied to
-        export flows, for which we desire the closest possible correspondence to
-        the registered metadata.
-    -->
-    <bean id="CHECK_publishable" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="CHECK_publishable"/>
-        <property name="composedStages">
-            <list>
-                <ref bean="check_aggregate"/>
-                <ref bean="check_filtered"/>
-                <ref bean="check_fixups"/>
-            </list>
-        </property>
-    </bean>
-    
 </beans>
