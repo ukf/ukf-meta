@@ -237,12 +237,28 @@
     
 
     <!--
-        UK federation EntitiesDescriptor assembler pipeline stage.
+        UK federation named EntitiesDescriptor assembler pipeline stage.
+        
+        Name attribute is set to the federation URI.  UK ordering is applied.
     -->
     <bean id="uk_assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="uk_assemble"/>
         <property name="descriptorName" value="http://ukfederation.org.uk"/>
+        <property name="itemOrderingStrategy">
+            <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
+        </property>
+    </bean>
+    
+
+    <!--
+        UK federation unnamed EntitiesDescriptor assembler pipeline stage.
+        
+        Name attribute is not set.  UK ordering is applied.
+    -->
+    <bean id="uk_assembleUnnamed" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_assembleUnnamed"/>
         <property name="itemOrderingStrategy">
             <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
         </property>

@@ -46,11 +46,11 @@
     
 
     <!--
-        *******************************************************************
-        ***                                                             ***
-        ***   S T R U C T U R E D   A G G R E G A T E   B U I L D E R   ***
-        ***                                                             ***
-        *******************************************************************
+        ***********************************************************************
+        ***                                                                 ***
+        ***   H I E R A R C H I C A L   A G G R E G A T E   B U I L D E R   ***
+        ***                                                                 ***
+        ***********************************************************************
     -->
     
     
@@ -58,9 +58,9 @@
         Assemble a nested EntitiesDescriptor structure with the
         UK federation entities inside an inner element.
     -->
-    <bean id="uk_assembleStructuredAggregate" class="net.shibboleth.metadata.pipeline.CompositeStage"
+    <bean id="uk_assembleHierarchicalAggregate" class="net.shibboleth.metadata.pipeline.CompositeStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_assembleStructuredAggregate"/>
+        <property name="id" value="uk_assembleHierarchicalAggregate"/>
         <property name="composedStages">
             <list>
                 <!--
@@ -89,7 +89,7 @@
                     Step 2: put that EntitiesDescriptor plus all remaining entities inside an
                     anonymous outer EntitiesDescriptor.
                 -->
-                <ref bean="assemble"/>
+                <ref bean="uk_assembleUnnamed"/>
             </list>
         </property>
     </bean>
@@ -444,7 +444,7 @@
                 </bean>
                 
                 <!-- pipeline continues to generate test aggregate -->
-                <ref bean="uk_assemble"/>
+                <ref bean="uk_assembleHierarchicalAggregate"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseNamespaces"/>
