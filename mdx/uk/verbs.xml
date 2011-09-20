@@ -81,4 +81,50 @@
         </property>
     </bean>
 
+    <!--
+        *****************************************
+        ***                                   ***
+        ***   M E T A D A T A   I M P O R T   ***
+        ***                                   ***
+        *****************************************
+    -->
+    
+    <!--
+        importedMetadata
+        
+        Fetches the contents of the file used to hold metadata just imported
+        by the federation's import transform.
+    -->
+    <bean id="importedMetadata" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="importedMetadata"/>
+        <property name="parserPool" ref="parserPool"/>
+        <property name="source">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/entities/imported.xml"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--
+        validateImportedMetadata
+        
+        Perform custom validation on metadata just imported by the
+        federation's import transform.
+    -->
+    <bean id="validateImportedMetadata" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="validateImportedMetadat"/>
+        <property name="stages">
+            <list>
+                <ref bean="importedMetadata"/>
+                <ref bean="CHECK_std"/>
+                <ref bean="check_future"/>
+                <ref bean="check_imported"/>
+                <ref bean="check_vhosts"/>
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+    
 </beans>

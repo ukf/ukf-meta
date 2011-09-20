@@ -127,15 +127,51 @@
     </bean>
     
     <!--
-        check_mdui
+        ***********************************************
+        ***                                         ***
+        ***   M D U I   S P E C I F I C A T I O N   ***
+        ***                                         ***
+        ***********************************************
     -->
-    <bean id="check_mdui" class="net.shibboleth.metadata.dom.XSLValidationStage"
+    
+    <!--
+        check_mdui_iphint
+        
+        Checks for the mdui:IPHint element.
+    -->
+    <bean id="check_mdui_iphint" class="uk.org.ukfederation.mda.validate.mdui.IPHintValidationStage"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="check_mdui"/>
+        <property name="id" value="check_mdui_iphint"/>
+    </bean>
+    
+    <!--
+        check_mdui_xslt
+        
+        Miscellaneous MDUI tests, in XSLT.
+    -->
+    <bean id="check_mdui_xslt" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_mdui_xslt"/>
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdui.xsl"/>
             </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_mdui
+        
+        Composite check for the MDUI specification.
+    -->
+    <bean id="check_mdui" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_mdui"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="check_mdui_iphint"/>
+                <ref bean="check_mdui_xslt"/>
+            </list>
         </property>
     </bean>
     

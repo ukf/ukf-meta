@@ -772,11 +772,7 @@
             i="${temp.xml}" o="${entities.dir}/imported.xml"/>
 		
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
-        <CHECK.std i="${entities.dir}/imported.xml">
-        	<arg value="${build.dir}/check_future.xsl"/>
-            <arg value="${build.dir}/check_imported.xsl"/>
-            <arg value="${build.dir}/check_vhosts.xsl"/>
-        </CHECK.std>
+		<CHANNEL.do channel="uk" verb="validateImportedMetadata"/>
 		<echo>Checked.</echo>
 	</target>
 	
@@ -836,30 +832,6 @@
         </sequential>
 	</macrodef>
 
-	<macrodef name="CHECK.std">
-		<attribute name="i"/>
-		<element name="std.args" implicit="yes"/>
-		<sequential>
-			<CHECK.base i="@{i}">
-                <!-- set of checking stylesheets applied in every case -->
-                <arg value="${build.dir}/check_adfs.xsl"/>
-                <arg value="${build.dir}/check_idpdisc.xsl"/>
-                <arg value="${build.dir}/check_init.xsl"/>
-                <arg value="${build.dir}/check_mdiop.xsl"/>
-                <arg value="${build.dir}/check_mdui.xsl"/>
-                <arg value="${build.dir}/check_misc.xsl"/>
-                <arg value="${build.dir}/check_namespaces.xsl"/>
-				<arg value="${build.dir}/check_reqattr.xsl"/>
-				<arg value="${build.dir}/check_saml2.xsl"/>
-				<arg value="${build.dir}/check_saml2meta.xsl"/>
-                <arg value="${build.dir}/check_shibboleth.xsl"/>
-				
-				<!-- additional arguments -->
-				<std.args/>
-			</CHECK.base>
-		</sequential>
-	</macrodef>
-	
     <!--
         *********************************************
         ***                                       ***
