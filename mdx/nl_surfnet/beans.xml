@@ -5,7 +5,27 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
 
-
+    <!--
+        Metadata signing certificate.
+    -->
+    <bean id="nl_surfnet_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
+        lazy-init="true">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/nl_surfnet/metadata-signer.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check the signature on a document.
+    -->
+    <bean id="nl_surfnet_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="nl_surfnet_checkSignature"/>
+        <property name="verificationCertificate" ref="nl_surfnet_signingCertificate"/>
+    </bean>
+    
     <!--
         Fetch the IdP aggregate.
     -->
@@ -13,7 +33,7 @@
         init-method="initialize" lazy-init="true">
         <property name="id" value="nl_surfnet_idpAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="http://federatie.surfnet.nl/metadata-sfs-idp-saml20-signed.xml"/>        
+        <property name="sourceUrl" value="https://wayf.surfnet.nl/federate/metadata"/>        
     </bean>
     
     <!--
@@ -36,8 +56,20 @@
             <list>
                 <!-- no export aggregate; use the production ones instead -->
                 <ref bean="nl_surfnet_idpAggregate"/>
+
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="nl_surfnet_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <!-- SP singleton -->
                 <ref bean="nl_surfnet_spAggregate"/>
-                <ref bean="cleanImport"/>
+                <ref bean="disassemble"/>
+                <ref bean="standardImportActions"/>
             </list>
         </property>
     </bean>

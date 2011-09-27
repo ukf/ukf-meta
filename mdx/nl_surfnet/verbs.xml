@@ -51,6 +51,7 @@
             <list>
                 <ref bean="nl_surfnet_idpAggregate"/>
                 <ref bean="nl_surfnet_spAggregate"/>
+                <ref bean="disassemble"/>
                 <ref bean="assemble"/>
                 <ref bean="serializeImported"/>
             </list>
