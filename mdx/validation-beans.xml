@@ -142,6 +142,7 @@
     <bean id="check_mdui_iphint" class="uk.org.ukfederation.mda.validate.mdui.IPHintValidationStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="check_mdui_iphint"/>
+        <property name="checkingNetworks" value="true"/>
     </bean>
     
     <!--

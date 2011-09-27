@@ -319,6 +319,7 @@
         <property name="stages">
             <list>
                 <ref bean="uk_stripExtensions"/>
+                <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
