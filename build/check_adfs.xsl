@@ -41,10 +41,6 @@
 	<xsl:template match="md:SPSSODescriptor
 		[contains(@protocolSupportEnumeration, 'http://schemas.xmlsoap.org/ws/2003/07/secext')]
 		[not(md:AssertionConsumerService/@Binding = 'http://schemas.xmlsoap.org/ws/2003/07/secext')]">
-		<!--
-			The current UK federation metadata has one entity which breaks this rule at present.
-			Change this from "warning" to "fatal" once that has been resolved.
-		-->
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">ADFS SP role lacks SSO service with appropriate Binding</xsl:with-param>
 		</xsl:call-template>
