@@ -923,6 +923,7 @@
 	<target name="flow.test.all">
 		<CHANNEL.import channel="at_aconet"/>
         <CHANNEL.import channel="au_aaf"/>
+		<CHANNEL.import channel="br_cafe"/>
         <CHANNEL.import channel="ca_caf"/>
         <CHANNEL.import channel="ch_switchaai"/>
         <CHANNEL.import channel="cz_eduid"/>
