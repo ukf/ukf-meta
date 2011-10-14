@@ -107,6 +107,7 @@
                     <li><p><a href="#undeployedMembers">Members Lacking Deployment</a></p></li>
                     <li><p><a href="#shib13">Shibboleth 1.3 Remnants</a></p></li>
                     <li><p><a href="#mdui">Entities with mdui:UIInfo support</a></p></li>
+                    <li><p><a href="#export">Entities in Export Aggregate</a></p></li>
                 </ul>
                 
 
@@ -1024,9 +1025,69 @@
                     </ul>
                 </xsl:if>
                 
+                
+                <!--
+                    *******************************************
+                    ***                                     ***
+                    ***   E X P O R T   A G G R E G A T E   ***
+                    ***                                     ***
+                    *******************************************
+                -->
+                
+                <h2><a name="export">Entities in Export Aggregate</a></h2>
+                <xsl:variable name="entities.export" select="$entities[descendant::ukfedlabel:ExportOptIn]"/>
+                <xsl:variable name="entities.export.count" select="count($entities.export)"/>
+                <xsl:if test="$entities.export.count != 0">
+                    <ul>
+                        <xsl:for-each select="$entities.export">
+                            <li>
+                                <xsl:value-of select="@ID"/>
+                                <xsl:text>: </xsl:text>
+                                <xsl:if test="md:IDPSSODescriptor">
+                                    <xsl:text>[IdP] </xsl:text>
+                                </xsl:if>
+                                <xsl:if test="md:SPSSODescriptor">
+                                    <xsl:text>[SP] </xsl:text>
+                                </xsl:if>
+                                <xsl:choose>
+                                    <xsl:when test="descendant::mdui:DisplayName">
+                                        <xsl:value-of select="descendant::mdui:DisplayName"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:text>(</xsl:text>
+                                        <xsl:value-of select="descendant::md:OrganizationDisplayName"/>
+                                        <xsl:text>)</xsl:text>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <ul>
+                                    <li>
+                                        <xsl:choose>
+                                            <xsl:when test="descendant::*[contains(@protocolSupportEnumeration,
+                                                'urn:oasis:names:tc:SAML:2.0:protocol')]">
+                                                Supports SAML 2.0
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                No SAML 2.0 support
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </li>
+                                </ul>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
+                
             </body>
         </html>
     </xsl:template>
+    
+    <!--
+        *****************************************
+        ***                                   ***
+        ***   O T H E R   T E M P L A T E S   ***
+        ***                                   ***
+        *****************************************
+    -->
     
     <xsl:template match="members:Member|members:NonMember" mode="count">
         <xsl:param name="entities"/>
