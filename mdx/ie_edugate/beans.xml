@@ -8,21 +8,31 @@
     <!--
         Fetch the export aggregate.
     -->
-    <bean id="ie_edugate_exportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="ie_edugate_exportAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="ie_edugate_exportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://edugate.heanet.ie/edugate-ukfed-signed.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://edugate.heanet.ie/edugate-ukfed-signed.xml"/>        
+            </bean>
+        </property>
     </bean>
     
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="ie_edugate_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="ie_edugate_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="ie_edugate_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>        
+            </bean>
+        </property>
     </bean>
     
     <!--

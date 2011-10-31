@@ -29,21 +29,31 @@
     <!--
         Fetch the IdP aggregate.
     -->
-    <bean id="nl_surfnet_idpAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="nl_surfnet_idpAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="nl_surfnet_idpAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://wayf.surfnet.nl/federate/metadata"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://wayf.surfnet.nl/federate/metadata"/>
+            </bean>
+        </property>
     </bean>
     
     <!--
         Fetch the SP aggregate.
     -->
-    <bean id="nl_surfnet_spAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="nl_surfnet_spAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="nl_surfnet_spAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="http://federatie.surfnet.nl/metadata-sfs-sp-saml20-signed.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="http://federatie.surfnet.nl/metadata-sfs-sp-saml20-signed.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

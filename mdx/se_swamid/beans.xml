@@ -8,11 +8,16 @@
     <!--
         Fetch the SWAMID production.
     -->
-    <bean id="se_swamid_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="se_swamid_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="se_swamid_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="http://md.swamid.se/md/swamid-1.0.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="http://md.swamid.se/md/swamid-1.0.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

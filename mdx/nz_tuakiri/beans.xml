@@ -8,11 +8,16 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="nz_tuakiri_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="nz_tuakiri_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="nz_tuakiri_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="http://directory.test.tuakiri.ac.nz/metadata/tuakiri-test-metadata-signed.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="http://directory.test.tuakiri.ac.nz/metadata/tuakiri-test-metadata-signed.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

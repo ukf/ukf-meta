@@ -177,6 +177,14 @@
     </bean>
     
     <!--
+        *********************
+        ***               ***
+        ***   ( E N D )   ***
+        ***               ***
+        *********************
+    -->
+    
+    <!--
         check_misc
     -->
     <bean id="check_misc" class="net.shibboleth.metadata.dom.XSLValidationStage"

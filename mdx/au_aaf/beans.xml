@@ -8,11 +8,16 @@
     <!--
         Fetch the AAF production aggregate.
     -->
-    <bean id="au_aaf_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="au_aaf_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="au_aaf_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="http://manager.aaf.edu.au/metadata/metadata.aaf.signed.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="http://manager.aaf.edu.au/metadata/metadata.aaf.signed.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

@@ -8,21 +8,31 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="fr_renater_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="fr_renater_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="fr_renater_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://services-federation.renater.fr/metadata/renater-metadata.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://services-federation.renater.fr/metadata/renater-metadata.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--
         Fetch the test aggregate.
     -->
-    <bean id="fr_renater_testAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="fr_renater_testAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="fr_renater_testAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://services-federation.renater.fr/metadata/renater-test-metadata.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://services-federation.renater.fr/metadata/renater-test-metadata.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

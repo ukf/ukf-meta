@@ -8,11 +8,16 @@
     <!--
         Fetch the export aggregate.
     -->
-    <bean id="eu_clarin_exportAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="eu_clarin_exportAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="eu_clarin_exportAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="http://www.clarin.eu/aai/clarin-sp-metadata.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="http://www.clarin.eu/aai/clarin-sp-metadata.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

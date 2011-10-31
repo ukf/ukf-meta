@@ -10,9 +10,123 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
-        Import beans related to metadata validation.
+        ***************************************************
+        ***                                             ***
+        ***   V A L I D A T I O N   F R A M E W O R K   ***
+        ***                                             ***
+        ***************************************************
+    -->
+    
+    <!--
+        Import beans that perform individual validation checks.
     -->
     <import resource="validation-beans.xml"/>
+    
+    <!--
+        identifierStrategy
+        
+        Standard item identifier strategy.
+    -->
+    <bean id="identifierStrategy" class="uk.org.ukfederation.mda.UKItemIdentificationStrategy"/>
+    
+    <!--
+        errorAnnouncer
+        
+        A pipeline stage that logs any errors and warnings present,
+        but takes no action on them.
+    -->
+    <bean id="errorAnnouncer" class="net.shibboleth.metadata.pipeline.StatusMetadataLoggingStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="errorAnnouncer"/>
+        <property name="identifierStrategy" ref="identifierStrategy"/>
+        <property name="selectionRequirements">
+            <list>
+                <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
+                <value>#{T(net.shibboleth.metadata.WarningStatus)}</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        errorRemover
+        
+        This pipeline stage removes any items marked with an error status.
+    -->
+    <bean id="errorRemover" class="net.shibboleth.metadata.pipeline.ItemMetadataFilterStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="errorRemover"/>
+        <property name="identifierStrategy" ref="identifierStrategy"/>
+        <property name="selectionRequirements">
+            <list>
+                <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        errorTerminator
+        
+        This pipeline stage causes CLI termination if any item is marked with an error status.
+    -->
+    <bean id="errorTerminator" class="net.shibboleth.metadata.pipeline.ItemMetadataTerminationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="errorTerminator"/>
+        <property name="identifierStrategy" ref="identifierStrategy"/>
+        <property name="selectionRequirements">
+            <list>
+                <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        errorAnnouncingFilter
+        
+        Announce any errors or warnings encountered, then remove
+        any items that had errors.  Items with warnings are retained.
+    -->
+    <bean id="errorAnnouncingFilter" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="errorAnnouncingFilter"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="errorAnnouncer"/>
+                <ref bean="errorRemover"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        errorTerminatingFilter
+        
+        A pipeline stage that checks for any errors, and then announces
+        and filters any encountered.
+    -->
+    <bean id="errorTerminatingFilter" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="errorTerminatingFilter"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="errorAnnouncer"/>
+                <ref bean="errorTerminator"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        *********************
+        ***               ***
+        ***   ( E N D )   ***
+        ***               ***
+        *********************
+    -->
+    
+    <!--
+        httpClient
+        
+        Common, basic, HTTP client for use with HTTP resources.
+    -->
+    <bean name="httpClient" class="org.apache.http.impl.client.DefaultHttpClient"/>
     
     <!--
         parserPool
@@ -116,30 +230,7 @@
         <property name="id" value="checkSchemas"/>
         <property name="schemaResources" ref="schemaResources"/>
     </bean>
-    
-    <!--
-        errorAnnouncingFilter
-        
-        A pipeline stage that checks for any errors, and then announces
-        and filters any encountered.
-    -->
-    <bean id="errorAnnouncingFilter" class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="errorAnnouncingFilter"/>
-    </bean>
-    
-    <!--
-        errorTerminatingFilter
-        
-        A pipeline stage that checks for any errors, and then announces
-        and filters any encountered.
-    -->
-    <bean id="errorTerminatingFilter" class="uk.org.ukfederation.mda.ErrorAnnouncingFilteringStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="errorTerminatingFilter"/>
-        <property name="terminating" value="true"/>
-    </bean>
-    
+
     <!--
         cleanImport
         

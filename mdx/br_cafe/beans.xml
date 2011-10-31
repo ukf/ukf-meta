@@ -8,11 +8,16 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="br_cafe_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="br_cafe_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="br_cafe_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://ds.cafe.rnp.br/metadata/cafe-metadata.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://ds.cafe.rnp.br/metadata/cafe-metadata.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

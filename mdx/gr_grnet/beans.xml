@@ -8,11 +8,16 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="gr_grnet_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="gr_grnet_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="gr_grnet_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="http://aai.grnet.gr/metadata.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="http://aai.grnet.gr/metadata.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

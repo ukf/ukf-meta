@@ -8,11 +8,16 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="lv_laife_productionAggregate" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="lv_laife_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="lv_laife_productionAggregate"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://laife.lanet.lv/metadata/laife-metadata.xml"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://laife.lanet.lv/metadata/laife-metadata.xml"/>
+            </bean>
+        </property>
     </bean>
     
     <!--

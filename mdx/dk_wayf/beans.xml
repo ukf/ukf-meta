@@ -9,11 +9,16 @@
     <!--
         Fetch the IdP metadata.
     -->
-    <bean id="dk_wayf_idpMetadata" class="net.shibboleth.metadata.dom.DomHttpSourceStage"
+    <bean id="dk_wayf_idpMetadata" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="dk_wayf_idpMetadata"/>
         <property name="parserPool" ref="parserPool"/>
-        <property name="sourceUrl" value="https://wayf.wayf.dk/saml2/idp/metadata.php"/>        
+        <property name="domResource">
+            <bean class="org.opensaml.util.net.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://wayf.wayf.dk/saml2/idp/metadata.php"/>
+            </bean>
+        </property>
     </bean>
     
     <!--
