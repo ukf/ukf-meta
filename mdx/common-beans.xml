@@ -3,12 +3,108 @@
     Common bean definitions.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+    <!--
+        ***********************************************
+        ***                                         ***
+        ***   N A M E S P A C E   H A N D L I N G   ***
+        ***                                         ***
+        ***********************************************
+    -->
+    
+    <!--
+        commonNamespaces
+        
+        A NamespaceContext that assigns the usual prefix for each of the commonly used XML namespaces.
+        This is used in the evaluation of XPath expressions.
+    -->
+    <bean id="commonNamespaces" class="net.shibboleth.metadata.dom.SimpleNamespaceContext">
+        <constructor-arg>
+            <util:map map-class="java.util.HashMap">
+                <entry key="alg"        value="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+                <entry key="ds"         value="http://www.w3.org/2000/09/xmldsig#"/>
+                <entry key="elab"       value="http://eduserv.org.uk/labels"/>
+                <entry key="idpdisc"    value="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"/>
+                <entry key="init"       value="urn:oasis:names:tc:SAML:profiles:SSO:request-init"/>
+                <entry key="md"         value="urn:oasis:names:tc:SAML:2.0:metadata"/>
+                <entry key="mdattr"     value="urn:oasis:names:tc:SAML:metadata:attribute"/>
+                <entry key="mdrpi"      value="urn:oasis:names:tc:SAML:metadata:rpi"/>
+                <entry key="mdui"       value="urn:oasis:names:tc:SAML:metadata:ui"/>
+                <entry key="saml"       value="urn:oasis:names:tc:SAML:2.0:assertion"/>
+                <entry key="samlp"      value="urn:oasis:names:tc:SAML:2.0:protocol"/>
+                <entry key="shibmd"     value="urn:mace:shibboleth:metadata:1.0"/>
+                <entry key="ukfedlabel" value="http://ukfederation.org.uk/2006/11/label"/>
+                <entry key="wayf"       value="http://sdss.ac.uk/2006/06/WAYF"/>
+                <entry key="xenc"       value="http://www.w3.org/2001/04/xmlenc#"/>
+                <entry key="xs"         value="http://www.w3.org/2001/XMLSchema"/>
+                <entry key="xsi"        value="http://www.w3.org/2001/XMLSchema-instance"/>
+                <entry key="xsl"        value="http://www.w3.org/1999/XSL/Transform"/>
+            </util:map>
+        </constructor-arg>
+    </bean>
+    
+    <!--
+        stripElabNamespace
+        
+        Remove the Eduserv label namespace.
+    -->
+    <bean id="stripElabNamespace" p:id="stripElabNamespace"
+        p:namespace="http://eduserv.org.uk/labels"
+        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
+        init-method="initialize" lazy-init="true"/>
+
+    <!--
+        stripMdattrNamespace
+        
+        Remove the namespace used by the entity attributes extension.
+    -->
+    <bean id="stripMdattrNamespace" p:id="stripMdattrNamespace"
+        p:namespace="urn:oasis:names:tc:SAML:metadata:attribute"
+        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
+        init-method="initialize" lazy-init="true"/>
+    
+    <!--
+        stripUkfedlabelNamespace
+        
+        Remove the UK federation label namespace.
+    -->
+    <bean id="stripUkfedlabelNamespace" p:id="stripUkfedlabelNamespace"
+        p:namespace="http://ukfederation.org.uk/2006/11/label"
+        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
+        init-method="initialize" lazy-init="true"/>
+
+    <!--
+        stripWayfNamespace
+        
+        Remove the UK federation WAYF namespace.
+    -->
+    <bean id="stripWayfNamespace" p:id="stripWayfNamespace"
+        p:namespace="http://sdss.ac.uk/2006/06/WAYF"
+        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
+        init-method="initialize" lazy-init="true"/>
+    
+    <!--
+        normaliseNamespaces
+        
+        A pipeline stage that can be used before serialisation to normalise the namespaces
+        used in an XML document.
+    -->
+    <bean id="normaliseNamespaces" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="normaliseNamespaces"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/ns_norm.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
     <!--
         ***************************************************
         ***                                             ***
@@ -140,37 +236,6 @@
     </bean>
     
     <!--
-        commonNamespaces
-        
-        A NamespaceContext that assigns the usual prefix for each of the commonly used XML namespaces.
-        This is used in the evaluation of XPath expressions.
-    -->
-    <bean id="commonNamespaces" class="net.shibboleth.metadata.dom.SimpleNamespaceContext">
-        <constructor-arg>
-            <util:map map-class="java.util.HashMap">
-                <entry key="alg"        value="urn:oasis:names:tc:SAML:metadata:algsupport"/>
-                <entry key="ds"         value="http://www.w3.org/2000/09/xmldsig#"/>
-                <entry key="elab"       value="http://eduserv.org.uk/labels"/>
-                <entry key="idpdisc"    value="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"/>
-                <entry key="init"       value="urn:oasis:names:tc:SAML:profiles:SSO:request-init"/>
-                <entry key="md"         value="urn:oasis:names:tc:SAML:2.0:metadata"/>
-                <entry key="mdattr"     value="urn:oasis:names:tc:SAML:metadata:attribute"/>
-                <entry key="mdrpi"      value="urn:oasis:names:tc:SAML:metadata:rpi"/>
-                <entry key="mdui"       value="urn:oasis:names:tc:SAML:metadata:ui"/>
-                <entry key="saml"       value="urn:oasis:names:tc:SAML:2.0:assertion"/>
-                <entry key="samlp"      value="urn:oasis:names:tc:SAML:2.0:protocol"/>
-                <entry key="shibmd"     value="urn:mace:shibboleth:metadata:1.0"/>
-                <entry key="ukfedlabel" value="http://ukfederation.org.uk/2006/11/label"/>
-                <entry key="wayf"       value="http://sdss.ac.uk/2006/06/WAYF"/>
-                <entry key="xenc"       value="http://www.w3.org/2001/04/xmlenc#"/>
-                <entry key="xs"         value="http://www.w3.org/2001/XMLSchema"/>
-                <entry key="xsi"        value="http://www.w3.org/2001/XMLSchema-instance"/>
-                <entry key="xsl"        value="http://www.w3.org/1999/XSL/Transform"/>
-            </util:map>
-        </constructor-arg>
-    </bean>
-
-    <!--
         schemaResources
         
         A list of all schema documents that we make common use of.
@@ -297,11 +362,32 @@
         <property name="composedStages">
             <list>
                 <ref bean="populateItemIds"/>
+
+                <!--
+                    The following three namespaces are always stripped because they are
+                    specific to the UK registrar and can't be valid when imported from
+                    some other source.
+                -->
+                <ref bean="stripElabNamespace"/>
+                <ref bean="stripUkfedlabelNamespace"/>
+                <ref bean="stripWayfNamespace"/>
+                
                 <ref bean="cleanImport"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_imported"/>
                 <ref bean="errorAnnouncingFilter"/>
+                
+                <!--
+                    Strip the namespace used by the entity attribute namespace for now.
+                    This needs to be replaced in the long run by per-channel handling that
+                    lets through those attributes which we have verified that the source
+                    validates in the same way we do, or those which we don't care about.
+                    
+                    This namespace is stripped after the checks to allow for the
+                    entity attributes to be checked before they are discarded.
+                -->
+                <ref bean="stripMdattrNamespace"/>
             </list>
         </property>
     </bean>
@@ -312,22 +398,6 @@
     <bean id="assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="assemble"/>
-    </bean>
-    
-    <!--
-        normaliseNamespaces
-        
-        A pipeline stage that can be used before serialisation to normalise the namespaces
-        used in an XML document.
-    -->
-    <bean id="normaliseNamespaces" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="normaliseNamespaces"/>
-        <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/ns_norm.xsl"/>
-            </bean>
-        </property>
     </bean>
     
     <!--

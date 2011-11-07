@@ -8,24 +8,15 @@
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-	xmlns:elab="http://eduserv.org.uk/labels"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
-	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-	extension-element-prefixes="mdxTextUtils"
-	exclude-result-prefixes="elab ukfedlabel wayf">
+	extension-element-prefixes="mdxTextUtils">
 
 	<!--Force UTF-8 encoding for the output.-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
 
-	<!-- strip everything from certain namespaces -->
-	<xsl:template match="elab:*"/>
-	<xsl:template match="ukfedlabel:*"/>
-	<xsl:template match="wayf:*"/>
-	
 	<!-- strip redundant attributes from EntityDescriptor elements -->
 	<xsl:template match="md:EntityDescriptor/@ID"/>
 	<xsl:template match="md:EntityDescriptor/@cacheDuration"/>
