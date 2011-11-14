@@ -627,6 +627,18 @@
                                     Shibboleth 1.0 authentication request: <xsl:value-of select="$idp.sso.shibboleth.auth.count"/>
                                     (<xsl:value-of select="format-number($idp.sso.shibboleth.auth.count div $idpCount, '0.0%')"/>)
                                 </p>
+                                <p>Exceptions:</p>
+                                <ul>
+                                    <xsl:variable name="idp.sso.noshib" select="set:difference($idps, $idp.sso.shibboleth.auth)"/>
+                                    <xsl:for-each select="$idp.sso.noshib">
+                                        <li>
+                                            <xsl:value-of select="@ID"/>
+                                            <xsl:text>: </xsl:text>
+                                            <xsl:if test="md:Extensions/wayf:HideFromWAYF"> [H]</xsl:if>
+                                            <xsl:value-of select="@entityID"/>
+                                        </li>
+                                    </xsl:for-each>
+                                </ul>
                             </li>
                         </ul>
                     </li>
