@@ -242,6 +242,15 @@
     -->
     <util:list id="schemaResources">
         <bean class="org.opensaml.util.resource.FilesystemResource">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/MetadataExchange.xsd"/>
+        </bean>
+        <bean class="org.opensaml.util.resource.FilesystemResource">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+        </bean>
+        <bean class="org.opensaml.util.resource.FilesystemResource">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
+        </bean>
+        <bean class="org.opensaml.util.resource.FilesystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0-wd06.xsd"/>
         </bean>
         <bean class="org.opensaml.util.resource.FilesystemResource">
@@ -273,6 +282,18 @@
         </bean>
         <bean class="org.opensaml.util.resource.FilesystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-members.xsd"/>
+        </bean>
+        <bean class="org.opensaml.util.resource.FilesystemResource">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-addr.xsd"/>
+        </bean>
+        <bean class="org.opensaml.util.resource.FilesystemResource">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-authorization.xsd"/>
+        </bean>
+        <bean class="org.opensaml.util.resource.FilesystemResource">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-federation.xsd"/>
+        </bean>
+        <bean class="org.opensaml.util.resource.FilesystemResource">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-securitypolicy-1.2.xsd"/>
         </bean>
         <bean class="org.opensaml.util.resource.FilesystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema.xsd"/>
