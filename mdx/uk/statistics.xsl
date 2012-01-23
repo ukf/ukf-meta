@@ -60,9 +60,22 @@
         <xsl:variable name="entityCount" select="count($entities)"/>
 
         <xsl:variable name="idps" select="$entities[md:IDPSSODescriptor]"/>
+        <xsl:variable name="idps.saml1"
+            select="$idps[contains(md:IDPSSODescriptor/@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]"/>
+        
         <xsl:variable name="idpCount" select="count($idps)"/>
+        <xsl:variable name="idps.saml1.count" select="count($idps.saml1)"/>
+        
         <xsl:variable name="sps" select="$entities[md:SPSSODescriptor]"/>
+        <xsl:variable name="sps.saml1"
+            select="$sps[contains(md:SPSSODescriptor/@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]"/>
+        
         <xsl:variable name="spCount" select="count($sps)"/>
+        <xsl:variable name="sps.saml1.count" select="count($sps.saml1)"/>
+        
+        <xsl:variable name="entities.saml1" select="set:distinct($idps.saml1 | $sps.saml1)"/>
+        <xsl:variable name="entities.saml1.count" select="count($entities.saml1)"/>
+        
         <xsl:variable name="dualEntities" select="$entities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
         <xsl:variable name="dualEntityCount" select="count($dualEntities)"/>
         
@@ -76,15 +89,20 @@
             select="dyn:closure($members/members:Name, '$entities[md:Organization/md:OrganizationName = current()]')"/>
         <xsl:variable name="memberEntityCount"
             select="dyn:sum($memberNames, 'count($entities[md:Organization/md:OrganizationName = current()])')"/>
-        
-        <xsl:variable name="artifactIdps"
-            select="$idps[md:IDPSSODescriptor/md:ArtifactResolutionService]"/>
-        <xsl:variable name="artifactIdpCount" select="count($artifactIdps)"/>
-        <xsl:variable name="artifactSps"
+
+        <xsl:variable name="idps.artifact"
+            select="$idps[md:IDPSSODescriptor[md:ArtifactResolutionService]]"/>
+        <xsl:variable name="idps.artifact.count" select="count($idps.artifact)"/>
+        <xsl:variable name="idps.artifact.saml1"
+            select="$idps[md:IDPSSODescriptor
+            [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]
+            [md:ArtifactResolutionService]]"/>
+        <xsl:variable name="idps.artifact.saml1.count" select="count($idps.artifact.saml1)"/>
+        <xsl:variable name="sps.artifact.saml1"
             select="$sps[md:SPSSODescriptor/md:AssertionConsumerService/@Binding='urn:oasis:names:tc:SAML:1.0:profiles:artifact-01']"/>
-        <xsl:variable name="artifactSpCount" select="count($artifactSps)"/>
-        <xsl:variable name="artifactEntities" select="$artifactIdps | $artifactSps"/>
-        <xsl:variable name="artifactEntityCount" select="count($artifactEntities)"/>
+        <xsl:variable name="sps.artifact.saml1.count" select="count($sps.artifact.saml1)"/>
+        <xsl:variable name="entities.artifact.saml1" select="set:distinct($idps.artifact.saml1 | $sps.artifact.saml1)"/>
+        <xsl:variable name="entities.artifact.saml1.count" select="count($entities.artifact.saml1)"/>
         
         <xsl:variable name="embeddedX509Entities" select="$entities[descendant::ds:X509Data]"/>
         <xsl:variable name="embeddedX509EntityCount" select="count($embeddedX509Entities)"/>
@@ -409,9 +427,12 @@
                     </li>
                     <li>
                         <p>
-                            <xsl:value-of select="$artifactEntityCount"/>
-                            (<xsl:value-of select="format-number($artifactEntityCount div $entityCount, '0.0%')"/>)
-                            support the Browser/Artifact profile.
+                            <xsl:value-of select="$entities.artifact.saml1.count"/>
+                            (<xsl:value-of select="format-number($entities.artifact.saml1.count div $entityCount, '0.0%')"/>
+                            of all entities,
+                            <xsl:value-of select="format-number($entities.artifact.saml1.count div $entities.saml1.count, '0.0%')"/>
+                            of SAML 1.1 entities)
+                            support the SAML 1.1 Browser/Artifact profile.
                         </p>
                     </li>
                     <li>
@@ -570,8 +591,17 @@
                     </li>
                     <li>
                         <p>
-                            Support artifact resolution: <xsl:value-of select="$artifactIdpCount"/>
-                            (<xsl:value-of select="format-number($artifactIdpCount div $idpCount, '0.0%')"/>).
+                            Support artifact resolution: <xsl:value-of select="$idps.artifact.count"/>
+                            (<xsl:value-of select="format-number($idps.artifact.count div $idpCount, '0.0%')"/>).
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Support SAML 1.1 artifact resolution: <xsl:value-of select="$idps.artifact.saml1.count"/>
+                            (<xsl:value-of select="format-number($idps.artifact.saml1.count div $idpCount, '0.0%')"/>
+                            of all IdPs, 
+                            <xsl:value-of select="format-number($idps.artifact.saml1.count div $idps.saml1.count, '0.0%')"/>
+                            of SAML 1.1 IdPs).
                         </p>
                     </li>
                     
@@ -697,8 +727,11 @@
                 <ul>
                     <li>
                         <p>
-                            Support Browser/Artifact: <xsl:value-of select="$artifactSpCount"/>
-                            (<xsl:value-of select="format-number($artifactSpCount div $spCount, '0.0%')"/>).
+                            Support SAML 1.1 Browser/Artifact: <xsl:value-of select="$sps.artifact.saml1.count"/>
+                            (<xsl:value-of select="format-number($sps.artifact.saml1.count div $spCount, '0.0%')"/>
+                            of all SPs,
+                            <xsl:value-of select="format-number($sps.artifact.saml1.count div $sps.saml1.count, '0.0%')"/>
+                            of SAML 1.1 SPs).
                         </p>
                     </li>
                     
