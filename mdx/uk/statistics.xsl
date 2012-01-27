@@ -775,6 +775,17 @@
                         </li>
                     </xsl:if>
                     
+                    <xsl:variable name="sp.rqa" select="$sps[descendant::md:RequestedAttribute]"/>
+                    <xsl:variable name="sp.rqa.count" select="count($sp.rqa)"/>
+                    <xsl:if test="$sp.rqa.count != 0">
+                        <li>
+                            <p>
+                                Includes <code>RequestedAttribute</code> elements: <xsl:value-of select="$sp.rqa.count"/>
+                                (<xsl:value-of select="format-number($sp.rqa.count div $spCount ,'0.0%')"/>).
+                            </p>
+                        </li>
+                    </xsl:if>
+
                 </ul>
                 
                 <p>SSO protocol support:</p>
@@ -1093,6 +1104,14 @@
                                 </xsl:if>
                                 <xsl:if test="md:SPSSODescriptor">
                                     <xsl:text>[SP] </xsl:text>
+                                    <xsl:choose>
+                                        <xsl:when test="descendant::md:RequestedAttribute">
+                                            <xsl:text>[RqA] </xsl:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:text>[!RqA] </xsl:text> 
+                                        </xsl:otherwise>
+                                    </xsl:choose>
                                 </xsl:if>
                                 <xsl:choose>
                                     <xsl:when test="descendant::mdui:DisplayName">
