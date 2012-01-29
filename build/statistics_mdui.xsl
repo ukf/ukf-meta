@@ -26,57 +26,121 @@
     <xsl:template match="/md:EntitiesDescriptor">
         
         <xsl:variable name="entities" select="//md:EntityDescriptor"/>
-        <xsl:variable name="entityCount" select="count($entities)"/>
-
         <xsl:variable name="idps" select="$entities[md:IDPSSODescriptor]"/>
-        <xsl:variable name="idpCount" select="count($idps)"/>
         <xsl:variable name="sps" select="$entities[md:SPSSODescriptor]"/>
-        <xsl:variable name="spCount" select="count($sps)"/>
-        <xsl:variable name="dualEntities" select="$entities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
-        <xsl:variable name="dualEntityCount" select="count($dualEntities)"/>
 
-        <xsl:text>Total entities: </xsl:text>
-        <xsl:value-of select="$entityCount"/>
-        <xsl:text>&#10;</xsl:text>
-
-        <xsl:if test="$entityCount > 0">
-            <xsl:variable name="uiInfoEntities" select="$entities[descendant::mdui:UIInfo]"/>
-            <xsl:variable name="uiInfoEntitiesCount" select="count($uiInfoEntities)"/>
-            <xsl:text>   mdui:UIInfo: </xsl:text>
-            <xsl:value-of select="$uiInfoEntitiesCount"/>
-            <xsl:text> (</xsl:text>
-            <xsl:value-of select="format-number($uiInfoEntitiesCount div $entityCount, '0.0%')"/>
-            <xsl:text>)&#10;</xsl:text>
-        </xsl:if>
+        <xsl:call-template name="entities.category">
+            <xsl:with-param name="category">Total entities</xsl:with-param>
+            <xsl:with-param name="entities" select="$entities"/>
+        </xsl:call-template>
         
-        <xsl:text>Identity providers: </xsl:text>
-        <xsl:value-of select="$idpCount"/>
-        <xsl:text>&#10;</xsl:text>
-
-        <xsl:if test="$idpCount > 0">
-            <xsl:variable name="idp.uiinfo" select="$idps[descendant::mdui:UIInfo]"/>
-            <xsl:variable name="idp.uiinfo.count" select="count($idp.uiinfo)"/>
-            <xsl:text>   mdui:UIInfo: </xsl:text>
-            <xsl:value-of select="$idp.uiinfo.count"/>
-            <xsl:text> (</xsl:text>
-            <xsl:value-of select="format-number($idp.uiinfo.count div $idpCount, '0.0%')"/>
-            <xsl:text>)&#10;</xsl:text>
-        </xsl:if>
-
-        <xsl:text>Service providers: </xsl:text>
-        <xsl:value-of select="$spCount"/>
-        <xsl:text>&#10;</xsl:text>
-                
-        <xsl:if test="$spCount > 0">
-            <xsl:variable name="sp.uiinfo" select="$sps[descendant::mdui:UIInfo]"/>
-            <xsl:variable name="sp.uiinfo.count" select="count($sp.uiinfo)"/>
-            <xsl:text>   mdui:UIInfo: </xsl:text>
-            <xsl:value-of select="$sp.uiinfo.count"/>
-            <xsl:text> (</xsl:text>
-            <xsl:value-of select="format-number($sp.uiinfo.count div $spCount, '0.0%')"/>
-            <xsl:text>)&#10;</xsl:text>
-        </xsl:if>
-
+        <xsl:call-template name="entities.category">
+            <xsl:with-param name="category">Identity providers</xsl:with-param>
+            <xsl:with-param name="entities" select="$idps"/>
+        </xsl:call-template>
+        
+        <xsl:call-template name="entities.category">
+            <xsl:with-param name="category">Service providers</xsl:with-param>
+            <xsl:with-param name="entities" select="$sps"/>
+        </xsl:call-template>
+        
     </xsl:template>
 
+    <xsl:template name="entities.category">
+        <xsl:param name="entities"/>
+        <xsl:param name="category"/>
+        <xsl:variable name="entities.count" select="count($entities)"/>
+        
+        <xsl:value-of select="$category"/>
+        <xsl:text>: </xsl:text>
+        <xsl:value-of select="$entities.count"/>
+        <xsl:text>&#10;</xsl:text>
+        
+        <xsl:if test="$entities.count > 0">
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:UIInfo</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:UIInfo]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:Logo</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:Logo]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:Description</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:Description]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:DisplayName</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:DisplayName]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:Keywords</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:Keywords]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:InformationURL</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:InformationURL]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:PrivacyStatementURL</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:PrivacyStatementURL]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+                        
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:DiscoHints</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:DiscoHints]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:IPHint</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:IPHint]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:DomainHint</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:DomainHint]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+            <xsl:call-template name="mdui.element">
+                <xsl:with-param name="element">mdui:GeolocationHint</xsl:with-param>
+                <xsl:with-param name="has" select="$entities[descendant::mdui:GeolocationHint]"/>
+                <xsl:with-param name="total.count" select="$entities.count"/>
+            </xsl:call-template>
+            
+        </xsl:if>
+    </xsl:template>
+    
+    <xsl:template name="mdui.element">
+        <xsl:param name="element"/>
+        <xsl:param name="has"/>
+        <xsl:param name="total.count"/>
+        <xsl:variable name="has.count" select="count($has)"/>
+        <xsl:if test="$has.count > 0">
+            <xsl:text>   </xsl:text>
+            <xsl:value-of select="$element"/>
+            <xsl:text>: </xsl:text>
+            <xsl:value-of select="$has.count"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="format-number($has.count div $total.count, '0.0%')"/>
+            <xsl:text>)&#10;</xsl:text>
+        </xsl:if>
+    </xsl:template>
+    
 </xsl:stylesheet>
