@@ -165,6 +165,23 @@
     </bean>
     
     <!--
+        check_regauth_parent
+        
+        Parent (template) for per-channel beans.
+        
+        Any registrationAuthority already present on an entity in this
+        channel must match the known registration authority value.
+    -->
+    <bean id="check_regauth_parent" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true" abstract="true">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_regauth.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         ***********************************************
         ***                                         ***
         ***   M D U I   S P E C I F I C A T I O N   ***
