@@ -127,6 +127,44 @@
     </bean>
     
     <!--
+        *************************************************
+        ***                                           ***
+        ***   M D R P I   S P E C I F I C A T I O N   ***
+        ***                                           ***
+        *************************************************
+    -->
+    
+    <!--
+        check_mdrpi_xslt
+        
+        Miscellaneous MDRPI tests, in XSLT.
+    -->
+    <bean id="check_mdrpi_xslt" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_mdrpi_xslt"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdrpi.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_mdrpi
+        
+        Composite check for the MDRPI specification.
+    -->
+    <bean id="check_mdrpi" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_mdrpi"/>
+        <property name="composedStages">
+            <list>
+                <ref bean="check_mdrpi_xslt"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         ***********************************************
         ***                                         ***
         ***   M D U I   S P E C I F I C A T I O N   ***
@@ -333,6 +371,7 @@
                 <ref bean="check_idpdisc"/>
                 <ref bean="check_init"/>
                 <ref bean="check_mdiop"/>
+                <ref bean="check_mdrpi"/>
                 <ref bean="check_mdui"/>
                 <ref bean="check_misc"/>
                 <ref bean="check_namespaces"/>
