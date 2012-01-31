@@ -43,15 +43,6 @@
         </complexContent>
     </complexType>
 
-    <element name="SDSSPolicy" type="ukfedlabel:basicLabel">
-        <annotation>
-            <documentation>
-                Indicates an entity originally "grandfathered" into the
-                UK federation from the SDSS federation.
-            </documentation>
-        </annotation>
-    </element>
-    
     <element name="UKFederationMember" type="ukfedlabel:basicLabel">
         <annotation>
             <documentation>
