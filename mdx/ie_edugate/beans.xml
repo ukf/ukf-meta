@@ -100,6 +100,21 @@
     </bean>
     
     <!--
+        ie_edugate_default_regauth
+        
+        Provide a default registrationAuthority appropriate to
+        this channel.
+    -->
+    <bean id="ie_edugate_default_regauth"  parent="default_regauth_parent">
+        <property name="id" value="ie_edugate_default_regauth"/>
+        <property name="transformParameters">
+            <map>
+                <entry key="defaultAuthority" value-ref="ie_edugate_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
         Fetch and process all entities as a collection.
     -->
     <bean id="ie_edugate_allEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
@@ -147,6 +162,7 @@
                 
                 <ref bean="disassemble"/>
                 
+                <ref bean="ie_edugate_default_regauth"/>
                 <ref bean="ie_edugate_check_regauth"/>
                 <ref bean="standardImportActions"/>
             </list>

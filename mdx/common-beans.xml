@@ -210,6 +210,31 @@
     </bean>
     
     <!--
+        *************************************************
+        ***                                           ***
+        ***   M D R P I   S P E C I F I C A T I O N   ***
+        ***                                           ***
+        *************************************************
+    -->
+    
+    <!--
+        default_regauth_parent
+        
+        Parent (template) for per-channel beans.
+        
+        Any registrationAuthority already present on an entity in this
+        channel must match the known registration authority value.
+    -->
+    <bean id="default_regauth_parent" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true" abstract="true">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/default_regauth.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         *********************
         ***               ***
         ***   ( E N D )   ***
