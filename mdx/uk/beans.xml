@@ -288,7 +288,31 @@
         </property>
     </bean>
     
+    
+    <!--
+        uk_stripExtensions
+        
+        Strip those UK federation extensions which we never publish.
+    -->
+    <bean id="uk_stripExtensions" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_stripExtensions"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_extensions.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
 
+    <!--
+        ***********************************************
+        ***                                         ***
+        ***   N A M E S P A C E   H A N D L I N G   ***
+        ***                                         ***
+        ***********************************************
+    -->
+    
     <!--
         uk_normaliseNamespaces
         
@@ -306,23 +330,53 @@
         </property>
     </bean>
     
-
     <!--
-        uk_stripExtensions
-        
-        Strip those UK federation extensions which we never publish.
+        *************************************************
+        ***                                           ***
+        ***   M D R P I   S P E C I F I C A T I O N   ***
+        ***                                           ***
+        *************************************************
     -->
-    <bean id="uk_stripExtensions" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_stripExtensions"/>
-        <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_extensions.xsl"/>
-            </bean>
+    
+    <!--
+        uk_registrar
+        
+        Unique ID for the registrar associated with this channel.
+    -->
+    <bean id="uk_registrar" class="java.lang.String">
+        <constructor-arg value="http://ukfederation.org.uk"/>
+    </bean>
+    
+    <!--
+        uk_check_regauth
+        
+        Any registrationAuthority already present on an entity in this
+        channel must match the known registration authority value.
+    -->
+    <bean id="uk_check_regauth"  parent="check_regauth_parent">
+        <property name="id" value="uk_check_regauth"/>
+        <property name="transformParameters">
+            <map>
+                <entry key="expectedAuthority" value-ref="uk_registrar"/>
+            </map>
         </property>
     </bean>
     
-
+    <!--
+        uk_default_regauth
+        
+        Provide a default registrationAuthority appropriate to
+        this channel.
+    -->
+    <bean id="uk_default_regauth"  parent="default_regauth_parent">
+        <property name="id" value="uk_default_regauth"/>
+        <property name="transformParameters">
+            <map>
+                <entry key="defaultAuthority" value-ref="uk_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
     <!--
         *********************************************
         ***                                       ***

@@ -293,6 +293,16 @@
         *******************************************
     -->
     
+    <bean id="uk_normaliseExport" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="uk_normaliseExport"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_export.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
     <bean id="uk_finaliseExport" class="net.shibboleth.metadata.dom.XSLTransformationStage"
         init-method="initialize" lazy-init="true">
         <property name="id" value="uk_finaliseExport"/>
@@ -330,12 +340,13 @@
         <property name="id" value="uk_exportPipeline"/>
         <property name="stages">
             <list>
+                <ref bean="uk_default_regauth"/>
                 <ref bean="uk_stripExtensions"/>
                 <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
-                <ref bean="uk_normaliseNamespaces"/>
+                <ref bean="uk_normaliseExport"/>
                 
                 <!-- schema validity check MUST pass -->
                 <ref bean="checkSchemas"/>
