@@ -114,7 +114,7 @@
     -->
     <bean id="validateImportedMetadata" class="net.shibboleth.metadata.pipeline.SimplePipeline"
         init-method="initialize" lazy-init="true">
-        <property name="id" value="validateImportedMetadat"/>
+        <property name="id" value="validateImportedMetadata"/>
         <property name="stages">
             <list>
                 <ref bean="importedMetadata"/>
