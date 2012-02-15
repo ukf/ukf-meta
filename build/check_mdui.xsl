@@ -160,7 +160,11 @@
 	</xsl:template>
 	<xsl:template match="md:Extensions[mdui:DiscoHints][not(parent::md:IDPSSODescriptor)]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">DiscoHints appearing outside IDPSSODescriptor element</xsl:with-param>
+			<xsl:with-param name="m">
+				<xsl:text>DiscoHints appearing outside IDPSSODescriptor element (</xsl:text>
+				<xsl:value-of select="name(..)"/>
+				<xsl:text>)</xsl:text>
+			</xsl:with-param>
 		</xsl:call-template>        
 	</xsl:template>
 	
