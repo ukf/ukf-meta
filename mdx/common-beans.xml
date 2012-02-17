@@ -276,7 +276,7 @@
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
         </bean>
         <bean class="org.opensaml.util.resource.FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0-wd06.xsd"/>
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0.xsd"/>
         </bean>
         <bean class="org.opensaml.util.resource.FilesystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-assertion-2.0.xsd"/>

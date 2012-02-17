@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+  SAML V2.0 Metadata Extensions for Registration and Publication Information Version 1.0
+  Committee Specification Draft 02
+  10 January 2012
+  Copyright (c) OASIS Open 2012.  All rights reserved.
+  Source: http://docs.oasis-open.org/security/saml/Post2.0/saml-metadata-rpi/v1.0/csd02/xsd/
+-->
+
 <schema targetNamespace="urn:oasis:names:tc:SAML:metadata:rpi"
     xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
