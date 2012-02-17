@@ -29,13 +29,15 @@
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
 	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	
+	xmlns:date="http://exslt.org/dates-and-times"
 	xmlns:mdxDates="xalan://uk.ac.sdss.xalan.md.Dates"
 	xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
-	extension-element-prefixes="mdxDates mdxTextUtils"
+	extension-element-prefixes="date mdxDates mdxTextUtils"
 
 	xmlns:xalan="http://xml.apache.org/xalan"
 	
@@ -61,6 +63,7 @@
 		<EntityDescriptor ID="uk000000_CHANGE_THIS"
 			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata ../xml/saml-schema-metadata-2.0.xsd
 			urn:oasis:names:tc:SAML:metadata:algsupport ../xml/sstc-saml-metadata-algsupport-v1.0.xsd
+			urn:oasis:names:tc:SAML:metadata:rpi ../xml/saml-metadata-rpi-v1.0.xsd
 			urn:oasis:names:tc:SAML:metadata:ui ../xml/sstc-saml-metadata-ui-v1.0.xsd
 			urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol ../xml/sstc-saml-idp-discovery.xsd
 			urn:oasis:names:tc:SAML:profiles:SSO:request-init ../xml/sstc-request-initiation.xsd
@@ -129,6 +132,19 @@
 				-->
 				<xsl:apply-templates select="md:Extensions/*"/>
 
+				<!--
+                    Add registration information consisting of the registration instant
+                    and an identifier for the registrar.
+                    
+                    Any RegistrationInfo on the input document is discarded by a rule below.
+                -->
+				<xsl:element name="mdrpi:RegistrationInfo">
+					<xsl:attribute name="registrationInstant">
+						<xsl:value-of select="mdxDates:dateAdd(date:date-time(), 0)"/>
+					</xsl:attribute>
+					<xsl:attribute name="registrationAuthority">http://ukfederation.org.uk</xsl:attribute>
+				</xsl:element>
+				
 			</Extensions>
 			
 			<!--
@@ -265,6 +281,23 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</idpdisc:DiscoveryResponse>
 	</xsl:template>
+	
+	
+	<!--
+        *****************************************
+        ***                                   ***
+        ***   M D R P I   N A M E S P A C E   ***
+        ***                                   ***
+        *****************************************
+    -->
+	
+	<!--
+		mdrpi:RegistrationInfo
+		
+		By definition, any RegistrationInfo element appearing within the input
+		document should be discarded, as this is a new registration.
+	-->
+	<xsl:template match="mdrpi:RegistrationInfo"/>
 	
 	
 	<!--

@@ -50,14 +50,20 @@
     </bean>
     
     <!--
+        Parent (template) for namespace stripping stages.
+    -->
+    <bean id="stripNamespace_parent" abstract="true"
+        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
+        init-method="initialize" lazy-init="true"/>
+    
+    <!--
         stripElabNamespace
         
         Remove the Eduserv label namespace.
     -->
     <bean id="stripElabNamespace" p:id="stripElabNamespace"
         p:namespace="http://eduserv.org.uk/labels"
-        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
-        init-method="initialize" lazy-init="true"/>
+        parent="stripNamespace_parent"/>
 
     <!--
         stripMdattrNamespace
@@ -66,8 +72,16 @@
     -->
     <bean id="stripMdattrNamespace" p:id="stripMdattrNamespace"
         p:namespace="urn:oasis:names:tc:SAML:metadata:attribute"
-        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
-        init-method="initialize" lazy-init="true"/>
+        parent="stripNamespace_parent"/>
+    
+    <!--
+        stripMdrpiNamespace
+        
+        Remove the namespace used by the registration and publication metdata extension.
+    -->
+    <bean id="stripMdrpiNamespace" p:id="stripMdrpiNamespace"
+        p:namespace="urn:oasis:names:tc:SAML:metadata:rpi"
+        parent="stripNamespace_parent"/>
     
     <!--
         stripUkfedlabelNamespace
@@ -76,9 +90,8 @@
     -->
     <bean id="stripUkfedlabelNamespace" p:id="stripUkfedlabelNamespace"
         p:namespace="http://ukfederation.org.uk/2006/11/label"
-        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
-        init-method="initialize" lazy-init="true"/>
-
+        parent="stripNamespace_parent"/>
+    
     <!--
         stripWayfNamespace
         
@@ -86,8 +99,7 @@
     -->
     <bean id="stripWayfNamespace" p:id="stripWayfNamespace"
         p:namespace="http://sdss.ac.uk/2006/06/WAYF"
-        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
-        init-method="initialize" lazy-init="true"/>
+        parent="stripNamespace_parent"/>
     
     <!--
         normaliseNamespaces
