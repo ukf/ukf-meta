@@ -139,10 +139,10 @@
                     Any RegistrationInfo on the input document is discarded by a rule below.
                 -->
 				<xsl:element name="mdrpi:RegistrationInfo">
+					<xsl:attribute name="registrationAuthority">http://ukfederation.org.uk</xsl:attribute>
 					<xsl:attribute name="registrationInstant">
 						<xsl:value-of select="mdxDates:dateAdd(date:date-time(), 0)"/>
 					</xsl:attribute>
-					<xsl:attribute name="registrationAuthority">http://ukfederation.org.uk</xsl:attribute>
 				</xsl:element>
 				
 			</Extensions>
