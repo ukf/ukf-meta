@@ -10,6 +10,11 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Import hu_eduid beans for namespace stripping stage.
+    -->
+    <import resource="../hu_eduid/beans.xml"/>
+    
+    <!--
         Fetch the eduGAIN test aggregate.
     -->
     <bean id="int_edugain_testAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
@@ -86,6 +91,11 @@
                 
                 <ref bean="disassemble"/>
                 
+                <!--
+                    Strip Hungarian entity attributes namespace.
+                -->
+                <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
+                
                 <ref bean="standardImportActions"/>
             </list>
         </property>
@@ -116,7 +126,12 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
+
+                <!--
+                    Strip Hungarian entity attributes namespace.
+                -->
+                <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
+
                 <ref bean="standardImportActions"/>
             </list>
         </property>
