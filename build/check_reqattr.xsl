@@ -18,6 +18,10 @@
 	
 	* SWITCHaai Attribute Specification, 2010-06-23
 	
+	* grEduPerson
+		from http://aai.grnet.gr/static/grEduPerson.schema
+		and http://aai.grnet.gr/static/policy/policy-en.pdf
+	
 
 	Author: Ian A. Young <ian@iay.org.uk>
 
@@ -291,6 +295,31 @@
 			</xsl:when>
 			
 			<!--
+				grEduPerson SAML 1.x binding
+			-->
+			<xsl:when test="@Name='urn:mace:grnet.gr:grEduPerson:attribute-def:grEduPersonUndergraduateBranch'">
+				<!-- OK -->
+			</xsl:when>
+			
+			<!--
+				grEduPerson SAML 2.0 names should not appear.
+			-->
+			<xsl:when test="@Name='urn:oid:1.3.6.1.4.1.16515.2.3.2.1'">
+				<xsl:call-template name="error">
+					<xsl:with-param name="m">
+						<xsl:text>RequestedAttribute uses OID name </xsl:text>
+						<xsl:value-of select="@Name"/>
+						<xsl:text> with SAML 1.x NameFormat: should use urn:mace name or SAML 2.0 NameFormat</xsl:text>
+						<xsl:if test="@FriendlyName">
+							<xsl:text> (</xsl:text>
+							<xsl:value-of select="@FriendlyName"/>
+							<xsl:text>)</xsl:text>
+						</xsl:if>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			
+			<!--
 				MACE-Dir Attribute Profile for SAML 1.x
 				
 				Forward-looking "urn:oid:" names are permitted, which is to say
@@ -357,6 +386,24 @@
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">
 						<xsl:text>RequestedAttribute uses legacy SWITCHaai name </xsl:text>
+						<xsl:value-of select="@Name"/>
+						<xsl:text> with SAML 2.0 NameFormat: should use urn:oid name or SAML 1.x NameFormat</xsl:text>
+						<xsl:if test="@FriendlyName">
+							<xsl:text> (</xsl:text>
+							<xsl:value-of select="@FriendlyName"/>
+							<xsl:text>)</xsl:text>
+						</xsl:if>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			
+			<!--
+                Common error: using the legacy grEduPerson name with the SAML 2.0 NameFormat.
+            -->
+			<xsl:when test="starts-with(@Name, 'urn:mace:grnet.gr:grEduPerson:attribute-def:')">
+				<xsl:call-template name="error">
+					<xsl:with-param name="m">
+						<xsl:text>RequestedAttribute uses legacy format name </xsl:text>
 						<xsl:value-of select="@Name"/>
 						<xsl:text> with SAML 2.0 NameFormat: should use urn:oid name or SAML 1.x NameFormat</xsl:text>
 						<xsl:if test="@FriendlyName">
