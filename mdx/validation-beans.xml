@@ -279,6 +279,21 @@
     </bean>
     
     <!--
+        check_regscope
+        
+        Check for regular expressions in Shibboleth Scope elements.  Applied very selectively.
+    -->
+    <bean id="check_regscope" class="net.shibboleth.metadata.dom.XSLValidationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="id" value="check_regscope"/>
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_regscope.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         check_reqattr
     -->
     <bean id="check_reqattr" class="net.shibboleth.metadata.dom.XSLValidationStage"
@@ -411,6 +426,7 @@
                 <ref bean="CHECK_std"/>
                 <ref bean="check_future"/>
                 <ref bean="check_saml2int"/>
+                <ref bean="check_regscope"/>
             </list>
         </property>
     </bean>
