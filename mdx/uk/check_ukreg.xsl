@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	check_ukreg_mda.xsl
+	check_ukreg.xsl
 	
 	Checking ruleset containing rules that only apply to metadata registered
 	by the UK federation's registrar function.
-	
-	Identical to check_ukreg except that it assumes a members bean passed
-	as parameter rather than loading one itself.
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
@@ -25,7 +22,7 @@
 	<!--
 		Common support functions.
 	-->
-	<xsl:import href="check_framework.xsl"/>
+	<xsl:import href="../../build/check_framework.xsl"/>
 
 	
 	<!--
