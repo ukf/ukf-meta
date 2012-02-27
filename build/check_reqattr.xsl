@@ -22,6 +22,13 @@
 		from http://aai.grnet.gr/static/grEduPerson.schema
 		and http://aai.grnet.gr/static/policy/policy-en.pdf
 	
+	* SCHAC
+		Only very basic coverage, most attributes to come later.
+		http://www.terena.org/activities/tf-emc2/docs/schac/schac-schema-IAD-1.4.1.pdf
+		http://www.terena.org/registry/terena.org/attribute-def/
+		http://www.terena.org/registry/terena.org/schac/
+		Assuming encoding rules equivalent to MACEAttr.
+    
 
 	Author: Ian A. Young <ian@iay.org.uk>
 
@@ -320,6 +327,37 @@
 			</xsl:when>
 			
 			<!--
+                SCHAC SAML 1.x binding
+            -->
+			<xsl:when test="
+				@Name='urn:mace:terena.org:attribute-def:schacHomeOrganization' or
+				@Name='urn:mace:terena.org:attribute-def:schacPersonalUniqueCode'
+				">
+				<!-- OK -->
+			</xsl:when>
+			
+			<!--
+                SCHAC SAML 2.0 names should not appear.
+            -->
+			<xsl:when test="
+				@Name='urn:oid:1.3.6.1.4.1.25178.1.2.9' or
+				@Name='urn:oid:1.3.6.1.4.1.25178.1.2.14'
+				">
+				<xsl:call-template name="error">
+					<xsl:with-param name="m">
+						<xsl:text>RequestedAttribute uses OID name </xsl:text>
+						<xsl:value-of select="@Name"/>
+						<xsl:text> with SAML 1.x NameFormat: should use urn:mace name or SAML 2.0 NameFormat</xsl:text>
+						<xsl:if test="@FriendlyName">
+							<xsl:text> (</xsl:text>
+							<xsl:value-of select="@FriendlyName"/>
+							<xsl:text>)</xsl:text>
+						</xsl:if>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			
+			<!--
 				MACE-Dir Attribute Profile for SAML 1.x
 				
 				Forward-looking "urn:oid:" names are permitted, which is to say
@@ -401,6 +439,24 @@
                 Common error: using the legacy grEduPerson name with the SAML 2.0 NameFormat.
             -->
 			<xsl:when test="starts-with(@Name, 'urn:mace:grnet.gr:grEduPerson:attribute-def:')">
+				<xsl:call-template name="error">
+					<xsl:with-param name="m">
+						<xsl:text>RequestedAttribute uses legacy format name </xsl:text>
+						<xsl:value-of select="@Name"/>
+						<xsl:text> with SAML 2.0 NameFormat: should use urn:oid name or SAML 1.x NameFormat</xsl:text>
+						<xsl:if test="@FriendlyName">
+							<xsl:text> (</xsl:text>
+							<xsl:value-of select="@FriendlyName"/>
+							<xsl:text>)</xsl:text>
+						</xsl:if>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			
+			<!--
+                Common error: using the legacy SCHAC name with the SAML 2.0 NameFormat.
+            -->
+			<xsl:when test="starts-with(@Name, 'urn:mace:terena.org:attribute-def:')">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">
 						<xsl:text>RequestedAttribute uses legacy format name </xsl:text>
