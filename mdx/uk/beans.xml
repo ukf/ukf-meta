@@ -3,6 +3,7 @@
     Common beans for this channel.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
@@ -96,6 +97,21 @@
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
             </bean>
         </constructor-arg>
+    </bean>
+    
+    
+    <!--
+        uk_fix_mailto
+        
+        Adds "mailto:" to md:EmailAddress elements which don't already have it.
+    -->
+    <bean id="uk_fix_mailto" p:id="uk_fix_mailto" class="net.shibboleth.metadata.dom.XSLTransformationStage"
+        init-method="initialize" lazy-init="true">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fix_mailto.xsl"/>
+            </bean>
+        </property>
     </bean>
     
     
