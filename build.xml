@@ -1183,12 +1183,10 @@
         Run a set of possible future rulesets against the existing collection
         of UK-federation registered metadata.
     -->
-    <target name="check.uk.future" depends="flow.uk.collect">
+    <target name="check.uk.future">
         <echo>Checking against future rulesets.</echo>
-        <CHECK.base i="${uk.collected}">
-            <arg value="${build.dir}/check_future.xsl"/>
-            <arg value="${build.dir}/check_saml2int.xsl"/>
-        </CHECK.base>
+    	<CHANNEL.do verb="checkFuture" channel="uk"/>
+    	<echo>Check complete.</echo>
     </target>
     
 </project>
