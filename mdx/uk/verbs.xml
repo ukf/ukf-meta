@@ -3,6 +3,7 @@
     Verb to generate all UK aggregates.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
@@ -81,6 +82,26 @@
         </property>
     </bean>
 
+    <!--
+        ***********************************
+        ***                             ***
+        ***   C H E C K   F U T U R E   ***
+        ***                             ***
+        ***********************************
+    -->
+    
+    <bean id="checkFuture" p:id="checkFuture" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="stages">
+            <list>
+                <ref bean="uk_registeredEntities"/>
+                <ref bean="check_saml2int"/>
+                <ref bean="check_future"/>
+                <ref bean="errorAnnouncingFilter"/>
+            </list>
+        </property>
+    </bean>
+    
     <!--
         *****************************************
         ***                                   ***
