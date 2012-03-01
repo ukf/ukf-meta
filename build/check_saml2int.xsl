@@ -43,7 +43,7 @@
 		[not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'])]
 		[not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML2Int: SP excludes both SAML 2 name identifier formats</xsl:with-param>
+			<xsl:with-param name="m">SP excludes both SAML 2 name identifier formats</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
@@ -59,7 +59,7 @@
 		[md:NameIDFormat]
 		[not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML2Int: IdP excludes SAML 2 transient name identifier format</xsl:with-param>
+			<xsl:with-param name="m">IdP excludes SAML 2 transient name identifier format</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
