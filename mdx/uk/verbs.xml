@@ -83,6 +83,38 @@
     </bean>
 
     <!--
+        *********************************
+        ***                           ***
+        ***   C H E C K   P O R T S   ***
+        ***                           ***
+        *********************************
+    -->
+    
+    <bean id="checkPorts" p:id="checkPorts" class="net.shibboleth.metadata.pipeline.SimplePipeline"
+        init-method="initialize" lazy-init="true">
+        <property name="stages">
+            <list>
+                <ref bean="uk_registeredEntities"/>
+                
+                <!--
+                    The next four stages ensure that any errors are reported
+                    in entity ID order, even on systems where the native order
+                    (which tends to reflect the file enumeration ordering)
+                    is arbitrary.  Ideally this should be handled by an optional
+                    ordering strategy on the announcing filter.
+                -->
+                <ref bean="uk_assemble"/>
+                <ref bean="disassemble"/>
+                <ref bean="populateItemIds"/>
+                <ref bean="uk_populateIds"/>
+                
+                <ref bean="check_vhosts"/>
+                <ref bean="errorAnnouncingFilter"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         ***********************************
         ***                             ***
         ***   C H E C K   F U T U R E   ***

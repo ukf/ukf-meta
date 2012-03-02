@@ -51,7 +51,6 @@
 	<property name="tools.dir" value="tools"/>
 	<property name="tools.ant" value="${tools.dir}/ant"/>
 	<property name="tools.mda" value="${tools.dir}/mda"/>
-	<property name="tools.mdcheck" value="${tools.dir}/mdcheck"/>
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
 	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
 	<property name="tools.xmlsectool" value="${tools.dir}/xmlsectool"/>
@@ -776,62 +775,6 @@
 		<echo>Checked.</echo>
 	</target>
 	
-	<!--
-		*****************************************
-		***                                   ***
-		***   M E T A D A T A   C H E C K S   ***
-		***                                   ***
-		*****************************************
-	-->
-
-	<!--
-	    Check a metadata document against a set of conventions.
-	    
-        Parameter 'i' is the file to be checked; no assumption is made
-        about its location so this must contain a full path.
-        
-	    Additional arguments are normally ruleset file names.
-	-->
-	<macrodef name="CHECK.base">
-        <attribute name="i"/>
-        <element name="base.args" implicit="yes"/>
-        <sequential>
-            <java classname="uk.ac.sdss.mdcheck.MetadataCheck"
-                fork="true" failonerror="true" maxmemory="${java.max.memory}">
-                <classpath>
-                    <fileset dir="${tools.mdcheck}/lib">
-                        <include name="*.jar"/>
-                    </fileset>
-                    <fileset dir="${tools.xalan}/lib">
-                        <include name="*.jar"/>
-                    </fileset>
-                </classpath>
-                <jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
-                <arg value="@{i}"/>
-            	<base.args/>
-            </java>
-        </sequential>
-	</macrodef>
-	
-    <!--
-        Check a metadata document against a single ruleset file.
-        
-        Parameter 'i' is the file to be checked; no assumption is made
-        about its location so this must contain a full path.
-        
-        Parameter 's' is the checking stylesheet to use; assumed to be
-        present in the build.dir.
-    -->
-	<macrodef name="CHECK.one">
-        <attribute name="i"/>
-		<attribute name="s"/>
-        <sequential>
-            <CHECK.base i="@{i}">
-                <arg value="${build.dir}/@{s}"/>
-            </CHECK.base>
-        </sequential>
-	</macrodef>
-
     <!--
         *********************************************
         ***                                       ***
@@ -1171,9 +1114,9 @@
 	<!--
 	   Check for IdPs using the single-port configuration.
 	-->
-	<target name="check.ports" depends="flow.uk.collect">
+	<target name="check.ports">
 		<echo>Checking vhost use</echo>
-        <CHECK.one i="${uk.collected}" s="check_vhosts.xsl"/>
+        <CHANNEL.do verb="checkPorts" channel="uk"/>
         <echo>Checked.</echo>
 	</target>
 
