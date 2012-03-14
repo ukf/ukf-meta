@@ -11,6 +11,30 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
+        ***********************************
+        ***                             ***
+        ***   P A R E N T   B E A N S   ***
+        ***                             ***
+        ***********************************
+    -->
+    
+    <!--
+        stage_parent
+        
+        Parent (template) for all stages.
+    -->
+    <bean id="stage_parent" lazy-init="true" init-method="initialize" abstract="true"/>
+    
+    <!--
+        composite_parent
+        
+        Parent (template) for composite stages.
+    -->
+    <bean id="composite_parent" class="net.shibboleth.metadata.pipeline.CompositeStage"
+        parent="stage_parent" abstract="true"/>
+    
+    
+    <!--
         ***********************************************
         ***                                         ***
         ***   N A M E S P A C E   H A N D L I N G   ***

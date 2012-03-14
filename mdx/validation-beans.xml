@@ -11,13 +11,100 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
+        ***********************************
+        ***                             ***
+        ***   P A R E N T   B E A N S   ***
+        ***                             ***
+        ***********************************
+    -->
+    
+    <!--
         check_xslt_parent
         
         Parent (template) for XSLT-based checking stages.
     -->
     <bean id="check_xslt_parent" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        lazy-init="true" init-method="initialize" abstract="true"/>
+        parent="stage_parent" abstract="true"/>
     
+    
+    <!--
+        ***********************************
+        ***                             ***
+        ***   F U T U R E   T E S T S   ***
+        ***                             ***
+        ***********************************
+        
+        The tests in this section are not applied to the UK federation metadata at the moment,
+        but will be in the future.  Usually, the delay is due to the presence of the specific
+        case in the current metadata, and the test will be moved into production once that
+        has been cleaned up.  In some cases, this can be a lengthy process.
+        
+        The main check_future test is broken down into a number of sub-tests rather than
+        just writing it as one long XSLT ruleset so that overlapping failures can all be
+        seen at the same time.  This isn't so important in production, where any failure
+        is definitive.  It's much more important while cleaning up existing metadata, where
+        it's less productive to clear up one problem only to have another one emerge from
+        hiding.
+    -->
+    
+    <!--
+        check_future_0
+    -->
+    <bean id="check_future_0" p:id="check_future_0" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_future.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_1
+    -->
+    <bean id="check_future_1" p:id="check_future_1" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_future_1.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_2
+    -->
+    <bean id="check_future_2" p:id="check_future_2" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_future_2.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future
+        
+        Combines all check_future_N stages.
+    -->
+    <bean id="check_future" p:id="check_future" parent="composite_parent">
+        <property name="composedStages">
+            <list>
+                <ref bean="check_future_0"/>
+                <ref bean="check_future_1"/>
+                <ref bean="check_future_2"/>
+            </list>
+        </property>
+    </bean>
+    
+
+    <!--
+        *********************
+        ***               ***
+        ***   ( E N D )   ***
+        ***               ***
+        *********************
+    -->
+    
+
     <!--
         check_adfs
     -->
@@ -66,19 +153,6 @@
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_fixups.xsl"/>
-            </bean>
-        </property>
-    </bean>
-    
-    <!--
-        check_future
-    -->
-    <bean id="check_future" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_future"/>
-        <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_future.xsl"/>
             </bean>
         </property>
     </bean>
@@ -430,6 +504,7 @@
                 <ref bean="check_reqattr"/>
                 <ref bean="check_saml1"/>
                 <ref bean="check_saml2"/>
+                <ref bean="check_saml2int"/>
                 <ref bean="check_saml2meta"/>
                 <ref bean="check_shibboleth"/>
             </list>
@@ -446,7 +521,6 @@
             <list>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_future"/>
-                <ref bean="check_saml2int"/>
                 <ref bean="check_regscope"/>
             </list>
         </property>
