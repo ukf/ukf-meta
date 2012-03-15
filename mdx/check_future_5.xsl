@@ -24,8 +24,10 @@
 
 
 	<xsl:template match="md:*
+		[local-name() != 'ArtifactResolutionService']
+		[local-name() != 'AttributeService']
+		[local-name() != 'SingleSignOnService']
 		[@Binding != 'http://schemas.xmlsoap.org/ws/2003/07/secext']
-		[@Binding != 'urn:mace:shibboleth:1.0:profiles:AuthnRequest']
 		[@Binding != 'urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding']
 		[@Binding != 'urn:oasis:names:tc:SAML:1.0:profiles:artifact-01']
 		[@Binding != 'urn:oasis:names:tc:SAML:1.0:profiles:browser-post']
@@ -38,7 +40,7 @@
 		">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
-				<xsl:text>invalid @Binding='</xsl:text>
+				<xsl:text>invalid binding '</xsl:text>
 				<xsl:value-of select="@Binding"/>
 				<xsl:text>' on </xsl:text>
 				<xsl:value-of select="name()"/>
