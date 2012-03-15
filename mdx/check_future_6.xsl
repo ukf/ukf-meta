@@ -3,7 +3,8 @@
 
 	check_future_6.xsl
 	
-	Checking ruleset that checks SAML 2.0 metadata Binding values.
+    Checking ruleset containing rules that we don't currently implement,
+    but which we may implement in the future.
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
