@@ -30,18 +30,4 @@
 	<xsl:import href="../build/check_framework.xsl"/>
 
 	
-	<!--
-        Section 6.
-        
-        Check for SAML 2.0 IdPs which exclude the transient SAML 2 name identifier format.
-    -->
-    <xsl:template match="md:IDPSSODescriptor
-        [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-        [md:NameIDFormat]
-        [not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
-        <xsl:call-template name="error">
-            <xsl:with-param name="m">IdP excludes SAML 2 transient name identifier format</xsl:with-param>
-        </xsl:call-template>
-    </xsl:template>
-	
 </xsl:stylesheet>
