@@ -27,28 +27,22 @@
 	<!--
 		Common support functions.
 	-->
-	<xsl:import href="check_framework.xsl"/>
+	<xsl:import href="../build/check_framework.xsl"/>
 
 	
 	<!--
-		***************************
-		***                     ***
-		***   S A M L 2 I N T   ***
-		***                     ***
-		***************************
-	-->
-	
-	<!--
-        Section 9.1
+        Section 6.
         
-        Responses MUST use the HTTP-POST binding, so metadata for that MUST be present.
+        Check for SAML 2.0 SPs which exclude both transient and persistent SAML 2 name identifier formats.
     -->
     <xsl:template match="md:SPSSODescriptor
         [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-        [not(md:AssertionConsumerService[@Binding = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'])]">
+        [md:NameIDFormat]
+        [not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'])]
+        [not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
         <xsl:call-template name="error">
-            <xsl:with-param name="m">no HTTP-POST support on SAML 2.0 SP</xsl:with-param>
+            <xsl:with-param name="m">saml2int: SP excludes both SAML 2 name identifier formats</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+	
 </xsl:stylesheet>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	check_future.xsl
+	check_future_3.xsl
 	
 	Checking ruleset containing rules that we don't currently implement,
 	but which we may implement in the future.
@@ -27,21 +27,8 @@
 	<!--
 		Common support functions.
 	-->
-	<xsl:import href="check_framework.xsl"/>
+	<xsl:import href="../build/check_framework.xsl"/>
 
-	
-	<!--
-		Check for SAML 2.0 SPs which lack an encryption key.
-	-->
-	
-	<xsl:template match="md:SPSSODescriptor
-		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-		[not(md:KeyDescriptor[descendant::ds:X509Data][@use='encryption'])]
-		[not(md:KeyDescriptor[descendant::ds:X509Data][not(@use)])]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML 2 SP has no encryption key</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
 	
 	<!--
 		Check for endpoint locations that include a '%' character,

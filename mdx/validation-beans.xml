@@ -53,7 +53,7 @@
     <bean id="check_future_0" p:id="check_future_0" parent="check_xslt_parent">
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_future.xsl"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_0.xsl"/>
             </bean>
         </property>
     </bean>
@@ -64,7 +64,7 @@
     <bean id="check_future_1" p:id="check_future_1" parent="check_xslt_parent">
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_future_1.xsl"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_1.xsl"/>
             </bean>
         </property>
     </bean>
@@ -75,7 +75,84 @@
     <bean id="check_future_2" p:id="check_future_2" parent="check_xslt_parent">
         <property name="xslResource">
             <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_future_2.xsl"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_2.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_3
+    -->
+    <bean id="check_future_3" p:id="check_future_3" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_3.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_4
+    -->
+    <bean id="check_future_4" p:id="check_future_4" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_4.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_5
+    -->
+    <bean id="check_future_5" p:id="check_future_5" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_5.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_6
+    -->
+    <bean id="check_future_6" p:id="check_future_6" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_6.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_7
+    -->
+    <bean id="check_future_7" p:id="check_future_7" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_7.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_8
+    -->
+    <bean id="check_future_8" p:id="check_future_8" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_8.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_future_9
+    -->
+    <bean id="check_future_9" p:id="check_future_9" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_9.xsl"/>
             </bean>
         </property>
     </bean>
@@ -91,6 +168,13 @@
                 <ref bean="check_future_0"/>
                 <ref bean="check_future_1"/>
                 <ref bean="check_future_2"/>
+                <ref bean="check_future_3"/>
+                <ref bean="check_future_4"/>
+                <ref bean="check_future_5"/>
+                <ref bean="check_future_6"/>
+                <ref bean="check_future_7"/>
+                <ref bean="check_future_8"/>
+                <ref bean="check_future_9"/>
             </list>
         </property>
     </bean>
