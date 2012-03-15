@@ -33,6 +33,41 @@
 		</xsl:call-template>
 	</xsl:template>
 	
+	<xsl:template match="md:ManageNameIDService
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP']
+		">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>invalid binding '</xsl:text>
+				<xsl:value-of select="@Binding"/>
+				<xsl:text>' on </xsl:text>
+				<xsl:value-of select="name()"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="md:SingleLogoutService
+		[@Binding != 'http://schemas.xmlsoap.org/ws/2003/07/secext']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP']
+		">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>invalid binding '</xsl:text>
+				<xsl:value-of select="@Binding"/>
+				<xsl:text>' on </xsl:text>
+				<xsl:value-of select="name()"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 	<xsl:template match="md:SingleSignOnService
 		[@Binding != 'urn:mace:shibboleth:1.0:profiles:AuthnRequest']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
@@ -43,6 +78,25 @@
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
 				<xsl:text>invalid binding '</xsl:text>
+				<xsl:value-of select="@Binding"/>
+				<xsl:text>' on </xsl:text>
+				<xsl:value-of select="name()"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="md:*
+		[@Binding]
+		[local-name() != 'ArtifactResolutionService']
+		[local-name() != 'AssertionConsumerService']
+		[local-name() != 'AttributeService']
+		[local-name() != 'ManageNameIDService']
+		[local-name() != 'SingleLogoutService']
+		[local-name() != 'SingleSignOnService']
+		">
+		<xsl:call-template name="warning">
+			<xsl:with-param name="m">
+				<xsl:text>unknown binding '</xsl:text>
 				<xsl:value-of select="@Binding"/>
 				<xsl:text>' on </xsl:text>
 				<xsl:value-of select="name()"/>
