@@ -42,4 +42,16 @@
 		</xsl:call-template>
 	</xsl:template> 
 
+	<!--
+        A SAML 2.0 IdP with an AttributeAuthority needs an AttributeService with an appropriate Binding.
+    -->
+	<xsl:template match="md:AttributeAuthorityDescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
+		[not(md:AttributeService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:SOAP'])]
+		">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">SAML 2.0 AttributeAuthority missing appropriately bound AttributeService</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
 </xsl:stylesheet>
