@@ -61,6 +61,14 @@
 			<xsl:with-param name="m">SAML 2.0 IDPSSODescriptor excludes SAML 2 transient name identifier format</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
+	<xsl:template match="md:AttributeAuthorityDescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
+		[md:NameIDFormat]
+		[not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">SAML 2.0 AttributeAuthorityDescriptor excludes SAML 2 transient name identifier format</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
 	
 	<!--
 		Section 7.
