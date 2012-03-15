@@ -216,6 +216,17 @@
     </bean>
     
     <!--
+        check_bindings
+    -->
+    <bean id="check_bindings" p:id="check_bindings" parent="check_xslt_parent">
+        <property name="xslResource">
+            <bean class="org.opensaml.util.resource.FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_bindings.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         check_filtered
     -->
     <bean id="check_filtered" class="net.shibboleth.metadata.dom.XSLValidationStage"
@@ -578,6 +589,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="check_adfs"/>
+                <ref bean="check_bindings"/>
                 <ref bean="check_idpdisc"/>
                 <ref bean="check_init"/>
                 <ref bean="check_mdiop"/>
