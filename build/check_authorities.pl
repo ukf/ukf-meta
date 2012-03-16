@@ -133,6 +133,21 @@ while (<>) {
 				}
 			}
 			
+			#
+			# Look for reasonable public exponent values.
+			#
+			if (/Exponent: (\d+)/) {
+				$exponent = $1;
+				# print "   exponent: $exponent\n";
+				if (($exponent & 1) == 0) {
+					error("RSA public exponent $exponent is even");
+				} elsif ($exponent <= 3) {
+					error("insecure RSA public exponent $exponent");
+				} elsif ($exponent < 65537) {
+					warning("small RSA public exponent $exponent")
+				}
+			}
+			
 		}
 		close SSL;
 		#print "   text lines: $#lines\n";
