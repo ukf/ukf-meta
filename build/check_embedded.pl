@@ -128,6 +128,7 @@ while (<>) {
 		# Have we seen this blob before?  If so, close (and delete) the
 		# temporary file, and go and look for a new certificate to process.
 		#
+		$total_certs++;
 		if (defined($blobs{$blob})) {
 			# print "skipping a blob\n";
 			close SSL;
@@ -138,6 +139,7 @@ while (<>) {
 		# Otherwise, remember this blob so that we won't process it again.
 		#
 		$blobs{$blob} = 1;
+		$distinct_certs++;
 
 		#
 		# Don't close the temporary file yet, because that would cause it
@@ -183,6 +185,7 @@ while (<>) {
 			#
 			if (/RSA Public Key: \((\d+) bit\)/) { # OpenSSL 0.9x
 				$pubSize = $1;
+				$pubSizeCount{$pubSize}++;
 				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
 					error('PUBLIC KEY TOO SHORT');
@@ -190,6 +193,7 @@ while (<>) {
 				next;
 			} elsif (/^\s*Public-Key: \((\d+) bit\)/) { # OpenSSL 1.0
 				$pubSize = $1;
+				$pubSizeCount{$pubSize}++;
 				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
 					error('PUBLIC KEY TOO SHORT');
@@ -233,6 +237,21 @@ while (<>) {
 					}
 				}
 				next;
+			}
+			
+			#
+			# Look for reasonable public exponent values.
+			#
+			if (/Exponent: (\d+)/) {
+				$exponent = $1;
+				# print "   exponent: $exponent\n";
+				if (($exponent & 1) == 0) {
+					error("RSA public exponent $exponent is even");
+				} elsif ($exponent <= 3) {
+					error("insecure RSA public exponent $exponent");
+				} elsif ($exponent < 65537) {
+					warning("small RSA public exponent $exponent")
+				}
 			}
 			
 			#
@@ -361,5 +380,17 @@ while (<>) {
 			}
 			print "\n";
 		}
+	}
+}
+
+if ($total_certs > 1) {
+	print "Total certificates: $total_certs\n";
+	if ($distinct_certs != $total_certs) {
+		print "Distinct certificates: $distinct_certs\n";
+	}
+	print "Key size distribution:\n";
+	for $pubSize (sort keys %pubSizeCount) {
+		$count = $pubSizeCount{$pubSize};
+		print "   $pubSize: $count\n";
 	}
 }
