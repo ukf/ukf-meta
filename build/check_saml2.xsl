@@ -9,9 +9,10 @@
 
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 	<!--
@@ -54,4 +55,17 @@
 		</xsl:call-template>
 	</xsl:template>
 
+
+	<!--
+        Check for SAML 2.0 SPs which lack an encryption key.
+    -->	
+	<xsl:template match="md:SPSSODescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
+		[not(md:KeyDescriptor[descendant::ds:X509Data][@use='encryption'])]
+		[not(md:KeyDescriptor[descendant::ds:X509Data][not(@use)])]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">SAML 2.0 SP has no encryption key</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 </xsl:stylesheet>
