@@ -24,16 +24,8 @@
 
 	<!--
 		Checks across the whole of the document are defined here.
-		
-		The match expression here works with version 0.6 of the metadata aggregator.
-		Once MDA-45 is fixed, it should be replaced with "/":
-		
-		https://issues.shibboleth.net/jira/browse/MDA-45
-		
-		This will make the transform more robust in the presence of nested
-		EntitiesDescriptor elements.
 	-->
-	<xsl:template match="md:EntitiesDescriptor">
+	<xsl:template match="/">
 		
 		<!-- check for duplicate entityID values -->
 		<xsl:variable name="distinct.entityIDs" select="set:distinct($entities/@entityID)"/>

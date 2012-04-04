@@ -3,6 +3,8 @@
     Verb to collect UK-registered entities.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
@@ -19,10 +21,8 @@
     -->
     <import resource="beans.xml"/>
 
-    <bean id="serializeCollected" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeCollected"/>
-        <property name="serializer" ref="serializer"/>
+    <bean id="serializeCollected" parent="serialize_parent"
+        p:id="serializeCollected">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/collected.xml"/>
@@ -30,9 +30,8 @@
         </property>
     </bean>
 
-    <bean id="collect" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="collect"/>
+    <bean id="collect" parent="pipeline_parent"
+        p:id="collect">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>

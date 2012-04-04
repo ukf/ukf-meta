@@ -3,6 +3,7 @@
     Common validation bean definitions.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -10,23 +11,6 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <!--
-        ***********************************
-        ***                             ***
-        ***   P A R E N T   B E A N S   ***
-        ***                             ***
-        ***********************************
-    -->
-    
-    <!--
-        check_xslt_parent
-        
-        Parent (template) for XSLT-based checking stages.
-    -->
-    <bean id="check_xslt_parent" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        parent="stage_parent" abstract="true"/>
-    
-    
     <!--
         ***********************************
         ***                             ***
@@ -50,9 +34,10 @@
     <!--
         check_future_0
     -->
-    <bean id="check_future_0" p:id="check_future_0" parent="check_xslt_parent">
+    <bean id="check_future_0" parent="check_xslt_parent"
+        p:id="check_future_0">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_0.xsl"/>
             </bean>
         </property>
@@ -61,9 +46,10 @@
     <!--
         check_future_1
     -->
-    <bean id="check_future_1" p:id="check_future_1" parent="check_xslt_parent">
+    <bean id="check_future_1" parent="check_xslt_parent"
+        p:id="check_future_1">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_1.xsl"/>
             </bean>
         </property>
@@ -72,9 +58,10 @@
     <!--
         check_future_2
     -->
-    <bean id="check_future_2" p:id="check_future_2" parent="check_xslt_parent">
+    <bean id="check_future_2" parent="check_xslt_parent"
+        p:id="check_future_2">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_2.xsl"/>
             </bean>
         </property>
@@ -83,9 +70,10 @@
     <!--
         check_future_3
     -->
-    <bean id="check_future_3" p:id="check_future_3" parent="check_xslt_parent">
+    <bean id="check_future_3" parent="check_xslt_parent"
+        p:id="check_future_3">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_3.xsl"/>
             </bean>
         </property>
@@ -94,9 +82,10 @@
     <!--
         check_future_4
     -->
-    <bean id="check_future_4" p:id="check_future_4" parent="check_xslt_parent">
+    <bean id="check_future_4" parent="check_xslt_parent"
+        p:id="check_future_4">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_4.xsl"/>
             </bean>
         </property>
@@ -105,9 +94,10 @@
     <!--
         check_future_5
     -->
-    <bean id="check_future_5" p:id="check_future_5" parent="check_xslt_parent">
+    <bean id="check_future_5" parent="check_xslt_parent"
+        p:id="check_future_5">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_5.xsl"/>
             </bean>
         </property>
@@ -116,9 +106,10 @@
     <!--
         check_future_6
     -->
-    <bean id="check_future_6" p:id="check_future_6" parent="check_xslt_parent">
+    <bean id="check_future_6" parent="check_xslt_parent"
+        p:id="check_future_6">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_6.xsl"/>
             </bean>
         </property>
@@ -127,9 +118,10 @@
     <!--
         check_future_7
     -->
-    <bean id="check_future_7" p:id="check_future_7" parent="check_xslt_parent">
+    <bean id="check_future_7" parent="check_xslt_parent"
+        p:id="check_future_7">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_7.xsl"/>
             </bean>
         </property>
@@ -138,9 +130,10 @@
     <!--
         check_future_8
     -->
-    <bean id="check_future_8" p:id="check_future_8" parent="check_xslt_parent">
+    <bean id="check_future_8" parent="check_xslt_parent"
+        p:id="check_future_8">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_8.xsl"/>
             </bean>
         </property>
@@ -149,9 +142,10 @@
     <!--
         check_future_9
     -->
-    <bean id="check_future_9" p:id="check_future_9" parent="check_xslt_parent">
+    <bean id="check_future_9" parent="check_xslt_parent"
+        p:id="check_future_9">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_9.xsl"/>
             </bean>
         </property>
@@ -162,7 +156,8 @@
         
         Combines all check_future_N stages.
     -->
-    <bean id="check_future" p:id="check_future" parent="composite_parent">
+    <bean id="check_future" parent="composite_parent"
+        p:id="check_future">
         <property name="composedStages">
             <list>
                 <ref bean="check_future_0"/>
@@ -192,11 +187,10 @@
     <!--
         check_adfs
     -->
-    <bean id="check_adfs" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        lazy-init="true" init-method="initialize">
-        <property name="id" value="check_adfs"/>
+    <bean id="check_adfs" parent="check_xslt_parent"
+        p:id="check_adfs">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_adfs.xsl"/>
             </bean>
         </property>
@@ -205,11 +199,10 @@
     <!--
         check_aggregate
     -->
-    <bean id="check_aggregate" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        lazy-init="true" init-method="initialize">
-        <property name="id" value="check_aggregate"/>
+    <bean id="check_aggregate" parent="check_xslt_parent"
+        p:id="check_aggregate">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_aggregate.xsl"/>
             </bean>
         </property>
@@ -218,9 +211,10 @@
     <!--
         check_bindings
     -->
-    <bean id="check_bindings" p:id="check_bindings" parent="check_xslt_parent">
+    <bean id="check_bindings" parent="check_xslt_parent"
+        p:id="check_bindings">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_bindings.xsl"/>
             </bean>
         </property>
@@ -229,11 +223,10 @@
     <!--
         check_filtered
     -->
-    <bean id="check_filtered" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_filtered"/>
+    <bean id="check_filtered" parent="check_xslt_parent"
+        p:id="check_filtered">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_filtered.xsl"/>
             </bean>
         </property>
@@ -242,11 +235,10 @@
     <!--
         check_fixups
     -->
-    <bean id="check_fixups" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_fixups"/>
+    <bean id="check_fixups" parent="check_xslt_parent"
+        p:id="check_fixups">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_fixups.xsl"/>
             </bean>
         </property>
@@ -255,11 +247,10 @@
     <!--
         check_idpdisc
     -->
-    <bean id="check_idpdisc" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_idpdisc"/>
+    <bean id="check_idpdisc" parent="check_xslt_parent"
+        p:id="check_idpdisc">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_idpdisc.xsl"/>
             </bean>
         </property>
@@ -268,11 +259,10 @@
     <!--
         check_imported
     -->
-    <bean id="check_imported" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_imported"/>
+    <bean id="check_imported" parent="check_xslt_parent"
+        p:id="check_imported">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_imported.xsl"/>
             </bean>
         </property>
@@ -281,11 +271,10 @@
     <!--
         check_init
     -->
-    <bean id="check_init" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_init"/>
+    <bean id="check_init" parent="check_xslt_parent"
+        p:id="check_init">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_init.xsl"/>
             </bean>
         </property>
@@ -294,11 +283,10 @@
     <!--
         check_mdiop
     -->
-    <bean id="check_mdiop" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_mdiop"/>
+    <bean id="check_mdiop" parent="check_xslt_parent"
+        p:id="check_mdiop">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdiop.xsl"/>
             </bean>
         </property>
@@ -317,11 +305,10 @@
         
         Miscellaneous MDRPI tests, in XSLT.
     -->
-    <bean id="check_mdrpi_xslt" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_mdrpi_xslt"/>
+    <bean id="check_mdrpi_xslt" parent="check_xslt_parent"
+        p:id="check_mdrpi_xslt">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdrpi.xsl"/>
             </bean>
         </property>
@@ -332,9 +319,8 @@
         
         Composite check for the MDRPI specification.
     -->
-    <bean id="check_mdrpi" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_mdrpi"/>
+    <bean id="check_mdrpi" parent="composite_parent"
+        p:id="check_mdrpi">
         <property name="composedStages">
             <list>
                 <ref bean="check_mdrpi_xslt"/>
@@ -350,10 +336,9 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="check_regauth_parent" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true" abstract="true">
+    <bean id="check_regauth_parent" abstract="true" parent="check_xslt_parent">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_regauth.xsl"/>
             </bean>
         </property>
@@ -372,22 +357,20 @@
         
         Checks for the mdui:IPHint element.
     -->
-    <bean id="check_mdui_iphint" class="uk.org.ukfederation.mda.validate.mdui.IPHintValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_mdui_iphint"/>
-        <property name="checkingNetworks" value="true"/>
-    </bean>
+    <bean id="check_mdui_iphint" parent="stage_parent"
+        class="uk.org.ukfederation.mda.validate.mdui.IPHintValidationStage"
+        p:id="check_mdui_iphint"
+        p:checkingNetworks="true"/>
     
     <!--
         check_mdui_xslt
         
         Miscellaneous MDUI tests, in XSLT.
     -->
-    <bean id="check_mdui_xslt" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_mdui_xslt"/>
+    <bean id="check_mdui_xslt" parent="check_xslt_parent"
+        p:id="check_mdui_xslt">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdui.xsl"/>
             </bean>
         </property>
@@ -398,9 +381,8 @@
         
         Composite check for the MDUI specification.
     -->
-    <bean id="check_mdui" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_mdui"/>
+    <bean id="check_mdui" parent="composite_parent"
+        p:id="check_mdui">
         <property name="composedStages">
             <list>
                 <ref bean="check_mdui_iphint"/>
@@ -420,11 +402,10 @@
     <!--
         check_misc
     -->
-    <bean id="check_misc" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_misc"/>
+    <bean id="check_misc" parent="check_xslt_parent"
+        p:id="check_misc">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_misc.xsl"/>
             </bean>
         </property>
@@ -433,11 +414,10 @@
     <!--
         check_namespaces
     -->
-    <bean id="check_namespaces" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_namespaces"/>
+    <bean id="check_namespaces" parent="check_xslt_parent"
+        p:id="check_namespaces">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_namespaces.xsl"/>
             </bean>
         </property>
@@ -446,11 +426,10 @@
     <!--
         check_nokeyname
     -->
-    <bean id="check_nokeyname" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_nokeyname"/>
+    <bean id="check_nokeyname" parent="check_xslt_parent"
+        p:id="check_nokeyname">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_nokeyname.xsl"/>
             </bean>
         </property>
@@ -461,11 +440,10 @@
         
         Check for regular expressions in Shibboleth Scope elements.  Applied very selectively.
     -->
-    <bean id="check_regscope" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_regscope"/>
+    <bean id="check_regscope" parent="check_xslt_parent"
+        p:id="check_regscope">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_regscope.xsl"/>
             </bean>
         </property>
@@ -474,11 +452,10 @@
     <!--
         check_reqattr
     -->
-    <bean id="check_reqattr" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_reqattr"/>
+    <bean id="check_reqattr" parent="check_xslt_parent"
+        p:id="check_reqattr">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_reqattr.xsl"/>
             </bean>
         </property>
@@ -487,11 +464,10 @@
     <!--
         check_saml2int
     -->
-    <bean id="check_saml2int" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_saml2int"/>
+    <bean id="check_saml2int" parent="check_xslt_parent"
+        p:id="check_saml2int">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml2int.xsl"/>
             </bean>
         </property>
@@ -500,9 +476,10 @@
     <!--
         check_saml1
     -->
-    <bean id="check_saml1" p:id="check_saml1" parent="check_xslt_parent">
+    <bean id="check_saml1" parent="check_xslt_parent"
+        p:id="check_saml1">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml1.xsl"/>
             </bean>
         </property>
@@ -511,11 +488,10 @@
     <!--
         check_saml2
     -->
-    <bean id="check_saml2" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_saml2"/>
+    <bean id="check_saml2" parent="check_xslt_parent"
+        p:id="check_saml2">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml2.xsl"/>
             </bean>
         </property>
@@ -524,11 +500,10 @@
     <!--
         check_saml2meta
     -->
-    <bean id="check_saml2meta" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_saml2meta"/>
+    <bean id="check_saml2meta" parent="check_xslt_parent"
+        p:id="check_saml2meta">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml2meta.xsl"/>
             </bean>
         </property>
@@ -537,11 +512,10 @@
     <!--
         check_shibboleth
     -->
-    <bean id="check_shibboleth" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_shibboleth"/>
+    <bean id="check_shibboleth" parent="check_xslt_parent"
+        p:id="check_shibboleth">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_shibboleth.xsl"/>
             </bean>
         </property>
@@ -553,9 +527,9 @@
         Check that an aggregate has a validUntil instant specified, and that it has not
         yet expired.  Does not put an upper bound on validUntil intervals.
     -->
-    <bean id="check_validUntil" class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_validUntil"/>
+    <bean id="check_validUntil" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage"
+        p:id="check_validUntil">
         <!--
             The validUntil attribute must be present.
         -->
@@ -570,11 +544,10 @@
     <!--
         check_vhosts
     -->
-    <bean id="check_vhosts" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_vhosts"/>
+    <bean id="check_vhosts" parent="check_xslt_parent"
+        p:id="check_vhosts">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/check_vhosts.xsl"/>
             </bean>
         </property>
@@ -583,9 +556,8 @@
     <!--
         CHECK_std
     -->
-    <bean id="CHECK_std" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="CHECK_std"/>
+    <bean id="CHECK_std" parent="composite_parent"
+        p:id="CHECK_std">
         <property name="composedStages">
             <list>
                 <ref bean="check_adfs"/>
@@ -610,9 +582,8 @@
     <!--
         CHECK_imported
     -->
-    <bean id="CHECK_imported" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="CHECK_imported"/>
+    <bean id="CHECK_imported" parent="composite_parent"
+        p:id="CHECK_imported">
         <property name="composedStages">
             <list>
                 <ref bean="CHECK_std"/>

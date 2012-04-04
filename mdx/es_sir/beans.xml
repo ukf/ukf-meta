@@ -2,18 +2,22 @@
 <!--
     Common beans for this channel.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="es_sir_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="es_sir_productionAggregate"/>
-        <property name="parserPool" ref="parserPool"/>
+    <bean id="es_sir_productionAggregate" parent="domResourceStage_parent"
+        p:id="es_sir_productionAggregate">
         <property name="domResource">
-            <bean class="org.opensaml.util.net.HttpResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://www.rediris.es/sir/shib1metadata.xml"/>
             </bean>
@@ -23,8 +27,7 @@
     <!--
         Signing key.
     -->
-    <bean id="es_sir_signingKey" class="net.shibboleth.ext.spring.factory.PublicKeyFactoryBean"
-        lazy-init="true">
+    <bean id="es_sir_signingKey" class="net.shibboleth.ext.spring.factory.PublicKeyFactoryBean">
         <property name="publicKeyFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/es_sir/sirpubkey.pem"/>
@@ -35,18 +38,17 @@
     <!--
         Check signing signature.
     -->
-    <bean id="es_sir_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="es_sir_checkSignature"/>
+    <bean id="es_sir_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="es_sir_checkSignature">
         <property name="verificationKey" ref="es_sir_signingKey"/>
     </bean>
     
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="es_sir_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="es_sir_exportedEntities"/>
+    <bean id="es_sir_exportedEntities" parent="composite_parent"
+        p:id="es_sir_exportedEntities">
         <property name="composedStages">
             <list>
                 <!-- no export aggregate; use the production one instead -->

@@ -2,19 +2,23 @@
 <!--
     Common beans for this channel.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
 
     <!--
         Fetch the IdP metadata.
     -->
-    <bean id="dk_wayf_idpMetadata" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="dk_wayf_idpMetadata"/>
-        <property name="parserPool" ref="parserPool"/>
+    <bean id="dk_wayf_idpMetadata" parent="domResourceStage_parent"
+        p:id="dk_wayf_idpMetadata">
         <property name="domResource">
-            <bean class="org.opensaml.util.net.HttpResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://wayf.wayf.dk/saml2/idp/metadata.php"/>
             </bean>
@@ -24,9 +28,8 @@
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="dk_wayf_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="dk_wayf_exportedEntities"/>
+    <bean id="dk_wayf_exportedEntities" parent="composite_parent"
+        p:id="dk_wayf_exportedEntities">
         <property name="composedStages">
             <list>
                 <ref bean="dk_wayf_idpMetadata"/>

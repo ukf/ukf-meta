@@ -2,15 +2,21 @@
 <!--
     Common beans for this channel.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
     <!--
         Fetch the aggregate aggregate.
     -->
-    <bean id="test_aggregate" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="test_aggregate"/>
+    <bean id="test_aggregate" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
+        p:id="test_aggregate">
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
@@ -22,9 +28,8 @@
     <!--
         Fetch and process the entities as a collection.
     -->
-    <bean id="test_entities" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="test_entities"/>
+    <bean id="test_entities" parent="composite_parent"
+        p:id="test_entities">
         <property name="composedStages">
             <list>
                 <ref bean="test_aggregate"/>

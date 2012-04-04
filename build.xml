@@ -414,8 +414,9 @@
                     </fileset>
                 </classpath>
                 <jvmarg value="-Djava.endorsed.dirs=${tools.mda}/lib/endorsed"/>
-            	<jvmarg value="-Dlogback.configurationFile=${tools.dir}/ukf-mda/logback.xml"/>
             	<jvmarg value="-Dbasedir=${basedir}"/>
+            	<jvmarg value="-enableassertions"/>
+            	<arg value="--quiet"/>
             	<arg value="@{config}"/>
             	<arg value="@{pipeline}"/>
             </java>

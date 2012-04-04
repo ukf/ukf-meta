@@ -33,9 +33,8 @@
         
         Stand-alone statistics generation.
     -->
-    <bean id="statistics" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="statistics"/>
+    <bean id="statistics" parent="pipeline_parent"
+        p:id="statistics">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -52,26 +51,22 @@
         Generates a page of links to discovery services, for each SP that
         has mdui:uiinfo metadata.
     -->
-    <bean id="sp_mdui_test" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="sp_mdui_test"/>
+    <bean id="sp_mdui_test" parent="pipeline_parent"
+        p:id="sp_mdui_test">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
                 <ref bean="assemble"/>
-                <bean id="process" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-                    init-method="initialize" lazy-init="true">
-                    <property name="id" value="process"/>
+                <bean id="process" parent="xslt_parent"
+                    p:id="process">
                     <property name="xslResource">
-                        <bean class="org.opensaml.util.resource.FilesystemResource">
+                        <bean parent="file_parent">
                             <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/sp_mdui_test.xsl"/>
                         </bean>
                     </property>
                 </bean>
-                <bean id="serialize" class="net.shibboleth.metadata.pipeline.SerializationStage"
-                    init-method="initialize" lazy-init="true">
-                    <property name="id" value="serialize"/>
-                    <property name="serializer" ref="serializer"/>
+                <bean id="serialize" parent="serialize_parent"
+                    p:id="serialize">
                     <property name="outputFile">
                         <bean class="java.io.File">
                             <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/temp.html"/>
@@ -90,8 +85,8 @@
         *********************************
     -->
     
-    <bean id="checkPorts" p:id="checkPorts" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
+    <bean id="checkPorts" parent="pipeline_parent"
+        p:id="checkPorts">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -122,8 +117,8 @@
         ***********************************
     -->
     
-    <bean id="checkFuture" p:id="checkFuture" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
+    <bean id="checkFuture" parent="pipeline_parent"
+        p:id="checkFuture">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -160,10 +155,8 @@
         Fetches the contents of the file used to hold metadata just imported
         by the federation's import transform.
     -->
-    <bean id="importedMetadata" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="importedMetadata"/>
-        <property name="parserPool" ref="parserPool"/>
+    <bean id="importedMetadata" parent="domFileStage_parent"
+        p:id="importedMetadata">
         <property name="source">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/entities/imported.xml"/>
@@ -177,9 +170,8 @@
         Perform custom validation on metadata just imported by the
         federation's import transform.
     -->
-    <bean id="validateImportedMetadata" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="validateImportedMetadata"/>
+    <bean id="validateImportedMetadata" parent="pipeline_parent"
+        p:id="validateImportedMetadata">
         <property name="stages">
             <list>
                 <ref bean="importedMetadata"/>

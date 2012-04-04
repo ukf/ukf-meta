@@ -2,18 +2,22 @@
 <!--
     Common beans for this channel.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
     <!--
         Fetch the export aggregate.
     -->
-    <bean id="ie_edugate_exportAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="ie_edugate_exportAggregate"/>
-        <property name="parserPool" ref="parserPool"/>
+    <bean id="ie_edugate_exportAggregate" parent="domResourceStage_parent"
+        p:id="ie_edugate_exportAggregate">
         <property name="domResource">
-            <bean class="org.opensaml.util.net.HttpResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://edugate.heanet.ie/edugate-ukfed-signed.xml"/>        
             </bean>
@@ -23,12 +27,10 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="ie_edugate_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="ie_edugate_productionAggregate"/>
-        <property name="parserPool" ref="parserPool"/>
+    <bean id="ie_edugate_productionAggregate" parent="domResourceStage_parent"
+        p:id="ie_edugate_productionAggregate">
         <property name="domResource">
-            <bean class="org.opensaml.util.net.HttpResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>        
             </bean>
@@ -49,9 +51,9 @@
     <!--
         Check the signature on a document.
     -->
-    <bean id="ie_edugate_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="ie_edugate_checkSignature"/>
+    <bean id="ie_edugate_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="ie_edugate_checkSignature">
         <property name="verificationCertificate" ref="ie_edugate_signingCertificate"/>
     </bean>
     
@@ -62,9 +64,9 @@
         yet expired.  Sets a bound of 14 days on the validity interval; 9 days is the
         expected value.
     -->
-    <bean id="ie_edugate_validUntil" class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="ie_edugate_validUntil"/>
+    <bean id="ie_edugate_validUntil" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage"
+        p:id="ie_edugate_validUntil">
         <!--
             The validUntil attribute must be present.
         -->
@@ -90,8 +92,8 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="ie_edugate_check_regauth"  parent="check_regauth_parent">
-        <property name="id" value="ie_edugate_check_regauth"/>
+    <bean id="ie_edugate_check_regauth" parent="check_regauth_parent"
+        p:id="ie_edugate_check_regauth">
         <property name="transformParameters">
             <map>
                 <entry key="expectedAuthority" value-ref="ie_edugate_registrar"/>
@@ -105,8 +107,8 @@
         Provide a default registrationAuthority appropriate to
         this channel.
     -->
-    <bean id="ie_edugate_default_regauth"  parent="default_regauth_parent">
-        <property name="id" value="ie_edugate_default_regauth"/>
+    <bean id="ie_edugate_default_regauth" parent="default_regauth_parent"
+        p:id="ie_edugate_default_regauth">
         <property name="transformParameters">
             <map>
                 <entry key="defaultAuthority" value-ref="ie_edugate_registrar"/>
@@ -117,9 +119,8 @@
     <!--
         Fetch and process all entities as a collection.
     -->
-    <bean id="ie_edugate_allEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="ie_edugate_allEntities"/>
+    <bean id="ie_edugate_allEntities" parent="composite_parent"
+        p:id="ie_edugate_allEntities">
         <property name="composedStages">
             <list>
                 <ref bean="ie_edugate_productionAggregate"/>
@@ -144,9 +145,8 @@
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="ie_edugate_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="ie_edugate_exportedEntities"/>
+    <bean id="ie_edugate_exportedEntities" parent="composite_parent"
+        p:id="ie_edugate_exportedEntities">
         <property name="composedStages">
             <list>
                 <ref bean="ie_edugate_exportAggregate"/>

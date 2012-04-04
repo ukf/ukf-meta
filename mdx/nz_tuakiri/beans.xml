@@ -2,18 +2,22 @@
 <!--
     Common beans for this channel.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="nz_tuakiri_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="nz_tuakiri_productionAggregate"/>
-        <property name="parserPool" ref="parserPool"/>
+    <bean id="nz_tuakiri_productionAggregate" parent="domResourceStage_parent"
+        p:id="nz_tuakiri_productionAggregate">
         <property name="domResource">
-            <bean class="org.opensaml.util.net.HttpResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="http://directory.test.tuakiri.ac.nz/metadata/tuakiri-test-metadata-signed.xml"/>
             </bean>
@@ -23,8 +27,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="nz_tuakiri_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
-        lazy-init="true">
+    <bean id="nz_tuakiri_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/nz_tuakiri/tuakiri-test-metadata-cert.pem"/>
@@ -35,18 +38,17 @@
     <!--
         Check signing signature.
     -->
-    <bean id="nz_tuakiri_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="nz_tuakiri_checkSignature"/>
+    <bean id="nz_tuakiri_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="nz_tuakiri_checkSignature">
         <property name="verificationCertificate" ref="nz_tuakiri_signingCertificate"/>
     </bean>
     
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="nz_tuakiri_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="nz_tuakiri_exportedEntities"/>
+    <bean id="nz_tuakiri_exportedEntities" parent="composite_parent"
+        p:id="nz_tuakiri_exportedEntities">
         <property name="composedStages">
             <list>
                 <!-- no export aggregate; use the production one instead -->

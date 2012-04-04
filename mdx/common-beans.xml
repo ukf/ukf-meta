@@ -3,6 +3,7 @@
     Common bean definitions.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -19,20 +20,113 @@
     -->
     
     <!--
+        component_parent
+        
+        Parent for anything based on the component system.
+        These all require initialization before use.
+    -->
+    <bean id="component_parent" abstract="true" init-method="initialize"/>
+    
+    <!--
+        file_parent
+        
+        Parent for all file system resource beans.
+    -->
+    <bean id="file_parent" abstract="true" parent="component_parent"
+        class="net.shibboleth.utilities.java.support.resource.FilesystemResource"/>
+
+    <!--
+        pipeline_parent
+        
+        Parent for pipelines.
+    -->
+    <bean id="pipeline_parent" abstract="true" parent="component_parent"
+        class="net.shibboleth.metadata.pipeline.SimplePipeline"/>
+    
+    <!--
         stage_parent
         
-        Parent (template) for all stages.
+        Parent for all stages.
     -->
-    <bean id="stage_parent" lazy-init="true" init-method="initialize" abstract="true"/>
+    <bean id="stage_parent" abstract="true" parent="component_parent"/>
     
     <!--
         composite_parent
         
-        Parent (template) for composite stages.
+        Parent for composite stages.
     -->
-    <bean id="composite_parent" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        parent="stage_parent" abstract="true"/>
+    <bean id="composite_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.CompositeStage"/>
+
+    <!--
+        xslt_parent
+        
+        Parent for XSLT-based checking stages.
+    -->
+    <bean id="xslt_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XSLTransformationStage"/>
     
+    <!--
+        check_xslt_parent
+        
+        Parent for XSLT-based checking stages.
+    -->
+    <bean id="check_xslt_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XSLValidationStage"/>
+    
+    <!--
+        stripContainer_parent
+        
+        Parent for container stripping stages.
+    -->
+    <bean id="stripContainer_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.EmptyContainerStrippingStage"/>
+    
+    <!--
+        stripElement_parent
+        
+        Parent for element stripping stages.
+    -->
+    <bean id="stripElement_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.ElementStrippingStage"/>
+    
+    <!--
+        stripNamespace_parent
+        
+        Parent for namespace stripping stages.
+    -->
+    <bean id="stripNamespace_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.NamespaceStrippingStage"/>
+
+    <!--
+        domFileStage_parent
+        
+        Parent for DOM filesystem source stages.
+    -->
+    <bean id="domFileStage_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.DomFilesystemSourceStage">
+        <property name="parserPool" ref="parserPool"/>
+    </bean>
+
+    <!--
+        domResourceStage_parent
+        
+        Parent for DOM resource source stages.
+    -->
+    <bean id="domResourceStage_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.DomResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
+    </bean>
+
+    <!--
+        serialize_parent
+        
+        Parent for serialization stages.
+    -->
+    <bean id="serialize_parent" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.SerializationStage">
+        <property name="serializer" ref="serializer"/>
+    </bean>
     
     <!--
         ***********************************************
@@ -48,7 +142,7 @@
         A NamespaceContext that assigns the usual prefix for each of the commonly used XML namespaces.
         This is used in the evaluation of XPath expressions.
     -->
-    <bean id="commonNamespaces" class="net.shibboleth.metadata.dom.SimpleNamespaceContext">
+    <bean id="commonNamespaces" class="net.shibboleth.utilities.java.support.xml.SimpleNamespaceContext">
         <constructor-arg>
             <util:map map-class="java.util.HashMap">
                 <entry key="alg"        value="urn:oasis:names:tc:SAML:metadata:algsupport"/>
@@ -74,56 +168,49 @@
     </bean>
     
     <!--
-        Parent (template) for namespace stripping stages.
-    -->
-    <bean id="stripNamespace_parent" abstract="true"
-        class="uk.org.ukfederation.mda.NamespaceStrippingStage"
-        init-method="initialize" lazy-init="true"/>
-    
-    <!--
         stripElabNamespace
         
         Remove the Eduserv label namespace.
     -->
-    <bean id="stripElabNamespace" p:id="stripElabNamespace"
-        p:namespace="http://eduserv.org.uk/labels"
-        parent="stripNamespace_parent"/>
+    <bean id="stripElabNamespace" parent="stripNamespace_parent"
+        p:id="stripElabNamespace"
+        p:namespace="http://eduserv.org.uk/labels"/>
 
     <!--
         stripMdattrNamespace
         
         Remove the namespace used by the entity attributes extension.
     -->
-    <bean id="stripMdattrNamespace" p:id="stripMdattrNamespace"
-        p:namespace="urn:oasis:names:tc:SAML:metadata:attribute"
-        parent="stripNamespace_parent"/>
+    <bean id="stripMdattrNamespace" parent="stripNamespace_parent"
+        p:id="stripMdattrNamespace"
+        p:namespace="urn:oasis:names:tc:SAML:metadata:attribute"/>
     
     <!--
         stripMdrpiNamespace
         
         Remove the namespace used by the registration and publication metdata extension.
     -->
-    <bean id="stripMdrpiNamespace" p:id="stripMdrpiNamespace"
-        p:namespace="urn:oasis:names:tc:SAML:metadata:rpi"
-        parent="stripNamespace_parent"/>
+    <bean id="stripMdrpiNamespace" parent="stripNamespace_parent"
+        p:id="stripMdrpiNamespace"
+        p:namespace="urn:oasis:names:tc:SAML:metadata:rpi"/>
     
     <!--
         stripUkfedlabelNamespace
         
         Remove the UK federation label namespace.
     -->
-    <bean id="stripUkfedlabelNamespace" p:id="stripUkfedlabelNamespace"
-        p:namespace="http://ukfederation.org.uk/2006/11/label"
-        parent="stripNamespace_parent"/>
+    <bean id="stripUkfedlabelNamespace" parent="stripNamespace_parent"
+        p:id="stripUkfedlabelNamespace"
+        p:namespace="http://ukfederation.org.uk/2006/11/label"/>
     
     <!--
         stripWayfNamespace
         
         Remove the UK federation WAYF namespace.
     -->
-    <bean id="stripWayfNamespace" p:id="stripWayfNamespace"
-        p:namespace="http://sdss.ac.uk/2006/06/WAYF"
-        parent="stripNamespace_parent"/>
+    <bean id="stripWayfNamespace" parent="stripNamespace_parent"
+        p:id="stripWayfNamespace"
+        p:namespace="http://sdss.ac.uk/2006/06/WAYF"/>
     
     <!--
         normaliseNamespaces
@@ -131,11 +218,10 @@
         A pipeline stage that can be used before serialisation to normalise the namespaces
         used in an XML document.
     -->
-    <bean id="normaliseNamespaces" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="normaliseNamespaces"/>
+    <bean id="normaliseNamespaces" parent="xslt_parent"
+        p:id="normaliseNamespaces">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/ns_norm.xsl"/>
             </bean>
         </property>
@@ -167,9 +253,9 @@
         A pipeline stage that logs any errors and warnings present,
         but takes no action on them.
     -->
-    <bean id="errorAnnouncer" class="net.shibboleth.metadata.pipeline.StatusMetadataLoggingStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="errorAnnouncer"/>
+    <bean id="errorAnnouncer" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.StatusMetadataLoggingStage"
+        p:id="errorAnnouncer">
         <property name="identifierStrategy" ref="identifierStrategy"/>
         <property name="selectionRequirements">
             <list>
@@ -184,9 +270,9 @@
         
         This pipeline stage removes any items marked with an error status.
     -->
-    <bean id="errorRemover" class="net.shibboleth.metadata.pipeline.ItemMetadataFilterStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="errorRemover"/>
+    <bean id="errorRemover" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.ItemMetadataFilterStage"
+        p:id="errorRemover">
         <property name="identifierStrategy" ref="identifierStrategy"/>
         <property name="selectionRequirements">
             <list>
@@ -200,9 +286,9 @@
         
         This pipeline stage causes CLI termination if any item is marked with an error status.
     -->
-    <bean id="errorTerminator" class="net.shibboleth.metadata.pipeline.ItemMetadataTerminationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="errorTerminator"/>
+    <bean id="errorTerminator" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.ItemMetadataTerminationStage"
+        p:id="errorTerminator">
         <property name="identifierStrategy" ref="identifierStrategy"/>
         <property name="selectionRequirements">
             <list>
@@ -217,9 +303,8 @@
         Announce any errors or warnings encountered, then remove
         any items that had errors.  Items with warnings are retained.
     -->
-    <bean id="errorAnnouncingFilter" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="errorAnnouncingFilter"/>
+    <bean id="errorAnnouncingFilter" parent="composite_parent"
+        p:id="errorAnnouncingFilter">
         <property name="composedStages">
             <list>
                 <ref bean="errorAnnouncer"/>
@@ -234,9 +319,8 @@
         A pipeline stage that checks for any errors, and then announces
         and filters any encountered.
     -->
-    <bean id="errorTerminatingFilter" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="errorTerminatingFilter"/>
+    <bean id="errorTerminatingFilter" parent="composite_parent"
+        p:id="errorTerminatingFilter">
         <property name="composedStages">
             <list>
                 <ref bean="errorAnnouncer"/>
@@ -261,10 +345,9 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="default_regauth_parent" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true" abstract="true">
+    <bean id="default_regauth_parent" abstract="true" parent="xslt_parent">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/default_regauth.xsl"/>
             </bean>
         </property>
@@ -290,11 +373,10 @@
         
         A pre-configured parser pool for use by source stages.
     -->
-    <bean id="parserPool" class="org.opensaml.util.xml.BasicParserPool"
-        init-method="initialize" lazy-init="true">
-        <property name="ignoreComments" value="false"/>
-        <property name="ignoreElementContentWhitespace" value="false"/>
-    </bean>
+    <bean id="parserPool" parent="component_parent"
+        class="net.shibboleth.utilities.java.support.xml.BasicParserPool"
+        p:ignoreComments="false"
+        p:ignoreElementContentWhitespace="false"/>
     
     <!--
         schemaResources
@@ -302,67 +384,67 @@
         A list of all schema documents that we make common use of.
     -->
     <util:list id="schemaResources">
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/MetadataExchange.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-assertion-2.0.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-metadata-2.0.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/shibboleth-metadata-1.0.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-metadata-attr.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-request-initiation.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-idp-discovery.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-algsupport-v1.0.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-ui-v1.0.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/uk-fed-label.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-members.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-addr.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-authorization.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-federation.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-securitypolicy-1.2.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xml.xsd"/>
         </bean>
-        <bean class="org.opensaml.util.resource.FilesystemResource">
+        <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig-core-schema.xsd"/>
         </bean>
     </util:list>
@@ -372,9 +454,9 @@
         
         A pipeline stage that checks against all the common schemas, as above.
     -->
-    <bean id="checkSchemas" class="net.shibboleth.metadata.dom.XMLSchemaValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="checkSchemas"/>
+    <bean id="checkSchemas" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSchemaValidationStage"
+        p:id="checkSchemas">
         <property name="schemaResources" ref="schemaResources"/>
     </bean>
 
@@ -385,11 +467,10 @@
         presented, for example by removing redundant attributes or elements which only have
         meaning when added by the UK federation registrar.
     -->
-    <bean id="cleanImport" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="cleanImport"/>
+    <bean id="cleanImport" parent="xslt_parent"
+        p:id="cleanImport">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/clean-import.xsl"/>
             </bean>
         </property>
@@ -398,38 +479,34 @@
     <!--
         Basic EntitiesDescriptor disassembler pipeline stage.
     -->
-    <bean id="disassemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorDisassemblerStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="disassemble"/>
-    </bean>
+    <bean id="disassemble" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorDisassemblerStage"
+        p:id="disassemble"/>
     
     <!--
         Populate ItemId values from entities.
     -->
-    <bean id="populateItemIds" class="net.shibboleth.metadata.dom.saml.EntityDescriptorItemIdPopulationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="populateItemIds"/>
-    </bean>
+    <bean id="populateItemIds" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntityDescriptorItemIdPopulationStage"
+        p:id="populateItemIds"/>
     
     <!--
         stripKeyNames
         
         Remove all ds:KeyName elements.
     -->
-    <bean id="stripKeyNames" class="uk.org.ukfederation.mda.ElementStrippingStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="stripKeyNames"/>
-        <property name="elementName" value="KeyName"/>
-        <property name="elementNamespace" value="http://www.w3.org/2000/09/xmldsig#"/>
-    </bean>
+    <bean id="stripKeyNames" parent="stripElement_parent"
+        p:id="stripKeyNames"
+        p:elementName="KeyName"
+        p:elementNamespace="http://www.w3.org/2000/09/xmldsig#"/>
     
     <!--
         Remove any empty Extensions elements.
     -->
-    <bean id="removeEmptyExtensions" class="uk.org.ukfederation.mda.RemoveEmptyExtensionsStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="removeEmptyExtensions"/>
-    </bean>
+    <bean id="removeEmptyExtensions" parent="stripContainer_parent"
+        p:id="removeEmptyExtensions"
+        p:elementName="Extensions"
+        p:elementNamespace="urn:oasis:names:tc:SAML:2.0:metadata"/>
     
     <!--
         standardImportActions
@@ -438,9 +515,8 @@
         collection has been acquired, had its signature validated, and disassembled into
         individual entities.
     -->
-    <bean id="standardImportActions" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="standardImportActions"/>
+    <bean id="standardImportActions" parent="composite_parent"
+        p:id="standardImportActions">
         <property name="composedStages">
             <list>
                 <ref bean="populateItemIds"/>
@@ -477,10 +553,9 @@
     <!--
         Basic EntitiesDescriptor assembler pipeline stage.
     -->
-    <bean id="assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="assemble"/>
-    </bean>
+    <bean id="assemble" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
+        p:id="assemble"/>
     
     <!--
         standardImportTail
@@ -489,9 +564,8 @@
         are currently ending up in files, build an EntitiesDescriptor and normalise the
         namespaces in the document ready for serialisation.
     -->
-    <bean id="standardImportTail" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="standardImportTail"/>
+    <bean id="standardImportTail" parent="composite_parent"
+        p:id="standardImportTail">
         <property name="composedStages">
             <list>
                 <ref bean="assemble"/>
@@ -505,7 +579,8 @@
         
         An item selection strategy that selects all items.
     -->
-    <bean id="everythingSelector" class="net.shibboleth.metadata.AlwaysItemSelectionStrategy"/>
+    <bean id="everythingSelector" class="com.google.common.base.Predicates"
+        factory-method="alwaysTrue"/>
     
     <!--
         Standard serializer.

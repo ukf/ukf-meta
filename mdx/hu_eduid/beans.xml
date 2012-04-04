@@ -2,18 +2,22 @@
 <!--
     Common beans for this channel.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="hu_eduid_productionAggregate" class="net.shibboleth.metadata.dom.DomResourceSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="hu_eduid_productionAggregate"/>
-        <property name="parserPool" ref="parserPool"/>
+    <bean id="hu_eduid_productionAggregate" parent="domResourceStage_parent"
+        p:id="hu_eduid_productionAggregate">
         <property name="domResource">
-            <bean class="org.opensaml.util.net.HttpResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://metadata.eduid.hu/metadata.xml"/>
             </bean>
@@ -23,8 +27,7 @@
     <!--
         Metadata signing certificate.
     -->
-    <bean id="hu_eduid_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"
-        lazy-init="true">
+    <bean id="hu_eduid_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/hu_eduid/href-metadata-signer-2011.crt"/>
@@ -35,20 +38,18 @@
     <!--
         Check the signature on a document.
     -->
-    <bean id="hu_eduid_checkSignature" class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="hu_eduid_checkSignature"/>
+    <bean id="hu_eduid_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="hu_eduid_checkSignature">
         <property name="verificationCertificate" ref="hu_eduid_signingCertificate"/>
     </bean>
     
     <!--
         Remove the eduID.hu custom metadata tagging namespace.
     -->
-    <bean id="hu_eduid_stripEntityAttributesNamespace" class="uk.org.ukfederation.mda.NamespaceStrippingStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="hu_eduid_stripEntityAttributesNamespace"/>
-        <property name="namespace" value="urn:geant:niif.hu:eduid.hu:entity-attributes:processing-info"/>
-    </bean>
+    <bean id="hu_eduid_stripEntityAttributesNamespace" parent="stripNamespace_parent"
+        p:id="hu_eduid_stripEntityAttributesNamespace"
+        p:namespace="urn:geant:niif.hu:eduid.hu:entity-attributes:processing-info"/>
 
     <!--
         hu_eduid_registrar
@@ -65,8 +66,8 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="hu_eduid_check_regauth" parent="check_regauth_parent">
-        <property name="id" value="hu_eduid_check_regauth"/>
+    <bean id="hu_eduid_check_regauth" parent="check_regauth_parent"
+        p:id="hu_eduid_check_regauth">
         <property name="transformParameters">
             <map>
                 <entry key="expectedAuthority" value-ref="hu_eduid_registrar"/>
@@ -77,9 +78,8 @@
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="hu_eduid_exportedEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="hu_eduid_exportedEntities"/>
+    <bean id="hu_eduid_exportedEntities" parent="composite_parent"
+        p:id="hu_eduid_exportedEntities">
         <property name="composedStages">
             <list>
                 <!-- no export aggregate; use the production one instead -->

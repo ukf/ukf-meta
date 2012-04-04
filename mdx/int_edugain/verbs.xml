@@ -3,6 +3,8 @@
     Verb definitions for this channel.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
@@ -19,10 +21,8 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeImported"/>
-        <property name="serializer" ref="serializer"/>
+    <bean id="serializeImported" parent="serialize_parent"
+        p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_edugain/imported.xml"/>
@@ -30,9 +30,8 @@
         </property>
     </bean>
     
-    <bean id="import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="import"/>
+    <bean id="import" parent="pipeline_parent"
+        p:id="import">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_exportedEntities"/>
@@ -42,9 +41,8 @@
         </property>
     </bean>
 
-    <bean id="importRaw" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="importRaw"/>
+    <bean id="importRaw" parent="pipeline_parent"
+        p:id="importRaw">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionAggregate"/>
@@ -53,9 +51,8 @@
         </property>
     </bean>
     
-    <bean id="testImport" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="testImport"/>
+    <bean id="testImport" parent="pipeline_parent"
+        p:id="testImport">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_testEntities"/>

@@ -3,6 +3,7 @@
     Common beans for this channel.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -18,9 +19,9 @@
         Each fragment file contains a single EntityDescriptor.  The name of each
         eligible file matches a particular regular expression.
     -->
-    <bean id="uk_fetchFragmentFiles" class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_fetchFragmentFiles"/>
+    <bean id="uk_fetchFragmentFiles" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
+        p:id="uk_fetchFragmentFiles">
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
@@ -49,11 +50,10 @@
         This transform can be run on individual EntityDescriptors or on an
         aggregate EntitiesDescriptor.
     -->
-    <bean id="uk_processScopes" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_processScopes"/>
+    <bean id="uk_processScopes" parent="xslt_parent"
+        p:id="uk_processScopes">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/scopes.xsl"/>
             </bean>
         </property>
@@ -70,7 +70,7 @@
         
         A Resource referencing the members.xml document.
     -->
-    <bean id="uk_membersResource" class="org.opensaml.util.resource.FilesystemResource" lazy-init="true">
+    <bean id="uk_membersResource" parent="file_parent">
         <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
     </bean>
     
@@ -80,7 +80,7 @@
         
         This bean contains the contents of the members.xml file as a DOM Document.
     -->
-    <bean id="uk_membersDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean" lazy-init="true">
+    <bean id="uk_membersDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean">
         <property name="documentResource" ref="uk_membersResource"/>
         <property name="parserPool" ref="parserPool"/>
     </bean>
@@ -91,7 +91,7 @@
         
         This bean implements an API for access to the contents of the members.xml document.
     -->
-    <bean id="uk_members" class="uk.org.ukfederation.members.Members" lazy-init="true">
+    <bean id="uk_members" class="uk.org.ukfederation.members.Members">
         <constructor-arg>
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
@@ -105,10 +105,10 @@
         
         Adds "mailto:" to md:EmailAddress elements which don't already have it.
     -->
-    <bean id="uk_fix_mailto" p:id="uk_fix_mailto" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
+    <bean id="uk_fix_mailto" parent="xslt_parent"
+        p:id="uk_fix_mailto">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fix_mailto.xsl"/>
             </bean>
         </property>
@@ -120,11 +120,10 @@
         
         Checks specific to the UK registrar function.
     -->
-    <bean id="check_ukreg" class="net.shibboleth.metadata.dom.XSLValidationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="check_ukreg"/>
+    <bean id="check_ukreg" parent="check_xslt_parent"
+        p:id="check_ukreg">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_ukreg.xsl"/>
             </bean>
         </property>
@@ -144,9 +143,8 @@
         export flows, for which we desire the closest possible correspondence to
         the registered metadata.
     -->
-    <bean id="uk_checkPublishable" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_checkPublishable"/>
+    <bean id="uk_checkPublishable" parent="composite_parent"
+        p:id="uk_checkPublishable">
         <property name="composedStages">
             <list>
                 <ref bean="checkSchemas"/>
@@ -163,11 +161,10 @@
         
         This bean contains the contents of the master.xml file as a DOM Document.
     -->
-    <bean id="uk_trustRootsDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean"
-        lazy-init="true">
+    <bean id="uk_trustRootsDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean">
         <property name="parserPool" ref="parserPool"/>
         <property name="documentResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/master.xml"/>
             </bean>
         </property>
@@ -179,11 +176,10 @@
         
         This stage adds the UK federation trust roots to an EntitiesDescriptor.
     -->
-    <bean id="uk_addTrustRoots" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_addTrustRoots"/>
+    <bean id="uk_addTrustRoots" parent="xslt_parent"
+        p:id="uk_addTrustRoots">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust-roots.xsl"/>
             </bean>
         </property>
@@ -200,11 +196,10 @@
         
         This stage performs any standard cleanup required for UK federation fragment files.
     -->
-    <bean id="uk_processFragment" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_processFragment"/>
+    <bean id="uk_processFragment" parent="xslt_parent"
+        p:id="uk_processFragment">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fragment.xsl"/>
             </bean>
         </property>
@@ -216,14 +211,15 @@
         
         Remove any md:ContactPerson elements with contactType of "administrative".
     -->
-    <bean id="uk_stripAdminContacts" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_stripAdminContacts"/>
-        <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_admin.xsl"/>
-            </bean>
+    <bean id="uk_stripAdminContacts" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.ContactPersonFilterStage"
+        p:id="uk_stripAdminContacts">
+        <property name="designatedTypes">
+            <list>
+                <value>administrative</value>
+            </list>
         </property>
+        <property name="whitelistingTypes" value="false"/>
     </bean>
     
     
@@ -232,11 +228,10 @@
         
         This stage performs any fixup actions required before publication to UK federation members.
     -->
-    <bean id="uk_performFixups" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_performFixups"/>
+    <bean id="uk_performFixups" parent="xslt_parent"
+        p:id="uk_performFixups">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fixups.xsl"/>
             </bean>
         </property>
@@ -246,10 +241,9 @@
     <!--
         Populate UKId values from entities.
     -->
-    <bean id="uk_populateIds" class="uk.org.ukfederation.mda.EntityDescriptorUKIdPopulationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_populateIds"/>
-    </bean>
+    <bean id="uk_populateIds" parent="stage_parent"
+        class="uk.org.ukfederation.mda.EntityDescriptorUKIdPopulationStage"
+        p:id="uk_populateIds"/>
     
 
     <!--
@@ -257,10 +251,10 @@
         
         Name attribute is set to the federation URI.  UK ordering is applied.
     -->
-    <bean id="uk_assemble" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_assemble"/>
-        <property name="descriptorName" value="http://ukfederation.org.uk"/>
+    <bean id="uk_assemble" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
+        p:id="uk_assemble"
+        p:descriptorName="http://ukfederation.org.uk">
         <property name="itemOrderingStrategy">
             <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
         </property>
@@ -272,9 +266,9 @@
         
         Name attribute is not set.  UK ordering is applied.
     -->
-    <bean id="uk_assembleUnnamed" class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_assembleUnnamed"/>
+    <bean id="uk_assembleUnnamed" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
+        p:id="uk_assembleUnnamed">
         <property name="itemOrderingStrategy">
             <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
         </property>
@@ -284,9 +278,8 @@
     <!--
         Fetch and process the registered entities as a collection.
     -->
-    <bean id="uk_registeredEntities" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_registeredEntities"/>
+    <bean id="uk_registeredEntities" parent="composite_parent"
+        p:id="uk_registeredEntities">
         <property name="composedStages">
             <list>
                 <ref bean="uk_fetchFragmentFiles"/>
@@ -310,11 +303,10 @@
         
         Strip those UK federation extensions which we never publish.
     -->
-    <bean id="uk_stripExtensions" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_stripExtensions"/>
+    <bean id="uk_stripExtensions" parent="xslt_parent"
+        p:id="uk_stripExtensions">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_extensions.xsl"/>
             </bean>
         </property>
@@ -336,11 +328,10 @@
         used in an XML document.  This one is UK-specific, as it makes specific choices
         in order to limit the number of prefixes used.
     -->
-    <bean id="uk_normaliseNamespaces" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_normaliseNamespaces"/>
+    <bean id="uk_normaliseNamespaces" parent="xslt_parent"
+        p:id="uk_normaliseNamespaces">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/build/ns_norm_uk.xsl"/>
             </bean>
         </property>
@@ -369,8 +360,8 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="uk_check_regauth"  parent="check_regauth_parent">
-        <property name="id" value="uk_check_regauth"/>
+    <bean id="uk_check_regauth"  parent="check_regauth_parent"
+        p:id="uk_check_regauth">
         <property name="transformParameters">
             <map>
                 <entry key="expectedAuthority" value-ref="uk_registrar"/>
@@ -384,8 +375,8 @@
         Provide a default registrationAuthority appropriate to
         this channel.
     -->
-    <bean id="uk_default_regauth"  parent="default_regauth_parent">
-        <property name="id" value="uk_default_regauth"/>
+    <bean id="uk_default_regauth" parent="default_regauth_parent"
+        p:id="uk_default_regauth">
         <property name="transformParameters">
             <map>
                 <entry key="defaultAuthority" value-ref="uk_registrar"/>
@@ -407,9 +398,9 @@
         Serialise the (assumed HTML) DomDocumentItem into the UK federation statistics
         output file in the production XML directory.
     -->
-    <bean id="uk_serializeStatistics" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_serializeStatistics"/>
+    <bean id="uk_serializeStatistics" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.SerializationStage"
+        p:id="uk_serializeStatistics">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
@@ -423,11 +414,10 @@
         
         Input is an aggregate of all registered entities, output is the HTML statistics.
     -->
-    <bean id="uk_generateStatistics" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_generateStatistics"/>
+    <bean id="uk_generateStatistics" parent="xslt_parent"
+        p:id="uk_generateStatistics">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/statistics.xsl"/>
             </bean>
         </property>
@@ -446,9 +436,8 @@
         resulting HTML output is written into the appropriate file in the production
         XML directory.
     -->
-    <bean id="uk_statisticsPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_statisticsPipeline"/>
+    <bean id="uk_statisticsPipeline" parent="pipeline_parent"
+        p:id="uk_statisticsPipeline">
         <property name="stages">
             <list>
                 <ref bean="assemble"/>

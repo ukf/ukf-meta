@@ -3,6 +3,8 @@
     Verb to generate all UK aggregates.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
@@ -33,9 +35,8 @@
         *******************************************
     -->
     
-    <bean id="uk_ie_edugate_importPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_ie_edugate_importPipeline"/>
+    <bean id="uk_ie_edugate_importPipeline" parent="pipeline_parent"
+        p:id="uk_ie_edugate_importPipeline">
         <property name="stages">
             <list>
                 <ref bean="ie_edugate_exportedEntities"/>
@@ -61,8 +62,7 @@
         Selection strategy which is true for entities owned by UK federation
         members.
     -->
-    <bean id="uk_memberEntitySelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy"
-        lazy-init="true">
+    <bean id="uk_memberEntitySelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:UKFederationMember]"/>
         <constructor-arg ref="commonNamespaces"/>
     </bean>
@@ -71,24 +71,22 @@
         Assemble a nested EntitiesDescriptor structure with the
         UK federation entities inside an inner element.
     -->
-    <bean id="uk_assembleHierarchicalAggregate" class="net.shibboleth.metadata.pipeline.CompositeStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_assembleHierarchicalAggregate"/>
+    <bean id="uk_assembleHierarchicalAggregate" parent="composite_parent"
+        p:id="uk_assembleHierarchicalAggregate">
         <property name="composedStages">
             <list>
                 <!--
                     Step 1: put all UK entities inside a UK-named EntitiesDescriptor
                 -->
-                <bean id="uk_buildNestedEntitiesDescriptor" class="net.shibboleth.metadata.pipeline.SplitMergeStage"
-                    init-method="initialize" lazy-init="true">
-                    <property name="id" value="uk_buildNestedEntitiesDescriptor"/>
+                <bean id="uk_buildNestedEntitiesDescriptor" parent="stage_parent"
+                    class="net.shibboleth.metadata.pipeline.SplitMergeStage"
+                    p:id="uk_buildNestedEntitiesDescriptor">
                     <property name="selectionStrategy">
                         <ref bean="uk_memberEntitySelector"/>
                     </property>
                     <property name="selectedItemPipeline">
-                        <bean name="uk_assemblePipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-                            init-method="initialize" lazy-init="true">
-                            <property name="id" value="uk_assemblePipeline"/>
+                        <bean name="uk_assemblePipeline" parent="pipeline_parent"
+                            p:id="uk_assemblePipeline">
                             <property name="stages">
                                 <list>
                                     <ref bean="uk_assemble"/>
@@ -116,20 +114,17 @@
         ***************************************************
     -->
     
-    <bean id="uk_finaliseProduction" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_finaliseProduction"/>
+    <bean id="uk_finaliseProduction" parent="xslt_parent"
+        p:id="uk_finaliseProduction">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
     </bean>
 
-    <bean id="serializeUnsignedProductionAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeUnsignedProductionAggregate"/>
-        <property name="serializer" ref="serializer"/>
+    <bean id="serializeUnsignedProductionAggregate" parent="serialize_parent"
+        p:id="serializeUnsignedProductionAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-metadata-unsigned.xml"/>
@@ -137,9 +132,8 @@
         </property>
     </bean>
 
-    <bean id="uk_productionPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_productionPipeline"/>
+    <bean id="uk_productionPipeline" parent="pipeline_parent"
+        p:id="uk_productionPipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
@@ -165,16 +159,13 @@
         ***************************************
     -->
     
-    <bean id="uk_wayfSelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy"
-        lazy-init="true">
+    <bean id="uk_wayfSelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[not(md:Extensions/wayf:HideFromWAYF)]"/>
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeUnsignedWayfAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeUnsignedWayfAggregate"/>
-        <property name="serializer" ref="serializer"/>
+    <bean id="serializeUnsignedWayfAggregate" parent="serialize_parent"
+        p:id="serializeUnsignedWayfAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-wayf-unsigned.xml"/>
@@ -182,9 +173,8 @@
         </property>
     </bean>
     
-    <bean id="uk_wayfPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_wayfPipeline"/>
+    <bean id="uk_wayfPipeline" parent="pipeline_parent"
+        p:id="uk_wayfPipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
@@ -209,11 +199,10 @@
         ***********************************************
     -->
     
-    <bean id="uk_finaliseFallback" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_finaliseFallback"/>
+    <bean id="uk_finaliseFallback" parent="xslt_parent"
+        p:id="uk_finaliseFallback">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
@@ -224,10 +213,8 @@
         </property>
     </bean>
     
-    <bean id="serializeUnsignedFallbackAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeUnsignedFallbackAggregate"/>
-        <property name="serializer" ref="serializer"/>
+    <bean id="serializeUnsignedFallbackAggregate" parent="serialize_parent"
+        p:id="serializeUnsignedFallbackAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-back-unsigned.xml"/>
@@ -235,9 +222,8 @@
         </property>
     </bean>
     
-    <bean id="uk_fallbackPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_fallbackPipeline"/>
+    <bean id="uk_fallbackPipeline" parent="pipeline_parent"
+        p:id="uk_fallbackPipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
@@ -263,11 +249,10 @@
         ***************************************
     -->
     
-    <bean id="uk_finaliseTest" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_finaliseTest"/>
+    <bean id="uk_finaliseTest" parent="xslt_parent"
+        p:id="uk_finaliseTest">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
@@ -278,10 +263,8 @@
         </property>
     </bean>
     
-    <bean id="serializeUnsignedTestAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeUnsignedTestAggregate"/>
-        <property name="serializer" ref="serializer"/>
+    <bean id="serializeUnsignedTestAggregate" parent="serialize_parent"
+        p:id="serializeUnsignedTestAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-test-unsigned.xml"/>
@@ -297,21 +280,19 @@
         *******************************************
     -->
     
-    <bean id="uk_normaliseExport" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_normaliseExport"/>
+    <bean id="uk_normaliseExport" parent="xslt_parent"
+        p:id="uk_normaliseExport">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_export.xsl"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="uk_finaliseExport" class="net.shibboleth.metadata.dom.XSLTransformationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_finaliseExport"/>
+    <bean id="uk_finaliseExport" parent="xslt_parent"
+        p:id="uk_finaliseExport">
         <property name="xslResource">
-            <bean class="org.opensaml.util.resource.FilesystemResource">
+            <bean parent="file_parent">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
@@ -322,16 +303,13 @@
         </property>
     </bean>
     
-    <bean id="uk_exportSelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy"
-        lazy-init="true">
+    <bean id="uk_exportSelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:ExportOptIn]"/>
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeUnsignedExportAggregate" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeUnsignedExportAggregate"/>
-        <property name="serializer" ref="serializer"/>
+    <bean id="serializeUnsignedExportAggregate" parent="serialize_parent"
+        p:id="serializeUnsignedExportAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-export-unsigned.xml"/>
@@ -339,9 +317,8 @@
         </property>
     </bean>
     
-    <bean id="uk_exportPipeline" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="uk_exportPipeline"/>
+    <bean id="uk_exportPipeline" parent="pipeline_parent"
+        p:id="uk_exportPipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_default_regauth"/>
@@ -369,9 +346,8 @@
         *************************************
     -->
     
-    <bean id="generate" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="generate"/>
+    <bean id="generate" parent="pipeline_parent"
+        p:id="generate">
         <property name="stages">
             <list>
                 <!--
@@ -395,16 +371,16 @@
                     metadata as closely as possible, so the fork must happen before
                     too many UK-specific transformations are performed.
                 -->
-                <bean id="registrarDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
-                    init-method="initialize" lazy-init="true">
-                    <property name="id" value="registrarDemux"/>
+                <bean id="registrarDemux" parent="stage_parent"
+                    class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+                    p:id="registrarDemux">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
-                            <bean class="org.opensaml.util.Pair">
+                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="uk_exportPipeline"/>
                                 <constructor-arg ref="uk_exportSelector"/>
                             </bean>
-                            <bean class="org.opensaml.util.Pair">
+                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="uk_statisticsPipeline"/>
                                 <constructor-arg ref="everythingSelector"/>
                             </bean>
@@ -432,20 +408,20 @@
                 <!--
                     Fork into new pipelines for the production, fallback and WAYF aggregates.
                 -->
-                <bean id="otherDemux" class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
-                    init-method="initialize" lazy-init="true">
-                    <property name="id" value="otherDemux"/>
+                <bean id="otherDemux" parent="stage_parent"
+                    class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+                    p:id="otherDemux">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
-                            <bean class="org.opensaml.util.Pair">
+                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="uk_productionPipeline"/>
                                 <constructor-arg ref="everythingSelector"/>
                             </bean>
-                            <bean class="org.opensaml.util.Pair">
+                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="uk_fallbackPipeline"/>
                                 <constructor-arg ref="everythingSelector"/>
                             </bean>
-                            <bean class="org.opensaml.util.Pair">
+                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="uk_wayfPipeline"/>
                                 <constructor-arg ref="uk_wayfSelector"/>
                             </bean>
@@ -457,9 +433,9 @@
                 <!--
                     Merge in entities from other metadata sources.
                 -->
-                <bean id="mergeImportedEntities" class="net.shibboleth.metadata.pipeline.PipelineMergeStage"
-                    init-method="initialize" lazy-init="true">
-                    <property name="id" value="mergeImportedEntities"/>
+                <bean id="mergeImportedEntities" parent="stage_parent"
+                    class="net.shibboleth.metadata.pipeline.PipelineMergeStage"
+                    p:id="mergeImportedEntities">
                     <property name="collectionMergeStrategy">
                         <bean id="deduplicateMergeStrategy" class="net.shibboleth.metadata.DeduplicatingItemIdMergeStrategy"
                             lazy-init="true"/>

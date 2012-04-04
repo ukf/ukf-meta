@@ -2,9 +2,15 @@
 <!--
     Verb definitions for this channel.
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
-
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
     <!--
         Import commonly used beans.
     -->
@@ -15,10 +21,8 @@
     -->
     <import resource="beans.xml"/>
     
-    <bean id="serializeImported" class="net.shibboleth.metadata.pipeline.SerializationStage"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="serializeImported"/>
-        <property name="serializer" ref="serializer"/>
+    <bean id="serializeImported" parent="serialize_parent"
+        p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fr_renater/imported.xml"/>
@@ -26,9 +30,8 @@
         </property>
     </bean>
     
-    <bean id="import" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="import"/>
+    <bean id="import" parent="pipeline_parent"
+        p:id="import">
         <property name="stages">
             <list>
                 <ref bean="fr_renater_exportedEntities"/>
@@ -38,9 +41,8 @@
         </property>
     </bean>
 
-    <bean id="importRaw" class="net.shibboleth.metadata.pipeline.SimplePipeline"
-        init-method="initialize" lazy-init="true">
-        <property name="id" value="importRaw"/>
+    <bean id="importRaw" parent="pipeline_parent"
+        p:id="importRaw">
         <property name="stages">
             <list>
                 <ref bean="fr_renater_productionAggregate"/>
