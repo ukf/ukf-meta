@@ -100,7 +100,6 @@
 		
 		Responses MUST use the HTTP-POST binding, so metadata for that MUST be present.
 	-->
-	<!--
 	<xsl:template match="md:SPSSODescriptor
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
 		[not(md:AssertionConsumerService[@Binding = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'])]">
@@ -108,6 +107,5 @@
 			<xsl:with-param name="m">no HTTP-POST support on SAML 2.0 SP</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	-->
 	
 </xsl:stylesheet>
