@@ -1159,7 +1159,15 @@
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
         <xsl:variable name="primaryScope" select="members:PrimaryScope"/>
         <tr>
-            <td><xsl:value-of select="$myName"/></td>
+            <td>
+                <xsl:value-of select="$myName"/>
+                <xsl:if test="members:NameComment">
+                    <br />
+                    <xsl:text>(</xsl:text>
+                    <xsl:value-of select="members:NameComment"/>
+                    <xsl:text>)</xsl:text>
+                </xsl:if>
+            </td>
             <!-- count total entities -->
             <td align="center">
                 <xsl:choose>
