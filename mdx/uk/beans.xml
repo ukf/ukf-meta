@@ -398,10 +398,8 @@
         Serialise the (assumed HTML) DomDocumentItem into the UK federation statistics
         output file in the production XML directory.
     -->
-    <bean id="uk_serializeStatistics" parent="stage_parent"
-        class="net.shibboleth.metadata.pipeline.SerializationStage"
+    <bean id="uk_serializeStatistics" parent="serialize_parent"
         p:id="uk_serializeStatistics">
-        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-stats.html"/>

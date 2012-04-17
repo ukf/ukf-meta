@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Verb to generate all UK aggregates.
+    Miscellaneous UK channel verbs.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:util="http://www.springframework.org/schema/util"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -150,13 +151,28 @@
     -->
     
     <!--
-        importedMetadata
+        fetchImportMetadata
+        
+        Fetches the contents of the file used to hold metadata to be imported
+        into a UK federation fragment file.
+    -->
+    <bean id="fetchImportMetadata" parent="domFileStage_parent"
+        p:id="fetchImportMetadata">
+        <property name="source">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/entities/import.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        fetchImportedMetadata
         
         Fetches the contents of the file used to hold metadata just imported
         by the federation's import transform.
     -->
-    <bean id="importedMetadata" parent="domFileStage_parent"
-        p:id="importedMetadata">
+    <bean id="fetchImportedMetadata" parent="domFileStage_parent"
+        p:id="fetchImportedMetadata">
         <property name="source">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/entities/imported.xml"/>
@@ -165,21 +181,67 @@
     </bean>
 
     <!--
-        validateImportedMetadata
+        serializeImportedMetadata
         
-        Perform custom validation on metadata just imported by the
-        federation's import transform.
+        Serialise the fragment file just imported.
     -->
-    <bean id="validateImportedMetadata" parent="pipeline_parent"
-        p:id="validateImportedMetadata">
+    <bean id="serializeImportedMetadata" parent="serialize_parent"
+        p:id="serializeImportedMetadata">
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/entities/imported.xml"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--
+        import
+        
+        Pipeline to import a metadata fragment file.
+        
+        For now, just the head of that pipeline.
+    -->
+    <bean id="import" parent="pipeline_parent"
+        p:id="import">
         <property name="stages">
             <list>
-                <ref bean="importedMetadata"/>
+                <!-- fetch the input file -->
+                <ref bean="fetchImportMetadata"/>
+                <ref bean="populateItemIds"/>
+                
+                <!-- perform schema validation and stop immediately if this fails -->
+                <ref bean="checkSchemas"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <!-- transform into a fragment using our local conventions -->
+                <bean id="importTransform" parent="xslt_parent"
+                    p:id="importTransform">
+                    <property name="xslResource">
+                        <bean parent="file_parent">
+                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/import.xsl"/>
+                        </bean>
+                    </property>
+                </bean>
+                
+                <!-- normalise namespaces in a specific way -->
+                <bean id="normalizeFragment" parent="xslt_parent"
+                    p:id="normalizeFragment">
+                    <property name="xslResource">
+                        <bean parent="file_parent">
+                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_fragment.xsl"/>
+                        </bean>
+                    </property>
+                </bean>
+                
+                <!-- check the transformed input -->
                 <ref bean="CHECK_std"/>
                 <ref bean="check_future"/>
                 <ref bean="check_imported"/>
                 <ref bean="check_vhosts"/>
                 <ref bean="errorTerminatingFilter"/>
+                
+                <!-- write output file -->
+                <ref bean="serializeImportedMetadata"/>
             </list>
         </property>
     </bean>

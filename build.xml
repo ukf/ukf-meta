@@ -762,18 +762,9 @@
 	
 	<target name="import.metadata">
 		<echo>Importing metadata from ${entities.dir}/import.xml</echo>
-		
-		<!-- Step 1: perform real processing into temporary file -->
-		<XALAN x="${build.dir}/import.xsl"
-			i="${entities.dir}/import.xml" o="${temp.xml}"/>
-		
-		<!-- Step 2: normalise namespaces into result file -->
-        <XALAN x="${build.dir}/ns_norm_fragment.xsl"
-            i="${temp.xml}" o="${entities.dir}/imported.xml"/>
-		
+        <delete file="${entities.dir}/imported.xml" quiet="true" verbose="false"/>
+		<CHANNEL.do channel="uk" verb="import"/>
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
-		<CHANNEL.do channel="uk" verb="validateImportedMetadata"/>
-		<echo>Checked.</echo>
 	</target>
 	
     <!--
