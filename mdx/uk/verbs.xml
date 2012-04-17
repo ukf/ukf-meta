@@ -234,6 +234,7 @@
                 </bean>
                 
                 <!-- check the transformed input -->
+                <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_future"/>
                 <ref bean="check_imported"/>
