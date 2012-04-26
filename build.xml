@@ -877,6 +877,7 @@
         <CHANNEL.import channel="it_idem"/>
         <CHANNEL.import channel="jp_gakunin"/>
         <CHANNEL.import channel="lv_laife"/>
+		<CHANNEL.import channel="nl_surfconext"/>
         <CHANNEL.import channel="nl_surfnet"/>
 		<CHANNEL.import channel="nz_tuakiri"/>
         <CHANNEL.import channel="no_feide"/>
