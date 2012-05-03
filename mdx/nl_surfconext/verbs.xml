@@ -25,7 +25,7 @@
         p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/nl_surfnet/imported.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/nl_surfconext/imported.xml"/>
             </bean>
         </property>
     </bean>
@@ -34,7 +34,7 @@
         p:id="import">
         <property name="stages">
             <list>
-                <ref bean="nl_surfnet_exportedEntities"/>
+                <ref bean="nl_surfconext_exportedEntities"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -51,8 +51,8 @@
         p:id="importRaw">
         <property name="stages">
             <list>
-                <ref bean="nl_surfnet_idpAggregate"/>
-                <ref bean="nl_surfnet_spAggregate"/>
+                <ref bean="nl_surfconext_idpAggregate"/>
+                <ref bean="nl_surfconext_spAggregate"/>
                 <ref bean="disassemble"/>
                 <ref bean="assemble"/>
                 <ref bean="serializeImported"/>

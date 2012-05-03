@@ -14,10 +14,10 @@
     <!--
         Metadata signing certificate.
     -->
-    <bean id="nl_surfnet_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="nl_surfconext_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/nl_surfnet/metadata-signer.crt"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/nl_surfconext/metadata-signer.crt"/>
             </bean>
         </property>
     </bean>
@@ -25,21 +25,21 @@
     <!--
         Check the signature on a document.
     -->
-    <bean id="nl_surfnet_checkSignature" parent="stage_parent"
+    <bean id="nl_surfconext_checkSignature" parent="stage_parent"
         class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
         p:id="nl_surfnet_checkSignature">
-        <property name="verificationCertificate" ref="nl_surfnet_signingCertificate"/>
+        <property name="verificationCertificate" ref="nl_surfconext_signingCertificate"/>
     </bean>
     
     <!--
         Fetch the IdP aggregate.
     -->
-    <bean id="nl_surfnet_idpAggregate" parent="domResourceStage_parent"
-        p:id="nl_surfnet_idpAggregate">
+    <bean id="nl_surfconext_idpAggregate" parent="domResourceStage_parent"
+        p:id="nl_surfconext_idpAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="https://wayf.surfnet.nl/federate/metadata"/>
+                <constructor-arg name="url" value="https://engine.surfconext.nl/authentication/proxy/idps-metadata"/>
             </bean>
         </property>
     </bean>
@@ -47,8 +47,8 @@
     <!--
         Fetch the SP aggregate.
     -->
-    <bean id="nl_surfnet_spAggregate" parent="domResourceStage_parent"
-        p:id="nl_surfnet_spAggregate">
+    <bean id="nl_surfconext_spAggregate" parent="domResourceStage_parent"
+        p:id="nl_surfconext_spAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -60,24 +60,26 @@
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="nl_surfnet_exportedEntities" parent="composite_parent"
-        p:id="nl_surfnet_exportedEntities">
+    <bean id="nl_surfconext_exportedEntities" parent="composite_parent"
+        p:id="nl_surfconext_exportedEntities">
         <property name="composedStages">
             <list>
                 <!-- no export aggregate; use the production ones instead -->
-                <ref bean="nl_surfnet_idpAggregate"/>
+                <ref bean="nl_surfconext_idpAggregate"/>
 
                 <!--
                     Check for fatal errors at the aggregate level:
                         missing or expired validUntil attribute
                         invalid signature
                 -->
+                <!--
                 <ref bean="check_validUntil"/>
-                <ref bean="nl_surfnet_checkSignature"/>
+                <ref bean="nl_surfconext_checkSignature"/>
+                -->
                 <ref bean="errorTerminatingFilter"/>
                 
                 <!-- SP singleton -->
-                <ref bean="nl_surfnet_spAggregate"/>
+                <ref bean="nl_surfconext_spAggregate"/>
                 <ref bean="disassemble"/>
                 <ref bean="standardImportActions"/>
             </list>
