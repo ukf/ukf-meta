@@ -12,6 +12,14 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Some information on SURFcontext here:
+        
+        https://wiki.surfnetlabs.nl/display/surfconextdev/My+First+SP+-+Shibboleth
+        
+        https://engine.surfconext.nl/
+    -->
+    
+    <!--
         Metadata signing certificate.
     -->
     <bean id="nl_surfconext_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
