@@ -879,12 +879,49 @@
         <CHANNEL.import channel="lv_laife"/>
 		<CHANNEL.import channel="nl_surfconext"/>
         <CHANNEL.import channel="nl_surfnet"/>
-		<CHANNEL.import channel="nz_tuakiri"/>
         <CHANNEL.import channel="no_feide"/>
+		<CHANNEL.import channel="nz_tuakiri"/>
         <CHANNEL.import channel="se_swamid"/>
         <CHANNEL.import channel="si_arnes"/>
         <CHANNEL.import channel="uk_eduserv"/>
         <CHANNEL.import channel="us_incommon"/>
+	</target>
+	
+	<!--
+	    flow.importRaw.all
+	    
+	    Run the importRaw command for each channel in turn.
+	-->
+	<target name="flow.importRaw.all">
+		<CHANNEL.do verb="importRaw" channel="at_aconet"/>
+        <CHANNEL.do verb="importRaw" channel="au_aaf"/>
+        <CHANNEL.do verb="importRaw" channel="br_cafe"/>
+        <CHANNEL.do verb="importRaw" channel="ca_caf"/>
+        <CHANNEL.do verb="importRaw" channel="ch_switchaai"/>
+        <CHANNEL.do verb="importRaw" channel="cz_eduid"/>
+        <CHANNEL.do verb="importRaw" channel="de_dfnaai"/>
+        <CHANNEL.do verb="importRaw" channel="dk_wayf"/>
+        <CHANNEL.do verb="importRaw" channel="es_sir"/>
+        <CHANNEL.do verb="importRaw" channel="eu_clarin"/>
+        <CHANNEL.do verb="importRaw" channel="fi_haka"/>
+        <CHANNEL.do verb="importRaw" channel="fr_renater"/>
+        <CHANNEL.do verb="importRaw" channel="gr_grnet"/>
+        <CHANNEL.do verb="importRaw" channel="hu_eduid"/>
+        <CHANNEL.do verb="importRaw" channel="ie_edugate"/>
+        <CHANNEL.do verb="importRaw" channel="int_edugain"/>
+		<CHANNEL.do verb="importRaw" channel="int_testshib"/>
+        <CHANNEL.do verb="importRaw" channel="it_idem"/>
+        <CHANNEL.do verb="importRaw" channel="jp_gakunin"/>
+        <CHANNEL.do verb="importRaw" channel="lv_laife"/>
+        <CHANNEL.do verb="importRaw" channel="nl_surfconext"/>
+        <CHANNEL.do verb="importRaw" channel="nl_surfnet"/>
+        <CHANNEL.do verb="importRaw" channel="no_feide"/>
+        <CHANNEL.do verb="importRaw" channel="nz_tuakiri"/>
+        <CHANNEL.do verb="importRaw" channel="se_swamid"/>
+        <CHANNEL.do verb="importRaw" channel="si_arnes"/>
+		<CHANNEL.do verb="collect"   channel="uk"/>
+        <CHANNEL.do verb="importRaw" channel="uk_eduserv"/>
+        <CHANNEL.do verb="importRaw" channel="us_incommon"/>
 	</target>
     
     <!--
