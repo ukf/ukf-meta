@@ -29,5 +29,21 @@
 	-->
 	<xsl:import href="../build/check_framework.xsl"/>
 
-	
+	<xsl:template match="md:IDPSSODescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
+		[not(md:KeyDescriptor[descendant::ds:X509Data][@use='signing'])]
+		[not(md:KeyDescriptor[descendant::ds:X509Data][not(@use)])]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">SAML 2.0 IdP has no signing key</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	<xsl:template match="md:AttributeAuthorityDescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
+		[not(md:KeyDescriptor[descendant::ds:X509Data][@use='signing'])]
+		[not(md:KeyDescriptor[descendant::ds:X509Data][not(@use)])]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">SAML 2.0 AttributeAuthority has no signing key</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+		
 </xsl:stylesheet>
