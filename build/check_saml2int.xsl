@@ -36,7 +36,6 @@
 		
 		Check for SAML 2.0 SPs which exclude both transient and persistent SAML 2 name identifier formats.
 	-->
-	<!--
 	<xsl:template match="md:SPSSODescriptor
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
 		[md:NameIDFormat]
@@ -46,7 +45,6 @@
 			<xsl:with-param name="m">SP excludes both SAML 2 name identifier formats</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	-->
 	
 	<!--
 		Section 6.

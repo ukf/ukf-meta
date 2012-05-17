@@ -30,19 +30,4 @@
 	<xsl:import href="../build/check_framework.xsl"/>
 
 	
-	<!--
-        Section 6.
-        
-        Check for SAML 2.0 SPs which exclude both transient and persistent SAML 2 name identifier formats.
-    -->
-    <xsl:template match="md:SPSSODescriptor
-        [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-        [md:NameIDFormat]
-        [not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:persistent'])]
-        [not(md:NameIDFormat[.='urn:oasis:names:tc:SAML:2.0:nameid-format:transient'])]">
-        <xsl:call-template name="error">
-            <xsl:with-param name="m">saml2int: SP excludes both SAML 2 name identifier formats</xsl:with-param>
-        </xsl:call-template>
-    </xsl:template>
-	
 </xsl:stylesheet>
