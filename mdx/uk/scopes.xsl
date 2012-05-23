@@ -99,16 +99,16 @@
 					<xsl:copy-of select="."/>
 					<xsl:text>&#10;        </xsl:text>
 				</xsl:for-each>
-                <!-- copy scopes from member outsource records -->
-				<xsl:for-each select="ukfxMembers:scopesForEntity($members, $entityID)/shibmd:Scope">
-					<xsl:text>    </xsl:text>
-                    <xsl:element name="shibmd:Scope">
-                        <xsl:attribute name="regexp">false</xsl:attribute>
-                        <xsl:value-of select="."/>
-                    </xsl:element>
-                    <xsl:text>&#10;        </xsl:text>
-                </xsl:for-each>
 			</xsl:if>			
+			<!-- copy scopes from member outsource records -->
+			<xsl:for-each select="ukfxMembers:scopesForEntity($members, $entityID)/shibmd:Scope">
+				<xsl:text>    </xsl:text>
+				<xsl:element name="shibmd:Scope">
+					<xsl:attribute name="regexp">false</xsl:attribute>
+					<xsl:value-of select="."/>
+				</xsl:element>
+				<xsl:text>&#10;        </xsl:text>
+			</xsl:for-each>
 		</xsl:copy>
 	</xsl:template>
 
