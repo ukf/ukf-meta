@@ -259,6 +259,7 @@
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Feature test metadata; not for production use"/>
+                <entry key="publisher" value-ref="uk_federation_uri"/>
             </map>
         </property>
     </bean>
@@ -299,6 +300,7 @@
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Prototype export metadata; not for production use"/>
+                <entry key="publisher" value-ref="uk_federation_uri"/>
             </map>
         </property>
     </bean>

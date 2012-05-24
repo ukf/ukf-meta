@@ -12,6 +12,23 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
+        uk_federation_uri
+        
+        URI for the UK federation.  Used in several contexts:
+        
+        * as the Name attribute for the main EntitiesDescriptor in UK federation metadata
+          (not always the document element)
+          
+        * in mdrpi:RegistrationInfo, as the unique identifier for the UK federation registrar
+        
+        * in mdrpi:PublicationInfo, as the unique identifier for the UK federation publisher
+    -->
+    <bean id="uk_federation_uri" class="java.lang.String">
+        <constructor-arg value="http://ukfederation.org.uk"/>
+    </bean>
+
+
+    <!--
         uk_fetchFragmentFiles
         
         Collects all the UK metadata "fragment files" from the /entities directory.
@@ -253,8 +270,8 @@
     -->
     <bean id="uk_assemble" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
-        p:id="uk_assemble"
-        p:descriptorName="http://ukfederation.org.uk">
+        p:id="uk_assemble">
+        <property name="descriptorName" ref="uk_federation_uri"/>
         <property name="itemOrderingStrategy">
             <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
         </property>
@@ -346,15 +363,6 @@
     -->
     
     <!--
-        uk_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="uk_registrar" class="java.lang.String">
-        <constructor-arg value="http://ukfederation.org.uk"/>
-    </bean>
-    
-    <!--
         uk_check_regauth
         
         Any registrationAuthority already present on an entity in this
@@ -364,7 +372,7 @@
         p:id="uk_check_regauth">
         <property name="transformParameters">
             <map>
-                <entry key="expectedAuthority" value-ref="uk_registrar"/>
+                <entry key="expectedAuthority" value-ref="uk_federation_uri"/>
             </map>
         </property>
     </bean>
@@ -379,7 +387,7 @@
         p:id="uk_default_regauth">
         <property name="transformParameters">
             <map>
-                <entry key="defaultAuthority" value-ref="uk_registrar"/>
+                <entry key="defaultAuthority" value-ref="uk_federation_uri"/>
             </map>
         </property>
     </bean>
