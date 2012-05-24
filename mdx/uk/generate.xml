@@ -42,6 +42,7 @@
                 <ref bean="ie_edugate_exportedEntities"/>
                 <ref bean="uk_performFixups"/>
                 <ref bean="uk_fix_mailto"/>
+                <ref bean="uk_hide_idps"/>
             </list>
         </property>
     </bean>

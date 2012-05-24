@@ -133,6 +133,24 @@
     
     
     <!--
+        uk_hide_idps
+        
+        Hide IdPs (which we assume have been imported) from the WAYF/CDS.
+
+        Requires that IdPs already have EntityDescriptor/Extensions elements to put
+        the HideFromWAYF element into.
+    -->
+    <bean id="uk_hide_idps" parent="xslt_parent"
+        p:id="uk_hide_idps">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/hide_idps.xsl"/>
+            </bean>
+        </property>
+    </bean>
+
+
+    <!--
         check_ukreg
         
         Checks specific to the UK registrar function.
