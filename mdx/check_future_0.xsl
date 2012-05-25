@@ -34,7 +34,7 @@
 		[not(md:KeyDescriptor[descendant::ds:X509Data][@use='signing'])]
 		[not(md:KeyDescriptor[descendant::ds:X509Data][not(@use)])]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML 2.0 IdP has no signing key</xsl:with-param>
+			<xsl:with-param name="m">SAML 2.0 IdP has no embedded signing key</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	<xsl:template match="md:AttributeAuthorityDescriptor
@@ -42,7 +42,7 @@
 		[not(md:KeyDescriptor[descendant::ds:X509Data][@use='signing'])]
 		[not(md:KeyDescriptor[descendant::ds:X509Data][not(@use)])]">
 		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML 2.0 AttributeAuthority has no signing key</xsl:with-param>
+			<xsl:with-param name="m">SAML 2.0 AttributeAuthority has no embedded signing key</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 		
