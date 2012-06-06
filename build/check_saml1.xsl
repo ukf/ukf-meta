@@ -41,4 +41,43 @@
 		</xsl:call-template>
 	</xsl:template>
 	
+	<!--
+        Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
+    -->
+	<xsl:template match="md:IDPSSODescriptor
+		[not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol'))]
+		[md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>SAML 1.0 binding requires SAML 1.1 token in IDPSSODescriptor/@protocolSupportEnumeration</xsl:text>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<!--
+        Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
+    -->
+	<xsl:template match="md:AttributeAuthorityDescriptor
+		[not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol'))]
+		[md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>SAML 1.0 binding requires SAML 1.1 token in AttributeAuthorityDescriptor/@protocolSupportEnumeration</xsl:text>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<!--
+        Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
+    -->
+	<xsl:template match="md:SPSSODescriptor
+		[not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol'))]
+		[md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>SAML 1.0 binding requires SAML 1.1 token in SPSSODescriptor/@protocolSupportEnumeration</xsl:text>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 </xsl:stylesheet>
