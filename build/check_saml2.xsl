@@ -71,6 +71,19 @@
 	<!--
         Use of SAML 2.0 bindings requires SAML 2.0 in protocolSupportEnumeration.
     -->
+	<xsl:template match="md:IDPSSODescriptor
+		[not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol'))]
+		[md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:2.0:bindings:')]]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>SAML 2.0 binding requires SAML 2.0 token in IDPSSODescriptor/@protocolSupportEnumeration</xsl:text>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<!--
+        Use of SAML 2.0 bindings requires SAML 2.0 in protocolSupportEnumeration.
+    -->
 	<xsl:template match="md:AttributeAuthorityDescriptor
 		[not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol'))]
 		[md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:2.0:bindings:')]]">
