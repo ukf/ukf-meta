@@ -52,6 +52,20 @@
 		</xsl:call-template>
 	</xsl:template>
 	
+	<xsl:template match="md:AssertionIDRequestService
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:URI']
+		">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>invalid binding '</xsl:text>
+				<xsl:value-of select="@Binding"/>
+				<xsl:text>' on </xsl:text>
+				<xsl:value-of select="name()"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
 	<xsl:template match="md:AttributeService
 		[@Binding != 'urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP']
@@ -140,6 +154,7 @@
 		[@Binding]
 		[local-name() != 'ArtifactResolutionService']
 		[local-name() != 'AssertionConsumerService']
+		[local-name() != 'AssertionIDRequestService']
 		[local-name() != 'AttributeService']
 		[local-name() != 'ManageNameIDService']
 		[local-name() != 'NameIDMappingService']
