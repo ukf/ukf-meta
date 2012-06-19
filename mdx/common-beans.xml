@@ -560,7 +560,7 @@
     <!--
         standardImportTail
         
-        Standard actions performed at the end of any metadata import channel.  As imports
+        Standard actions performed at the end of any metadata import flow.  As imports
         are currently ending up in files, build an EntitiesDescriptor and normalise the
         namespaces in the document ready for serialisation.
     -->
