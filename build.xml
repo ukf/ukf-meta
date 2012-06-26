@@ -929,6 +929,16 @@
 	</target>
     
 	<!--
+	    flow.importProduction.all
+	    
+	    Run the importProduction flow on each channel that has one.
+	-->
+	<target name="flow.importProduction.all">
+        <CHANNEL.do verb="importProduction" channel="be_belnet"/>
+		<CHANNEL.do verb="importProduction" channel="br_cafe"/>
+	</target>
+	
+	<!--
 	    flow.importEdugain.all
 	    
 	    Run the importEdugain flow on each channel that has one.
