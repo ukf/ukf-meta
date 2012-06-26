@@ -858,6 +858,8 @@
 	<target name="flow.test.all">
 		<CHANNEL.import channel="at_aconet"/>
         <CHANNEL.import channel="au_aaf"/>
+        <CHANNEL.import channel="be_belnet"/>
+        <CHANNEL.do channel="be_belnet" verb="importProduction"/>
 		<CHANNEL.import channel="br_cafe"/>
 		<CHANNEL.do channel="br_cafe" verb="importProduction"/>
         <CHANNEL.import channel="ca_caf"/>
@@ -896,6 +898,7 @@
 	<target name="flow.importRaw.all">
 		<CHANNEL.do verb="importRaw" channel="at_aconet"/>
         <CHANNEL.do verb="importRaw" channel="au_aaf"/>
+		<CHANNEL.do verb="importRaw" channel="be_belnet"/>
         <CHANNEL.do verb="importRaw" channel="br_cafe"/>
         <CHANNEL.do verb="importRaw" channel="ca_caf"/>
         <CHANNEL.do verb="importRaw" channel="ch_switchaai"/>
@@ -925,6 +928,16 @@
         <CHANNEL.do verb="importRaw" channel="us_incommon"/>
 	</target>
     
+	<!--
+	    flow.importEdugain.all
+	    
+	    Run the importEdugain flow on each channel that has one.
+	-->
+	<target name="flow.importEdugain.all">
+		<CHANNEL.do verb="importEdugain" channel="be_belnet"/>
+		<CHANNEL.do verb="importEdugain" channel="br_cafe"/>
+	</target>
+	
     <!--
         *********************************
         ***                           ***

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for this channel.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
+    <!--
+        Location of various resources.
+    -->
+    <bean id="be_belnet_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://federation.belnet.be/federation-metadata.xml"/>
+    </bean>
+    <bean id="be_belnet_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://federation.belnet.be/edugain-metadata.xml"/>
+    </bean>
+    
+    <!--
+        Fetch the production aggregate.
+    -->
+    <bean id="be_belnet_productionAggregate" parent="domResourceStage_parent"
+        p:id="be_belnet_productionAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="be_belnet_productionAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="be_belnet_edugainAggregate" parent="domResourceStage_parent"
+        p:id="be_belnet_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="be_belnet_edugainAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--
+        Signing certificate.
+    -->
+    <bean id="be_belnet_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/be_belnet/certificate.federation.belnet.be.pem"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check signing signature.
+    -->
+    <bean id="be_belnet_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="be_belnet_checkSignature">
+        <property name="verificationCertificate" ref="be_belnet_signingCertificate"/>
+    </bean>
+
+    <!--
+        Fetch and process the production entities as a collection.
+    -->
+    <bean id="be_belnet_productionEntities" parent="composite_parent"
+        p:id="be_belnet_productionEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="be_belnet_productionAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="be_belnet_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="be_belnet_edugainEntities" parent="composite_parent"
+        p:id="be_belnet_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="be_belnet_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="be_belnet_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="be_belnet_exportedAggregate" name="be_belnet_edugainAggregate"/>
+    <alias alias="be_belnet_exportedEntities"  name="be_belnet_edugainEntities"/>
+</beans>
