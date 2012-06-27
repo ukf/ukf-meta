@@ -863,7 +863,6 @@
         <CHANNEL.import channel="dk_wayf"/>
         <CHANNEL.import channel="eu_clarin"/>
         <CHANNEL.import channel="fr_renater"/>
-        <CHANNEL.import channel="hu_eduid"/>
         <CHANNEL.import channel="ie_edugate"/>
 		<CHANNEL.do channel="ie_edugate" verb="importAll"/>
         <CHANNEL.import channel="int_edugain"/>
@@ -894,6 +893,7 @@
     	<CHANNEL.do verb="importProduction" channel="es_sir"/>
     	<CHANNEL.do verb="importProduction" channel="fi_haka"/>
     	<CHANNEL.do verb="importProduction" channel="gr_grnet"/>
+    	<CHANNEL.do verb="importProduction" channel="hu_eduid"/>
     	<CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
     </target>
     
@@ -912,6 +912,7 @@
     	<CHANNEL.do verb="importEdugain" channel="fi_haka"/>
     	<CHANNEL.do verb="importEdugain" channel="gr_grnet"/>
     	<CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
+    	<CHANNEL.do verb="importEdugain" channel="hu_eduid"/>
     	<CHANNEL.do verb="importEdugain" channel="nl_surfnet"/>
     </target>
     
