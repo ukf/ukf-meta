@@ -12,7 +12,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="no_feide_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://metadata.feide.no/feide-edugain-metadata.xml"/>
+    </bean>
+    
+    <!--
         Fetch the IdP metadata.
+        
+        FEIDE is a hub-and-spoke federation with a single IdP.  SP metadata is not published.
     -->
     <bean id="no_feide_idpMetadata" parent="domResourceStage_parent"
         p:id="no_feide_idpMetadata">
@@ -25,10 +34,58 @@
     </bean>
     
     <!--
+        Fetch the prodiction aggregate.
+        
+        There isn't one of these, so make one by wrapping the IdP metadata.
+    -->
+    <bean id="no_feide_productionAggregate" parent="pipeline_parent"
+        p:id="no_feide_productionAggregate">
+        <property name="stages">
+            <list>
+                <ref bean="no_feide_idpMetadata"/>
+                <ref bean="assemble"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="no_feide_edugainAggregate" parent="domResourceStage_parent"
+        p:id="no_feide_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="no_feide_edugainAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Signing certificate.
+    -->
+    <bean id="no_feide_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/no_feide/metadata.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check signing signature.
+    -->
+    <bean id="no_feide_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="no_feide_checkSignature">
+        <property name="verificationCertificate" ref="no_feide_signingCertificate"/>
+    </bean>
+    
+    <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="no_feide_exportedEntities" parent="composite_parent"
-        p:id="no_feide_exportedEntities">
+    <bean id="no_feide_productionEntities" parent="composite_parent"
+        p:id="no_feide_productionEntities">
         <property name="composedStages">
             <list>
                 <ref bean="no_feide_idpMetadata"/>
@@ -37,4 +94,34 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="no_feide_edugainEntities" parent="composite_parent"
+        p:id="no_feide_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="no_feide_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="no_feide_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="no_feide_exportedAggregate" name="no_feide_edugainAggregate"/>
+    <alias alias="no_feide_exportedEntities"  name="no_feide_edugainEntities"/>
 </beans>
