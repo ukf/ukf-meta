@@ -12,6 +12,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="fi_haka_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://haka.funet.fi/metadata/haka-metadata.xml"/>
+    </bean>
+    <bean id="fi_haka_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://haka.funet.fi/metadata/edugain-metadata.xml"/>
+    </bean>
+    
+    <!--
         Fetch the production aggregate.
     -->
     <bean id="fi_haka_productionAggregate" parent="domResourceStage_parent"
@@ -19,13 +29,26 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="https://haka.funet.fi/metadata/haka-metadata.xml"/>
+                <constructor-arg name="url"    ref="fi_haka_productionAggregate_url"/>
             </bean>
         </property>
     </bean>
     
     <!--
-        Signing certificate.
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="fi_haka_edugainAggregate" parent="domResourceStage_parent"
+        p:id="fi_haka_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="fi_haka_edugainAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Federation signing certificate.
     -->
     <bean id="fi_haka_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
         <property name="certificateFile">
@@ -36,7 +59,7 @@
     </bean>
     
     <!--
-        Check signing signature.
+        Check federation signature.
     -->
     <bean id="fi_haka_checkSignature" parent="stage_parent"
         class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
@@ -45,13 +68,32 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        eduGAIN signing certificate.
     -->
-    <bean id="fi_haka_exportedEntities" parent="composite_parent"
-        p:id="fi_haka_exportedEntities">
+    <bean id="fi_haka_edugainSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fi_haka/edugain.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check eduGAIN signature.
+    -->
+    <bean id="fi_haka_checkEdugainSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="fi_haka_checkEdugainSignature">
+        <property name="verificationCertificate" ref="fi_haka_edugainSigningCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the production entities as a collection.
+    -->
+    <bean id="fi_haka_productionEntities" parent="composite_parent"
+        p:id="fi_haka_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="fi_haka_productionAggregate"/>
 
                 <!--
@@ -70,4 +112,34 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="fi_haka_edugainEntities" parent="composite_parent"
+        p:id="fi_haka_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="fi_haka_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="fi_haka_checkEdugainSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="fi_haka_exportedAggregate" name="fi_haka_edugainAggregate"/>
+    <alias alias="fi_haka_exportedEntities"  name="fi_haka_edugainEntities"/>
 </beans>
