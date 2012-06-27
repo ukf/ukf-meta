@@ -12,6 +12,26 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="nl_surfnet_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://wayf.surfnet.nl/federate/surfnet/edugain"/>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="nl_surfnet_edugainAggregate" parent="domResourceStage_parent"
+        p:id="nl_surfnet_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="nl_surfnet_edugainAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         Metadata signing certificate.
     -->
     <bean id="nl_surfnet_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
@@ -58,13 +78,14 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch and process the production entities as a collection.
+        
+        Fake this up by combining separate IdP and SP aggregates.
     -->
-    <bean id="nl_surfnet_exportedEntities" parent="composite_parent"
-        p:id="nl_surfnet_exportedEntities">
+    <bean id="nl_surfnet_productionEntities" parent="composite_parent"
+        p:id="nl_surfnet_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production ones instead -->
                 <ref bean="nl_surfnet_idpAggregate"/>
 
                 <!--
@@ -84,4 +105,34 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="nl_surfnet_edugainEntities" parent="composite_parent"
+        p:id="nl_surfnet_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="nl_surfnet_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="nl_surfnet_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="nl_surfnet_exportedAggregate" name="nl_surfnet_edugainAggregate"/>
+    <alias alias="nl_surfnet_exportedEntities"  name="nl_surfnet_edugainEntities"/>
 </beans>

@@ -30,25 +30,25 @@
         </property>
     </bean>
     
-    <bean id="import" parent="pipeline_parent"
-        p:id="import">
+    <bean id="importProduction" parent="pipeline_parent"
+        p:id="importProduction">
         <property name="stages">
             <list>
-                <ref bean="nl_surfnet_exportedEntities"/>
+                <ref bean="nl_surfnet_productionEntities"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
         </property>
     </bean>
-
+    
     <!--
-        importRaw
+        importProductionRaw
         
         Fetch the separate IdP and SP aggregates, disassemble them into individual entities
         and then build up a single aggregate from all combined.
     -->
-    <bean id="importRaw" parent="pipeline_parent"
-        p:id="importRaw">
+    <bean id="importProductionRaw" parent="pipeline_parent"
+        p:id="importProductionRaw">
         <property name="stages">
             <list>
                 <ref bean="nl_surfnet_idpAggregate"/>
@@ -60,4 +60,27 @@
         </property>
     </bean>
     
+    <bean id="importEdugain" parent="pipeline_parent"
+        p:id="importEdugain">
+        <property name="stages">
+            <list>
+                <ref bean="nl_surfnet_edugainEntities"/>
+                <ref bean="standardImportTail"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="importEdugainRaw" parent="pipeline_parent"
+        p:id="importEdugainRaw">
+        <property name="stages">
+            <list>
+                <ref bean="nl_surfnet_edugainAggregate"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
+    <alias alias="import"    name="importEdugain"/>
+    <alias alias="importRaw" name="importEdugainRaw"/>
 </beans>

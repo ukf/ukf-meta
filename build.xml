@@ -872,7 +872,6 @@
         <CHANNEL.import channel="jp_gakunin"/>
         <CHANNEL.import channel="lv_laife"/>
 		<CHANNEL.import channel="nl_surfconext"/>
-        <CHANNEL.import channel="nl_surfnet"/>
         <CHANNEL.import channel="no_feide"/>
 		<CHANNEL.import channel="nz_tuakiri"/>
         <CHANNEL.import channel="se_swamid"/>
@@ -895,6 +894,7 @@
     	<CHANNEL.do verb="importProduction" channel="es_sir"/>
     	<CHANNEL.do verb="importProduction" channel="fi_haka"/>
     	<CHANNEL.do verb="importProduction" channel="gr_grnet"/>
+    	<CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
     </target>
     
     <!--
@@ -912,6 +912,7 @@
     	<CHANNEL.do verb="importEdugain" channel="fi_haka"/>
     	<CHANNEL.do verb="importEdugain" channel="gr_grnet"/>
     	<CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
+    	<CHANNEL.do verb="importEdugain" channel="nl_surfnet"/>
     </target>
     
 	<!--
