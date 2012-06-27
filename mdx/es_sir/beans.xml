@@ -12,6 +12,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="es_sir_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://www.rediris.es/sir/shib1metadata.xml"/>
+    </bean>
+    <bean id="es_sir_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://www.rediris.es/sir/edugain-sir-metadata.xml"/>
+    </bean>
+    
+    <!--
         Fetch the production aggregate.
     -->
     <bean id="es_sir_productionAggregate" parent="domResourceStage_parent"
@@ -19,7 +29,20 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="https://www.rediris.es/sir/shib1metadata.xml"/>
+                <constructor-arg name="url"    ref="es_sir_productionAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="es_sir_edugainAggregate" parent="domResourceStage_parent"
+        p:id="es_sir_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="es_sir_edugainAggregate_url"/>
             </bean>
         </property>
     </bean>
@@ -45,13 +68,12 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch and process the production entities as a collection.
     -->
-    <bean id="es_sir_exportedEntities" parent="composite_parent"
-        p:id="es_sir_exportedEntities">
+    <bean id="es_sir_productionEntities" parent="composite_parent"
+        p:id="es_sir_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="es_sir_productionAggregate"/>
 
                 <!--
@@ -70,4 +92,38 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="es_sir_edugainEntities" parent="composite_parent"
+        p:id="es_sir_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="es_sir_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <!--
+                    Aggregate does not include validUntil
+                    
+                    <ref bean="check_validUntil"/>
+                -->
+                <ref bean="es_sir_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="es_sir_exportedAggregate" name="es_sir_edugainAggregate"/>
+    <alias alias="es_sir_exportedEntities"  name="es_sir_edugainEntities"/>
 </beans>
