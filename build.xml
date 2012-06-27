@@ -855,17 +855,12 @@
         <CHANNEL.do channel="int_edugain" verb="testImport"/>
     </target>
 	
-	<target name="flow.test.all">
+	<target name="flow.test.all"
+		depends="flow.importEdugain.all, flow.importProduction.all">
 		<CHANNEL.import channel="at_aconet"/>
         <CHANNEL.import channel="au_aaf"/>
-        <CHANNEL.import channel="be_belnet"/>
-        <CHANNEL.do channel="be_belnet" verb="importProduction"/>
-		<CHANNEL.import channel="br_cafe"/>
-		<CHANNEL.do channel="br_cafe" verb="importProduction"/>
         <CHANNEL.import channel="ca_caf"/>
         <CHANNEL.import channel="ch_switchaai"/>
-        <CHANNEL.import channel="cz_eduid"/>
-        <CHANNEL.do channel="cz_eduid" verb="importProduction"/>
         <CHANNEL.import channel="de_dfnaai"/>
         <CHANNEL.import channel="dk_wayf"/>
         <CHANNEL.import channel="es_sir"/>
@@ -891,6 +886,28 @@
         <CHANNEL.import channel="us_incommon"/>
 	</target>
 	
+    <!--
+        flow.importProduction.all
+        
+        Run the importProduction flow on each channel that has one.
+    -->
+    <target name="flow.importProduction.all">
+        <CHANNEL.do verb="importProduction" channel="be_belnet"/>
+        <CHANNEL.do verb="importProduction" channel="br_cafe"/>
+        <CHANNEL.do verb="importProduction" channel="cz_eduid"/>
+    </target>
+    
+    <!--
+        flow.importEdugain.all
+        
+        Run the importEdugain flow on each channel that has one.
+    -->
+    <target name="flow.importEdugain.all">
+        <CHANNEL.do verb="importEdugain" channel="be_belnet"/>
+        <CHANNEL.do verb="importEdugain" channel="br_cafe"/>
+        <CHANNEL.do verb="importEdugain" channel="cz_eduid"/>
+    </target>
+    
 	<!--
 	    flow.importRaw.all
 	    
@@ -929,28 +946,6 @@
         <CHANNEL.do verb="importRaw" channel="us_incommon"/>
 	</target>
     
-	<!--
-	    flow.importProduction.all
-	    
-	    Run the importProduction flow on each channel that has one.
-	-->
-	<target name="flow.importProduction.all">
-        <CHANNEL.do verb="importProduction" channel="be_belnet"/>
-		<CHANNEL.do verb="importProduction" channel="br_cafe"/>
-        <CHANNEL.do verb="importProduction" channel="cz_eduid"/>
-	</target>
-	
-	<!--
-	    flow.importEdugain.all
-	    
-	    Run the importEdugain flow on each channel that has one.
-	-->
-	<target name="flow.importEdugain.all">
-		<CHANNEL.do verb="importEdugain" channel="be_belnet"/>
-		<CHANNEL.do verb="importEdugain" channel="br_cafe"/>
-        <CHANNEL.do verb="importEdugain" channel="cz_eduid"/>
-	</target>
-	
     <!--
         *********************************
         ***                           ***
