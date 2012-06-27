@@ -860,7 +860,6 @@
 		<CHANNEL.import channel="at_aconet"/>
         <CHANNEL.import channel="au_aaf"/>
         <CHANNEL.import channel="ca_caf"/>
-        <CHANNEL.import channel="de_dfnaai"/>
         <CHANNEL.import channel="dk_wayf"/>
         <CHANNEL.import channel="es_sir"/>
         <CHANNEL.import channel="eu_clarin"/>
@@ -895,6 +894,7 @@
         <CHANNEL.do verb="importProduction" channel="br_cafe"/>
     	<CHANNEL.do verb="importProduction" channel="ch_switchaai"/>
         <CHANNEL.do verb="importProduction" channel="cz_eduid"/>
+    	<CHANNEL.do verb="importProduction" channel="de_dfnaai"/>
     </target>
     
     <!--
@@ -907,6 +907,7 @@
         <CHANNEL.do verb="importEdugain" channel="br_cafe"/>
         <CHANNEL.do verb="importEdugain" channel="ch_switchaai"/>
         <CHANNEL.do verb="importEdugain" channel="cz_eduid"/>
+        <CHANNEL.do verb="importEdugain" channel="de_dfnaai"/>
     	<CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
     </target>
     

@@ -12,6 +12,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="de_dfnaai_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://www.aai.dfn.de/fileadmin/metadata/DFN-AAI-metadata.xml"/>
+    </bean>
+    <bean id="de_dfnaai_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://www.aai.dfn.de/fileadmin/metadata/DFN-AAI-4eduGAIN-metadata.xml"/>
+    </bean>
+    
+    <!--
         Fetch the production aggregate.
     -->
     <bean id="de_dfnaai_productionAggregate" parent="domResourceStage_parent"
@@ -19,7 +29,20 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="https://www.aai.dfn.de/fileadmin/metadata/DFN-AAI-metadata.xml"/>
+                <constructor-arg name="url"    ref="de_dfnaai_productionAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="de_dfnaai_edugainAggregate" parent="domResourceStage_parent"
+        p:id="de_dfnaai_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="de_dfnaai_edugainAggregate_url"/>
             </bean>
         </property>
     </bean>
@@ -45,13 +68,12 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch and process the production entities as a collection.
     -->
-    <bean id="de_dfnaai_exportedEntities" parent="composite_parent"
-        p:id="de_dfnaai_exportedEntities">
+    <bean id="de_dfnaai_productionEntities" parent="composite_parent"
+        p:id="de_dfnaai_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="de_dfnaai_productionAggregate"/>
 
                 <!--
@@ -70,4 +92,34 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="de_dfnaai_edugainEntities" parent="composite_parent"
+        p:id="de_dfnaai_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="de_dfnaai_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="de_dfnaai_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="de_dfnaai_exportedAggregate" name="de_dfnaai_edugainAggregate"/>
+    <alias alias="de_dfnaai_exportedEntities"  name="de_dfnaai_edugainEntities"/>
 </beans>
