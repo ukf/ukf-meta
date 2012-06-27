@@ -12,20 +12,43 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
-        Fetch the SWAMID production.
+        Location of various resources.
+    -->
+    <bean id="se_swamid_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://md.swamid.se/md/swamid-1.0.xml"/>
+    </bean>
+    <bean id="se_swamid_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://md2.swamid.se/md/swamid-edugain-1.0.xml"/>
+    </bean>
+    
+    <!--
+        Fetch the production aggregate.
     -->
     <bean id="se_swamid_productionAggregate" parent="domResourceStage_parent"
         p:id="se_swamid_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="http://md.swamid.se/md/swamid-1.0.xml"/>
+                <constructor-arg name="url"    ref="se_swamid_productionAggregate_url"/>
             </bean>
         </property>
     </bean>
     
     <!--
-        SWAMID federation signing certificate.
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="se_swamid_edugainAggregate" parent="domResourceStage_parent"
+        p:id="se_swamid_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="se_swamid_edugainAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Federation signing certificate.
     -->
     <bean id="se_swamid_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
         <property name="certificateFile">
@@ -36,7 +59,7 @@
     </bean>
     
     <!--
-        Check SWAMID signing signature.
+        Check signing signature.
     -->
     <bean id="se_swamid_checkSignature" parent="stage_parent"
         class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
@@ -45,13 +68,12 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch and process the production entities as a collection.
     -->
-    <bean id="se_swamid_exportedEntities" parent="composite_parent"
-        p:id="se_swamid_exportedEntities">
+    <bean id="se_swamid_productionEntities" parent="composite_parent"
+        p:id="se_swamid_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="se_swamid_productionAggregate"/>
 
                 <!--
@@ -75,4 +97,34 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="se_swamid_edugainEntities" parent="composite_parent"
+        p:id="se_swamid_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="se_swamid_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="se_swamid_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="se_swamid_exportedAggregate" name="se_swamid_edugainAggregate"/>
+    <alias alias="se_swamid_exportedEntities"  name="se_swamid_edugainEntities"/>
 </beans>
