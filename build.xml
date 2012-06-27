@@ -933,6 +933,7 @@
         <CHANNEL.do verb="importRaw" channel="fi_haka"/>
         <CHANNEL.do verb="importRaw" channel="fr_renater"/>
         <CHANNEL.do verb="importRaw" channel="gr_grnet"/>
+        <CHANNEL.do verb="importRaw" channel="hr_eduhr"/>
         <CHANNEL.do verb="importRaw" channel="hu_eduid"/>
         <CHANNEL.do verb="importRaw" channel="ie_edugate"/>
         <CHANNEL.do verb="importRaw" channel="int_edugain"/>
