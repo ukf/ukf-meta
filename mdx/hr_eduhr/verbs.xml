@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Verb definitions for this channel.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
+    <!--
+        Import commonly used beans.
+    -->
+    <import resource="../common-beans.xml"/>
+        
+    <!--
+        Import channel-specific beans.
+    -->
+    <import resource="beans.xml"/>
+    
+    <bean id="serializeImported" parent="serialize_parent"
+        p:id="serializeImported">
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/hr_eduhr/imported.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="importEdugain" parent="pipeline_parent"
+        p:id="importEdugain">
+        <property name="stages">
+            <list>
+                <ref bean="hr_eduhr_edugainEntities"/>
+                <ref bean="standardImportTail"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="importEdugainRaw" parent="pipeline_parent"
+        p:id="importEdugainRaw">
+        <property name="stages">
+            <list>
+                <ref bean="hr_eduhr_edugainAggregate"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
+    <alias alias="import"    name="importEdugain"/>
+    <alias alias="importRaw" name="importEdugainRaw"/>
+</beans>

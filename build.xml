@@ -906,6 +906,7 @@
         <CHANNEL.do verb="importEdugain" channel="be_belnet"/>
         <CHANNEL.do verb="importEdugain" channel="br_cafe"/>
         <CHANNEL.do verb="importEdugain" channel="cz_eduid"/>
+    	<CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
     </target>
     
 	<!--
