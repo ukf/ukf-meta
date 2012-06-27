@@ -860,7 +860,6 @@
 		<CHANNEL.import channel="at_aconet"/>
         <CHANNEL.import channel="au_aaf"/>
         <CHANNEL.import channel="ca_caf"/>
-        <CHANNEL.import channel="ch_switchaai"/>
         <CHANNEL.import channel="de_dfnaai"/>
         <CHANNEL.import channel="dk_wayf"/>
         <CHANNEL.import channel="es_sir"/>
@@ -894,6 +893,7 @@
     <target name="flow.importProduction.all">
         <CHANNEL.do verb="importProduction" channel="be_belnet"/>
         <CHANNEL.do verb="importProduction" channel="br_cafe"/>
+    	<CHANNEL.do verb="importProduction" channel="ch_switchaai"/>
         <CHANNEL.do verb="importProduction" channel="cz_eduid"/>
     </target>
     
@@ -905,6 +905,7 @@
     <target name="flow.importEdugain.all">
         <CHANNEL.do verb="importEdugain" channel="be_belnet"/>
         <CHANNEL.do verb="importEdugain" channel="br_cafe"/>
+        <CHANNEL.do verb="importEdugain" channel="ch_switchaai"/>
         <CHANNEL.do verb="importEdugain" channel="cz_eduid"/>
     	<CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
     </target>
