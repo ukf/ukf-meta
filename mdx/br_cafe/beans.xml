@@ -74,7 +74,6 @@
         p:id="br_cafe_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="br_cafe_productionAggregate"/>
                 
                 <!--
@@ -99,7 +98,6 @@
         p:id="br_cafe_edugainEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="br_cafe_edugainAggregate"/>
                 
                 <!--
