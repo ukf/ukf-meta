@@ -7,10 +7,10 @@
 #
 
 # This line indicates that the old certificate is present
-$old_cert_line = 'MIID3TCCA0agAwIBAgIQCnFfdSGulBNKkPb/stl3IDANBgkqhkiG9w0BAQUFADCB';
+$old_cert_line = 'MIIEiTCCA3GgAwIBAgIRAPzB04tYcniZc/0mSMRCfXgwDQYJKoZIhvcNAQEFBQAw';
 
 # This line indicates that the new certificate is present
-$new_cert_line = 'MIIEiTCCA3GgAwIBAgIRAPzB04tYcniZc/0mSMRCfXgwDQYJKoZIhvcNAQEFBQAw';
+$new_cert_line = 'MIIEiDCCA3CgAwIBAgIQOBNA+hb81eyfqXol6z3klDANBgkqhkiG9w0BAQUFADA2';
 
 # The new certificate data
 $new_cert = <<EOF;
@@ -19,31 +19,31 @@ $new_cert = <<EOF;
                 <ds:KeyName>gateway.athensams.net</ds:KeyName>
                 <ds:X509Data>
                     <ds:X509Certificate>
-                        MIIEiTCCA3GgAwIBAgIRAPzB04tYcniZc/0mSMRCfXgwDQYJKoZIhvcNAQEFBQAw
-                        NjELMAkGA1UEBhMCTkwxDzANBgNVBAoTBlRFUkVOQTEWMBQGA1UEAxMNVEVSRU5B
-                        IFNTTCBDQTAeFw0xMTA3MjgwMDAwMDBaFw0xMjA3MjcyMzU5NTlaMF4xCzAJBgNV
-                        BAYTAkdCMQ4wDAYDVQQIEwVCQU5FUzENMAsGA1UEBxMEQmF0aDEQMA4GA1UEChMH
-                        RWR1c2VydjEeMBwGA1UEAxMVZ2F0ZXdheS5hdGhlbnNhbXMubmV0MIIBIjANBgkq
-                        hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoLbk2y/QGq7FEcReCQDcP0dDxk68Ufw0
-                        QH5mh46CzkPuGtxB6Q96YTUc3lVw7h9K9YHNXvVB6MlMYN2oiMYQGWuyMqMxQCzZ
-                        jmwjIRiphg3+sRV3XmIFyoJej+sWbrBKzcZUAPmxYqbR8xgoizoo+vVkicKJ9V3d
-                        mhyrUhSXUhJv14zgruO6RCp2XFyVSH2uKprE3Fn4qRPI/kiYe7rtTlnsKdZk9cQE
-                        z+8/70QKIWfpdJCJuJfb2uLoJ8oaY9AnwCvkjuSYS9xMhbsSQFiCUJK8T/jV1gGK
-                        fc7BQ58WOODkCVXWFXkSsxOGvouQ8o0El/9Uq/2d3DIAGXeczlJRhQIDAQABo4IB
-                        aDCCAWQwHwYDVR0jBBgwFoAUDL2TaAzz3qujSWsrN1dH6pDjue0wHQYDVR0OBBYE
-                        FNdxQBp34i4gpWGofRhgPrkvWmW/MA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8E
-                        AjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAYBgNVHSAEETAPMA0G
-                        CysGAQQBsjEBAgIdMDoGA1UdHwQzMDEwL6AtoCuGKWh0dHA6Ly9jcmwudGNzLnRl
-                        cmVuYS5vcmcvVEVSRU5BU1NMQ0EuY3JsMG0GCCsGAQUFBwEBBGEwXzA1BggrBgEF
-                        BQcwAoYpaHR0cDovL2NydC50Y3MudGVyZW5hLm9yZy9URVJFTkFTU0xDQS5jcnQw
-                        JgYIKwYBBQUHMAGGGmh0dHA6Ly9vY3NwLnRjcy50ZXJlbmEub3JnMCAGA1UdEQQZ
-                        MBeCFWdhdGV3YXkuYXRoZW5zYW1zLm5ldDANBgkqhkiG9w0BAQUFAAOCAQEAvC1+
-                        GswAC8giviw+HoLadvdWBBKi4lTbj2IXLehAApg7Mci1jYZAQCvLjI7aqF7PkZ2l
-                        2MqubMwsNQr1G6x4V4Yubvm++5d5CMjihuZWPoCuNRwhryzMilumHH0TiBifSKbe
-                        VY0oAsCQJRTL6W3uMB5085iuRe1H+FlecvQivxoDLyk2CSK1AuTXXPUZ6ILtWWBW
-                        ba9krg5Lhvv84W+3c3vOVcb4X3KV80QxtCd5UQ26ddCrM7kMLx5qKzvMX8UqoNld
-                        hNdOuL+Kxy0FQroaPsECcaeliAXYukv2vvY1poWwczjyX7eTa/WqreCf9CgraUYE
-                        H2/AKOc/SSnYXhcupg==
+                        MIIEiDCCA3CgAwIBAgIQOBNA+hb81eyfqXol6z3klDANBgkqhkiG9w0BAQUFADA2
+                        MQswCQYDVQQGEwJOTDEPMA0GA1UEChMGVEVSRU5BMRYwFAYDVQQDEw1URVJFTkEg
+                        U1NMIENBMB4XDTEyMDcwNjAwMDAwMFoXDTE1MDcwNjIzNTk1OVowXjELMAkGA1UE
+                        BhMCR0IxDjAMBgNVBAgTBUJBTkVTMQ0wCwYDVQQHEwRCYXRoMRAwDgYDVQQKEwdF
+                        ZHVzZXJ2MR4wHAYDVQQDExVnYXRld2F5LmF0aGVuc2Ftcy5uZXQwggEiMA0GCSqG
+                        SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDbB17KWAYcAxwqBJLKiCNrX18NQpeYoJBv
+                        6/ilSgtEYJxmcvS+dDFWoFoLCKJt+nfuoegPOZHTeNxyxmg4fMXw0PulVWgQxW0s
+                        0zggonUc7VQ98Ny4rkBY0IpOcMzJv1leKk7w0mXfCGZwMacZ9uy5BpM84raTyOTz
+                        P0MI28PjWTVAohhVK34CeUm0vUwVzemN0INctgyIdzEHlb6nteKCYKCnjsi2KTO8
+                        spumdA3rcU/u+0rUR5auJ0ZsDtUMg7BQw0W6MAkcXEHuC5uGJuLSyhO3h1G1D5L4
+                        5Xq5rKvV5FqyRP++hrEoiA2z3lMXtjxEaT4CELiiHbxdukaqw2aZAgMBAAGjggFo
+                        MIIBZDAfBgNVHSMEGDAWgBQMvZNoDPPeq6NJays3V0fqkOO57TAdBgNVHQ4EFgQU
+                        f4VPXF2nfnxOVFGmLcxxPaq5y+wwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQC
+                        MAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBgGA1UdIAQRMA8wDQYL
+                        KwYBBAGyMQECAh0wOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybC50Y3MudGVy
+                        ZW5hLm9yZy9URVJFTkFTU0xDQS5jcmwwbQYIKwYBBQUHAQEEYTBfMDUGCCsGAQUF
+                        BzAChilodHRwOi8vY3J0LnRjcy50ZXJlbmEub3JnL1RFUkVOQVNTTENBLmNydDAm
+                        BggrBgEFBQcwAYYaaHR0cDovL29jc3AudGNzLnRlcmVuYS5vcmcwIAYDVR0RBBkw
+                        F4IVZ2F0ZXdheS5hdGhlbnNhbXMubmV0MA0GCSqGSIb3DQEBBQUAA4IBAQBDDpET
+                        eseuUBypZlPJMfm2eg3jFIgJOTdxvMNU88EuLXTiSSgRWQAjy7QPHprkFiXUyOu5
+                        EdBbXhuTcecRESOqM5pHxZulnWtrggXc9IGy7TzjxsrxFXb881qiVwGu7kiYPv1F
+                        IwK6IQfbdbUXiTLNxrLogMYI4T7YwYkkKdA4nCy3aUuucz5uuIovLvLVrtZ9YN66
+                        XWcW/d0prifYI70Cwo4ydOJgm0WbqllJRVnP5jI9+pDa1cX6tku8raFkDUZxJfU9
+                        IlvryvkiiZTpoo7QOu6aJVAwU33BXcTQyEeCyp5PAvaeNJWCFpQ85gNSxJdVPIqm
+                        6pd2Nd0SphPSYavr
                     </ds:X509Certificate>
                 </ds:X509Data>
             </ds:KeyInfo>
