@@ -1108,7 +1108,7 @@
 	<!--
 		Utility to add the second Eduserv gateway certificate.
 	-->
-
+    <!--
 	<target name="add.second.eduserv.cert">
 		<echo>Adding second Eduserv gateway certificate</echo>
 		<for param="file">
@@ -1124,7 +1124,7 @@
 			</sequential>
 		</for>
 	</target>
-
+    -->
 	
 	<!--
 	    Utility to apply a one-off change to every fragment file.
