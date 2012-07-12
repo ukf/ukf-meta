@@ -12,6 +12,7 @@
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -761,6 +762,15 @@
                         <p>
                             Support SAML IdP Discovery Service Profile: <xsl:value-of select="$sp.idpdisc.count"/>
                             (<xsl:value-of select="format-number($sp.idpdisc.count div $spCount, '0.0%')"/>).
+                        </p>
+                    </li>
+                    
+                    <xsl:variable name="sp.init" select="$sps[md:SPSSODescriptor/md:Extensions/init:RequestInitiator]"/>
+                    <xsl:variable name="sp.init.count" select="count($sp.init)"/>
+                    <li>
+                        <p>
+                            Support SAML SP Request Initiation Protocol and Profile: <xsl:value-of select="$sp.init.count"/>
+                            (<xsl:value-of select="format-number($sp.init.count div $spCount, '0.0%')"/>).
                         </p>
                     </li>
                     
