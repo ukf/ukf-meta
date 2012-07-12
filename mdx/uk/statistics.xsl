@@ -726,16 +726,6 @@
                     dual-nature entities (both identity and service providers in one).</p>
                 <p>Of these:</p>
                 <ul>
-                    <li>
-                        <p>
-                            Support SAML 1.1 Browser/Artifact: <xsl:value-of select="$sps.artifact.saml1.count"/>
-                            (<xsl:value-of select="format-number($sps.artifact.saml1.count div $spCount, '0.0%')"/>
-                            of all SPs,
-                            <xsl:value-of select="format-number($sps.artifact.saml1.count div $sps.saml1.count, '0.0%')"/>
-                            of SAML 1.1 SPs).
-                        </p>
-                    </li>
-                    
                     <xsl:variable name="sp.slo" select="$sps[md:SPSSODescriptor/md:SingleLogoutService]"/>
                     <xsl:variable name="sp.slo.count" select="count($sp.slo)"/>
                     <li>
