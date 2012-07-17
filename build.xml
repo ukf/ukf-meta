@@ -873,7 +873,6 @@
 		<CHANNEL.import channel="nz_tuakiri"/>
         <CHANNEL.import channel="si_arnes"/>
         <CHANNEL.import channel="uk_eduserv"/>
-        <CHANNEL.import channel="us_incommon"/>
 	</target>
 	
     <!--
@@ -895,6 +894,7 @@
     	<CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
     	<CHANNEL.do verb="importProduction" channel="no_feide"/>
     	<CHANNEL.do verb="importProduction" channel="se_swamid"/>
+        <CHANNEL.do verb="importProduction" channel="us_incommon"/>
     </target>
     
     <!--

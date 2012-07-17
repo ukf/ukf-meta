@@ -33,19 +33,19 @@
         </property>
     </bean>
     
-    <bean id="import" parent="pipeline_parent"
-        p:id="import">
+    <bean id="importProduction" parent="pipeline_parent"
+        p:id="importProduction">
         <property name="stages">
             <list>
-                <ref bean="us_incommon_exportedEntities"/>
+                <ref bean="us_incommon_productionEntities"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
         </property>
     </bean>
 
-    <bean id="importRaw" parent="pipeline_parent"
-        p:id="importRaw">
+    <bean id="importProductionRaw" parent="pipeline_parent"
+        p:id="importProductionRaw">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
@@ -54,4 +54,6 @@
         </property>
     </bean>
     
+    <alias alias="import"    name="importProduction"/>
+    <alias alias="importRaw" name="importProductionRaw"/>
 </beans>

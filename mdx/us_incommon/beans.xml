@@ -12,14 +12,21 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
-        Fetch the InCommon production metadata aggregate.
+        Location of various resources.
+    -->
+    <bean id="us_incommon_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml"/>
+    </bean>
+    
+    <!--
+        Fetch the production aggregate.
     -->
     <bean id="us_incommon_productionAggregate" parent="domResourceStage_parent"
         p:id="us_incommon_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml"/>
+                <constructor-arg name="url"    ref="us_incommon_productionAggregate_url"/>
             </bean>
         </property>
     </bean>
@@ -45,10 +52,10 @@
     </bean>
 
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch and process the production entities as a collection.
     -->
-    <bean id="us_incommon_exportedEntities" parent="composite_parent"
-        p:id="us_incommon_exportedEntities">
+    <bean id="us_incommon_productionEntities" parent="composite_parent"
+        p:id="us_incommon_productionEntities">
         <property name="composedStages">
             <list>
                 <!-- no export aggregate; use the production one instead -->
@@ -70,4 +77,9 @@
         </property>
     </bean>
     
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="us_incommon_exportedAggregate" name="us_incommon_productionAggregate"/>
+    <alias alias="us_incommon_exportedEntities"  name="us_incommon_productionEntities"/>
 </beans>
