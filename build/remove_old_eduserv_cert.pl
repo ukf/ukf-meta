@@ -7,7 +7,7 @@
 #
 
 # This line indicates that the old certificate is present
-$old_cert_line = 'MIID3TCCA0agAwIBAgIQCnFfdSGulBNKkPb/stl3IDANBgkqhkiG9w0BAQUFADCB';
+$old_cert_line = 'MIIEiTCCA3GgAwIBAgIRAPzB04tYcniZc/0mSMRCfXgwDQYJKoZIhvcNAQEFBQAw';
 
 while (<>) {
 
