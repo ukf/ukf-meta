@@ -21,6 +21,9 @@
     -->
     <import resource="beans.xml"/>
     
+    <!--
+        Serialise into this channel's "imported" aggregate file.
+    -->
     <bean id="serializeImported" parent="serialize_parent"
         p:id="serializeImported">
         <property name="outputFile">
@@ -30,19 +33,19 @@
         </property>
     </bean>
     
-    <bean id="import" parent="pipeline_parent"
-        p:id="import">
+    <bean id="importProduction" parent="pipeline_parent"
+        p:id="importProduction">
         <property name="stages">
             <list>
-                <ref bean="int_testshib_exportedEntities"/>
+                <ref bean="int_testshib_productionEntities"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
         </property>
     </bean>
-
-    <bean id="importRaw" parent="pipeline_parent"
-        p:id="importRaw">
+    
+    <bean id="importProductionRaw" parent="pipeline_parent"
+        p:id="importProductionRaw">
         <property name="stages">
             <list>
                 <ref bean="int_testshib_productionAggregate"/>
@@ -51,4 +54,6 @@
         </property>
     </bean>
     
+    <alias alias="import"    name="importProduction"/>
+    <alias alias="importRaw" name="importProductionRaw"/>
 </beans>

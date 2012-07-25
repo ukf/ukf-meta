@@ -879,6 +879,8 @@
         flow.importProduction.all
         
         Run the importProduction flow on each channel that has one.
+        
+        Exception: int_testshib, which is too large and anarchic to be worthwhile.
     -->
     <target name="flow.importProduction.all">
         <CHANNEL.do verb="importProduction" channel="be_belnet"/>

@@ -12,6 +12,13 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="int_testshib_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://www.testshib.org/metadata/testshib-two-metadata.xml"/>
+    </bean>
+    
+    <!--
         Fetch the production aggregate.
     -->
     <bean id="int_testshib_productionAggregate" parent="domResourceStage_parent"
@@ -19,19 +26,18 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="http://www.testshib.org/metadata/testshib-two-metadata.xml"/>
+                <constructor-arg name="url"    ref="int_testshib_productionAggregate_url"/>
             </bean>
         </property>
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch and process the production entities as a collection.
     -->
-    <bean id="int_testshib_exportedEntities" parent="composite_parent"
-        p:id="int_testshib_exportedEntities">
+    <bean id="int_testshib_productionEntities" parent="composite_parent"
+        p:id="int_testshib_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="int_testshib_productionAggregate"/>
                 
                 <ref bean="disassemble"/>
@@ -41,4 +47,9 @@
         </property>
     </bean>
     
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="int_testshib_exportedAggregate" name="int_testshib_productionAggregate"/>
+    <alias alias="int_testshib_exportedEntities"  name="int_testshib_productionEntities"/>
 </beans>
