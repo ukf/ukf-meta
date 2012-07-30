@@ -131,7 +131,7 @@ while (<>) {
 		$total_certs++;
 		if (defined($blobs{$blob})) {
 			# print "skipping a blob\n";
-			close SSL;
+			close $fh;
 			next;
 		}
 		
