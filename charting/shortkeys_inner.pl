@@ -196,10 +196,15 @@ while (<>) {
 				next;
 			}
 			
+			if (/Not Before: (.*)$/) {
+				$notBefore = $1;
+				$noteBeforeTime = str2time($notBefore);
+			}
+
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$notAfterTime = str2time($notAfter);
-				$days = (str2time($notAfter)-time())/86400.0;
+				$days = ($notAfterTime-time())/86400.0;
 				next;
 			}
 			
@@ -229,11 +234,21 @@ while (<>) {
 		# Record expiry bin if 1024-bit key.
 		#
 		if ($pubSize == 1024) {
+			$validYears = ($notAfterTime - $noteBeforeTime)/(86400.0*365.0);
 			if ($days < 0) {
 				$expiryBin = -1;
-				print "expired 1024-bit certificate on $entity\n";
+				if ($days < -180) {
+					my $d = floor(-$days);
+					print "*** long-expired ($d days) 1024-bit certificate on $entity\n";
+				} else {
+					print "expired 1024-bit certificate on $entity\n";
+				}
 			} else {
 				$expiryBin = floor($days/$binSize);
+			}
+			if ($validYears > 3.1) {
+				my $years = sprintf "%.1f", $validYears;
+				print "excess cryptoperiod $years on $entity\n";
 			}
 			if ($expiryBin == 0) {
 				print "Expiry bin 0 dated $notAfter on $entity\n";
