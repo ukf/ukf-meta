@@ -1,4 +1,5 @@
 #!/usr/bin/perl -w
+use POSIX qw(floor);
 use File::Temp qw(tempfile);
 use Date::Parse;
 use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
@@ -204,7 +205,10 @@ while (<>) {
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$days = (str2time($notAfter)-time())/86400.0;
-				if ($days < 0) {
+				if ($days < -180) {
+					my $d = floor(-$days);
+					error("EXPIRED LONG AGO ($d days)");
+				} elsif ($days < 0) {
 					error("EXPIRED");
 				} elsif ($days < 18) {
 					$days = int($days);
