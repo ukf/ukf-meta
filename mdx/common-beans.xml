@@ -160,6 +160,7 @@
                 <entry key="ukfedlabel" value="http://ukfederation.org.uk/2006/11/label"/>
                 <entry key="wayf"       value="http://sdss.ac.uk/2006/06/WAYF"/>
                 <entry key="xenc"       value="http://www.w3.org/2001/04/xmlenc#"/>
+                <entry key="xenc11"     value="http://www.w3.org/2009/xmlenc11#"/>
                 <entry key="xs"         value="http://www.w3.org/2001/XMLSchema"/>
                 <entry key="xsi"        value="http://www.w3.org/2001/XMLSchema-instance"/>
                 <entry key="xsl"        value="http://www.w3.org/1999/XSL/Transform"/>
@@ -440,6 +441,9 @@
         </bean>
         <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema.xsd"/>
+        </bean>
+        <bean parent="file_parent">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema-11.xsd"/>
         </bean>
         <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xml.xsd"/>
