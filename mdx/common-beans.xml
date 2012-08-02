@@ -147,6 +147,7 @@
             <util:map map-class="java.util.HashMap">
                 <entry key="alg"        value="urn:oasis:names:tc:SAML:metadata:algsupport"/>
                 <entry key="ds"         value="http://www.w3.org/2000/09/xmldsig#"/>
+                <entry key="dsig11"     value="http://www.w3.org/2009/xmldsig11#"/>
                 <entry key="elab"       value="http://eduserv.org.uk/labels"/>
                 <entry key="idpdisc"    value="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"/>
                 <entry key="init"       value="urn:oasis:names:tc:SAML:profiles:SSO:request-init"/>
@@ -450,6 +451,9 @@
         </bean>
         <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig-core-schema.xsd"/>
+        </bean>
+        <bean parent="file_parent">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig11-schema.xsd"/>
         </bean>
     </util:list>
     
