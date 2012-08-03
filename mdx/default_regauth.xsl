@@ -31,6 +31,8 @@
 			<xsl:text>    </xsl:text>
 			<xsl:element name="Extensions" namespace="urn:oasis:names:tc:SAML:2.0:metadata">
 				<xsl:call-template name="default_regauth"/>
+				<xsl:text>&#10;</xsl:text>
+				<xsl:text>    </xsl:text>
 			</xsl:element>
 			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
@@ -58,8 +60,6 @@
 				<xsl:value-of select="$defaultAuthority"/>
 			</xsl:attribute>
 		</xsl:element>
-		<xsl:text>&#10;</xsl:text>
-		<xsl:text>    </xsl:text>
 	</xsl:template>
 	
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
