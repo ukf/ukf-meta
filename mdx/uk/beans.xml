@@ -367,7 +367,7 @@
         p:id="uk_normaliseNamespaces">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/ns_norm_uk.xsl"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_uk.xsl"/>
             </bean>
         </property>
     </bean>

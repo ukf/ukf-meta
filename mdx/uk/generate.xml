@@ -265,6 +265,15 @@
         </property>
     </bean>
     
+    <bean id="uk_normaliseTest" parent="xslt_parent"
+        p:id="uk_normaliseTest">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_test.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
     <bean id="serializeUnsignedTestAggregate" parent="serialize_parent"
         p:id="serializeUnsignedTestAggregate">
         <property name="outputFile">
@@ -282,15 +291,6 @@
         *******************************************
     -->
     
-    <bean id="uk_normaliseExport" parent="xslt_parent"
-        p:id="uk_normaliseExport">
-        <property name="xslResource">
-            <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_export.xsl"/>
-            </bean>
-        </property>
-    </bean>
-    
     <bean id="uk_finaliseExport" parent="xslt_parent"
         p:id="uk_finaliseExport">
         <property name="xslResource">
@@ -303,6 +303,15 @@
                 <entry key="extraText" value="Prototype export metadata; not for production use"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
             </map>
+        </property>
+    </bean>
+    
+    <bean id="uk_normaliseExport" parent="xslt_parent"
+        p:id="uk_normaliseExport">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_export.xsl"/>
+            </bean>
         </property>
     </bean>
     
@@ -459,7 +468,7 @@
                 <ref bean="uk_assembleHierarchicalAggregate"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseTest"/>
-                <ref bean="uk_normaliseNamespaces"/>
+                <ref bean="uk_normaliseTest"/>
                 
                 <!-- test aggregate MUST pass publishability test -->
                 <ref bean="uk_checkPublishable"/>

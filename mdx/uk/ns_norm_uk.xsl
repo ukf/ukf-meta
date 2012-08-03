@@ -48,7 +48,7 @@
 	<!--
 		Import templates for basic normalisation.
 	-->
-	<xsl:import href="ns_norm.xsl"/>
+	<xsl:import href="../../build/ns_norm.xsl"/>
 	
 
 	<!--
