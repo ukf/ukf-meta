@@ -432,13 +432,18 @@
                     </property>
                     <property name="waitingForPipelines" value="true"/>
                 </bean>
+
+                <!--
+                    Identify all UK registered entities as such.
+                -->
+                <ref bean="uk_default_regauth"/>
                 
                 <!--
-                    Merge in entities from other metadata sources.
+                    Merge in entities from pre-production metadata exchange sources.
                 -->
-                <bean id="mergeImportedEntities" parent="stage_parent"
+                <bean id="mergePreproductionImportedEntities" parent="stage_parent"
                     class="net.shibboleth.metadata.pipeline.PipelineMergeStage"
-                    p:id="mergeImportedEntities">
+                    p:id="mergePreproductionImportedEntities">
                     <property name="collectionMergeStrategy">
                         <bean id="deduplicateMergeStrategy" class="net.shibboleth.metadata.DeduplicatingItemIdMergeStrategy"
                             lazy-init="true"/>
