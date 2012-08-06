@@ -214,6 +214,15 @@
         </property>
     </bean>
     
+    <bean id="uk_normaliseFallback" parent="xslt_parent"
+        p:id="uk_normaliseFallback">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_back.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
     <bean id="serializeUnsignedFallbackAggregate" parent="serialize_parent"
         p:id="serializeUnsignedFallbackAggregate">
         <property name="outputFile">
@@ -231,7 +240,7 @@
                 <ref bean="stripMdrpiNamespace"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseFallback"/>
-                <ref bean="uk_normaliseNamespaces"/>
+                <ref bean="uk_normaliseFallback"/>
                 
                 <!-- fallback aggregate MUST pass publishability test -->
                 <ref bean="uk_checkPublishable"/>
