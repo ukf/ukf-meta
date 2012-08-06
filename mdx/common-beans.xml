@@ -224,7 +224,7 @@
         p:id="normaliseNamespaces">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/ns_norm.xsl"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ns_norm.xsl"/>
             </bean>
         </property>
     </bean>
