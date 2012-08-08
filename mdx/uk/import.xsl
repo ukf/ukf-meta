@@ -70,7 +70,7 @@
 			urn:mace:shibboleth:metadata:1.0 ../xml/shibboleth-metadata-1.0.xsd
 			http://ukfederation.org.uk/2006/11/label ../xml/uk-fed-label.xsd
 			http://www.w3.org/2001/04/xmlenc# ../xml/xenc-schema.xsd
-			http://www.w3.org/2009/xmlenc11# ..xml/xenc-schema-11.xsd
+			http://www.w3.org/2009/xmlenc11# ../xml/xenc-schema-11.xsd
 			http://www.w3.org/2000/09/xmldsig# ../xml/xmldsig-core-schema.xsd">
 			
 			<!--
