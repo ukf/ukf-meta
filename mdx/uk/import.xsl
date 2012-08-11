@@ -41,7 +41,7 @@
 
 	xmlns:xalan="http://xml.apache.org/xalan"
 	
-	exclude-result-prefixes="alg idpdisc init md mdui xalan"
+	exclude-result-prefixes="idpdisc init md mdui xalan"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
