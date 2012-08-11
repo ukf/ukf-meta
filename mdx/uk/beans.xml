@@ -322,6 +322,8 @@
                 <ref bean="uk_processScopes"/>
                 <ref bean="populateItemIds"/>
                 <ref bean="uk_populateIds"/>
+                <ref bean="uk_default_regauth"/>
+                
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_ukreg"/>

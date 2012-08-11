@@ -241,6 +241,7 @@
             <list>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripMdrpiNamespace"/>
+                <ref bean="removeEmptyExtensions"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
@@ -345,7 +346,6 @@
         p:id="uk_exportPipeline">
         <property name="stages">
             <list>
-                <ref bean="uk_default_regauth"/>
                 <ref bean="uk_stripExtensions"/>
                 <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
@@ -497,11 +497,6 @@
                     <property name="waitingForPipelines" value="true"/>
                 </bean>
 
-                <!--
-                    Identify all UK registered entities as such.
-                -->
-                <ref bean="uk_default_regauth"/>
-                
                 <!--
                     ***********************************************************
                     ***                                                     ***
