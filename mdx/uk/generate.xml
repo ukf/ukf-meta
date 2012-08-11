@@ -122,6 +122,11 @@
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="publisher" value-ref="uk_federation_uri"/>
+            </map>
+        </property>
     </bean>
 
     <bean id="serializeUnsignedProductionAggregate" parent="serialize_parent"
