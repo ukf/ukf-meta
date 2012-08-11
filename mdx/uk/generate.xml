@@ -138,7 +138,6 @@
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
-                <ref bean="stripMdrpiNamespace"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
@@ -179,7 +178,6 @@
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
-                <ref bean="stripMdrpiNamespace"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
