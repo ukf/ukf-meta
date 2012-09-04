@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE schema
- [
-   <!ATTLIST schema 
-     xmlns:ds CDATA #FIXED "http://www.w3.org/2000/09/xmldsig#">
-   <!ENTITY dsig 'http://www.w3.org/2000/09/xmldsig#'>
-   <!ENTITY % p ''>
-   <!ENTITY % s ''>
-  ]>
-
 <!-- Schema for XML Signatures
     http://www.w3.org/2000/09/xmldsig#
     $Revision: 1.1 $ on $Date: 2005/03/16 17:40:08 $ by $Author: iay $
