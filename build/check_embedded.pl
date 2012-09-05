@@ -17,6 +17,11 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 #
 
 #
+# Maximum cryptoperiod for 1024-bit keys.
+#
+my $excessThreshold = 5; # years
+
+#
 # Load RSA key blacklists.
 #
 #print "Loading key blacklists...\n";
@@ -202,9 +207,16 @@ while (<>) {
 				next;
 			}
 			
+			if (/Not Before: (.*)$/) {
+				$notBefore = $1;
+				$noteBeforeTime = str2time($notBefore);
+				next;
+			}
+
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
-				$days = (str2time($notAfter)-time())/86400.0;
+				$notAfterTime = str2time($notAfter);
+				$days = ($notAfterTime-time())/86400.0;
 				if ($days < -180) {
 					my $d = floor(-$days);
 					error("EXPIRED LONG AGO ($d days)");
@@ -365,10 +377,35 @@ while (<>) {
 			$error = "unknown issuer: $issuerCN";
 		}
 
+		if ($error eq 'certificate has expired' && $days < 0) {
+			# an equivalent message has already been issued
+			$error = '';
+		}
+
 		if ($error ne '') {
 			error($error);
 		}
 		
+		#
+		# Some more detailed reporting for 1024-bit keys.
+		#
+		if ($pubSize == 1024) {
+
+			if ($days < 0) {
+				error("1024 bit expired certificate");
+			}
+
+			#
+			# Complain about keys with an excessive cryptoperiod (more than
+			# some given number of years).
+			#
+			my $validYears = ($notAfterTime - $noteBeforeTime)/(86400.0*365.0);
+			my $years = sprintf "%.1f", $validYears;
+			if ($validYears >= $excessThreshold) {
+				warning("excess cryptoperiod $years years for 1024-bit key; expires $notAfter");
+			}
+		}
+
 		#
 		# Close the temporary file, which will also cause
 		# it to be deleted.
