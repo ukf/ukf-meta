@@ -235,9 +235,9 @@
 	<!--
 		ds:KeyName
 		
-		Remove empty KeyName elements.
+		Remove KeyName elements.
 	-->
-	<xsl:template match="ds:KeyName[.='']">
+	<xsl:template match="ds:KeyName">
 		<!-- do nothing -->
 	</xsl:template>
 	

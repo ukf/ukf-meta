@@ -353,7 +353,7 @@ while (<>) {
 				$error = '';
 				comment("unknown issuer: $issuerCN");
 			} elsif ($clientOK) {
-				$error = "certificate matches trust fabric; add KeyName?";
+				# $error = "certificate matches trust fabric; add KeyName?";
 			}
 		}
 
