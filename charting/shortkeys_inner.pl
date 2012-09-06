@@ -227,7 +227,7 @@ while (<>) {
 			
 			if (/Not Before: (.*)$/) {
 				$notBefore = $1;
-				$noteBeforeTime = str2time($notBefore);
+				$notBeforeTime = str2time($notBefore);
 			}
 
 			if (/Not After : (.*)$/) {
@@ -278,7 +278,7 @@ while (<>) {
 			# Complain about keys with an excessive cryptoperiod (more than
 			# about three years).
 			#
-			my $validYears = ($notAfterTime - $noteBeforeTime)/(86400.0*365.0);
+			my $validYears = ($notAfterTime - $notBeforeTime)/(86400.0*365.0);
 			my $years = sprintf "%.1f", $validYears;
 			if ($validYears >= $excessThreshold) {
 				error("excess cryptoperiod $years years expires $notAfter");
