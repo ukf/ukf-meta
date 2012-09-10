@@ -219,9 +219,9 @@ while (<>) {
 				$days = ($notAfterTime-time())/86400.0;
 				if ($days < -180) {
 					my $d = floor(-$days);
-					error("EXPIRED LONG AGO ($d days)");
+					error("EXPIRED LONG AGO ($d days; $notAfter)");
 				} elsif ($days < 0) {
-					error("EXPIRED");
+					error("EXPIRED ($notAfter)");
 				} elsif ($days < 18) {
 					$days = int($days);
 					error("expires in $days days ($notAfter)");
