@@ -114,8 +114,16 @@
             </head>
             <body>
                 <h1>UK Federation metadata statistics</h1>
-                <p>This document is regenerated each time the UK Federation metadata is altered.</p>
+                <p>This document contains up-to-date information on the metadata for the Identity
+                   Providers and Service Providers in the UK Access Management Federation.
+                   It is regenerated each time the UK Federation metadata is built.</p>
                 <p>This version was created at <xsl:value-of select="$now"/>.</p>
+                <p>This document is produced as a working document of the UK federation core team. 
+                   Some of the statistics may be approximations, and the report may be used to track
+                   details of current team interest. 
+                   For this reason it may be liable to misinterpetation, and should not be considered
+                   complete or authoritative.
+                </p>
                 <p>Contents:</p>
                 <ul>
                     <li><p><a href="#members">Member Statistics</a></p></li>
@@ -133,8 +141,27 @@
                 
                 <h2><a name="members">Member Statistics</a></h2>
                 <p>Number of members: <xsl:value-of select="$memberCount"/></p>
-                <p>The following table shows, for each federation member, the number of entities
-                belonging to that member.</p>
+                <p>The following table shows the legal name of each member organisation and 
+                   the number of entities belonging to that member.
+                   Ownership is established by the OrganizationName field of an entity exactly 
+                   matching the legal name of the member organisation. 
+                </p>
+                <p>
+                   Many organisations have no entities in the federation. 
+                   This may be because they have not yet registered any - perhaps they have only recently joined. 
+                   Alternatively, they may have outsourced their identity provision.
+                   Outsourcing of IdP provision is indicated by an asterisk in the OSrc column in the table.
+                   This indicates either outsourcing to Eduserv virtual IdP or members who push scopes.
+                   Other IdP outsourcing, and any SP outsourcing, is not recorded in the table.
+                </p>
+                <p>
+                    The final column in the table, Primary Scope, records a scope (or security domain)
+                    owned by the member and designated as its main (or only) scope. 
+                    ('Primary Scope' is a useful concept, but is not precisely defined. 
+                    It is only recorded if the member in question owns an IdP or outsources its IdP provision - 
+                    and perhaps not even then, as it it sometimes unclear which of the scopes 
+                    it owns should be designated as 'primary'.) 
+                </p>
                 <table border="1" cellspacing="2" cellpadding="4">
                     <tr>
                         <th align="left">Member</th>
@@ -403,6 +430,19 @@
                 
 
                 <h2><a name="entities">Entity Statistics</a></h2>
+                <p>
+                    This section provides a useful bottom-up summary of the federation, 
+                    by categorisation of entities, both total numbers and percentages. 
+                    There are three subsections, presenting statistics applying to all entities, 
+                    to Identity Providers and to Service Providers. 
+                    In each subsection there is a 'breakdown by software used'. 
+                    This lists the entities using each type of software recorded if 
+                    there are fewer than 10 such entities in the category; 
+                    otherwise only the overall numbers and percentages are given. 
+                    (The software used is requested by the UK federation as part of the entity registration procedure,
+                    and this information is recorded in the Software element of our records.
+                    It is currently assumed that Shibboleth 1.3 is in use if there is no Software element in the metadata.) 
+                </p>
                 <p>Total entities: <xsl:value-of select="$entityCount"/>.  This breaks down into:</p>
                 <ul>
                     <li>
@@ -929,6 +969,11 @@
                     *********************************************
                 -->
                 <h2><a name="byOwner">Entities by Owner</a></h2>
+                <p>
+                    This section is intended to be largely self-explanatory. 
+                    Any items in [...] brackets give additional information about the entity: 
+                    its type, the software used (Shibboleth 1.3 is assumed if absent), etc. 
+                 </p>
                 <ul>
                     <xsl:apply-templates select="$ownerNames" mode="enumerate">
                         <xsl:with-param name="entities" select="$entities"/>
@@ -947,7 +992,7 @@
                 <h2><a name="accountableIdPs">Identity Provider Accountability</a></h2>
                 
                 <p>
-                    The following entities are visible in the main federation WAYF list
+                    The following entities are visible in the main federation discovery service
                     but do not assert user accountability:
                 </p>
                 <ul>
@@ -969,6 +1014,10 @@
                     ***********************************************************
                 -->
                 <h2><a name="membersByScope">Members by Primary Scope</a></h2>
+                <p>Primary Scope is a useful concept, but is not precisely defined. 
+                   It is only recorded if the member in question owns an IdP or outsources its IdP provision - 
+                   and perhaps not even then, as it it sometimes unclear which of the scopes 
+                   it owns should be designated as 'primary'.</p>
                 <table border="1" cellspacing="2" cellpadding="4">
                     <tr>
                         <th align="left">Primary Scope</th>
