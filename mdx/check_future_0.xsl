@@ -29,22 +29,4 @@
 	-->
 	<xsl:import href="../build/check_framework.xsl"/>
 
-	<!--
-		Look for SAML 2.0 IdPs whose metadata includes pure PKIX KeyDescriptor elements.
-	-->
-	<xsl:template match="md:IDPSSODescriptor
-		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML 2.0 IdP has KeyDescriptor without embedded key</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	<xsl:template match="md:AttributeAuthorityDescriptor
-		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML 2.0 AttributeAuthority has KeyDescriptor without embedded key</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-
 </xsl:stylesheet>
