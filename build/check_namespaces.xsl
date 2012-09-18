@@ -13,6 +13,7 @@
 	xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:elab="http://eduserv.org.uk/labels"
+	xmlns:hoksso="urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
@@ -45,6 +46,10 @@
 	</xsl:template>
 	
 	<xsl:template match="elab:*">
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template match="hoksso:*">
 		<xsl:apply-templates/>
 	</xsl:template>
 	

@@ -245,6 +245,18 @@
     </bean>
     
     <!--
+        check_hoksso
+    -->
+    <bean id="check_hoksso" parent="check_xslt_parent"
+        p:id="check_hoksso">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_hoksso.xsl"/>
+            </bean>
+        </property>
+    </bean>
+        
+    <!--
         check_idpdisc
     -->
     <bean id="check_idpdisc" parent="check_xslt_parent"
@@ -562,6 +574,7 @@
             <list>
                 <ref bean="check_adfs"/>
                 <ref bean="check_bindings"/>
+                <ref bean="check_hoksso"/>
                 <ref bean="check_idpdisc"/>
                 <ref bean="check_init"/>
                 <ref bean="check_mdiop"/>

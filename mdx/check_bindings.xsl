@@ -41,6 +41,7 @@
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:PAOS']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser']
 		">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
@@ -134,6 +135,7 @@
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser']
 		">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
