@@ -141,17 +141,19 @@
                 
                 <h2><a name="members">Member Statistics</a></h2>
                 <p>Number of members: <xsl:value-of select="$memberCount"/></p>
-                <p>The following table shows the legal name of each member organisation and 
+                <p>The following table shows the canonical name of each member organisation and 
                    the number of entities belonging to that member.
-                   Ownership is established by the OrganizationName field of an entity exactly 
-                   matching the legal name of the member organisation. 
+                   The canonical name for a member is derived from the member's legal name. 
+                   Ownership  of an entity is established by the OrganizationName field of an entity exactly 
+                   matching the canonical name of the member organisation. 
                 </p>
                 <p>
                    Many organisations have no entities in the federation. 
-                   This may be because they have not yet registered any - perhaps they have only recently joined. 
+                   This may be because they have not yet registered any; perhaps because they have only recently joined. 
                    Alternatively, they may have outsourced their identity provision.
                    Outsourcing of IdP provision is indicated by an asterisk in the OSrc column in the table.
-                   This indicates either outsourcing to Eduserv virtual IdP or members who push scopes.
+                   This indicates either outsourcing to an Eduserv virtual IdP or a member who "pushes" scopes
+                   to an aggregate IdP.
                    Other IdP outsourcing, and any SP outsourcing, is not recorded in the table.
                 </p>
                 <p>
@@ -440,8 +442,9 @@
                     there are fewer than 10 such entities in the category; 
                     otherwise only the overall numbers and percentages are given. 
                     (The software used is requested by the UK federation as part of the entity registration procedure,
-                    and this information is recorded in the Software element of our records.
-                    It is currently assumed that Shibboleth 1.3 is in use if there is no Software element in the metadata.) 
+                    and this information is recorded in the Software element of our records but not included
+                    in published metadata.  Heuristics are used to guess the software in use
+                    if there is no Software element in the metadata.) 
                 </p>
                 <p>Total entities: <xsl:value-of select="$entityCount"/>.  This breaks down into:</p>
                 <ul>
@@ -983,7 +986,7 @@
                 <p>
                     This section is intended to be largely self-explanatory. 
                     Any items in [...] brackets give additional information about the entity: 
-                    its type, the software used (Shibboleth 1.3 is assumed if absent), etc. 
+                    its type, the software used, etc. 
                  </p>
                 <ul>
                     <xsl:apply-templates select="$ownerNames" mode="enumerate">
