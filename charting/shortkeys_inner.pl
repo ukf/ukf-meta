@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 use POSIX qw(floor);
 use File::Temp qw(tempfile);
+use Date::Format;
 use Date::Parse;
 use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 
@@ -9,7 +10,7 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 # UK federation metadata.
 #
 # The certificates are provided on standard input in PEM format with header lines
-# indicating the entity with which they are associated.
+# indicating the entity with which they are associated.
 #
 # Command line options:
 #
@@ -55,11 +56,6 @@ my %blobs;
 #
 my $blob;
 
-#
-# Size of fixed-width expiry statistical bins.
-#
-my $binSize = 90;
-
 my @quarterStartDays = (
 	"2012-10-01", # 4Q2012
 	"2013-01-01", # 1Q2013
@@ -85,6 +81,8 @@ for $startDay (@quarterStartDays) {
 	#print "startDay is $startDay\n";
 	my $endTime = str2time($startDay . "T00:00:00")-1;
 	push(@quarterEndTimes, $endTime);
+	# local $endTimeText = time2str('%Y-%m-%dT%H:%M:%S', $endTime);
+	# print "end time corresponding to $startDay is $endTime ($endTimeText)\n";
 }
 
 #
@@ -92,6 +90,15 @@ for $startDay (@quarterStartDays) {
 #
 my $deadline = "2014-01-01T00:00:00";
 my $deadlineTime = str2time($deadline);
+
+#
+# Start of the current month, as an approximation of what we want
+# to regard as an "expired" certificate.  Ideally, this would be
+# passed in as a parameter.
+#
+#my $nowYearMonth = '2012-08-01T00:00:00';
+my $nowYearMonth = time2str('%Y-%m-01T00:00:00', time());
+my $validStart = str2time($nowYearMonth);
 
 my $excessThreshold = 5; # years
 
@@ -113,7 +120,7 @@ while (<>) {
 		$keyname = $args[3];
 		
 		#
-		# Output header line.
+		# Output header line.
 		#
 		$oline = "Entity $entity ";
 		$hasKeyName = !($keyname eq '(none)');
@@ -177,7 +184,7 @@ while (<>) {
 		my %names;
 		
 		#
-		# Use openssl to convert the certificate to text
+		# Use openssl to convert the certificate to text
 		#
 		my(@lines, $issuer, $subjectCN, $issuerCN);
 		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 -modulus |";
@@ -210,7 +217,7 @@ while (<>) {
 			if (/RSA Public Key: \((\d+) bit\)/) { # OpenSSL 0.9x
 				$pubSize = $1;
 				$pubSizeCount{$pubSize}++;
-				# print "   Public key size: $pubSize\n";
+				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
 					error('PUBLIC KEY TOO SHORT');
 				}
@@ -218,7 +225,7 @@ while (<>) {
 			} elsif (/^\s*Public-Key: \((\d+) bit\)/) { # OpenSSL 1.0
 				$pubSize = $1;
 				$pubSizeCount{$pubSize}++;
-				# print "   Public key size: $pubSize\n";
+				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
 					error('PUBLIC KEY TOO SHORT');
 				}
@@ -233,7 +240,7 @@ while (<>) {
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$notAfterTime = str2time($notAfter);
-				$days = ($notAfterTime-time())/86400.0;
+				$days = ($notAfterTime-$validStart)/86400.0;
 				next;
 			}
 			
@@ -276,7 +283,7 @@ while (<>) {
 
 			#
 			# Complain about keys with an excessive cryptoperiod (more than
-			# about three years).
+			# about three years for a 1024-bit key).
 			#
 			my $validYears = ($notAfterTime - $notBeforeTime)/(86400.0*365.0);
 			my $years = sprintf "%.1f", $validYears;
@@ -286,35 +293,22 @@ while (<>) {
 			}
 
 			#
-			# First expiry binning is on the basis of number of days left to
-			# run.  Bin -1 is for expired certificates, bin 99 is for those that
-			# expire on or after 2014-01-01T00:00:00.
+			# Complain about expired 1024-bit certificates.
 			#
 			if ($days < 0) {
-				$expiryBin = -1;
 				if ($days < -180) {
 					my $d = floor(-$days);
 					error("long-expired ($d days) 1024-bit certificate");
 				} else {
 					warning("expired 1024-bit certificate");
 				}
-			} else {
-				$expiryBin = floor($days/$binSize);
 			}
-			if ($expiryBin == 0) {
-				# print "Expiry bin 0 dated $notAfter on $entity\n";
-			} elsif ($notAfterTime > $deadlineTime) {
-				warning("long expiry dated $notAfter");
-				$expiryBin = 99;
-				comment("issued by $issuerCN");
-				if ($validYears >= $excessThreshold) {
-					$excessPlusDeadline++;
-				}
-			}
-			$expiryBinned{$expiryBin}++;
 
 			#
-			# Second expiry binning is on the basis of calendar quarter bins.
+			# Expiry binning is on the basis of calendar quarter bins.
+			#
+			# Bin -1 is for expired certificates, bin 99 is for those that
+			# expire on or after 2014-01-01T00:00:00.
 			#
 			if ($days < 0) {
 				$expiryBin = -1;
@@ -329,6 +323,7 @@ while (<>) {
 					$bin++;
 				}
 			}
+			# print "date $notAfter gets bin $expiryBin\n";
 			$expiryQuarterCount{$expiryBin}++;
 		}
 
@@ -349,30 +344,26 @@ sub numerically {
 }
 
 if ($total_certs > 1) {
+
 	print "Total certificates: $total_certs\n";
 	if ($distinct_certs != $total_certs) {
 		print "Distinct certificates: $distinct_certs\n";
 	}
+
 	print "Key size distribution:\n";
 	for $pubSize (sort keys %pubSizeCount) {
 		$count = $pubSizeCount{$pubSize};
 		print "   $pubSize: $count\n";
 	}
 
-	print "\nExpiry bins:\n";
-	$total = 0;
-	for $bin (sort numerically keys %expiryBinned) {
-		$days = $binSize * $bin;
-		$count = $expiryBinned{$bin};
-		$total += $count;
-		print "   $bin: $count\n";
-	}
-	print "Total: $total\n";
-
 	print "\nExpiry quarters:\n";
 	$total = 0;
 	for $bin (sort numerically keys %expiryQuarterCount) {
-		$count = $expiryBinned{$bin};
+		if (defined($expiryQuarterCount{$bin})) {
+			$count = $expiryQuarterCount{$bin};
+		} else {
+			$count = 0; # nothing was put in that bin
+		}
 		$total += $count;
 		if ($bin == 99) {
 			$binName = ">=2014";
@@ -386,6 +377,5 @@ if ($total_certs > 1) {
 	print "\n";
 	print "Excess cryptoperiod threshold: $excessThreshold\n";
 	print "Excess cryptoperiod: $excessCount\n";
-	print "Excess plus deadline: $excessPlusDeadline\n";
 	print "Expired, other key sizes: $expiredOther\n";
 }
