@@ -11,7 +11,12 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
-
+    <!--
+        Information about WAYF metadata can be found here:
+        
+        http://wayf.dk/en/institutions/metadata
+    -->
+    
     <!--
         Fetch the IdP metadata.
     -->
@@ -26,6 +31,19 @@
     </bean>
     
     <!--
+        Fetch the SP metadata.
+    -->
+    <bean id="dk_wayf_spMetadata" parent="domResourceStage_parent"
+        p:id="dk_wayf_spMetadata">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://wayf.wayf.dk/module.php/saml/sp/metadata.php/wayf.wayf.dk"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         Fetch and process the exported entities as a collection.
     -->
     <bean id="dk_wayf_exportedEntities" parent="composite_parent"
@@ -33,6 +51,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="dk_wayf_idpMetadata"/>
+                <ref bean="dk_wayf_spMetadata"/>
                 <ref bean="standardImportActions"/>
             </list>
         </property>
