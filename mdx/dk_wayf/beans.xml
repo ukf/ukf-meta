@@ -44,14 +44,34 @@
     </bean>
     
     <!--
+        Fetch the BIRK proxy metadata.
+        
+        See http://wayf.dk/en/services/connection-technology-for-services/412
+    -->
+    <bean id="dk_wayf_birkMetadata" parent="domResourceStage_parent"
+        p:id="dk_wayf_birkMetadata">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" value="https://metadata.wayf.dk//birk-idp.xml"/>
+            </bean>
+        </property>
+    </bean>
+    <!--
         Fetch and process the exported entities as a collection.
     -->
     <bean id="dk_wayf_exportedEntities" parent="composite_parent"
         p:id="dk_wayf_exportedEntities">
         <property name="composedStages">
             <list>
+                <!-- BIRK proxy metadata aggregate -->
+                <ref bean="dk_wayf_birkMetadata"/>
+                <ref bean="disassemble"/>
+
+                <!-- hub singleton IdP and SP metadata -->
                 <ref bean="dk_wayf_idpMetadata"/>
                 <ref bean="dk_wayf_spMetadata"/>
+                
                 <ref bean="standardImportActions"/>
             </list>
         </property>
