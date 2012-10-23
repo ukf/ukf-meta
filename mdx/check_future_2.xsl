@@ -29,5 +29,21 @@
 	-->
 	<xsl:import href="../build/check_framework.xsl"/>
 
+	<!--
+		Check for entities which have both PKIX-only KeyDescriptors (i.e.,
+		ones with a KeyName but no embedded X.509 certificate) and also
+		non-PKIX KeyDescriptors (i.e., ones with no KeyName).
+		
+		This combination seems unlikely to be intentional, and most
+		likely the result of an incomplete transition to embedded key
+		material.
+	-->
+	<xsl:template match="md:EntityDescriptor
+		[descendant::md:KeyDescriptor[not(descendant::ds:X509Data)]]
+		[descendant::md:KeyDescriptor[not(descendant::ds:KeyName)]]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">has both PKIX-only and no-PKIX KeyDescriptors</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
 	
 </xsl:stylesheet>
