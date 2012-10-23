@@ -1379,6 +1379,12 @@
 
 
     <!--
+        *******************************************************
+        ***                                                 ***
+        ***   T R U S T   M O D E L S   B R E A K D O W N   ***
+        ***                                                 ***
+        *******************************************************
+        
         Break down a set of entities by the trust models available.
     -->
     <xsl:template name="entity.breakdown.by.trust">
@@ -1419,6 +1425,40 @@
                     (<xsl:value-of select="format-number($dkeyEntityCount div $entityCount, '0.0%')"/>)
                 </p>
             </li>
+            
+            <xsl:variable name="e.keyonly" select="$entities[descendant::md:KeyDescriptor[not(descendant::ds:X509Data)]]"/>
+            <li>
+                <p>
+                    At least one <code>KeyName</code>-only <code>KeyDescriptor</code>:
+                    <xsl:value-of select="count($e.keyonly)"/>
+                </p>
+            </li>
+            
+            <xsl:variable name="e.nokey" select="$entities[descendant::md:KeyDescriptor[not(descendant::ds:KeyName)]]"/>
+            <li>
+                <p>
+                    At least one no-<code>KeyName</code>
+                    <xsl:text> </xsl:text><code>KeyDescriptor</code>:
+                    <xsl:value-of select="count($e.nokey)"/>
+                </p>
+            </li>
+            
+            <xsl:variable name="e.oneofeach" select="set:intersection($e.keyonly, $e.nokey)"/>
+            <xsl:if test="count($e.oneofeach) != 0">
+                <li>
+                    <p>
+                        At least one <code>KeyName</code>-only <code>KeyDescriptor</code>
+                        <xsl:text> </xsl:text><i>and</i> at least one no-<code>KeyName</code>
+                        <xsl:text> </xsl:text><code>KeyDescriptor</code>:
+                        <xsl:value-of select="count($e.oneofeach)"/>
+                    </p>
+                    <ul>
+                        <xsl:for-each select="$e.oneofeach">
+                            <li><code><xsl:value-of select="@entityID"/></code></li>
+                        </xsl:for-each>
+                    </ul>
+                </li>
+            </xsl:if>
         </ul>
         
     </xsl:template>        
@@ -1756,6 +1796,13 @@
         </xsl:if>
     </xsl:template>
     
+    <!--
+        *********************************************************
+        ***                                                   ***
+        ***   K E Y D E S C R I P T O R   B R E A K D O W N   ***
+        ***                                                   ***
+        *********************************************************
+    -->
     <xsl:template name="keydescriptor.breakdown">
         <xsl:param name="entities"/>
         <xsl:variable name="kd" select="$entities//md:KeyDescriptor"/>
