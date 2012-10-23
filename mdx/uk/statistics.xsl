@@ -11,6 +11,7 @@
 -->
 <xsl:stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
@@ -575,25 +576,9 @@
                         </li>
                     </xsl:if>
                     
-                    <xsl:variable name="uiInfoEntities" select="$entities[descendant::mdui:UIInfo]"/>
-                    <xsl:variable name="uiInfoEntitiesCount" select="count($uiInfoEntities)"/>
-                    <xsl:if test="$uiInfoEntitiesCount != 0">
-                        <li>
-                            <p>
-                                <xsl:value-of select="$uiInfoEntitiesCount"/>
-                                (<xsl:value-of select="format-number($uiInfoEntitiesCount div $entityCount, '0.0%')"/>)
-                                <xsl:choose>
-                                    <xsl:when test="$uiInfoEntitiesCount = 1">
-                                        has
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        have
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                                mdui:UIInfo support.
-                            </p>
-                        </li>
-                    </xsl:if>
+                    <xsl:call-template name="ofthese.entity.extras">
+                        <xsl:with-param name="entities" select="$entities"/>
+                    </xsl:call-template>
                     
                 </ul>
 
@@ -668,17 +653,10 @@
                         </li>
                     </xsl:if>
 
-                    <xsl:variable name="idp.uiinfo" select="$idps[descendant::mdui:UIInfo]"/>
-                    <xsl:variable name="idp.uiinfo.count" select="count($idp.uiinfo)"/>
-                    <xsl:if test="$idp.uiinfo.count != 0">
-                        <li>
-                            <p>
-                                Support mdui:UIInfo: <xsl:value-of select="$idp.uiinfo.count"/>
-                                (<xsl:value-of select="format-number($idp.uiinfo.count div $idpCount, '0.0%')"/>).
-                            </p>
-                        </li>
-                    </xsl:if>
-                    
+                    <xsl:call-template name="ofthese.entity.extras">
+                        <xsl:with-param name="entities" select="$idps"/>
+                    </xsl:call-template>
+
                 </ul>
                 
                 <p>SSO protocol support:</p>
@@ -818,17 +796,6 @@
                         </p>
                     </li>
                     
-                    <xsl:variable name="sp.uiinfo" select="$sps[descendant::mdui:UIInfo]"/>
-                    <xsl:variable name="sp.uiinfo.count" select="count($sp.uiinfo)"/>
-                    <xsl:if test="$sp.uiinfo.count != 0">
-                        <li>
-                            <p>
-                                Support mdui:UIInfo: <xsl:value-of select="$sp.uiinfo.count"/>
-                                (<xsl:value-of select="format-number($sp.uiinfo.count div $spCount, '0.0%')"/>).
-                            </p>
-                        </li>
-                    </xsl:if>
-                    
                     <xsl:variable name="sp.rqa" select="$sps[descendant::md:RequestedAttribute]"/>
                     <xsl:variable name="sp.rqa.count" select="count($sp.rqa)"/>
                     <xsl:if test="$sp.rqa.count != 0">
@@ -840,6 +807,10 @@
                         </li>
                     </xsl:if>
 
+                    <xsl:call-template name="ofthese.entity.extras">
+                        <xsl:with-param name="entities" select="$sps"/>
+                    </xsl:call-template>
+                    
                 </ul>
                 
                 <p>SSO protocol support:</p>
@@ -1378,6 +1349,47 @@
 
 
 
+    <!--
+        *********************************************
+        ***                                       ***
+        ***   " O F   T H E S E "   E X T R A S   ***
+        ***                                       ***
+        *********************************************
+        
+        Extra list entries for the "of these" breakdowns
+        in the entity sections.
+    -->
+    <xsl:template name="ofthese.entity.extras">
+        <xsl:param name="entities"/>
+        <xsl:variable name="entityCount" select="count($entities)"/>
+
+        <xsl:variable name="e.uiinfo" select="$entities[descendant::mdui:UIInfo]"/>
+        <xsl:variable name="e.uiinfo.count" select="count($e.uiinfo)"/>
+        <xsl:if test="$e.uiinfo.count != 0">
+            <li>
+                <p>
+                    <xsl:value-of select="$e.uiinfo.count"/>
+                    (<xsl:value-of select="format-number($e.uiinfo.count div $entityCount, '0.0%')"/>)
+                    provide mdui:UIInfo metadata.
+                </p>
+            </li>
+        </xsl:if>
+        
+        <xsl:variable name="e.algsupport"
+            select="$entities[descendant::alg:* or descendant::md:EncryptionMethod]"/>
+        <xsl:variable name="e.algsupport.count" select="count($e.algsupport)"/>
+        <xsl:if test="$e.algsupport.count != 0">
+            <li>
+                <p>
+                    <xsl:value-of select="$e.algsupport.count"/>
+                    (<xsl:value-of select="format-number($e.algsupport.count div $entityCount, '0.0%')"/>)
+                    provide algorithm support metadata.
+                </p>
+            </li>
+        </xsl:if>
+        
+    </xsl:template>
+    
     <!--
         *******************************************************
         ***                                                 ***
