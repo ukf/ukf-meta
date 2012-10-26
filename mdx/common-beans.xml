@@ -375,11 +375,21 @@
     -->
     
     <!--
+        httpClientBuilder
+        
+        Factory for the httpClient bean below.
+    -->
+    <bean id="httpClientBuilder"
+        class="net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder"
+        p:connectionDisregardSslCertificate="true"
+    />
+
+    <!--
         httpClient
         
         Common, basic, HTTP client for use with HTTP resources.
     -->
-    <bean name="httpClient" class="org.apache.http.impl.client.DefaultHttpClient"/>
+    <bean id="httpClient" factory-bean="httpClientBuilder" factory-method="buildClient"/>
     
     <!--
         parserPool
