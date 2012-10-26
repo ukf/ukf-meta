@@ -15,7 +15,7 @@
         Location of various resources.
     -->
     <bean id="hu_eduid_productionAggregate_url" class="java.lang.String">
-        <constructor-arg value="https://metadata.eduid.hu/metadata.xml"/>
+        <constructor-arg value="https://metadata.eduid.hu/current/href.xml"/>
     </bean>
     <bean id="hu_eduid_edugainAggregate_url" class="java.lang.String">
         <constructor-arg value="https://metadata.eduid.hu/2011/href-edugain.xml"/>
