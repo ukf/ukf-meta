@@ -5,17 +5,17 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 
 sub error {
 	my($s) = @_;
-	print '   *** ' . $s . ' ***';
+	print '   *** ' . $s . ' ***' . "\n";
 }
 
 sub warning {
 	my ($s) = @_;
-	print '   ' . $s;
+	print '   ' . $s . "\n";
 }
 
 sub comment {
 	my($s) = @_;
-	print '   (' . $s . ')';
+	print '   (' . $s . ')' . "\n";
 }
 
 #
@@ -43,11 +43,6 @@ while (<>) {
 	#
 	if (/BEGIN CERTIFICATE/) {
 		
-		#
-		# Output header line.
-		#
-		print "Authority certificate:\n";
-
 		#
 		# Create a temporary file for this certificate in PEM format.
 		#
@@ -78,18 +73,21 @@ while (<>) {
 		#
 		# Use openssl to convert the certificate to text
 		#
-		my(@lines, $issuer, $subjectCN, $issuerCN, $pubSize);
+		my(@lines, $issuer, $issuerCN, $subject, $subjectCN, $pubSize);
 		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 -modulus |";
 		open(SSL, $cmd) || die "could not open openssl subcommand";
 		while (<SSL>) {
 			push @lines, $_;
+
+			#
+			# Extract the issuer and subject names.
+			#
 			if (/^\s*Issuer:\s*(.*)$/) {
 				$issuer = $1;
-				print "   Issuer: $issuer\n";
-			}
-			if (/^\s*Subject:\s*(.*)$/) {
+				next;
+			} elsif (/^\s*Subject:\s*(.*)$/) {
 				$subject = $1;
-				print "   Subject: $subject\n" unless $subject eq $issuer;
+				next;
 			}
 			
 			#
@@ -98,75 +96,33 @@ while (<>) {
 			#
 			if (/RSA Public Key: \((\d+) bit\)/) { # OpenSSL 0.9x
 				$pubSize = $1;
-				# print "   Public key size: $pubSize\n";
-				if ($pubSize < 1024) {
-					error('PUBLIC KEY TOO SHORT');
-				} elsif ($pubSize < 2048) {
-					warning("short public key of $pubSize bits");
-				}
 				next;
 			} elsif (/^\s*Public-Key: \((\d+) bit\)/) { # OpenSSL 1.0
 				$pubSize = $1;
-				# print "   Public key size: $pubSize\n";
-				if ($pubSize < 1024) {
-					error('PUBLIC KEY TOO SHORT');
-				} elsif ($pubSize < 2048) {
-					warning("short public key of $pubSize bits");
-				}
 				next;
 			}
 			
+			#
+			# Extract best-before date/time.
+			#
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
-				$days = (str2time($notAfter)-time())/86400.0;
-				if ($days < 0) {
-					print "   *** EXPIRED ***\n";
-				} elsif ($days < 365) {
-					$days = int($days);
-					print "   *** expires in $days days\n";
-				} elsif ($days < (365*2)) {
-					$days = int($days);
-					print "   expires in $days days\n";
-				}
+				next;
 			}
 			
 			#
-			# Check for weak (Debian) keys
-			#
-			# Weak key fingerprints loaded from files are hex SHA-1 digests of the
-			# line you get from "openssl x509 -modulus", including the "Modulus=".
+			# Extract the public key modulus and exponent.
 			#
 			if (/^Modulus=(.*)$/) {
 				$modulus = $_;
 				# print "   modulus: $modulus\n";
-				$fpr = sha1_hex($modulus);
-				# print "   fpr: $fpr\n";
-				if ($pubSize == 1024) {
-					if (defined($rsa1024{$fpr})) {
-						print "   *** WEAK DEBIAN KEY ***\n";
-					}
-				} elsif ($pubSize == 2048) {
-					if (defined($rsa2048{$fpr})) {
-						print "   *** WEAK DEBIAN KEY ***\n";
-					}
-				}
-			}
-			
-			#
-			# Look for reasonable public exponent values.
-			#
-			if (/Exponent: (\d+)/) {
+				next;
+			} elsif (/Exponent: (\d+)/) {
 				$exponent = $1;
 				# print "   exponent: $exponent\n";
-				if (($exponent & 1) == 0) {
-					error("RSA public exponent $exponent is even");
-				} elsif ($exponent <= 3) {
-					error("insecure RSA public exponent $exponent");
-				} elsif ($exponent < 65537) {
-					warning("small RSA public exponent $exponent")
-				}
+				next;
 			}
-			
+
 		}
 		close SSL;
 		#print "   text lines: $#lines\n";
@@ -176,7 +132,69 @@ while (<>) {
 		# it to be deleted.
 		#
 		close $fh;
-		
+
+		#
+		# Print a header, distinguishing the role of the certificate.
+		#		
+		if ($subject eq $issuer) {
+			# self-signed certificate, i.e., root
+			print " \n"; # force blank line in Ant output
+			print "Root certificate:\n";
+			print "   Issuer: $issuer\n";
+		} else {
+			# not self signed, must be intermediate
+			print "Intermediate certificate:\n";
+			print "   Issuer: $issuer\n";
+			print "   Subject: $subject\n";
+		}
+
+		if ($pubSize < 1024) {
+			error('PUBLIC KEY TOO SHORT');
+		} elsif ($pubSize < 2048) {
+			warning("short public key of $pubSize bits");
+		}
+
+		#print "   not after $notAfter\n";
+		$days = (str2time($notAfter)-time())/86400.0;
+		if ($days < 0) {
+			print "   *** EXPIRED ***\n";
+		} elsif ($days < 365) {
+			$days = int($days);
+			print "   *** expires in $days days at $notAfter\n";
+		} elsif ($days < (365*2)) {
+			$days = int($days);
+			print "   expires in $days days at $notAfter\n";
+		}
+
+		#
+		# Check for weak (Debian) keys
+		#
+		# Weak key fingerprints loaded from files are hex SHA-1 digests of the
+		# line you get from "openssl x509 -modulus", including the "Modulus=".
+		#
+		$fpr = sha1_hex($modulus);
+		# print "   fpr: $fpr\n";
+		if ($pubSize == 1024) {
+			if (defined($rsa1024{$fpr})) {
+				print "   *** WEAK DEBIAN KEY ***\n";
+			}
+		} elsif ($pubSize == 2048) {
+			if (defined($rsa2048{$fpr})) {
+				print "   *** WEAK DEBIAN KEY ***\n";
+			}
+		}
+			
+		#
+		# Look for reasonable public exponent values.
+		#
+		if (($exponent & 1) == 0) {
+			error("RSA public exponent $exponent is even");
+		} elsif ($exponent <= 3) {
+			error("insecure RSA public exponent $exponent");
+		} elsif ($exponent < 65537) {
+			warning("small RSA public exponent $exponent")
+		}
+			
 		print "\n";
 	}
 }
