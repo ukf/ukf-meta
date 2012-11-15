@@ -3,6 +3,21 @@ use File::Temp qw(tempfile);
 use Date::Parse;
 use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 
+sub error {
+	my($s) = @_;
+	print '   *** ' . $s . ' ***';
+}
+
+sub warning {
+	my ($s) = @_;
+	print '   ' . $s;
+}
+
+sub comment {
+	my($s) = @_;
+	print '   (' . $s . ')';
+}
+
 #
 # Load RSA key blacklists.
 #
@@ -29,7 +44,7 @@ while (<>) {
 	if (/BEGIN CERTIFICATE/) {
 		
 		#
-		# Output header line.
+		# Output header line.
 		#
 		print "Authority certificate:\n";
 
@@ -61,7 +76,7 @@ while (<>) {
 		#
 		
 		#
-		# Use openssl to convert the certificate to text
+		# Use openssl to convert the certificate to text
 		#
 		my(@lines, $issuer, $subjectCN, $issuerCN, $pubSize);
 		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 -modulus |";
@@ -83,16 +98,20 @@ while (<>) {
 			#
 			if (/RSA Public Key: \((\d+) bit\)/) { # OpenSSL 0.9x
 				$pubSize = $1;
-				# print "   Public key size: $pubSize\n";
+				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
 					error('PUBLIC KEY TOO SHORT');
+				} elsif ($pubSize < 2048) {
+					warning("short public key of $pubSize bits");
 				}
 				next;
 			} elsif (/^\s*Public-Key: \((\d+) bit\)/) { # OpenSSL 1.0
 				$pubSize = $1;
-				# print "   Public key size: $pubSize\n";
+				# print "   Public key size: $pubSize\n";
 				if ($pubSize < 1024) {
 					error('PUBLIC KEY TOO SHORT');
+				} elsif ($pubSize < 2048) {
+					warning("short public key of $pubSize bits");
 				}
 				next;
 			}
@@ -138,7 +157,7 @@ while (<>) {
 			#
 			if (/Exponent: (\d+)/) {
 				$exponent = $1;
-				# print "   exponent: $exponent\n";
+				# print "   exponent: $exponent\n";
 				if (($exponent & 1) == 0) {
 					error("RSA public exponent $exponent is even");
 				} elsif ($exponent <= 3) {
