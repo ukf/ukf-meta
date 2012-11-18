@@ -24,7 +24,12 @@
 		<xsl:text>&#x0a;</xsl:text>
 	</xsl:template>
 	
-	<xsl:template match="//md:ArtifactResolutionService">
+	<!--
+		ArtifactResolutionService endpoints on IdPs are assumed to be
+		authenticated by TLS; those on SPs are assumed to be authenticated
+		using other mechanisms.
+	-->
+	<xsl:template match="//md:IDPSSODescriptor/md:ArtifactResolutionService">
 		<xsl:value-of select="@Location"/>
 		<xsl:text>&#x0a;</xsl:text>
 	</xsl:template>

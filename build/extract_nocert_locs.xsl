@@ -31,6 +31,11 @@
 		<xsl:text>&#x0a;</xsl:text>
 	</xsl:template>
 
+	<xsl:template match="//md:SPSSODescriptor/md:ArtifactResolutionService">
+		<xsl:value-of select="@Location"/>
+		<xsl:text>&#x0a;</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="text()">
 		<!-- do nothing -->
 	</xsl:template>
