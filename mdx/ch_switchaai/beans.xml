@@ -15,7 +15,7 @@
         Location of various resources.
     -->
     <bean id="ch_switchaai_productionAggregate_url" class="java.lang.String">
-        <constructor-arg value="http://switch.ch/aai/federation/SWITCHaai/metadata.switchaai_signed.xml"/>
+        <constructor-arg value="http://metadata.aai.switch.ch/metadata.switchaai.xml"/>
     </bean>
     <bean id="ch_switchaai_edugainAggregate_url" class="java.lang.String">
         <constructor-arg value="http://metadata.aai.switch.ch/metadata.edugain.xml"/>
