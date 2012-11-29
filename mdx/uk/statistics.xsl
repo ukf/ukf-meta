@@ -642,14 +642,6 @@
                                 Without attribute authority role: <xsl:value-of select="$idp.noaa.count"/>
                                 (<xsl:value-of select="format-number($idp.noaa.count div $idpCount, '0.0%')"/>).
                             </p>
-                            <ul>
-                                <xsl:for-each select="$idp.noaa">
-                                    <li>
-                                        <xsl:value-of select="@ID"/>:
-                                        <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
-                                    </li>
-                                </xsl:for-each>
-                            </ul>
                         </li>
                     </xsl:if>
 
