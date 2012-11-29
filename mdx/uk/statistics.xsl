@@ -1414,6 +1414,26 @@
                     <xsl:value-of select="$pkixEntityCount"/>
                     (<xsl:value-of select="format-number($pkixEntityCount div $entityCount, '0.0%')"/>)
                 </p>
+                <!-- bound specially chosen to exclude the all-entities list (for now) -->
+                <xsl:if test="$pkixEntityCount > 0 and $pkixEntityCount &lt; 50">
+                    <ul>
+                        <xsl:for-each select="$pkixEntities">
+                            <li>
+                                <xsl:value-of select="@ID"/>
+                                <xsl:text>: </xsl:text>
+                                <code><xsl:value-of select="@entityID"/></code>
+                                <xsl:if test="md:IDPSSODescriptor">
+                                    <xsl:text> (</xsl:text>
+                                    <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
+                                    <xsl:text>)</xsl:text>
+                                    <xsl:if test="md:Extensions/wayf:HideFromWAYF">
+                                        <xsl:text> [HIDDEN]</xsl:text>
+                                    </xsl:if>
+                                </xsl:if>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
             </li>
             <li>
                 <p>
