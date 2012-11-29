@@ -22,6 +22,11 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 my $excessThreshold = 5; # years
 
 #
+# Number of days in the past we should regard as "long expired".
+#
+my $longExpiredDays = 30*3; # about three months
+
+#
 # Load RSA key blacklists.
 #
 #print "Loading key blacklists...\n";
@@ -217,7 +222,7 @@ while (<>) {
 				$notAfter = $1;
 				$notAfterTime = str2time($notAfter);
 				$days = ($notAfterTime-time())/86400.0;
-				if ($days < -180) {
+				if ($days < -$longExpiredDays) {
 					my $d = floor(-$days);
 					error("EXPIRED LONG AGO ($d days; $notAfter)");
 				} elsif ($days < 0) {
