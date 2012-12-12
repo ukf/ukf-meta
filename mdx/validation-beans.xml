@@ -38,7 +38,7 @@
         p:id="check_future_0">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_0.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_0.xsl"/>
             </bean>
         </property>
     </bean>
@@ -50,7 +50,7 @@
         p:id="check_future_1">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_1.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_1.xsl"/>
             </bean>
         </property>
     </bean>
@@ -62,7 +62,7 @@
         p:id="check_future_2">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_2.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_2.xsl"/>
             </bean>
         </property>
     </bean>
@@ -74,7 +74,7 @@
         p:id="check_future_3">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_3.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_3.xsl"/>
             </bean>
         </property>
     </bean>
@@ -86,7 +86,7 @@
         p:id="check_future_4">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_4.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_4.xsl"/>
             </bean>
         </property>
     </bean>
@@ -98,7 +98,7 @@
         p:id="check_future_5">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_5.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_5.xsl"/>
             </bean>
         </property>
     </bean>
@@ -110,7 +110,7 @@
         p:id="check_future_6">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_6.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_6.xsl"/>
             </bean>
         </property>
     </bean>
@@ -122,7 +122,7 @@
         p:id="check_future_7">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_7.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_7.xsl"/>
             </bean>
         </property>
     </bean>
@@ -134,7 +134,7 @@
         p:id="check_future_8">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_8.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_8.xsl"/>
             </bean>
         </property>
     </bean>
@@ -146,7 +146,7 @@
         p:id="check_future_9">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_future_9.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_9.xsl"/>
             </bean>
         </property>
     </bean>
@@ -215,7 +215,7 @@
         p:id="check_bindings">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_bindings.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_bindings.xsl"/>
             </bean>
         </property>
     </bean>
@@ -251,7 +251,7 @@
         p:id="check_hoksso">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_hoksso.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_hoksso.xsl"/>
             </bean>
         </property>
     </bean>
@@ -351,7 +351,7 @@
     <bean id="check_regauth_parent" abstract="true" parent="check_xslt_parent">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_regauth.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_regauth.xsl"/>
             </bean>
         </property>
     </bean>
@@ -456,7 +456,7 @@
         p:id="check_regscope">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/check_regscope.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_regscope.xsl"/>
             </bean>
         </property>
     </bean>

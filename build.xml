@@ -43,6 +43,7 @@
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="entities.dir" value="entities"/>
     <property name="mdx.dir" value="${basedir}/mdx"/>
+	<property name="rules.dir" value="${mdx.dir}/_rules"/>
 	<property name="xml.dir" value="${basedir}/xml"/>
 
 	<!--
@@ -414,6 +415,7 @@
                 </classpath>
                 <jvmarg value="-Djava.endorsed.dirs=${tools.mda}/lib/endorsed"/>
             	<jvmarg value="-Dbasedir=${basedir}"/>
+            	<jvmarg value="-Drulesdir=${rules.dir}"/>
             	<jvmarg value="-enableassertions"/>
             	<arg value="--quiet"/>
             	<arg value="@{config}"/>
