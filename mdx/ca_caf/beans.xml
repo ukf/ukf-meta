@@ -12,6 +12,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="ca_caf_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://caf-shibops.ca/CoreServices/cafshib_metadata_signed.xml"/>
+    </bean>
+    <bean id="ca_caf_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://idp.canarie.ca/canarie-inside-edugain.xml"/>
+    </bean>
+    
+    <!--
         Fetch the CAF production aggregate.
     -->
     <bean id="ca_caf_productionAggregate" parent="domResourceStage_parent"
@@ -19,7 +29,7 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="https://caf-shibops.ca/CoreServices/cafshib_metadata_signed.xml"/>
+                <constructor-arg name="url" ref="ca_caf_productionAggregate_url"/>
             </bean>
         </property>
     </bean>
@@ -61,7 +71,9 @@
                 -->
                 <ref bean="check_validUntil"/>
                 <ref bean="ca_caf_checkSignature"/>
+                <!--
                 <ref bean="errorTerminatingFilter"/>
+                -->
                 
                 <ref bean="disassemble"/>
                 
