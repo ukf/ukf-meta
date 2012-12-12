@@ -498,9 +498,6 @@
 	<macrodef name="MDT.VFY.uk">
 		<attribute name="i"/>
 		<sequential>
-			<MDT i="@{i}" o="${null.device}"
-				keystore="${build.dir}/ukfederation-2010.jks"
-				alias="${keystore.uk.vfy.alias}"/>
             <MDT i="@{i}" o="${null.device}"
                 keystore="${build.dir}/ukfederation-2012.jks"
                 alias="${keystore.uk.vfy.alias}"/>
@@ -576,16 +573,6 @@
 	<macrodef name="XMLSECTOOL.VFY.uk">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<sequential>
-			<XMLSECTOOL i="@{i}">
-				<args>
-					<arg value="--verifySignature"/>
-					<arg value="--certificate"/>
-					<arg value="${build.dir}/ukfederation-2010.pem"/>
-					<!--
-					<arg value="- -quiet"/>
-					-->
-				</args>
-			</XMLSECTOOL>
             <XMLSECTOOL i="@{i}">
                 <args>
                     <arg value="--verifySignature"/>
