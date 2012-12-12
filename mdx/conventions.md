@@ -4,9 +4,14 @@ This document describes the current conventions for the metadata aggregation fra
 
 Because these conventions have been developed over time, and are still being developed, not all of them are currently implemented by all parts of the framework.  These conventions should be applied in their then-current state for any new work, and when significant changes are made to existing code.
 
+## Ruleset Directory
+
+The `_rules` subdirectory of `/mdx/` holds checking rulesets.  The underscore at the start of the directory name is intended to be used as a continuing convention to allow functional subdirectories to be distinguished from channels.
+
 ## Channels
 
-Each directory under `/mdx/` represents a source of metadata, referred to as a
+Each directory under `/mdx/` whose name does not start with an underscore
+represents a source of metadata, referred to as a
 channel. In most cases, a channel corresponds to a access management federation.
 
 Most channels are named in the form "`country`_`source`".  For example,
