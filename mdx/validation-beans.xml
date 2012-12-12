@@ -176,6 +176,28 @@
     
 
     <!--
+        ***********************************************************
+        ***                                                     ***
+        ***   A L G S U P P O R T   S P E C I F I C A T I O N   ***
+        ***                                                     ***
+        ***********************************************************
+    -->
+        
+
+    <!--
+        check_algsupport
+    -->
+    <bean id="check_algsupport" parent="check_xslt_parent"
+        p:id="check_algsupport">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_algsupport.xsl"/>
+            </bean>
+        </property>
+    </bean>
+
+
+    <!--
         *********************
         ***               ***
         ***   ( E N D )   ***
@@ -573,6 +595,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="check_adfs"/>
+                <ref bean="check_algsupport"/>
                 <ref bean="check_bindings"/>
                 <ref bean="check_hoksso"/>
                 <ref bean="check_idpdisc"/>

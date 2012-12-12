@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	check_algorithms.xsl
+	check_algsupport.xsl
 	
-	Checking ruleset that checks encryption algorithm values, and the
-	SAML V2.0 Metadata Profile for Algorithm Support.
+	Checking ruleset for the SAML V2.0 Metadata Profile for Algorithm Support.
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
