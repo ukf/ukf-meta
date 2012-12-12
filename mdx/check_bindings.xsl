@@ -17,7 +17,7 @@
 	<!--
 		Common support functions.
 	-->
-	<xsl:import href="../build/check_framework.xsl"/>
+	<xsl:import href="check_framework.xsl"/>
 
 	<xsl:template match="md:ArtifactResolutionService
 		[@Binding != 'urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding']

@@ -27,7 +27,7 @@
 	<!--
 		Common support functions.
 	-->
-	<xsl:import href="../build/check_framework.xsl"/>
+	<xsl:import href="check_framework.xsl"/>
 
 	
 </xsl:stylesheet>

@@ -16,7 +16,7 @@
 	<!--
 		Common support functions.
 	-->
-	<xsl:import href="../build/check_framework.xsl"/>
+	<xsl:import href="check_framework.xsl"/>
 	
 	<xsl:template match="shibmd:Scope[@regexp='true']">
 		<xsl:call-template name="error">
