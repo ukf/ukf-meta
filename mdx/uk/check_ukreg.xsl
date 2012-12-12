@@ -22,7 +22,7 @@
 	<!--
 		Common support functions.
 	-->
-	<xsl:import href="../../build/check_framework.xsl"/>
+	<xsl:import href="../_rules/check_framework.xsl"/>
 
 	
 	<!--
