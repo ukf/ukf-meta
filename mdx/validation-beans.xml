@@ -191,7 +191,7 @@
         p:id="check_adfs">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_adfs.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_adfs.xsl"/>
             </bean>
         </property>
     </bean>
@@ -203,7 +203,7 @@
         p:id="check_aggregate">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_aggregate.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_aggregate.xsl"/>
             </bean>
         </property>
     </bean>
@@ -227,7 +227,7 @@
         p:id="check_filtered">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_filtered.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_filtered.xsl"/>
             </bean>
         </property>
     </bean>
@@ -239,7 +239,7 @@
         p:id="check_fixups">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_fixups.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_fixups.xsl"/>
             </bean>
         </property>
     </bean>
@@ -263,7 +263,7 @@
         p:id="check_idpdisc">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_idpdisc.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_idpdisc.xsl"/>
             </bean>
         </property>
     </bean>
@@ -275,7 +275,7 @@
         p:id="check_imported">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_imported.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_imported.xsl"/>
             </bean>
         </property>
     </bean>
@@ -287,7 +287,7 @@
         p:id="check_init">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_init.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_init.xsl"/>
             </bean>
         </property>
     </bean>
@@ -299,7 +299,7 @@
         p:id="check_mdiop">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdiop.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_mdiop.xsl"/>
             </bean>
         </property>
     </bean>
@@ -321,7 +321,7 @@
         p:id="check_mdrpi_xslt">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdrpi.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_mdrpi.xsl"/>
             </bean>
         </property>
     </bean>
@@ -383,7 +383,7 @@
         p:id="check_mdui_xslt">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_mdui.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_mdui.xsl"/>
             </bean>
         </property>
     </bean>
@@ -418,7 +418,7 @@
         p:id="check_misc">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_misc.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_misc.xsl"/>
             </bean>
         </property>
     </bean>
@@ -430,7 +430,7 @@
         p:id="check_namespaces">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_namespaces.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_namespaces.xsl"/>
             </bean>
         </property>
     </bean>
@@ -442,7 +442,7 @@
         p:id="check_nokeyname">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_nokeyname.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_nokeyname.xsl"/>
             </bean>
         </property>
     </bean>
@@ -468,7 +468,7 @@
         p:id="check_reqattr">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_reqattr.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_reqattr.xsl"/>
             </bean>
         </property>
     </bean>
@@ -480,7 +480,7 @@
         p:id="check_saml2int">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml2int.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_saml2int.xsl"/>
             </bean>
         </property>
     </bean>
@@ -492,7 +492,7 @@
         p:id="check_saml1">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml1.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_saml1.xsl"/>
             </bean>
         </property>
     </bean>
@@ -504,7 +504,7 @@
         p:id="check_saml2">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml2.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_saml2.xsl"/>
             </bean>
         </property>
     </bean>
@@ -516,7 +516,7 @@
         p:id="check_saml2meta">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_saml2meta.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_saml2meta.xsl"/>
             </bean>
         </property>
     </bean>
@@ -528,7 +528,7 @@
         p:id="check_shibboleth">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_shibboleth.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_shibboleth.xsl"/>
             </bean>
         </property>
     </bean>
@@ -560,7 +560,7 @@
         p:id="check_vhosts">
         <property name="xslResource">
             <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/build/check_vhosts.xsl"/>
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_vhosts.xsl"/>
             </bean>
         </property>
     </bean>
