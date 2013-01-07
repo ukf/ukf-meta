@@ -83,6 +83,24 @@ my %blobs;
 #
 my $blob;
 
+#
+# Track most distant notAfter time.
+#
+my $lastNotAfterTime = 0;
+my $lastNotAfter;
+my $lastNotAfterEntity;
+
+#
+# Track maximum certificate expiry year
+#
+$maxYear = 0;
+
+#
+# Track number of certificates expiring during or after 2038,
+# in which unsigned Unix time wraps negative.
+#
+$num2038 = 0;
+
 while (<>) {
 
 	#
@@ -221,6 +239,30 @@ while (<>) {
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$notAfterTime = str2time($notAfter);
+
+				#
+				# Track certificate expiry year in a way that doesn't
+				# involve Unix epoch overflow.
+				#
+				if ($notAfter =~ /(\d\d\d\d)/) {
+					my $year = $1;
+					if ($year > $maxYear) {
+						$maxYear = $year;
+					}
+					if ($year >= 2038) {
+						$num2038++;
+					}
+				}
+
+				#
+				# Track most distant notAfter.
+				#
+				if ($notAfterTime > $lastNotAfterTime) {
+					$lastNotAfter = $notAfter;
+					$lastNotAfterTime = $notAfterTime;
+					$lastNotAfterEntity = $entity;
+				}
+
 				$days = ($notAfterTime-time())/86400.0;
 				if ($days < -$longExpiredDays) {
 					my $d = floor(-$days);
@@ -438,5 +480,11 @@ if ($total_certs > 1) {
 	for $pubSize (sort keys %pubSizeCount) {
 		$count = $pubSizeCount{$pubSize};
 		print "   $pubSize: $count\n";
+	}
+
+	print "Most distant certificate expiry: $lastNotAfter on $lastNotAfterEntity\n";
+	print "Maximum certificate expiry year: $maxYear\n";
+	if ($num2038 > 0) {
+		print "Certificates expiring during or after 2038: $num2038\n";
 	}
 }
