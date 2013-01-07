@@ -27,6 +27,32 @@ my $excessThreshold = 5; # years
 my $longExpiredDays = 30*3; # about three months
 
 #
+# Request verbose tabulation of certificate issuers.
+#
+my $verboseIssuers = 0;
+
+#
+# Issuer marks (only shown in the absence of verboseIssuers)
+#
+my %issuerMark;
+
+# From master.xml
+$issuerMark{'AddTrust External CA Root'} = 'R';
+$issuerMark{'UTN-USERFirst-Hardware'} = 'i';
+$issuerMark{'TERENA SSL CA'} = 'i';
+$issuerMark{'VeriSign Class 3 Secure Server CA'} = '<'; # has unnamed 1024 bit root
+$issuerMark{'VeriSign Class 3 Secure Server CA - G2'} = '<'; # has unnamed 1024 bit root
+$issuerMark{'VeriSign Class 3 Public Primary Certification Authority - G3'} = 'R'; # root alone
+$issuerMark{'GlobalSign Root CA'} = 'R';
+$issuerMark{'GlobalSign Organization Validation CA'} = 'i';
+$issuerMark{'GlobalSign Primary Secure Server CA'} = 'i';
+$issuerMark{'GlobalSign ServerSign CA'} = 'i';
+$issuerMark{'Thawte Premium Server CA'} = '*'; # root directly signs
+
+# NOT from master.xml
+$issuerMark{'Cybertrust Educational CA'} = 'x'; # ex trust root
+
+#
 # Load RSA key blacklists.
 #
 #print "Loading key blacklists...\n";
@@ -185,7 +211,7 @@ while (<>) {
 		#
 		# Use openssl to convert the certificate to text
 		#
-		my(@lines, $issuer, $subjectCN, $issuerCN);
+		my(@lines, $subject, $issuer, $subjectCN, $issuerCN);
 		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 -modulus |";
 		open(SSL, $cmd) || die "could not open openssl subcommand";
 		while (<SSL>) {
@@ -201,10 +227,14 @@ while (<>) {
 				next;
 			}
 			
-			if (/^\s*Subject:\s*.*?CN=([a-zA-Z0-9\-\.]+).*$/) {
-				$subjectCN = $1;
-				$names{lc $subjectCN}++;
-				# print "subjectCN = $subjectCN\n";
+			if (/^\s*Subject:\s*(.*)$/) {
+				$subject = $1;
+				if ($subject =~ /CN=([^,]+)/) {
+					$subjectCN = $1;
+					$names{lc $subjectCN}++;
+				} else {
+					$subjectCN = $1;
+				}
 				next;
 			}
 			
@@ -421,7 +451,7 @@ while (<>) {
 		}
 
 		if ($error eq 'unable to get local issuer certificate') {
-			$error = "unknown issuer: $issuerCN";
+			$error = "non trust fabric issuer: $issuerCN";
 		}
 
 		if ($error eq 'certificate has expired' && $days < 0) {
@@ -460,6 +490,29 @@ while (<>) {
 		close $fh;
 
 		#
+		# Add a warning for certain issuers.
+		#
+		if (defined $issuerMark{$issuerCN}) {
+			my $mark = $issuerMark{$issuerCN};
+			if ($mark eq '<') {
+				warning("issuer '$issuerCN' associated with a 1024-bit root, expiry $notAfter");
+			}
+		}
+
+		#
+		# Count issuers.
+		#
+		if ($issuer eq $subject) {
+			$issuers{'(self-signed certificate)'}++;
+		} else {
+			if ($verboseIssuers) {
+				$issuers{$issuer}++;
+			} else {
+				$issuers{$issuerCN}++;
+			}
+		}
+
+		#
 		# Print any interesting things related to this certificate.
 		#
 		if ($printme || !$quiet) {
@@ -468,6 +521,7 @@ while (<>) {
 			}
 			print "\n";
 		}
+
 	}
 }
 
@@ -476,15 +530,26 @@ if ($total_certs > 1) {
 	if ($distinct_certs != $total_certs) {
 		print "Distinct certificates: $distinct_certs\n";
 	}
+	print "\n";
+
 	print "Key size distribution:\n";
 	for $pubSize (sort keys %pubSizeCount) {
 		$count = $pubSizeCount{$pubSize};
 		print "   $pubSize: $count\n";
 	}
+	print "\n";
 
 	print "Most distant certificate expiry: $lastNotAfter on $lastNotAfterEntity\n";
 	print "Maximum certificate expiry year: $maxYear\n";
 	if ($num2038 > 0) {
 		print "Certificates expiring during or after 2038: $num2038\n";
+	}
+	print "\n";
+
+	print "Certificate issuers:\n";
+	foreach $issuer (sort keys %issuers) {
+		my $count = $issuers{$issuer};
+		my $mark = $issuerMark{$issuer} ? $issuerMark{$issuer}: ' ';
+		print " $mark $issuer: $count\n";
 	}
 }
