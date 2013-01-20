@@ -77,7 +77,7 @@ foreach $loc (sort keys %locations) {
 	}
 	
 	if ($subject eq $issuer) {
-		$issuer = "(self signed certificate)";
+		$issuer = "(self-signed certificate)";
 	}
 
 	$issuers{$issuer}{$loc} = 1;
