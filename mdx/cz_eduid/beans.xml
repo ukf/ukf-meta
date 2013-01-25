@@ -78,6 +78,13 @@
     </bean>
     
     <!--
+        Remove the eduID.cz custom metadata tagging namespace.
+    -->
+    <bean id="cz_eduid_stripMetadataNamespace" parent="stripNamespace_parent"
+        p:id="cz_eduid_stripMetadataNamespace"
+        p:namespace="http://eduid.cz/schema/metadata/1.0"/>
+    
+    <!--
         Fetch and process the production entities as a collection.
     -->
     <bean id="cz_eduid_productionEntities" parent="composite_parent"
@@ -97,6 +104,8 @@
                 
                 <ref bean="disassemble"/>
                 
+                <ref bean="cz_eduid_stripMetadataNamespace"/>
+
                 <ref bean="standardImportActions"/>
             </list>
         </property>
@@ -121,6 +130,8 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
+                
+                <ref bean="cz_eduid_stripMetadataNamespace"/>
                 
                 <ref bean="standardImportActions"/>
             </list>

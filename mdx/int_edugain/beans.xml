@@ -12,8 +12,9 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
-        Import hu_eduid beans for namespace stripping stage.
+        Import eduGAIN participant beans for namespace stripping stages.
     -->
+    <import resource="../cz_eduid/beans.xml"/>
     <import resource="../hu_eduid/beans.xml"/>
     
     <!--
@@ -88,8 +89,9 @@
                 <ref bean="disassemble"/>
                 
                 <!--
-                    Strip Hungarian entity attributes namespace.
+                    Strip participant-specific namespaces.
                 -->
+                <ref bean="cz_eduid_stripMetadataNamespace"/>
                 <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
                 
                 <ref bean="standardImportActions"/>
