@@ -15,7 +15,7 @@ open(PIPE, "|(cd ../xml;perl ../build/check_embedded.pl)")
 
 while (@ARGV) {
 	$fn = shift @ARGV;
-	open(IN, $fn);
+	open(IN, $fn) || die "could not open $fn: $!";
 	print PIPE "Entity: $fn keyname (none)\n";
 	while (<IN>) {
 		print PIPE $_;
