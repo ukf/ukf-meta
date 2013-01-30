@@ -127,6 +127,8 @@ $maxYear = 0;
 #
 $num2038 = 0;
 
+my $total_certs = 0;
+
 while (<>) {
 
 	#
