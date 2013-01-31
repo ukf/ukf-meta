@@ -175,11 +175,15 @@
 			Require that the URL starts with https://
 			
 			This is a SHOULD in the specification; we treat it as a MUST here.
+			
+			Exception: allow data: URIs as well.
 		-->
 		<xsl:if test="not(starts-with(., 'https://'))">
-			<xsl:call-template name="error">
-				<xsl:with-param name="m">mdui:Logo URL does not start with https://</xsl:with-param>
-			</xsl:call-template>
+			<xsl:if test="not(starts-with(., 'data:'))">
+				<xsl:call-template name="error">
+					<xsl:with-param name="m">mdui:Logo URL does not start with https://</xsl:with-param>
+				</xsl:call-template>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 	
