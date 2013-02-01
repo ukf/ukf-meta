@@ -47,7 +47,7 @@ $issuerMark{'GlobalSign Root CA'} = 'R';
 $issuerMark{'GlobalSign Organization Validation CA'} = 'i';
 $issuerMark{'GlobalSign Primary Secure Server CA'} = 'i';
 $issuerMark{'GlobalSign ServerSign CA'} = 'i';
-$issuerMark{'Thawte Premium Server CA'} = '*'; # root directly signs
+$issuerMark{'Thawte Premium Server CA'} = '<'; # root directly signs; 1024 bit key
 
 # NOT from master.xml
 $issuerMark{'Cybertrust Educational CA'} = 'x'; # ex trust root
@@ -434,9 +434,10 @@ while (<>) {
 		#
 		# Now, adjust for our expectations.
 		#
-		# Pretty much any certificate is fine if we don't have a KeyName.
-		#
 		if (!$hasKeyName) {
+			#
+			# Pretty much any certificate is fine if we don't have a KeyName.
+			#
 			if ($error eq 'self signed certificate') {
 				$error = '';
 				comment("self signed certificate");
@@ -446,14 +447,15 @@ while (<>) {
 			} elsif ($clientOK) {
 				# $error = "certificate matches trust fabric; add KeyName?";
 			}
-		}
-
-		if ($hasKeyName && $error eq 'self signed certificate') {
-			$error = 'self signed certificate: remove KeyName?';
-		}
-
-		if ($error eq 'unable to get local issuer certificate') {
-			$error = "non trust fabric issuer: $issuerCN";
+		} else {
+			#
+			# If a KeyName is present, we must match the trust fabric.
+			#
+			if ($error eq 'self signed certificate') {
+				$error = 'self signed certificate: remove KeyName?';
+			} elsif ($error eq 'unable to get local issuer certificate') {
+				$error = "non trust fabric issuer: $issuerCN: remove KeyName?";
+			}
 		}
 
 		if ($error eq 'certificate has expired' && $days < 0) {
