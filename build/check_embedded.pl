@@ -223,6 +223,8 @@ while (<>) {
 				$issuer = $1;
 				if ($issuer =~ /CN=([^,]+)/) {
 					$issuerCN = $1;
+				} elsif ($issuer =~ /,OU=VeriSign International Server CA - Class 3,/) {
+					$issuerCN = 'VeriSign International Server CA - Class 3';
 				} else {
 					$issuerCN = $issuer;
 				}
