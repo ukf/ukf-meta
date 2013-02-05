@@ -176,7 +176,10 @@
 			
 			This is a SHOULD in the specification; we treat it as a MUST here.
 			
-			Exception: allow data: URIs as well.
+			Exception: allow data: URIs as well.  The spec is currently
+			ambiguous about this, clarification ticket is here:
+			
+			https://tools.oasis-open.org/issues/browse/SECURITY-24
 		-->
 		<xsl:if test="not(starts-with(., 'https://'))">
 			<xsl:if test="not(starts-with(., 'data:'))">
