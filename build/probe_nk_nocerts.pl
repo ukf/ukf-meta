@@ -107,6 +107,28 @@ foreach $loc (sort keys %locations) {
 			$subject = $1;
 		}
 
+		#
+		# Extract the public key size.  This is displayed differently
+		# in different versions of OpenSSL.
+		#
+		if (/RSA Public Key: \((\d+) bit\)/) { # OpenSSL 0.9x
+			$pubSize = $1;
+			$pubSizeCount{$pubSize}++;
+			# print "   Public key size: $pubSize\n";
+			if ($pubSize < 1024) {
+				error('PUBLIC KEY TOO SHORT');
+			}
+			next;
+		} elsif (/^\s*Public-Key: \((\d+) bit\)/) { # OpenSSL 1.0
+			$pubSize = $1;
+			$pubSizeCount{$pubSize}++;
+			# print "   Public key size: $pubSize\n";
+			if ($pubSize < 1024) {
+				error('PUBLIC KEY TOO SHORT');
+			}
+			next;
+		}
+		
 		if (/Not After : (.*)$/) {
 			$notAfter = $1;
 			$notAfterTime = str2time($notAfter);
@@ -126,6 +148,10 @@ foreach $loc (sort keys %locations) {
 			next;
 		}
 
+	}
+
+	if ($pubSize < 2048) {
+		warning("short public key: $pubSize bits, certificate expires $notAfter");
 	}
 
 	if ($subject eq $issuer) {
