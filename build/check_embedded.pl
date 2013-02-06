@@ -48,6 +48,7 @@ $issuerMark{'GlobalSign Organization Validation CA'} = 'i';
 $issuerMark{'GlobalSign Primary Secure Server CA'} = 'i';
 $issuerMark{'GlobalSign ServerSign CA'} = 'i';
 $issuerMark{'Thawte Premium Server CA'} = '<'; # root directly signs; 1024 bit key
+#$issuerMark{'VeriSign International Server CA - Class 3'} = '?';
 
 # NOT from master.xml
 $issuerMark{'Cybertrust Educational CA'} = 'x'; # ex trust root
@@ -502,6 +503,9 @@ while (<>) {
 			my $mark = $issuerMark{$issuerCN};
 			if ($mark eq '<') {
 				warning("issuer '$issuerCN' associated with a 1024-bit root, expiry $notAfter");
+			}
+			if ($mark eq '?') {
+				warning("issuer '$issuerCN' suspect; verify");
 			}
 		}
 
