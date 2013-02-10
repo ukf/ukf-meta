@@ -52,13 +52,53 @@
     </bean>
 
     <!--
+        us_incommon_registrar
+        
+        Unique ID for the registrar associated with this channel.
+        
+        TODO confirm this value with InCommon
+    -->
+    <bean id="us_incommon_registrar" class="java.lang.String">
+        <constructor-arg value="urn:mace:incommon"/>
+    </bean>
+    
+    <!--
+        us_incommon_check_regauth
+        
+        Any registrationAuthority already present on an entity in this
+        channel must match the known registration authority value.
+    -->
+    <bean id="us_incommon_check_regauth" parent="check_regauth_parent"
+        p:id="us_incommon_check_regauth">
+        <property name="transformParameters">
+            <map>
+                <entry key="expectedAuthority" value-ref="us_incommon_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
+        us_incommon_default_regauth
+        
+        Provide a default registrationAuthority appropriate to
+        this channel.
+    -->
+    <bean id="us_incommon_default_regauth" parent="default_regauth_parent"
+        p:id="us_incommon_default_regauth">
+        <property name="transformParameters">
+            <map>
+                <entry key="defaultAuthority" value-ref="us_incommon_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
         Fetch and process the production entities as a collection.
     -->
     <bean id="us_incommon_productionEntities" parent="composite_parent"
         p:id="us_incommon_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="us_incommon_productionAggregate"/>
 
                 <!--
@@ -72,14 +112,77 @@
                 
                 <ref bean="disassemble"/>
                 
+                <ref bean="us_incommon_check_regauth"/>
                 <ref bean="standardImportActions"/>
             </list>
         </property>
     </bean>
     
     <!--
-        Select primary export aggregate.
+        Filter out all entities not involved in the pilot.
     -->
-    <alias alias="us_incommon_exportedAggregate" name="us_incommon_productionAggregate"/>
-    <alias alias="us_incommon_exportedEntities"  name="us_incommon_productionEntities"/>
+    <bean id="us_incommon_pilot_filterEntities" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
+        p:id="us_incommon_pilot_filterEntities"
+        p:whitelistingEntities="true">
+        <property name="designatedEntities">
+            <set>
+                <value>https://wiki.ligo.org/shibboleth-sp</value>
+            </set>
+        </property>
+    </bean>
+    
+    <!--
+        Synthesise an export collection by filtering the production entities.
+    -->
+    <bean id="us_incommon_exportedEntities" parent="composite_parent"
+        p:id="us_incommon_exportedEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="us_incommon_productionAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="us_incommon_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <!-- filter out anything we don't want -->
+                <ref bean="us_incommon_pilot_filterEntities"/>
+                
+                <!-- default and check registrar -->
+                <ref bean="us_incommon_default_regauth"/>
+                <ref bean="us_incommon_check_regauth"/>
+
+                <!--
+                    Unfortunately in this case, the "standard" import actions will remove all
+                    entity attributes, and we wish to keep some of the InCommon category
+                    designations.
+                    
+                    TODO This will mean unbundling standardImportActions everywhere
+                    it is currently used.
+                -->
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Fake an export aggregate by aggregating the exported entities.
+    -->
+    <bean id="us_incommon_exportedAggregate" parent="composite_parent"
+        p:id="us_incommon_exportedAggregate">
+        <property name="composedStages">
+            <list>
+                <ref bean="us_incommon_exportedEntities"/>
+                <ref bean="assemble"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>

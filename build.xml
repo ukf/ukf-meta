@@ -876,6 +876,7 @@
 		<CHANNEL.import channel="nz_tuakiri"/>
         <CHANNEL.import channel="si_arnes"/>
         <CHANNEL.import channel="uk_eduserv"/>
+		<CHANNEL.import channel="us_incommon"/>
 	</target>
 	
     <!--
