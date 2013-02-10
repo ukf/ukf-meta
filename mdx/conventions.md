@@ -14,9 +14,9 @@ Each directory under `/mdx/` whose name does not start with an underscore
 represents a source of metadata, referred to as a
 channel. In most cases, a channel corresponds to a access management federation.
 
-Most channels are named in the form "`country`_`source`".  For example,
+Most channels are named in the form "*country*`_`*source*".  For example,
 `us_incommon` is the channel name for the US's InCommon federation.
-Channels not associated with particular countries are named as "int_source",
+Channels not associated with particular countries are named as "`int_`*source*",
 for example `int_edugain`.
 
 Exceptions are made for the UK federation, whose channel is just
@@ -64,7 +64,7 @@ Most federations publish more than one metadata aggregate.  We use the following
 * `test` is an aggregate published for testing purposes.
 * `export` is an aggregate published for consumption by peers (other federations) in general.
 * `edugain` is an export aggregate published for consumption by eduGAIN.
-* `uk` is an export aggregate published spcifically for consumption by the UK federation.
+* `uk` is an export aggregate published specifically for consumption by the UK federation.
 
 Aggregate names such as the above are used in the construction of bean names:
 
@@ -87,9 +87,9 @@ In older channels, these are explicit bean definitions.  In newer channels, the 
 
 ## Common `beans.xml` channel beans
 
-channel_signingCertificate
+*channel*`_signingCertificate`
 
-channel_checkSignature
+*channel*`_checkSignature`
 
 ## Verbs
 
