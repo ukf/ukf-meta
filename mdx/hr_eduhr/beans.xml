@@ -52,6 +52,45 @@
     </bean>
 
     <!--
+        hr_eduhr_registrar
+        
+        Unique ID for the registrar associated with this channel.
+    -->
+    <bean id="hr_eduhr_registrar" class="java.lang.String">
+        <constructor-arg value="http://www.aaiedu.hr"/>
+    </bean>
+    
+    <!--
+        hr_eduhr_check_regauth
+        
+        Any registrationAuthority already present on an entity in this
+        channel must match the known registration authority value.
+    -->
+    <bean id="hr_eduhr_check_regauth" parent="check_regauth_parent"
+        p:id="hr_eduhr_check_regauth">
+        <property name="transformParameters">
+            <map>
+                <entry key="expectedAuthority" value-ref="hr_eduhr_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
+        hr_eduhr_default_regauth
+        
+        Provide a default registrationAuthority appropriate to
+        this channel.
+    -->
+    <bean id="hr_eduhr_default_regauth" parent="default_regauth_parent"
+        p:id="hr_eduhr_default_regauth">
+        <property name="transformParameters">
+            <map>
+                <entry key="defaultAuthority" value-ref="hr_eduhr_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
     <bean id="hr_eduhr_edugainEntities" parent="composite_parent"
@@ -75,6 +114,9 @@
                 
                 <ref bean="disassemble"/>
                 
+                <ref bean="hr_eduhr_default_regauth"/>
+                <ref bean="hr_eduhr_check_regauth"/>
+
                 <ref bean="standardImportActions"/>
             </list>
         </property>
