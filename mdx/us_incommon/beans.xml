@@ -56,10 +56,11 @@
         
         Unique ID for the registrar associated with this channel.
         
-        TODO confirm this value with InCommon
+        This isn't a formalised value, but a placeholder Tom Scavo thinks
+        might be what they will end up using.
     -->
     <bean id="us_incommon_registrar" class="java.lang.String">
-        <constructor-arg value="urn:mace:incommon"/>
+        <constructor-arg value="https://incommon.org"/>
     </bean>
     
     <!--
