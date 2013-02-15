@@ -72,7 +72,7 @@
         -->
         <property name="requireValidUntil" value="true"/>
         <!--
-            Validity interval must not exceed 30 days.
+            Validity interval must not exceed 14 days.
         -->
         <property name="maxValidityInterval" value="#{ 1000L * 60 * 60 * 24 * 14 }"/>
     </bean>
