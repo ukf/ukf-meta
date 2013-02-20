@@ -128,7 +128,9 @@
         p:whitelistingEntities="true">
         <property name="designatedEntities">
             <set>
+                <value>https://login.ligo.org/idp/shibboleth</value>
                 <value>https://wiki.ligo.org/shibboleth-sp</value>
+                <value>https://ligo.org/ligovirgo/cbcnote/shibboleth-sp</value>
             </set>
         </property>
     </bean>
