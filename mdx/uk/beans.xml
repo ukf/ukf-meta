@@ -12,6 +12,17 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <!--
+        Location of various resources.
+    -->
+    <bean id="uk_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-metadata.xml"/>
+    </bean>
+    <bean id="uk_exportAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-metadata.xml"/>
+    </bean>
+    
+    
+    <!--
         uk_federation_uri
         
         URI for the UK federation.  Used in several contexts:
@@ -28,6 +39,77 @@
     </bean>
 
 
+    <!--
+        Fetch the export aggregate.
+    -->
+    <bean id="uk_exportAggregate" parent="domResourceStage_parent"
+        p:id="uk_exportAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" ref="uk_exportAggregate_url"/>        
+            </bean>
+        </property>
+    </bean>
+    
+    
+    <!--
+        Fetch the production aggregate.
+    -->
+    <bean id="uk_productionAggregate" parent="domResourceStage_parent"
+        p:id="uk_productionAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" ref="uk_productionAggregate_url"/>        
+            </bean>
+        </property>
+    </bean>
+    
+    
+    <!--
+        Metadata signing certificate.
+    -->
+    <bean id="uk_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/metadata-signer.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    
+    <!--
+        Check the signature on a document.
+    -->
+    <bean id="uk_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="uk_checkSignature">
+        <property name="verificationCertificate" ref="uk_signingCertificate"/>
+    </bean>
+    
+    
+    <!--
+        uk_check_validUntil
+        
+        Check that an aggregate has a validUntil instant specified, and that it has not
+        yet expired.  Sets a bound of 30 days on the validity interval; 14 days is the
+        expected value.
+    -->
+    <bean id="uk_check_validUntil" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage"
+        p:id="uk_check_validUntil">
+        <!--
+            The validUntil attribute must be present.
+        -->
+        <property name="requireValidUntil" value="true"/>
+        <!--
+            Validity interval must not exceed 30 days.
+        -->
+        <property name="maxValidityInterval" value="#{ 1000L * 60 * 60 * 24 * 30 }"/>
+    </bean>
+    
+    
     <!--
         uk_fetchFragmentFiles
         
