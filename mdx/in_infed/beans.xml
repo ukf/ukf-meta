@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for this channel.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
+    <!--
+        Location of various resources.
+    -->
+    <bean id="in_infed_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://parichay.inflibnet.ac.in/metadata/infed.xml"/>
+    </bean>
+    
+    <!--
+        Fetch the production aggregate.
+    -->
+    <bean id="in_infed_productionAggregate" parent="domResourceStage_parent"
+        p:id="in_infed_productionAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" ref="in_infed_productionAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch and process the production entities as a collection.
+    -->
+    <bean id="in_infed_productionEntities" parent="composite_parent"
+        p:id="in_infed_productionEntities">
+        <property name="composedStages">
+            <list>
+                <!-- no export aggregate; use the production one instead -->
+                <ref bean="in_infed_productionAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <!-- no validUntil, no signature yet
+                <ref bean="check_validUntil"/>
+                <ref bean="at_aconet_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                -->
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="in_infed_exportedAggregate" name="in_infed_productionAggregate"/>
+    <alias alias="in_infed_exportedEntities"  name="in_infed_productionEntities"/>
+</beans>

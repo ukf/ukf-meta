@@ -896,6 +896,7 @@
     	<CHANNEL.do verb="importProduction" channel="fi_haka"/>
     	<CHANNEL.do verb="importProduction" channel="gr_grnet"/>
     	<CHANNEL.do verb="importProduction" channel="hu_eduid"/>
+    	<CHANNEL.do verb="importProduction" channel="in_infed"/>
     	<CHANNEL.do verb="importProduction" channel="it_idem"/>
     	<CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
     	<CHANNEL.do verb="importProduction" channel="no_feide"/>
@@ -948,6 +949,7 @@
         <CHANNEL.do verb="importRaw" channel="hr_eduhr"/>
         <CHANNEL.do verb="importRaw" channel="hu_eduid"/>
         <CHANNEL.do verb="importRaw" channel="ie_edugate"/>
+		<CHANNEL.do verb="importRaw" channel="in_infed"/>
         <CHANNEL.do verb="importRaw" channel="int_edugain"/>
 		<CHANNEL.do verb="importRaw" channel="int_testshib"/>
         <CHANNEL.do verb="importRaw" channel="it_idem"/>
