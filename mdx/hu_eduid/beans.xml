@@ -122,6 +122,10 @@
                 
                 <ref bean="hu_eduid_check_regauth"/>
                 <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>
@@ -150,6 +154,10 @@
                 
                 <ref bean="hu_eduid_check_regauth"/>
                 <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>

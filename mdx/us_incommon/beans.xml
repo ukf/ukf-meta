@@ -115,6 +115,15 @@
                 
                 <ref bean="us_incommon_check_regauth"/>
                 <ref bean="standardImportActions"/>
+
+                <!--
+                    Strip all entity attributes from this source.
+                    
+                    TODO rewrite this so that we preserve things like the
+                    InCommon R+S category membership designation.
+                -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>
@@ -162,15 +171,16 @@
                 <ref bean="us_incommon_default_regauth"/>
                 <ref bean="us_incommon_check_regauth"/>
 
-                <!--
-                    Unfortunately in this case, the "standard" import actions will remove all
-                    entity attributes, and we wish to keep some of the InCommon category
-                    designations.
-                    
-                    TODO This will mean unbundling standardImportActions everywhere
-                    it is currently used.
-                -->
                 <ref bean="standardImportActions"/>
+                
+                <!--
+                    Strip all entity attributes from this source.
+                    
+                    TODO rewrite this so that we preserve things like the
+                    InCommon R+S category membership designation.
+                -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>

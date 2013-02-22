@@ -118,6 +118,10 @@
                 <ref bean="hr_eduhr_check_regauth"/>
 
                 <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>

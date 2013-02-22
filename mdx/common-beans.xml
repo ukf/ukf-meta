@@ -567,17 +567,6 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_imported"/>
                 <ref bean="errorAnnouncingFilter"/>
-                
-                <!--
-                    Strip the namespace used by the entity attribute namespace for now.
-                    This needs to be replaced in the long run by per-channel handling that
-                    lets through those attributes which we have verified that the source
-                    validates in the same way we do, or those which we don't care about.
-                    
-                    This namespace is stripped after the checks to allow for the
-                    entity attributes to be checked before they are discarded.
-                -->
-                <ref bean="stripMdattrNamespace"/>
             </list>
         </property>
     </bean>

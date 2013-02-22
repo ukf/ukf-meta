@@ -66,6 +66,10 @@
                 <ref bean="disassemble"/>
                 
                 <ref bean="standardImportActions"/>
+
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>

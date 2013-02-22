@@ -95,6 +95,10 @@
                 <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
                 
                 <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>
@@ -130,6 +134,10 @@
                 <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
 
                 <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>
