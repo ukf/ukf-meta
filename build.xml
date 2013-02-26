@@ -926,6 +926,28 @@
     	<CHANNEL.do verb="importEdugain" channel="se_swamid"/>
     </target>
     
+    <!--
+        flow.importEdugainRaw.all
+        
+        Run the importEdugainRaw flow on each channel that has one.
+    -->
+    <target name="flow.importEdugainRaw.all">
+        <CHANNEL.do verb="importEdugainRaw" channel="be_belnet"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="br_cafe"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="ch_switchaai"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="cz_eduid"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="de_dfnaai"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="es_sir"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="fi_haka"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="gr_grnet"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="hr_eduhr"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="hu_eduid"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="it_idem"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="nl_surfnet"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="no_feide"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="se_swamid"/>
+    </target>
+    
 	<!--
 	    flow.importRaw.all
 	    
