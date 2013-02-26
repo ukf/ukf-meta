@@ -12,6 +12,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="lv_laife_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://laife.lanet.lv/metadata/laife-metadata.xml"/>
+    </bean>
+    <bean id="lv_laife_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://laife.lanet.lv/metadata/laife-edugain-metadata.xml"/>
+    </bean>
+    
+    <!--
         Fetch the production aggregate.
     -->
     <bean id="lv_laife_productionAggregate" parent="domResourceStage_parent"
@@ -19,19 +29,54 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="https://laife.lanet.lv/metadata/laife-metadata.xml"/>
+                <constructor-arg name="url"    ref="lv_laife_productionAggregate_url"/>
             </bean>
         </property>
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch the eduGAIN export aggregate.
     -->
-    <bean id="lv_laife_exportedEntities" parent="composite_parent"
-        p:id="lv_laife_exportedEntities">
+    <bean id="lv_laife_edugainAggregate" parent="domResourceStage_parent"
+        p:id="lv_laife_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="lv_laife_edugainAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Signing certificate.
+        
+        This certificate is used to sign the eduGAIN aggregate, but the production
+        aggregate is not signed.
+    -->
+    <bean id="lv_laife_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/lv_laife/metadata-signer.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check signing signature.
+    -->
+    <bean id="lv_laife_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="lv_laife_checkSignature">
+        <property name="verificationCertificate" ref="lv_laife_signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the production entities as a collection.
+    -->
+    <bean id="lv_laife_productionEntities" parent="composite_parent"
+        p:id="lv_laife_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="lv_laife_productionAggregate"/>
                 
                 <!--
@@ -54,4 +99,38 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="lv_laife_edugainEntities" parent="composite_parent"
+        p:id="lv_laife_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="lv_laife_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="lv_laife_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="lv_laife_exportedAggregate" name="lv_laife_edugainAggregate"/>
+    <alias alias="lv_laife_exportedEntities"  name="lv_laife_edugainEntities"/>
 </beans>

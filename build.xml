@@ -870,7 +870,6 @@
         <CHANNEL.import channel="int_edugain"/>
 		<CHANNEL.do channel="int_edugain" verb="testImport"/>
         <CHANNEL.import channel="jp_gakunin"/>
-        <CHANNEL.import channel="lv_laife"/>
 		<CHANNEL.import channel="nl_surfconext"/>
 		<CHANNEL.import channel="nz_tuakiri"/>
         <CHANNEL.import channel="si_arnes"/>
@@ -898,6 +897,7 @@
     	<CHANNEL.do verb="importProduction" channel="hu_eduid"/>
     	<CHANNEL.do verb="importProduction" channel="in_infed"/>
     	<CHANNEL.do verb="importProduction" channel="it_idem"/>
+    	<CHANNEL.do verb="importProduction" channel="lv_laife"/>
     	<CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
     	<CHANNEL.do verb="importProduction" channel="no_feide"/>
     	<CHANNEL.do verb="importProduction" channel="se_swamid"/>
@@ -922,6 +922,7 @@
     	<CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
     	<CHANNEL.do verb="importEdugain" channel="hu_eduid"/>
     	<CHANNEL.do verb="importEdugain" channel="it_idem"/>
+    	<CHANNEL.do verb="importEdugain" channel="lv_laife"/>
     	<CHANNEL.do verb="importEdugain" channel="nl_surfnet"/>
     	<CHANNEL.do verb="importEdugain" channel="no_feide"/>
     	<CHANNEL.do verb="importEdugain" channel="se_swamid"/>
@@ -945,6 +946,7 @@
         <CHANNEL.do verb="importEdugainRaw" channel="hr_eduhr"/>
         <CHANNEL.do verb="importEdugainRaw" channel="hu_eduid"/>
         <CHANNEL.do verb="importEdugainRaw" channel="it_idem"/>
+    	<CHANNEL.do verb="importEdugainRaw" channel="lv_laife"/>
         <CHANNEL.do verb="importEdugainRaw" channel="nl_surfnet"/>
         <CHANNEL.do verb="importEdugainRaw" channel="no_feide"/>
         <CHANNEL.do verb="importEdugainRaw" channel="se_swamid"/>
