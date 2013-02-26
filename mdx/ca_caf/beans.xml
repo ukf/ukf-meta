@@ -18,11 +18,11 @@
         <constructor-arg value="https://caf-shibops.ca/CoreServices/cafshib_metadata_signed.xml"/>
     </bean>
     <bean id="ca_caf_edugainAggregate_url" class="java.lang.String">
-        <constructor-arg value="https://idp.canarie.ca/canarie-inside-edugain.xml"/>
+        <constructor-arg value="https://caf-shib2ops.ca/CoreServices/edugain_caf_metadata_signed.xml"/>
     </bean>
     
     <!--
-        Fetch the CAF production aggregate.
+        Fetch the production aggregate.
     -->
     <bean id="ca_caf_productionAggregate" parent="domResourceStage_parent"
         p:id="ca_caf_productionAggregate">
@@ -35,18 +35,33 @@
     </bean>
     
     <!--
-        CAF signing certificate.
+        Fetch the eduGAIN export aggregate.
     -->
-    <bean id="ca_caf_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
-        <property name="certificateFile">
-            <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ca_caf/cafshib_metadata_verify.pem"/>
+    <bean id="ca_caf_edugainAggregate" parent="domResourceStage_parent"
+        p:id="ca_caf_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="ca_caf_edugainAggregate_url"/>
             </bean>
         </property>
     </bean>
     
     <!--
-        Check CAF signing signature.
+        Signing certificate.
+        
+        This one is used to sign the eduGAIN aggregate.
+    -->
+    <bean id="ca_caf_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ca_caf/metadata-signer.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check signing signature.
     -->
     <bean id="ca_caf_checkSignature" parent="stage_parent"
         class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
@@ -55,13 +70,34 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        "cafshib" Signing certificate.
+        
+        This one is used to sign the production aggregate.
     -->
-    <bean id="ca_caf_exportedEntities" parent="composite_parent"
-        p:id="ca_caf_exportedEntities">
+    <bean id="ca_caf_cafShibSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ca_caf/cafshib_metadata_verify.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check "cafshib" signing signature.
+    -->
+    <bean id="ca_caf_cafShibCheckSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="ca_caf_checkSignature">
+        <property name="verificationCertificate" ref="ca_caf_cafShibSigningCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the production entities as a collection.
+    -->
+    <bean id="ca_caf_productionEntities" parent="composite_parent"
+        p:id="ca_caf_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="ca_caf_productionAggregate"/>
 
                 <!--
@@ -70,10 +106,8 @@
                         invalid signature
                 -->
                 <ref bean="check_validUntil"/>
-                <ref bean="ca_caf_checkSignature"/>
-                <!--
+                <ref bean="ca_caf_cafShibCheckSignature"/>
                 <ref bean="errorTerminatingFilter"/>
-                -->
                 
                 <ref bean="disassemble"/>
                 
@@ -86,4 +120,38 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="ca_caf_edugainEntities" parent="composite_parent"
+        p:id="ca_caf_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="ca_caf_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="ca_caf_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="ca_caf_exportedAggregate" name="ca_caf_edugainAggregate"/>
+    <alias alias="ca_caf_exportedEntities"  name="ca_caf_edugainEntities"/>
 </beans>
