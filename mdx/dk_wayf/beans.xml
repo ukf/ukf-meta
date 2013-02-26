@@ -18,6 +18,19 @@
     -->
     
     <!--
+        Location of various resources.
+    -->
+    <bean id="dk_wayf_productionIdpMetadata_url" class="java.lang.String">
+        <constructor-arg value="https://wayf.wayf.dk/saml2/idp/metadata.php"/>
+    </bean>
+    <bean id="dk_wayf_productionSpMetadata_url" class="java.lang.String">
+        <constructor-arg value="https://wayf.wayf.dk/module.php/saml/sp/metadata.php/wayf.wayf.dk"/>
+    </bean>
+    <bean id="dk_wayf_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://metadata.wayf.dk/wayf-edugain-metadata.xml"/>
+    </bean>
+    
+    <!--
         Fetch the IdP metadata.
     -->
     <bean id="dk_wayf_idpMetadata" parent="domResourceStage_parent"
@@ -25,7 +38,7 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="https://wayf.wayf.dk/saml2/idp/metadata.php"/>
+                <constructor-arg name="url"    ref="dk_wayf_productionIdpMetadata_url"/>
             </bean>
         </property>
     </bean>
@@ -38,7 +51,7 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="https://wayf.wayf.dk/module.php/saml/sp/metadata.php/wayf.wayf.dk"/>
+                <constructor-arg name="url"    ref="dk_wayf_productionSpMetadata_url"/>
             </bean>
         </property>
     </bean>
@@ -57,11 +70,68 @@
             </bean>
         </property>
     </bean>
+    
     <!--
-        Fetch and process the exported entities as a collection.
+        Synthesise a production aggregate.
     -->
-    <bean id="dk_wayf_exportedEntities" parent="composite_parent"
-        p:id="dk_wayf_exportedEntities">
+    <bean id="dk_wayf_productionAggregate" parent="composite_parent"
+        p:id="dk_wayf_productionAggregate">
+        <property name="composedStages">
+            <list>
+                <!-- BIRK proxy metadata aggregate -->
+                <ref bean="dk_wayf_birkMetadata"/>
+                <ref bean="disassemble"/>
+                
+                <!-- hub singleton IdP and SP metadata -->
+                <ref bean="dk_wayf_idpMetadata"/>
+                <ref bean="dk_wayf_spMetadata"/>
+
+                <!-- put them together -->
+                <ref bean="assemble"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="dk_wayf_edugainAggregate" parent="domResourceStage_parent"
+        p:id="dk_wayf_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="dk_wayf_edugainAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Signing certificate.
+        
+        This one is used to sign the eduGAIN aggregate.
+    -->
+    <bean id="dk_wayf_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/dk_wayf/metadata-signer.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check signing signature.
+    -->
+    <bean id="dk_wayf_checkSignature" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+        p:id="dk_wayf_checkSignature">
+        <property name="verificationCertificate" ref="dk_wayf_signingCertificate"/>
+    </bean>
+    
+    <!--
+        Fetch and process the production entities as a collection.
+    -->
+    <bean id="dk_wayf_productionEntities" parent="composite_parent"
+        p:id="dk_wayf_productionEntities">
         <property name="composedStages">
             <list>
                 <!-- BIRK proxy metadata aggregate -->
@@ -81,4 +151,38 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="dk_wayf_edugainEntities" parent="composite_parent"
+        p:id="dk_wayf_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="dk_wayf_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="dk_wayf_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="dk_wayf_exportedAggregate" name="dk_wayf_edugainAggregate"/>
+    <alias alias="dk_wayf_exportedEntities"  name="dk_wayf_edugainEntities"/>    
 </beans>
