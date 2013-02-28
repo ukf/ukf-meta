@@ -768,6 +768,16 @@
         <delete file="${entities.dir}/imported.xml" quiet="true" verbose="false"/>
 		<CHANNEL.do channel="uk" verb="import"/>
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
+        <XALAN
+            i="${entities.dir}/imported.xml"
+            o="${xml.dir}/embedded.pem"
+            x="${build.dir}/extract_embedded.xsl"/>
+		<echo>Certificates extracted to "${xml.dir}/embedded.pem"</echo>
+        <exec executable="perl" dir="${xml.dir}"
+            input="${xml.dir}/embedded.pem">
+            <arg value="${build.dir}/check_embedded.pl"/>
+        	<arg value="-q"/>
+        </exec>
 	</target>
 	
     <!--
