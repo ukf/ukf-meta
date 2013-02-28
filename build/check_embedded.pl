@@ -533,7 +533,7 @@ while (<>) {
 	}
 }
 
-if ($total_certs > 1) {
+if ($distinct_certs > 1) {
 	print "Total certificates: $total_certs\n";
 	if ($distinct_certs != $total_certs) {
 		print "Distinct certificates: $distinct_certs\n";
