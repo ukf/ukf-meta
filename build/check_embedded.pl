@@ -249,19 +249,9 @@ while (<>) {
 			#
 			if (/RSA Public Key: \((\d+) bit\)/) { # OpenSSL 0.9x
 				$pubSize = $1;
-				$pubSizeCount{$pubSize}++;
-				# print "   Public key size: $pubSize\n";
-				if ($pubSize < 1024) {
-					error('PUBLIC KEY TOO SHORT');
-				}
 				next;
 			} elsif (/^\s*Public-Key: \((\d+) bit\)/) { # OpenSSL 1.0
 				$pubSize = $1;
-				$pubSizeCount{$pubSize}++;
-				# print "   Public key size: $pubSize\n";
-				if ($pubSize < 1024) {
-					error('PUBLIC KEY TOO SHORT');
-				}
 				next;
 			}
 			
@@ -471,12 +461,20 @@ while (<>) {
 		}
 		
 		#
-		# Some more detailed reporting for 1024-bit keys.
+		# Handle public key size.
 		#
-		if ($pubSize == 1024) {
+		$pubSizeCount{$pubSize}++;
+		# print "   Public key size: $pubSize\n";
+		if ($pubSize < 1024) {
+
+			error('PUBLIC KEY TOO SHORT');
+
+		} elsif ($pubSize < 2048) {
 
 			if ($days < 0) {
-				error("1024 bit expired certificate");
+				error("short key ($pubSize bit) in expired certificate");
+			} else {
+				warning("short key ($pubSize bit) in certificate; expires $notAfter");
 			}
 
 			#
@@ -486,7 +484,7 @@ while (<>) {
 			my $validYears = ($notAfterTime - $notBeforeTime)/(86400.0*365.0);
 			my $years = sprintf "%.1f", $validYears;
 			if ($validYears >= $excessThreshold) {
-				warning("excess cryptoperiod $years years for 1024-bit key; expires $notAfter");
+				warning("excess cryptoperiod $years years for short ($pubSize bit) key; expires $notAfter");
 			}
 		}
 
