@@ -18,7 +18,7 @@
         <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-metadata.xml"/>
     </bean>
     <bean id="uk_exportAggregate_url" class="java.lang.String">
-        <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-metadata.xml"/>
+        <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-export.xml"/>
     </bean>
     
     
@@ -551,6 +551,46 @@
                 <ref bean="assemble"/>
                 <ref bean="uk_generateStatistics"/>
                 <ref bean="uk_serializeStatistics"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        #################################################
+        ###                                           ###
+        ###   U K   E X P O R T   A S   I M P O R T   ###
+        ###                                           ###
+        #################################################
+    -->
+    
+    <!--
+        Fetch and process the export entities as a collection.
+    -->
+    <bean id="uk_exportedEntities" parent="composite_parent"
+        p:id="uk_exportedEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="uk_exportAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="uk_check_validUntil"/>
+                <ref bean="uk_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="uk_default_regauth"/>
+                <ref bean="uk_check_regauth"/>
+                
+                <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
             </list>
         </property>
     </bean>

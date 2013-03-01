@@ -246,5 +246,45 @@
             </list>
         </property>
     </bean>
+
+    <!--
+        #################################################
+        ###                                           ###
+        ###   U K   E X P O R T   A S   I M P O R T   ###
+        ###                                           ###
+        #################################################
+    -->
     
+    <bean id="serializeImported" parent="serialize_parent"
+        p:id="serializeImported">
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/imported.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="importExported" parent="pipeline_parent"
+        p:id="importExported">
+        <property name="stages">
+            <list>
+                <ref bean="uk_exportedEntities"/>
+                <ref bean="standardImportTail"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="importExportedRaw" parent="pipeline_parent"
+        p:id="importExportedRaw">
+        <property name="stages">
+            <list>
+                <ref bean="uk_exportAggregate"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
+    <alias alias="import"    name="importExported"/>
+    <alias alias="importRaw" name="importExportedRaw"/>    
 </beans>
