@@ -201,8 +201,8 @@
         
         For now, just the head of that pipeline.
     -->
-    <bean id="import" parent="pipeline_parent"
-        p:id="import">
+    <bean id="import.metadata" parent="pipeline_parent"
+        p:id="import.metadata">
         <property name="stages">
             <list>
                 <!-- fetch the input file -->

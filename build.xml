@@ -766,7 +766,7 @@
 	<target name="import.metadata">
 		<echo>Importing metadata from ${entities.dir}/import.xml</echo>
         <delete file="${entities.dir}/imported.xml" quiet="true" verbose="false"/>
-		<CHANNEL.do channel="uk" verb="import"/>
+		<CHANNEL.do channel="uk" verb="import.metadata"/>
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
         <XALAN
             i="${entities.dir}/imported.xml"
