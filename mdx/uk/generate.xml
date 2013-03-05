@@ -25,6 +25,7 @@
         Import beans from other channels.
     -->
     <import resource="../ie_edugate/beans.xml"/>
+    <import resource="../us_incommon/beans.xml"/>
 
 
     <!--
@@ -47,7 +48,19 @@
         </property>
     </bean>
     
-
+    <bean id="uk_us_incommon_importPipeline" parent="pipeline_parent"
+        p:id="uk_us_incommon_importPipeline">
+        <property name="stages">
+            <list>
+                <ref bean="us_incommon_exportedEntities"/>
+                <ref bean="uk_performFixups"/>
+                <ref bean="uk_fix_mailto"/>
+                <ref bean="uk_hide_idps"/>
+            </list>
+        </property>
+    </bean>
+    
+    
     <!--
         ***********************************************************************
         ***                                                                 ***
@@ -512,6 +525,7 @@
                         <list>
                             <!-- entries earlier in the list have higher precedence -->
                             <ref bean="uk_ie_edugate_importPipeline"/>
+                            <ref bean="uk_us_incommon_importPipeline"/>
                         </list>
                     </property>
                 </bean>
