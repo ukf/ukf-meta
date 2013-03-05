@@ -129,22 +129,6 @@
     </bean>
     
     <!--
-        Filter out all entities not involved in the pilot.
-    -->
-    <bean id="us_incommon_pilot_filterEntities" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
-        p:id="us_incommon_pilot_filterEntities"
-        p:whitelistingEntities="true">
-        <property name="designatedEntities">
-            <set>
-                <value>https://login.ligo.org/idp/shibboleth</value>
-                <value>https://wiki.ligo.org/shibboleth-sp</value>
-                <value>https://ligo.org/ligovirgo/cbcnote/shibboleth-sp</value>
-            </set>
-        </property>
-    </bean>
-    
-    <!--
         Synthesise an export collection by filtering the production entities.
     -->
     <bean id="us_incommon_exportedEntities" parent="composite_parent"
@@ -164,8 +148,50 @@
                 
                 <ref bean="disassemble"/>
                 
-                <!-- filter out anything we don't want -->
-                <ref bean="us_incommon_pilot_filterEntities"/>
+                <!--
+                    ***********************************
+                    ***                             ***
+                    ***   InCommon export ruleset   ***
+                    ***                             ***
+                    ***********************************
+                -->
+                    
+                <!--
+                    Filter out all entities not involved in the pilot.
+                -->
+                <bean parent="stage_parent"
+                    class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
+                    p:id="us_incommon_pilot_filterEntities"
+                    p:whitelistingEntities="true">
+                    <property name="designatedEntities">
+                        <set>
+                            <value>https://ligo.org/ligovirgo/cbcnote/shibboleth-sp</value>
+                            <value>https://wiki.ligo.org/shibboleth-sp</value>
+                        </set>
+                    </property>
+                </bean>
+                
+                <!--
+                    Remove all contact information.
+                -->
+                <bean parent="stage_parent"
+                    class="net.shibboleth.metadata.dom.saml.ContactPersonFilterStage"
+                    p:id="us_incommon_remove_contacts"
+                    p:whitelistingTypes="true">
+                    <property name="designatedTypes">
+                        <set>
+                            <!-- no whitelisted types implies remove everything -->
+                        </set>
+                    </property>                    
+                </bean>
+                
+                <!--
+                    ******************************
+                    ***                        ***
+                    ***   UKf import ruleset   ***
+                    ***                        ***
+                    ******************************
+                -->
                 
                 <!-- default and check registrar -->
                 <ref bean="us_incommon_default_regauth"/>
