@@ -34,7 +34,7 @@
 	    Common parts of the file layout for the remote systems.
 	-->
 	<property name="remote.user" value="sdssweb"/>
-	<property name="remote.dir.sdss" value="ukfed/fed"/>
+	<property name="remote.dir.sdss" value="ukfedstats"/>
 	<property name="remote.dir.uk" value="metadata"/>
 
 	<!--
