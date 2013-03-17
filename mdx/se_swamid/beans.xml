@@ -12,10 +12,16 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Import eduGAIN participant beans for namespace stripping stages.
+    -->
+    <import resource="../cz_eduid/beans.xml"/>
+    <import resource="../hu_eduid/beans.xml"/>
+    
+    <!--
         Location of various resources.
     -->
     <bean id="se_swamid_productionAggregate_url" class="java.lang.String">
-        <constructor-arg value="http://md.swamid.se/md/swamid-1.0.xml"/>
+        <constructor-arg value="http://md.swamid.se/md/swamid-2.0.xml"/>
     </bean>
     <bean id="se_swamid_edugainAggregate_url" class="java.lang.String">
         <constructor-arg value="http://md2.swamid.se/md/swamid-edugain-1.0.xml"/>
@@ -123,17 +129,25 @@
                 <!--
                 	No validUntil attribute at present.
                 -->
-                <!--
                 <ref bean="check_validUntil"/>
-                -->
                 <ref bean="se_swamid_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="se_swamid_default_regauth"/>
-                <ref bean="se_swamid_check_regauth"/>
 
+                <!--
+                    The production aggregate contains imported entities from
+                    other federations.  So, can have any registrationAuthority,
+                    but default it if not present.
+                -->
+                <ref bean="se_swamid_default_regauth"/>
+
+                <!--
+                    Strip eduGAIN participant-specific namespaces.
+                -->
+                <ref bean="cz_eduid_stripMetadataNamespace"/>
+                <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
+                
                 <ref bean="standardImportActions"/>
                 
                 <!-- Strip all entity attributes from this source. -->
