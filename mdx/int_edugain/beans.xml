@@ -117,12 +117,7 @@
                         missing or expired validUntil attribute
                         invalid signature
                 -->
-                <!--
-                    no validUntil element is present at the moment
-                -->
-                <!--
                 <ref bean="check_validUntil"/>
-                -->
                 <ref bean="int_edugain_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
