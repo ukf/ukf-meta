@@ -47,11 +47,11 @@ $issuerMark{'GlobalSign Root CA'} = 'R';
 $issuerMark{'GlobalSign Organization Validation CA'} = 'i';
 $issuerMark{'GlobalSign Primary Secure Server CA'} = 'i';
 $issuerMark{'GlobalSign ServerSign CA'} = 'i';
-$issuerMark{'Thawte Premium Server CA'} = '<'; # root directly signs; 1024 bit key
 #$issuerMark{'VeriSign International Server CA - Class 3'} = '?';
 
 # NOT from master.xml
 $issuerMark{'Cybertrust Educational CA'} = 'x'; # ex trust root
+$issuerMark{'Thawte Premium Server CA'} = 'x'; # ex trust root; directly signs; 1024 bit key
 
 #
 # Load RSA key blacklists.
