@@ -588,6 +588,34 @@
     </bean>
     
     <!--
+        *******************************************************************
+        ***                                                             ***
+        ***   U K   F E D E R A T I O N   S P E C I F I C A T I O N S   ***
+        ***                                                             ***
+        *******************************************************************
+    -->
+    
+    <!--
+        check_uk_trust
+    -->
+    <bean id="check_uk_trust" parent="check_xslt_parent"
+        p:id="check_uk_trust">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_uk_trust.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        *********************************************
+        ***                                       ***
+        ***   A G G R E G A T E D   C H E C K S   ***
+        ***                                       ***
+        *********************************************
+    -->
+    
+    <!--
         CHECK_std
     -->
     <bean id="CHECK_std" parent="composite_parent"
@@ -611,6 +639,7 @@
                 <ref bean="check_saml2int"/>
                 <ref bean="check_saml2meta"/>
                 <ref bean="check_shibboleth"/>
+                <ref bean="check_uk_trust"/>
             </list>
         </property>
     </bean>

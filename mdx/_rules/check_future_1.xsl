@@ -29,15 +29,4 @@
 	-->
 	<xsl:import href="check_framework.xsl"/>
 
-	<!--
-		Check for SAML 2.0 SPs with KeyName-only KeyDescriptors.
-	-->
-	<xsl:template match="md:SPSSODescriptor
-		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML 2.0 SP has KeyDescriptor without embedded key</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-
 </xsl:stylesheet>

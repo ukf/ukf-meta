@@ -23,29 +23,6 @@
 
 	
 	<!--
-		Check for role descriptors with missing KeyDescriptor elements.
-	-->
-	
-	<xsl:template match="md:IDPSSODescriptor[not(md:KeyDescriptor)]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">IdP SSO Descriptor lacking KeyDescriptor</xsl:with-param>
-		</xsl:call-template>    
-	</xsl:template>
-	
-	<xsl:template match="md:SPSSODescriptor[not(md:KeyDescriptor)]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">SP SSO Descriptor lacking KeyDescriptor</xsl:with-param>
-		</xsl:call-template>    
-	</xsl:template>
-	
-	<xsl:template match="md:AttributeAuthorityDescriptor[not(md:KeyDescriptor)]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">IdP AA Descriptor lacking KeyDescriptor</xsl:with-param>
-		</xsl:call-template>    
-	</xsl:template>
-	
-	
-	<!--
 		Entity IDs should not contain space characters.
 	-->
 	<xsl:template match="md:EntityDescriptor[contains(@entityID, ' ')]">
@@ -152,24 +129,4 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<!--
-        Look for SAML 2.0 IdPs whose metadata includes pure PKIX KeyDescriptor elements.
-        
-        This causes problems for some OpenAthens SP products.
-    -->
-	<xsl:template match="md:IDPSSODescriptor
-		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML 2.0 IdP has KeyDescriptor without embedded key</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	<xsl:template match="md:AttributeAuthorityDescriptor
-		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">SAML 2.0 AttributeAuthority has KeyDescriptor without embedded key</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	
 </xsl:stylesheet>
