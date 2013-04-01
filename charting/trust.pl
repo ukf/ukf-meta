@@ -27,13 +27,15 @@ foreach $month (@months) {
 	open(TXT, xalanCall . " -IN $fn -XSL trust.xsl|") || die "could not open input file";
 	$_ = <TXT>;
 	chop;
-	my ($entities, $idps, $sps, $dk_total, $dk_idp, $dk_sp, $pk_total, $pk_idp, $pk_sp) = split;
+	#print ">" . $_ . "<\n";
+	my ($entities, $idps, $sps, $dk_total, $dk_idp, $dk_sp, $pk_total, $pk_idp, $pk_sp, $no_embed) = split;
 	push @overallRatio, $dk_total/$entities;
 	push @idpRatio, $dk_idp/$idps;
 	push @spRatio, $dk_sp/$sps;
 	push @PKoverallRatio, $pk_total/$entities;
 	push @PKidpRatio, $pk_idp/$idps;
 	push @PKspRatio, $pk_sp/$sps;
+	push @NoEmbed, $no_embed;
 	close TXT;
 }
 
@@ -65,6 +67,11 @@ foreach $ratio (@PKspRatio) {
 print "PKoverall\n";
 foreach $ratio (@PKoverallRatio) {
 	print "$ratio\n";
+}
+
+print "No embedded keys\n";
+foreach $no_embed (@NoEmbed) {
+	print "$no_embed\n";
 }
 
 1;

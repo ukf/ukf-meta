@@ -41,6 +41,8 @@
 		<xsl:value-of select="count($idps[descendant::ds:KeyName])"/>
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="count($sps[descendant::ds:KeyName])"/>
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="count($entities[not(descendant::ds:X509Data)])"/>
 		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
 	
