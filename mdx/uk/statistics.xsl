@@ -1380,6 +1380,21 @@
             </li>
         </xsl:if>
         
+        <xsl:variable name="e.gcm" select="$entities[
+            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes128-gcm' or
+            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes192-gcm' or
+            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes256-gcm']"/>
+        <xsl:variable name="e.gcm.count" select="count($e.gcm)"/>
+        <xsl:if test="$e.gcm.count != 0">
+            <li>
+                <p>
+                    <xsl:value-of select="$e.gcm.count"/>
+                    (<xsl:value-of select="format-number($e.gcm.count div $entityCount, '0.0%')"/>)
+                    support GCM encryption.
+                </p>
+            </li>
+        </xsl:if>
+        
     </xsl:template>
     
     <!--
