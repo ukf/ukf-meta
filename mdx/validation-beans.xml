@@ -255,18 +255,6 @@
     </bean>
     
     <!--
-        check_fixups
-    -->
-    <bean id="check_fixups" parent="check_xslt_parent"
-        p:id="check_fixups">
-        <property name="xslResource">
-            <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_fixups.xsl"/>
-            </bean>
-        </property>
-    </bean>
-    
-    <!--
         check_hoksso
     -->
     <bean id="check_hoksso" parent="check_xslt_parent"

@@ -29,6 +29,120 @@
 
 
     <!--
+        ***********************
+        ***                 ***
+        ***   F I X U P S   ***
+        ***                 ***
+        ***********************
+    -->
+    
+    <!--
+        Published UK federation metadata for consumption by federation
+        members has a couple of restrictions arising from known bugs in
+        early software.  We address these by "fixups" which transform the
+        metadata into a form which doesn't trigger the bug, and verify that
+        each constraints is met before publication.
+        
+        We apply fixups "late" in each publication pipeline, so that
+        the metadata is only transformed if required for a particular
+        output document.  Our export aggregate, for example, does
+        not have any of the fixups applied.
+        
+        In the long term, we'd hope to retire these fixups entirely as the
+        software they to cater for is retired.
+    -->
+    
+    <!--
+        fixup_EncryptionMethod
+        
+        Remove all md:EncryptionMethod elements.
+        
+        This is normally done to avoid triggering a problem in OpenSAML-C 2.0.
+        
+        See https://wiki.shibboleth.net/confluence/display/SHIB2/MetadataCorrectness#MetadataCorrectness-Version20
+    -->
+    <bean id="fixup_EncryptionMethod" parent="stripElement_parent"
+        p:id="fixup_EncryptionMethod"
+        p:elementName="EncryptionMethod"
+        p:elementNamespace="urn:oasis:names:tc:SAML:2.0:metadata"/>
+    
+    <!--
+        fixup_keyuse
+        
+        Patch any @use-less KeyName descriptors in IdP roles
+        for the benefit of Shib SPs pre-1.3.1.
+    -->
+    <bean id="fixup_keyuse" parent="xslt_parent"
+        p:id="fixup_keyuse">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fixup_keyuse.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        performOtherFixups
+        
+        Perform all fixup actions which are required for *every* output document.
+        
+        Fixup actions which are only required in specific output pipelines need to
+        appear there individually.
+    -->
+    <bean id="performOtherFixups" parent="composite_parent"
+        p:id="performOtherFixups">
+        <property name="composedStages">
+            <list>
+                <ref bean="fixup_keyuse"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        check_fixup_encmethod
+    -->
+    <bean id="check_fixup_encmethod" parent="check_xslt_parent"
+        p:id="check_fixup_encmethod">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_fixup_encmethod.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_fixup_keyuse
+    -->
+    <bean id="check_fixup_keyuse" parent="check_xslt_parent"
+        p:id="check_fixup_keyuse">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_fixup_keyuse.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        checkPublishable
+        
+        Check an aggregate metadata document for publishability.  This is applied during
+        all UK publication flows prior to any signature step.  It is not applied to
+        export flows, for which we desire the closest possible correspondence to
+        the registered metadata.
+    -->
+    <bean id="checkPublishable" parent="composite_parent"
+        p:id="checkPublishable">
+        <property name="composedStages">
+            <list>
+                <ref bean="checkSchemas"/>
+                <ref bean="check_aggregate"/>
+                <ref bean="check_filtered"/>
+                <ref bean="check_fixup_keyuse"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         *******************************************
         ***                                     ***
         ***   I M P O R T   P I P E L I N E S   ***
@@ -41,7 +155,6 @@
         <property name="stages">
             <list>
                 <ref bean="ie_edugate_exportedEntities"/>
-                <ref bean="uk_performFixups"/>
                 <ref bean="uk_fix_mailto"/>
                 <ref bean="uk_hide_idps"/>
             </list>
@@ -53,7 +166,6 @@
         <property name="stages">
             <list>
                 <ref bean="us_incommon_exportedEntities"/>
-                <ref bean="uk_performFixups"/>
                 <ref bean="uk_fix_mailto"/>
                 <ref bean="uk_hide_idps"/>
             </list>
@@ -156,12 +268,15 @@
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
+                <ref bean="fixup_EncryptionMethod"/>
+                <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
                 
                 <!-- production aggregate MUST pass publishability test -->
-                <ref bean="uk_checkPublishable"/>
+                <ref bean="checkPublishable"/>
+                <ref bean="check_fixup_encmethod"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedProductionAggregate"/>
@@ -196,11 +311,14 @@
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
+                <ref bean="fixup_EncryptionMethod"/>
+                <ref bean="performOtherFixups"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- WAYF aggregate MUST pass publishability test -->
-                <ref bean="uk_checkPublishable"/>
+                <ref bean="checkPublishable"/>
+                <ref bean="check_fixup_encmethod"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="serializeUnsignedWayfAggregate"/>
@@ -253,13 +371,16 @@
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
+                <ref bean="fixup_EncryptionMethod"/>
+                <ref bean="performOtherFixups"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
                 
                 <!-- fallback aggregate MUST pass publishability test -->
-                <ref bean="uk_checkPublishable"/>
+                <ref bean="checkPublishable"/>
+                <ref bean="check_fixup_encmethod"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedFallbackAggregate"/>
@@ -308,6 +429,27 @@
         </property>
     </bean>
     
+    <bean id="uk_testPipeline" parent="composite_parent"
+        p:id="uk_testPipeline">
+        <property name="composedStages">
+            <list>
+                <ref bean="uk_assembleHierarchicalAggregate"/>
+                <ref bean="fixup_EncryptionMethod"/>
+                <ref bean="performOtherFixups"/>
+                <ref bean="uk_addTrustRoots"/>
+                <ref bean="uk_finaliseTest"/>
+                <ref bean="uk_normaliseTest"/>
+                
+                <!-- test aggregate MUST pass publishability test -->
+                <ref bean="checkPublishable"/>
+                <ref bean="check_fixup_encmethod"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="serializeUnsignedTestAggregate"/>
+            </list>
+        </property>
+    </bean>
+
     <!--
         *******************************************
         ***                                     ***
@@ -446,13 +588,6 @@
                 <ref bean="removeEmptyExtensions"/>
                 
                 <!--
-                    Perform fixups on UK federation entities.  We need to make sure
-                    this is also performed on all inbound metadata too, but that is
-                    done elsewhere.
-                -->
-                <ref bean="uk_performFixups"/>
-                
-                <!--
                     ***************************************************
                     ***                                             ***
                     ***   P R O D U C T I O N   M D X   M E R G E   ***
@@ -544,16 +679,7 @@
                 -->
                 
                 <!-- pipeline continues to generate test aggregate -->
-                <ref bean="uk_assembleHierarchicalAggregate"/>
-                <ref bean="uk_addTrustRoots"/>
-                <ref bean="uk_finaliseTest"/>
-                <ref bean="uk_normaliseTest"/>
-                
-                <!-- test aggregate MUST pass publishability test -->
-                <ref bean="uk_checkPublishable"/>
-                <ref bean="errorTerminatingFilter"/>
-                
-                <ref bean="serializeUnsignedTestAggregate"/>
+                <ref bean="uk_testPipeline"/>
 
             </list>
         </property>

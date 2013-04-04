@@ -253,27 +253,6 @@
     
     
     <!--
-        uk_checkPublishable
-        
-        Check an aggregate metadata document for publishability.  This is applied during
-        all UK publication flows prior to any signature step.  It is not applied to
-        export flows, for which we desire the closest possible correspondence to
-        the registered metadata.
-    -->
-    <bean id="uk_checkPublishable" parent="composite_parent"
-        p:id="uk_checkPublishable">
-        <property name="composedStages">
-            <list>
-                <ref bean="checkSchemas"/>
-                <ref bean="check_aggregate"/>
-                <ref bean="check_filtered"/>
-                <ref bean="check_fixups"/>
-            </list>
-        </property>
-    </bean>
-    
-
-    <!--
         uk_trustRootsDocument
         
         This bean contains the contents of the master.xml file as a DOM Document.
@@ -337,21 +316,6 @@
             </list>
         </property>
         <property name="whitelistingTypes" value="false"/>
-    </bean>
-    
-    
-    <!--
-        uk_performFixups
-        
-        This stage performs any fixup actions required before publication to UK federation members.
-    -->
-    <bean id="uk_performFixups" parent="xslt_parent"
-        p:id="uk_performFixups">
-        <property name="xslResource">
-            <bean parent="file_parent">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fixups.xsl"/>
-            </bean>
-        </property>
     </bean>
     
     
