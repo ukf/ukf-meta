@@ -23,8 +23,12 @@
 	
 	
 	<!--
-        Check for role descriptors with missing KeyDescriptor elements.
-    -->
+		FTS 1.4 second draft, section 3.10
+		
+		Each <IDPSSODescriptor>, <SPSSODescriptor> and <AttributeAuthorityDescriptor>
+		role descriptor appearing in metadata published by the UK federation SHALL
+		contain at least one <KeyDescriptor> element.
+	-->
 	
 	<xsl:template match="md:IDPSSODescriptor[not(md:KeyDescriptor)]">
 		<xsl:call-template name="error">
@@ -46,9 +50,11 @@
 	
 	
 	<!--
-        Look for SAML 2.0 IdPs whose metadata includes pure PKIX KeyDescriptor elements.
+        FTS 1.4 second draft, section 3.10
         
-        This causes problems for some OpenAthens SP products.
+        In roles supporting SAML 2.0 profiles (roles whose protocolSupportEnumeration contains
+        urn:oasis:names:tc:SAML:2.0:protocol) each <KeyDescriptor> MUST support the direct
+        key verification scheme as described in section 2.1.1 above.
     -->
 	<xsl:template match="md:IDPSSODescriptor
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
@@ -57,6 +63,7 @@
 			<xsl:with-param name="m">SAML 2.0 IdP has KeyDescriptor without embedded key</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
+
 	<xsl:template match="md:AttributeAuthorityDescriptor
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
 		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
@@ -65,9 +72,6 @@
 		</xsl:call-template>
 	</xsl:template>
 	
-	<!--
-        Check for SAML 2.0 SPs with KeyName-only KeyDescriptors.
-    -->
 	<xsl:template match="md:SPSSODescriptor
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
 		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
