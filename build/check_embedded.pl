@@ -71,6 +71,22 @@ while (<KEYS>) {
 close KEYS;
 #print "Blacklists loaded.\n";
 
+#
+# Load expiry whitelist.
+#
+open WL, '../build/expiry_whitelist.txt' || die "can't open certificate expiry whitelist";
+while (<WL>) {
+	# fold lines
+	while (/^(.*)\\\s*$/) {
+		chomp;
+		$_ .= ' ' . <WL>;
+	}
+	next if /^\s*#/;	# drop comments
+	next if /^\s*$/;	# drop blank lines
+	my ($fingerprint) = split;
+	$expiry_whitelist{uc $fingerprint} = 'unused';
+}
+
 sub error {
 	my($s) = @_;
 	push(@olines, '   *** ' . $s . ' ***');
@@ -214,8 +230,8 @@ while (<>) {
 		#
 		# Use openssl to convert the certificate to text
 		#
-		my(@lines, $subject, $issuer, $subjectCN, $issuerCN);
-		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 -modulus |";
+		my(@lines, $subject, $issuer, $subjectCN, $issuerCN, $fingerprint);
+		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 -modulus -fingerprint|";
 		open(SSL, $cmd) || die "could not open openssl subcommand";
 		while (<SSL>) {
 			push @lines, $_;
@@ -243,6 +259,16 @@ while (<>) {
 				next;
 			}
 			
+			#
+			# Extract the certificate fingerprint.
+			#
+			if (/^\s*SHA1 Fingerprint=(.+)$/) {
+				$fingerprint = uc $1;
+				if (defined($expiry_whitelist{$fingerprint})) {
+					$expiry_whitelist{$fingerprint} = 'used';
+				}
+			}
+
 			#
 			# Extract the public key size.  This is displayed differently
 			# in different versions of OpenSSL.
@@ -289,18 +315,6 @@ while (<>) {
 				}
 
 				$days = ($notAfterTime-time())/86400.0;
-				if ($days < -$longExpiredDays) {
-					my $d = floor(-$days);
-					error("EXPIRED LONG AGO ($d days; $notAfter)");
-				} elsif ($days < 0) {
-					error("EXPIRED ($notAfter)");
-				} elsif ($days < 18) {
-					$days = int($days);
-					error("expires in $days days ($notAfter)");
-				} elsif ($days < 36) {
-					$days = int($days);
-					warning("expires in $days days ($notAfter)");
-				}
 				next;
 			}
 
@@ -374,6 +388,29 @@ while (<>) {
 		}
 		close SSL;
 		#print "   text lines: $#lines\n";
+
+		#
+		# Deal with certificate expiry.
+		#
+		if ($days < -$longExpiredDays) {
+			my $d = floor(-$days);
+			if (!defined($expiry_whitelist{$fingerprint})) {
+				error("EXPIRED LONG AGO ($d days; $notAfter)");
+				comment("fingerprint $fingerprint");
+			}
+		} elsif ($days < 0) {
+			if (!defined($expiry_whitelist{$fingerprint})) {
+				error("EXPIRED ($notAfter)");
+				comment("fingerprint $fingerprint");
+			}
+		} elsif ($days < 18) {
+			$days = int($days);
+			error("expires in $days days ($notAfter)");
+		} elsif ($days < 36) {
+			$days = int($days);
+			warning("expires in $days days ($notAfter)");
+		}
+
 
 		#
 		# Check KeyName if one has been supplied.
@@ -559,5 +596,17 @@ if ($distinct_certs > 1) {
 		my $count = $issuers{$issuer};
 		my $mark = $issuerMark{$issuer} ? $issuerMark{$issuer}: ' ';
 		print " $mark $issuer: $count\n";
+	}
+
+	my $first = 1;
+	foreach $fingerprint (sort keys %expiry_whitelist) {
+		if ($expiry_whitelist{$fingerprint} eq 'unused') {
+			if ($first) {
+				$first = 0;
+				print "\n";
+				print "Unused expiry whitelist fingerprints:\n";
+			}
+			print "   $fingerprint\n";
+		}
 	}
 }
