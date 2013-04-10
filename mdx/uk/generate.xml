@@ -500,7 +500,8 @@
         p:id="uk_exportPipeline">
         <property name="stages">
             <list>
-                <ref bean="uk_stripExtensions"/>
+                <ref bean="stripUkfedlabelNamespace"/>
+                <ref bean="stripWayfNamespace"/>
                 <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="removeEmptyExtensions"/>
