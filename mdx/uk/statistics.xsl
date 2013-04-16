@@ -717,6 +717,15 @@
                                 (<xsl:value-of select="format-number($idp.sso.saml.2.0.soap.count div $idp.sso.saml.2.0.count, '0.0%')"/> of SAML 2.0 IdPs,
                                 <xsl:value-of select="format-number($idp.sso.saml.2.0.soap.count div $idpCount, '0.0%')"/> of all IdPs)
                             </li>
+                            
+                            <xsl:variable name="idp.sso.saml.2.0.artifact"
+                                select="$idp.sso.saml.2.0[descendant::md:ArtifactResolutionService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:SOAP']]"/>
+                            <xsl:variable name="idp.sso.saml.2.0.artifact.count" select="count($idp.sso.saml.2.0.artifact)"/>
+                            <li>
+                                Artifact: <xsl:value-of select="$idp.sso.saml.2.0.artifact.count"/>
+                                (<xsl:value-of select="format-number($idp.sso.saml.2.0.artifact.count div $idp.sso.saml.2.0.count, '0.0%')"/> of SAML 2.0 IdPs,
+                                <xsl:value-of select="format-number($idp.sso.saml.2.0.artifact.count div $idpCount, '0.0%')"/> of all IdPs)
+                            </li>
                         </ul>
                     </li>
                     
