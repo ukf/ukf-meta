@@ -29,6 +29,30 @@
 
 
     <!--
+        *****************************
+        ***                       ***
+        ***   U T I L I T I E S   ***
+        ***                       ***
+        *****************************
+    -->
+    
+    <!--
+        stripEntityScopes
+    
+        Remove entity-level Scope elements, leaving only the ones associated
+        with role descriptors.    
+    -->
+    <bean id="stripEntityScopes" parent="xslt_parent"
+        p:id="stripEntityScopes">
+        <property name="xslResource">
+            <bean parent="file_parent">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/entity_scopes.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    
+    <!--
         ***********************
         ***                 ***
         ***   F I X U P S   ***
@@ -504,6 +528,7 @@
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
+                <ref bean="stripEntityScopes"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
                 <ref bean="uk_normaliseExport"/>
