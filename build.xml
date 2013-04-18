@@ -88,6 +88,11 @@
 	<property name="md.wayf.signed"     value="ukfederation-wayf.xml"/>
 	
 	<!--
+	    Name of default signing digest function.
+	-->
+	<property name="digest.default"     value="SHA-1"/>
+	
+	<!--
 		Null device location.
 	-->
 	<condition property="null.device"
@@ -540,18 +545,56 @@
 	<macrodef name="XMLSECTOOL.SIGN.uk">
 		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
 		<attribute name="o"/><!-- output file, assumed to be in the XML directory -->
+		<attribute name="digest" default="${digest.default}"/><!-- digest function to use -->
 		<sequential>
 			<!-- delete the temporary file to be sure we don't use old data -->
 			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+			
+			<echo>Signing @{i} using digest @{digest}.</echo>
 			
 			<!-- perform signing operation into temporary file -->
 			<XMLSECTOOL i="@{i}">
 				<args>
 					<arg value="--sign"/>
+					
+					<!-- set digest to use -->
+					<arg value="--digest"/>
+					<arg value="@{digest}"/>
+					
+					<!--
+					    Token option 1: pkcs11Config with keystoreProvider
+					   
+					    This only works with XmlSecTool 1.2.0.  It does not
+					    require the java.security file to be modified.
+					-->
+                    <!--
+                    <arg value="- -pkcs11Config"/>
+                    <arg value="C:\\pkcs11\\sdk18\\acs.cfg"/>
+                    <arg value="- -keystoreProvider"/>
+                    <arg value="sun.security.pkcs11.SunPKCS11"/>
+                    -->
+					
+					<!--
+					    Token option 2: pkcs11Config without keystoreProvider
+					    
+					    This has been the traditional practice at SWITCH.
+					-->
+					<!--
+					<arg value="- -pkcs11Config"/>
+					<arg value="DUMMY"/>
+					-->
+					
+					<!--
+					    Token option 3: keystore instead of pkcs11Config
+					    
+					    This has been the traditional practice at the UKf.
+					    It requires the java.security file to have been modified.
+					-->
 					<arg value="--keystore"/>
 					<arg value="${null.device}"/>
 					<arg value="--keystoreType"/>
 					<arg value="${keystore.uk.sign.type}"/>
+					
 					<arg value="--key"/>
 					<arg value="${keystore.uk.sign.alias}"/>
 					<arg value="--keyPassword"/>
@@ -682,8 +725,9 @@
 	<macrodef name="SIGN.uk">
 		<attribute name="i"/>
 		<attribute name="o"/>
+        <attribute name="digest" default="${digest.default}"/><!-- digest function to use -->
 		<sequential>
-			<XMLSECTOOL.SIGN.uk i="@{i}" o="@{o}"/>
+			<XMLSECTOOL.SIGN.uk i="@{i}" o="@{o}" digest="@{digest}"/>
 		</sequential>
 	</macrodef>
 
