@@ -1,0 +1,33 @@
+Changes in Release 1.2.0
+=============================================
+[XSTJ-38] - blacklist MD5 algorithm during signature verification
+[XSTJ-33] - release process for XmlSecTool 1.2.0
+[XSTJ-31] - add ECDSA elliptic curve signature support
+[XSTJ-28] - provide blacklist ability for SHA-1 during signature verification
+[XSTJ-27] - compatibility with Apache Santuario 1.5.x
+[XSTJ-24] - should not use xmlsec IdResolver class
+[XSTJ-23] - stabilise xmlsectool build, update dependencies
+[XSTJ-22] - non-zero exit codes from shell script
+[XSTJ-20] - pass JVMOPTS environment variable through xmlsectool.sh
+[XSTJ-19] - pkcs11Config option fails to use indicated keystore provider
+[XSTJ-17] - multiple errors in --help documentation
+[XSTJ-16] - misleading error message on failed schema validation
+[XSTJ-15] - XmlSecTool fails with String index out of range -1
+[XSTJ-14] - allow specification of Digest and Signature algorithms when signing
+[XSTJ-5] - ship RPM packaging files with xmlsectool
+
+Changes in Release 1.1.4
+=============================================
+[XTSJ-10] - Correct class and command name
+[XSTJ-9] - Add support for reading/writting base64, deflate, gzip encoded files
+[XTSJ-8] - xmlsectool generates spurious xmlns:xml definitions in output
+[XTSJ-7] - verify xmlsectool dependencies
+
+Changes in Release 1.1.3
+=============================================
+[XSTJ-6] - program fails with a NullPointerException when using a signing key from the filesystem without a password
+
+Changes in Release 1.1.2
+=============================================
+[XSTJ-1] - Update dependency libraries for version 1.1.2
+[XSTJ-2] - non-zero status code not returned when a signature is invalid
