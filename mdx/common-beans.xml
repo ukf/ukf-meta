@@ -147,6 +147,15 @@
     -->
     
     <!--
+        icmd_namespace
+        
+        Namespace URI for the icmd prefix: InCommon specific metadata.
+    -->
+    <bean id="icmd_namespace" class="java.lang.String">
+        <constructor-arg value="http://id.incommon.org/metadata"/>
+    </bean>
+    
+    <!--
         commonNamespaces
         
         A NamespaceContext that assigns the usual prefix for each of the commonly used XML namespaces.
@@ -160,6 +169,7 @@
                 <entry key="dsig11"     value="http://www.w3.org/2009/xmldsig11#"/>
                 <entry key="elab"       value="http://eduserv.org.uk/labels"/>
                 <entry key="hoksso"     value="urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser"/>
+                <entry key="icmd"       value-ref="icmd_namespace"/>
                 <entry key="idpdisc"    value="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"/>
                 <entry key="init"       value="urn:oasis:names:tc:SAML:profiles:SSO:request-init"/>
                 <entry key="md"         value="urn:oasis:names:tc:SAML:2.0:metadata"/>
