@@ -73,11 +73,11 @@
         class="net.shibboleth.metadata.dom.XSLTransformationStage"/>
     
     <!--
-        check_xslt_parent
+        XSLValidationStage / check_xslt_parent
         
         Parent for XSLT-based checking stages.
     -->
-    <bean id="check_xslt_parent" abstract="true" parent="stage_parent"
+    <bean id="XSLValidationStage" name="check_xslt_parent" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.XSLValidationStage"/>
     
     <!--

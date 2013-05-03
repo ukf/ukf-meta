@@ -368,6 +368,18 @@
     </bean>
     
     <!--
+        check_hasreginfo
+        
+        Check that each entity has an mdrpi:RegistrationInfo element.
+    -->
+    <bean id="check_hasreginfo" parent="XSLValidationStage"
+        p:id="check_hasreginfo">
+        <property name="xslResource">
+            <bean parent="FilesystemResource" c:resourcePath="#{ systemProperties['rulesdir'] }/check_hasreginfo.xsl"/>
+        </property>
+    </bean>
+    
+    <!--
         ***********************************************
         ***                                         ***
         ***   M D U I   S P E C I F I C A T I O N   ***
