@@ -579,6 +579,24 @@
     <!--
         *******************************************************************
         ***                                                             ***
+        ***   I N C O M M O N   F E D E R A T I O N   M E T A D A T A   ***
+        ***                                                             ***
+        *******************************************************************
+    -->
+    
+    <!--
+        check_incmd
+    -->
+    <bean id="check_incmd" parent="check_xslt_parent"
+        p:id="check_incmd">
+        <property name="xslResource">
+            <bean parent="FilesystemResource" c:resourcePath="#{ systemProperties['rulesdir'] }/check_incmd.xsl"/>
+        </property>
+    </bean>
+    
+    <!--
+        *******************************************************************
+        ***                                                             ***
         ***   U K   F E D E R A T I O N   S P E C I F I C A T I O N S   ***
         ***                                                             ***
         *******************************************************************
@@ -616,6 +634,7 @@
                 <ref bean="check_bindings"/>
                 <ref bean="check_hoksso"/>
                 <ref bean="check_idpdisc"/>
+                <ref bean="check_incmd"/>
                 <ref bean="check_init"/>
                 <ref bean="check_mdiop"/>
                 <ref bean="check_mdrpi"/>

@@ -34,11 +34,11 @@
     <bean id="component_parent" abstract="true" init-method="initialize"/>
     
     <!--
-        file_parent
+        FilesystemResource / file_parent
         
         Parent for all file system resource beans.
     -->
-    <bean id="file_parent" abstract="true" parent="component_parent"
+    <bean id="FilesystemResource" name="file_parent" abstract="true" parent="component_parent"
         class="net.shibboleth.utilities.java.support.resource.FilesystemResource"/>
 
     <!--
@@ -437,6 +437,7 @@
         A list of all schema documents that we make common use of.
     -->
     <util:list id="schemaResources">
+        <bean parent="FilesystemResource" c:resourcePath="#{ systemProperties['basedir'] }/xml/incommon-metadata.xsd"/>
         <bean parent="file_parent">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/MetadataExchange.xsd"/>
         </bean>
