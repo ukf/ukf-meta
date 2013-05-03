@@ -78,12 +78,7 @@
                         missing or expired validUntil attribute
                         invalid signature
                 -->
-                <!--
-                    no validUntil element is present at the moment
-                -->
-                <!--
                 <ref bean="check_validUntil"/>
-                -->
                 <ref bean="int_edugain_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
@@ -94,6 +89,12 @@
                 -->
                 <ref bean="cz_eduid_stripMetadataNamespace"/>
                 <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
+                
+                <!--
+                    All eduGAIN entities should have mdrpi:RegistrationInfo elements, but
+                    we can't check the actual values.
+                -->
+                <ref bean="check_hasreginfo"/>
                 
                 <ref bean="standardImportActions"/>
                 
@@ -125,10 +126,17 @@
                 <ref bean="disassemble"/>
 
                 <!--
-                    Strip Hungarian entity attributes namespace.
+                    Strip participant-specific namespaces.
                 -->
+                <ref bean="cz_eduid_stripMetadataNamespace"/>
                 <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
 
+                <!--
+                    All eduGAIN entities should have mdrpi:RegistrationInfo elements, but
+                    we can't check the actual values.
+                -->
+                <ref bean="check_hasreginfo"/>
+                
                 <ref bean="standardImportActions"/>
                 
                 <!-- Strip all entity attributes from this source. -->
