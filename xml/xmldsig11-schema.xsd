@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
 #
 # Copyright ©[2011] World Wide Web Consortium 
@@ -12,6 +13,7 @@
 # [1] http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231
 #
 -->
+
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
         xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
         xmlns:dsig11="http://www.w3.org/2009/xmldsig11#"
@@ -113,8 +115,6 @@
       </extension>
     </complexContent>
   </complexType>
-
-  <element name="OCSPResponse" type="base64Binary"/>
 
   <element name="DEREncodedKeyValue" type="dsig11:DEREncodedKeyValueType"/>
   <complexType name="DEREncodedKeyValueType">
