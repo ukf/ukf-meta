@@ -78,9 +78,9 @@
 	<xsl:template match="md:OrganizationURL[mdxURL:invalidURL(.)]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
-				<xsl:text>OrganizationURL </xsl:text>
+				<xsl:text>OrganizationURL '</xsl:text>
 				<xsl:value-of select="."/>
-				<xsl:text> is not a valid URL: </xsl:text>
+				<xsl:text>' is not a valid URL: </xsl:text>
 				<xsl:value-of select="mdxURL:whyInvalid(.)"/>
 			</xsl:with-param>
 		</xsl:call-template>
