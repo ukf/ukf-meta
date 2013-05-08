@@ -236,7 +236,33 @@
                 
                 <!-- check the transformed input -->
                 <ref bean="checkSchemas"/>
-                <ref bean="CHECK_std"/>
+                
+                <!--
+                    Standard checks (i.e., CHECK_std), with some exclusions.
+                    
+                    check_saml2meta is excluded so that the "FILL IN" boilerplate on
+                    OrganizationURL is not flagged.
+                -->
+                <ref bean="check_adfs"/>
+                <ref bean="check_algsupport"/>
+                <ref bean="check_bindings"/>
+                <ref bean="check_hoksso"/>
+                <ref bean="check_idpdisc"/>
+                <ref bean="check_incmd"/>
+                <ref bean="check_init"/>
+                <ref bean="check_mdiop"/>
+                <ref bean="check_mdrpi"/>
+                <ref bean="check_mdui"/>
+                <ref bean="check_misc"/>
+                <ref bean="check_namespaces"/>
+                <ref bean="check_reqattr"/>
+                <ref bean="check_saml1"/>
+                <ref bean="check_saml2"/>
+                <ref bean="check_saml2int"/>
+                <!-- <ref bean="check_saml2meta"/> -->
+                <ref bean="check_shibboleth"/>
+                <ref bean="check_uk_trust"/>
+                
                 <ref bean="check_future"/>
                 <ref bean="check_imported"/>
                 <ref bean="check_vhosts"/>
