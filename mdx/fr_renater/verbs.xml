@@ -31,19 +31,19 @@
         </property>
     </bean>
     
-    <bean id="import" parent="pipeline_parent"
-        p:id="import">
+    <bean id="importProduction" parent="pipeline_parent"
+        p:id="importProduction">
         <property name="stages">
             <list>
-                <ref bean="fr_renater_exportedEntities"/>
+                <ref bean="fr_renater_productionEntities"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
         </property>
     </bean>
-
-    <bean id="importRaw" parent="pipeline_parent"
-        p:id="importRaw">
+    
+    <bean id="importProductionRaw" parent="pipeline_parent"
+        p:id="importProductionRaw">
         <property name="stages">
             <list>
                 <ref bean="fr_renater_productionAggregate"/>
@@ -52,4 +52,27 @@
         </property>
     </bean>
     
+    <bean id="importEdugain" parent="pipeline_parent"
+        p:id="importEdugain">
+        <property name="stages">
+            <list>
+                <ref bean="fr_renater_edugainEntities"/>
+                <ref bean="standardImportTail"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="importEdugainRaw" parent="pipeline_parent"
+        p:id="importEdugainRaw">
+        <property name="stages">
+            <list>
+                <ref bean="fr_renater_edugainAggregate"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
+    <alias alias="import"    name="importEdugain"/>
+    <alias alias="importRaw" name="importEdugainRaw"/>
 </beans>
