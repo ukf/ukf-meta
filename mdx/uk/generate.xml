@@ -26,6 +26,7 @@
         Import beans from other channels.
     -->
     <import resource="../ie_edugate/beans.xml"/>
+    <import resource="../se_swamid/beans.xml"/>
     <import resource="../us_incommon/beans.xml"/>
 
 
@@ -180,6 +181,17 @@
         <property name="stages">
             <list>
                 <ref bean="ie_edugate_exportedEntities"/>
+                <ref bean="uk_fix_mailto"/>
+                <ref bean="uk_hide_idps"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="uk_se_swamid_importPipeline" parent="pipeline_parent"
+        p:id="uk_se_swamid_importPipeline">
+        <property name="stages">
+            <list>
+                <ref bean="se_swamid_edugainEntities"/>
                 <ref bean="uk_fix_mailto"/>
                 <ref bean="uk_hide_idps"/>
             </list>
@@ -688,6 +700,7 @@
                             <!-- entries earlier in the list have higher precedence -->
                             <ref bean="uk_ie_edugate_importPipeline"/>
                             <ref bean="uk_us_incommon_importPipeline"/>
+                            <ref bean="uk_se_swamid_importPipeline"/>
                         </list>
                     </property>
                 </bean>
