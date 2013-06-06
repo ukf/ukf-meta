@@ -83,7 +83,7 @@ Thus, most channels would be expected to contain the following beans as part of 
 * `channel_exportedAggregate`
 * `channel_exportedEntities`
 
-In older channels, these are explicit bean definitions.  In newer channels, the convention is to use the Spring <alias> feature to designate the existing aggregate-specific beans.
+In older channels, these are explicit bean definitions.  In newer channels, the convention is to use the Spring `<alias>` feature to designate the existing aggregate-specific beans.
 
 ## Common `beans.xml` channel beans
 
@@ -119,8 +119,10 @@ The verbs `import` and `importRaw` are intended to be a synonym for `importExpor
 ## `verbs.xml` and `<verb>.xml` conventions
 
 Verb definition files should import the channel's `beans.xml` file as well as
-the `common-beans.xml` file from the parent `/mdx/` directory through a relative
-path.
+the `common-beans.xml` file from the parent `/mdx/` directory.  Non-relative classpath references should be used, for example:
+
+    <import resource="classpath:se_swamid/beans.xml"/>
+    <import resource="classpath:common-beans.xml"/>
 
 Verb definition files should not import each other; any beans required to be
 shared between verb definition files should be moved into the channel's

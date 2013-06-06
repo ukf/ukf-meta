@@ -281,7 +281,7 @@
     <!--
         Import beans that perform individual validation checks.
     -->
-    <import resource="validation-beans.xml"/>
+    <import resource="classpath:validation-beans.xml"/>
     
     <!--
         identifierStrategy

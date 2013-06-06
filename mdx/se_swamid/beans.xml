@@ -15,8 +15,8 @@
     <!--
         Import eduGAIN participant beans for namespace stripping stages.
     -->
-    <import resource="../cz_eduid/beans.xml"/>
-    <import resource="../hu_eduid/beans.xml"/>
+    <import resource="classpath:cz_eduid/beans.xml"/>
+    <import resource="classpath:hu_eduid/beans.xml"/>
     
     <!--
         Location of various resources.

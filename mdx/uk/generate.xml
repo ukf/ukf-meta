@@ -15,19 +15,19 @@
     <!--
         Import commonly used beans.
     -->
-    <import resource="../common-beans.xml"/>
+    <import resource="classpath:common-beans.xml"/>
     
     <!--
         Import channel-specific beans.
     -->
-    <import resource="beans.xml"/>
+    <import resource="classpath:uk/beans.xml"/>
     
     <!--
         Import beans from other channels.
     -->
-    <import resource="../ie_edugate/beans.xml"/>
-    <import resource="../se_swamid/beans.xml"/>
-    <import resource="../us_incommon/beans.xml"/>
+    <import resource="classpath:ie_edugate/beans.xml"/>
+    <import resource="classpath:se_swamid/beans.xml"/>
+    <import resource="classpath:us_incommon/beans.xml"/>
 
 
     <!--

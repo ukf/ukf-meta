@@ -410,6 +410,10 @@
             <java classname="net.shibboleth.metadata.cli.SimpleCommandLine"
                 fork="true" failonerror="true" maxmemory="${java.max.memory}">
                 <classpath>
+                	<!-- Spring "classpath:" imports can be under the MDX directory --> 
+                	<pathelement path="${mdx.dir}"/>
+                	
+                	<!-- Include all APIs we may want to use. -->
                     <fileset dir="${tools.mda}/lib">
                         <include name="*.jar"/>
                     </fileset>
@@ -897,7 +901,6 @@
         <CHANNEL.import channel="ie_edugate"/>
 		<CHANNEL.do channel="ie_edugate" verb="importAll"/>
         <CHANNEL.import channel="int_edugain"/>
-		<CHANNEL.do channel="int_edugain" verb="testImport"/>
         <CHANNEL.import channel="jp_gakunin"/>
 		<CHANNEL.import channel="nl_surfconext"/>
 		<CHANNEL.import channel="nz_tuakiri"/>

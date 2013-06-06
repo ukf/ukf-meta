@@ -15,12 +15,12 @@
     <!--
         Import commonly used beans.
     -->
-    <import resource="../common-beans.xml"/>
+    <import resource="classpath:common-beans.xml"/>
         
     <!--
         Import channel-specific beans.
     -->
-    <import resource="beans.xml"/>
+    <import resource="classpath:fi_haka/beans.xml"/>
     
     <bean id="serializeImported" parent="serialize_parent"
         p:id="serializeImported">
