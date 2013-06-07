@@ -21,7 +21,7 @@
     <!--
         Fetch the eduGAIN test aggregate.
     -->
-    <bean id="int_edugain_testAggregate" parent="domResourceStage_parent"
+    <bean id="int_edugain_testAggregate" parent="DomResourceSourceStage"
         p:id="int_edugain_testAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -34,7 +34,7 @@
     <!--
         Fetches the eduGAIN production aggregate.
     -->
-    <bean id="int_edugain_productionAggregate" parent="domResourceStage_parent"
+    <bean id="int_edugain_productionAggregate" parent="DomResourceSourceStage"
         p:id="int_edugain_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -67,7 +67,7 @@
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="int_edugain_exportedEntities" parent="composite_parent"
+    <bean id="int_edugain_exportedEntities" parent="CompositeStage"
         p:id="int_edugain_exportedEntities">
         <property name="composedStages">
             <list>
@@ -108,7 +108,7 @@
     <!--
         Fetch and process the test entities as a collection.
     -->
-    <bean id="int_edugain_testEntities" parent="composite_parent"
+    <bean id="int_edugain_testEntities" parent="CompositeStage"
         p:id="int_edugain_testEntities">
         <property name="composedStages">
             <list>

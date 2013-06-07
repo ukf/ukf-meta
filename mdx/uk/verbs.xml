@@ -35,7 +35,7 @@
         
         Stand-alone statistics generation.
     -->
-    <bean id="statistics" parent="pipeline_parent"
+    <bean id="statistics" parent="SimplePipeline"
         p:id="statistics">
         <property name="stages">
             <list>
@@ -53,21 +53,21 @@
         Generates a page of links to discovery services, for each SP that
         has mdui:uiinfo metadata.
     -->
-    <bean id="sp_mdui_test" parent="pipeline_parent"
+    <bean id="sp_mdui_test" parent="SimplePipeline"
         p:id="sp_mdui_test">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
                 <ref bean="assemble"/>
-                <bean id="process" parent="xslt_parent"
+                <bean id="process" parent="XSLTransformationStage"
                     p:id="process">
                     <property name="xslResource">
-                        <bean parent="file_parent">
+                        <bean parent="FilesystemResource">
                             <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/sp_mdui_test.xsl"/>
                         </bean>
                     </property>
                 </bean>
-                <bean id="serialize" parent="serialize_parent"
+                <bean id="serialize" parent="SerializationStage"
                     p:id="serialize">
                     <property name="outputFile">
                         <bean class="java.io.File">
@@ -87,7 +87,7 @@
         *********************************
     -->
     
-    <bean id="checkPorts" parent="pipeline_parent"
+    <bean id="checkPorts" parent="SimplePipeline"
         p:id="checkPorts">
         <property name="stages">
             <list>
@@ -119,7 +119,7 @@
         ***********************************
     -->
     
-    <bean id="checkFuture" parent="pipeline_parent"
+    <bean id="checkFuture" parent="SimplePipeline"
         p:id="checkFuture">
         <property name="stages">
             <list>
@@ -186,7 +186,7 @@
         
         Serialise the fragment file just imported.
     -->
-    <bean id="serializeImportedMetadata" parent="serialize_parent"
+    <bean id="serializeImportedMetadata" parent="SerializationStage"
         p:id="serializeImportedMetadata">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -202,7 +202,7 @@
         
         For now, just the head of that pipeline.
     -->
-    <bean id="import.metadata" parent="pipeline_parent"
+    <bean id="import.metadata" parent="SimplePipeline"
         p:id="import.metadata">
         <property name="stages">
             <list>
@@ -215,20 +215,20 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <!-- transform into a fragment using our local conventions -->
-                <bean id="importTransform" parent="xslt_parent"
+                <bean id="importTransform" parent="XSLTransformationStage"
                     p:id="importTransform">
                     <property name="xslResource">
-                        <bean parent="file_parent">
+                        <bean parent="FilesystemResource">
                             <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/import.xsl"/>
                         </bean>
                     </property>
                 </bean>
                 
                 <!-- normalise namespaces in a specific way -->
-                <bean id="normalizeFragment" parent="xslt_parent"
+                <bean id="normalizeFragment" parent="XSLTransformationStage"
                     p:id="normalizeFragment">
                     <property name="xslResource">
-                        <bean parent="file_parent">
+                        <bean parent="FilesystemResource">
                             <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_fragment.xsl"/>
                         </bean>
                     </property>
@@ -282,7 +282,7 @@
         #################################################
     -->
     
-    <bean id="serializeImported" parent="serialize_parent"
+    <bean id="serializeImported" parent="SerializationStage"
         p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -291,7 +291,7 @@
         </property>
     </bean>
     
-    <bean id="importExported" parent="pipeline_parent"
+    <bean id="importExported" parent="SimplePipeline"
         p:id="importExported">
         <property name="stages">
             <list>
@@ -302,7 +302,7 @@
         </property>
     </bean>
     
-    <bean id="importExportedRaw" parent="pipeline_parent"
+    <bean id="importExportedRaw" parent="SimplePipeline"
         p:id="importExportedRaw">
         <property name="stages">
             <list>

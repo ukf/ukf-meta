@@ -29,7 +29,7 @@
     <!--
         Fetch and process the entities as a collection.
     -->
-    <bean id="test_entities" parent="composite_parent"
+    <bean id="test_entities" parent="CompositeStage"
         p:id="test_entities">
         <property name="composedStages">
             <list>

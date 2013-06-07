@@ -22,7 +22,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="nl_surfnet_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="nl_surfnet_edugainAggregate" parent="DomResourceSourceStage"
         p:id="nl_surfnet_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -55,7 +55,7 @@
     <!--
         Fetch the IdP aggregate.
     -->
-    <bean id="nl_surfnet_idpAggregate" parent="domResourceStage_parent"
+    <bean id="nl_surfnet_idpAggregate" parent="DomResourceSourceStage"
         p:id="nl_surfnet_idpAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -68,7 +68,7 @@
     <!--
         Fetch the SP aggregate.
     -->
-    <bean id="nl_surfnet_spAggregate" parent="domResourceStage_parent"
+    <bean id="nl_surfnet_spAggregate" parent="DomResourceSourceStage"
         p:id="nl_surfnet_spAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -83,7 +83,7 @@
         
         Fake this up by combining separate IdP and SP aggregates.
     -->
-    <bean id="nl_surfnet_productionEntities" parent="composite_parent"
+    <bean id="nl_surfnet_productionEntities" parent="CompositeStage"
         p:id="nl_surfnet_productionEntities">
         <property name="composedStages">
             <list>
@@ -113,7 +113,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="nl_surfnet_edugainEntities" parent="composite_parent"
+    <bean id="nl_surfnet_edugainEntities" parent="CompositeStage"
         p:id="nl_surfnet_edugainEntities">
         <property name="composedStages">
             <list>

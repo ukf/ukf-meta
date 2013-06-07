@@ -43,7 +43,7 @@
     <!--
         Fetch the export aggregate.
     -->
-    <bean id="uk_exportAggregate" parent="domResourceStage_parent"
+    <bean id="uk_exportAggregate" parent="DomResourceSourceStage"
         p:id="uk_exportAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -57,7 +57,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="uk_productionAggregate" parent="domResourceStage_parent"
+    <bean id="uk_productionAggregate" parent="DomResourceSourceStage"
         p:id="uk_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -150,10 +150,10 @@
         This transform can be run on individual EntityDescriptors or on an
         aggregate EntitiesDescriptor.
     -->
-    <bean id="uk_processScopes" parent="xslt_parent"
+    <bean id="uk_processScopes" parent="XSLTransformationStage"
         p:id="uk_processScopes">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/scopes.xsl"/>
             </bean>
         </property>
@@ -170,7 +170,7 @@
         
         A Resource referencing the members.xml document.
     -->
-    <bean id="uk_membersResource" parent="file_parent">
+    <bean id="uk_membersResource" parent="FilesystemResource">
         <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
     </bean>
     
@@ -205,10 +205,10 @@
         
         Adds "mailto:" to md:EmailAddress elements which don't already have it.
     -->
-    <bean id="uk_fix_mailto" parent="xslt_parent"
+    <bean id="uk_fix_mailto" parent="XSLTransformationStage"
         p:id="uk_fix_mailto">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fix_mailto.xsl"/>
             </bean>
         </property>
@@ -223,10 +223,10 @@
         Requires that IdPs already have EntityDescriptor/Extensions elements to put
         the HideFromWAYF element into.
     -->
-    <bean id="uk_hide_idps" parent="xslt_parent"
+    <bean id="uk_hide_idps" parent="XSLTransformationStage"
         p:id="uk_hide_idps">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/hide_idps.xsl"/>
             </bean>
         </property>
@@ -238,10 +238,10 @@
         
         Checks specific to the UK registrar function.
     -->
-    <bean id="check_ukreg" parent="check_xslt_parent"
+    <bean id="check_ukreg" parent="XSLValidationStage"
         p:id="check_ukreg">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_ukreg.xsl"/>
             </bean>
         </property>
@@ -261,7 +261,7 @@
     <bean id="uk_trustRootsDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean">
         <property name="parserPool" ref="parserPool"/>
         <property name="documentResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/xml/master.xml"/>
             </bean>
         </property>
@@ -273,10 +273,10 @@
         
         This stage adds the UK federation trust roots to an EntitiesDescriptor.
     -->
-    <bean id="uk_addTrustRoots" parent="xslt_parent"
+    <bean id="uk_addTrustRoots" parent="XSLTransformationStage"
         p:id="uk_addTrustRoots">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust-roots.xsl"/>
             </bean>
         </property>
@@ -293,10 +293,10 @@
         
         This stage performs any standard cleanup required for UK federation fragment files.
     -->
-    <bean id="uk_processFragment" parent="xslt_parent"
+    <bean id="uk_processFragment" parent="XSLTransformationStage"
         p:id="uk_processFragment">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fragment.xsl"/>
             </bean>
         </property>
@@ -360,7 +360,7 @@
     <!--
         Fetch and process the registered entities as a collection.
     -->
-    <bean id="uk_registeredEntities" parent="composite_parent"
+    <bean id="uk_registeredEntities" parent="CompositeStage"
         p:id="uk_registeredEntities">
         <property name="composedStages">
             <list>
@@ -387,10 +387,10 @@
         
         Strip those UK federation extensions which we never publish.
     -->
-    <bean id="uk_stripExtensions" parent="xslt_parent"
+    <bean id="uk_stripExtensions" parent="XSLTransformationStage"
         p:id="uk_stripExtensions">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_extensions.xsl"/>
             </bean>
         </property>
@@ -412,10 +412,10 @@
         used in an XML document.  This one is UK-specific, as it makes specific choices
         in order to limit the number of prefixes used.
     -->
-    <bean id="uk_normaliseNamespaces" parent="xslt_parent"
+    <bean id="uk_normaliseNamespaces" parent="XSLTransformationStage"
         p:id="uk_normaliseNamespaces">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_uk.xsl"/>
             </bean>
         </property>
@@ -473,7 +473,7 @@
         Serialise the (assumed HTML) DomDocumentItem into the UK federation statistics
         output file in the production XML directory.
     -->
-    <bean id="uk_serializeStatistics" parent="serialize_parent"
+    <bean id="uk_serializeStatistics" parent="SerializationStage"
         p:id="uk_serializeStatistics">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -487,10 +487,10 @@
         
         Input is an aggregate of all registered entities, output is the HTML statistics.
     -->
-    <bean id="uk_generateStatistics" parent="xslt_parent"
+    <bean id="uk_generateStatistics" parent="XSLTransformationStage"
         p:id="uk_generateStatistics">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/statistics.xsl"/>
             </bean>
         </property>
@@ -509,7 +509,7 @@
         resulting HTML output is written into the appropriate file in the production
         XML directory.
     -->
-    <bean id="uk_statisticsPipeline" parent="pipeline_parent"
+    <bean id="uk_statisticsPipeline" parent="SimplePipeline"
         p:id="uk_statisticsPipeline">
         <property name="stages">
             <list>
@@ -531,7 +531,7 @@
     <!--
         Fetch and process the export entities as a collection.
     -->
-    <bean id="uk_exportedEntities" parent="composite_parent"
+    <bean id="uk_exportedEntities" parent="CompositeStage"
         p:id="uk_exportedEntities">
         <property name="composedStages">
             <list>

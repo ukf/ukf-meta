@@ -15,7 +15,7 @@
     <!--
         Fetch the export metadata aggregate.
     -->
-    <bean id="uk_eduserv_exportAggregate" parent="domResourceStage_parent"
+    <bean id="uk_eduserv_exportAggregate" parent="DomResourceSourceStage"
         p:id="uk_eduserv_exportAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -48,7 +48,7 @@
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="uk_eduserv_exportedEntities" parent="composite_parent"
+    <bean id="uk_eduserv_exportedEntities" parent="CompositeStage"
         p:id="uk_eduserv_exportedEntities">
         <property name="composedStages">
             <list>

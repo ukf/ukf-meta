@@ -24,7 +24,7 @@
         
         FEIDE is a hub-and-spoke federation with a single IdP.  SP metadata is not published.
     -->
-    <bean id="no_feide_idpMetadata" parent="domResourceStage_parent"
+    <bean id="no_feide_idpMetadata" parent="DomResourceSourceStage"
         p:id="no_feide_idpMetadata">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -39,7 +39,7 @@
         
         There isn't one of these, so make one by wrapping the IdP metadata.
     -->
-    <bean id="no_feide_productionAggregate" parent="pipeline_parent"
+    <bean id="no_feide_productionAggregate" parent="SimplePipeline"
         p:id="no_feide_productionAggregate">
         <property name="stages">
             <list>
@@ -52,7 +52,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="no_feide_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="no_feide_edugainAggregate" parent="DomResourceSourceStage"
         p:id="no_feide_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -85,7 +85,7 @@
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="no_feide_productionEntities" parent="composite_parent"
+    <bean id="no_feide_productionEntities" parent="CompositeStage"
         p:id="no_feide_productionEntities">
         <property name="composedStages">
             <list>
@@ -102,7 +102,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="no_feide_edugainEntities" parent="composite_parent"
+    <bean id="no_feide_edugainEntities" parent="CompositeStage"
         p:id="no_feide_edugainEntities">
         <property name="composedStages">
             <list>

@@ -44,10 +44,10 @@
         Remove entity-level Scope elements, leaving only the ones associated
         with role descriptors.    
     -->
-    <bean id="stripEntityScopes" parent="xslt_parent"
+    <bean id="stripEntityScopes" parent="XSLTransformationStage"
         p:id="stripEntityScopes">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/entity_scopes.xsl"/>
             </bean>
         </property>
@@ -87,7 +87,7 @@
         
         See https://wiki.shibboleth.net/confluence/display/SHIB2/MetadataCorrectness#MetadataCorrectness-Version20
     -->
-    <bean id="fixup_EncryptionMethod" parent="stripElement_parent"
+    <bean id="fixup_EncryptionMethod" parent="ElementStrippingStage"
         p:id="fixup_EncryptionMethod"
         p:elementName="EncryptionMethod"
         p:elementNamespace="urn:oasis:names:tc:SAML:2.0:metadata"/>
@@ -98,10 +98,10 @@
         Patch any @use-less KeyName descriptors in IdP roles
         for the benefit of Shib SPs pre-1.3.1.
     -->
-    <bean id="fixup_keyuse" parent="xslt_parent"
+    <bean id="fixup_keyuse" parent="XSLTransformationStage"
         p:id="fixup_keyuse">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fixup_keyuse.xsl"/>
             </bean>
         </property>
@@ -115,7 +115,7 @@
         Fixup actions which are only required in specific output pipelines need to
         appear there individually.
     -->
-    <bean id="performOtherFixups" parent="composite_parent"
+    <bean id="performOtherFixups" parent="CompositeStage"
         p:id="performOtherFixups">
         <property name="composedStages">
             <list>
@@ -127,10 +127,10 @@
     <!--
         check_fixup_encmethod
     -->
-    <bean id="check_fixup_encmethod" parent="check_xslt_parent"
+    <bean id="check_fixup_encmethod" parent="XSLValidationStage"
         p:id="check_fixup_encmethod">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_fixup_encmethod.xsl"/>
             </bean>
         </property>
@@ -139,10 +139,10 @@
     <!--
         check_fixup_keyuse
     -->
-    <bean id="check_fixup_keyuse" parent="check_xslt_parent"
+    <bean id="check_fixup_keyuse" parent="XSLValidationStage"
         p:id="check_fixup_keyuse">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_fixup_keyuse.xsl"/>
             </bean>
         </property>
@@ -156,7 +156,7 @@
         export flows, for which we desire the closest possible correspondence to
         the registered metadata.
     -->
-    <bean id="checkPublishable" parent="composite_parent"
+    <bean id="checkPublishable" parent="CompositeStage"
         p:id="checkPublishable">
         <property name="composedStages">
             <list>
@@ -176,7 +176,7 @@
         *******************************************
     -->
     
-    <bean id="uk_ie_edugate_importPipeline" parent="pipeline_parent"
+    <bean id="uk_ie_edugate_importPipeline" parent="SimplePipeline"
         p:id="uk_ie_edugate_importPipeline">
         <property name="stages">
             <list>
@@ -187,7 +187,7 @@
         </property>
     </bean>
     
-    <bean id="uk_se_swamid_importPipeline" parent="pipeline_parent"
+    <bean id="uk_se_swamid_importPipeline" parent="SimplePipeline"
         p:id="uk_se_swamid_importPipeline">
         <property name="stages">
             <list>
@@ -198,7 +198,7 @@
         </property>
     </bean>
     
-    <bean id="uk_us_incommon_importPipeline" parent="pipeline_parent"
+    <bean id="uk_us_incommon_importPipeline" parent="SimplePipeline"
         p:id="uk_us_incommon_importPipeline">
         <property name="stages">
             <list>
@@ -234,7 +234,7 @@
         Assemble a nested EntitiesDescriptor structure with the
         UK federation entities inside an inner element.
     -->
-    <bean id="uk_assembleHierarchicalAggregate" parent="composite_parent"
+    <bean id="uk_assembleHierarchicalAggregate" parent="CompositeStage"
         p:id="uk_assembleHierarchicalAggregate">
         <property name="composedStages">
             <list>
@@ -248,7 +248,7 @@
                         <ref bean="uk_memberEntitySelector"/>
                     </property>
                     <property name="selectedItemPipeline">
-                        <bean name="uk_assemblePipeline" parent="pipeline_parent"
+                        <bean name="uk_assemblePipeline" parent="SimplePipeline"
                             p:id="uk_assemblePipeline">
                             <property name="stages">
                                 <list>
@@ -277,10 +277,10 @@
         ***************************************************
     -->
     
-    <bean id="uk_finaliseProduction" parent="xslt_parent"
+    <bean id="uk_finaliseProduction" parent="XSLTransformationStage"
         p:id="uk_finaliseProduction">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
@@ -291,7 +291,7 @@
         </property>
     </bean>
 
-    <bean id="serializeUnsignedProductionAggregate" parent="serialize_parent"
+    <bean id="serializeUnsignedProductionAggregate" parent="SerializationStage"
         p:id="serializeUnsignedProductionAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -300,7 +300,7 @@
         </property>
     </bean>
 
-    <bean id="uk_productionPipeline" parent="pipeline_parent"
+    <bean id="uk_productionPipeline" parent="SimplePipeline"
         p:id="uk_productionPipeline">
         <property name="stages">
             <list>
@@ -334,7 +334,7 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeUnsignedWayfAggregate" parent="serialize_parent"
+    <bean id="serializeUnsignedWayfAggregate" parent="SerializationStage"
         p:id="serializeUnsignedWayfAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -343,7 +343,7 @@
         </property>
     </bean>
     
-    <bean id="uk_wayfPipeline" parent="pipeline_parent"
+    <bean id="uk_wayfPipeline" parent="SimplePipeline"
         p:id="uk_wayfPipeline">
         <property name="stages">
             <list>
@@ -371,10 +371,10 @@
         ***********************************************
     -->
     
-    <bean id="uk_finaliseFallback" parent="xslt_parent"
+    <bean id="uk_finaliseFallback" parent="XSLTransformationStage"
         p:id="uk_finaliseFallback">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
@@ -385,16 +385,16 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseFallback" parent="xslt_parent"
+    <bean id="uk_normaliseFallback" parent="XSLTransformationStage"
         p:id="uk_normaliseFallback">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_back.xsl"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="serializeUnsignedFallbackAggregate" parent="serialize_parent"
+    <bean id="serializeUnsignedFallbackAggregate" parent="SerializationStage"
         p:id="serializeUnsignedFallbackAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -403,7 +403,7 @@
         </property>
     </bean>
     
-    <bean id="uk_fallbackPipeline" parent="pipeline_parent"
+    <bean id="uk_fallbackPipeline" parent="SimplePipeline"
         p:id="uk_fallbackPipeline">
         <property name="stages">
             <list>
@@ -433,10 +433,10 @@
         ***************************************
     -->
     
-    <bean id="uk_finaliseTest" parent="xslt_parent"
+    <bean id="uk_finaliseTest" parent="XSLTransformationStage"
         p:id="uk_finaliseTest">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
@@ -448,16 +448,16 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseTest" parent="xslt_parent"
+    <bean id="uk_normaliseTest" parent="XSLTransformationStage"
         p:id="uk_normaliseTest">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_test.xsl"/>
             </bean>
         </property>
     </bean>
     
-    <bean id="serializeUnsignedTestAggregate" parent="serialize_parent"
+    <bean id="serializeUnsignedTestAggregate" parent="SerializationStage"
         p:id="serializeUnsignedTestAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -466,7 +466,7 @@
         </property>
     </bean>
     
-    <bean id="uk_testPipeline" parent="composite_parent"
+    <bean id="uk_testPipeline" parent="CompositeStage"
         p:id="uk_testPipeline">
         <property name="composedStages">
             <list>
@@ -495,10 +495,10 @@
         *******************************************
     -->
     
-    <bean id="uk_finaliseExport" parent="xslt_parent"
+    <bean id="uk_finaliseExport" parent="XSLTransformationStage"
         p:id="uk_finaliseExport">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
             </bean>
         </property>
@@ -510,10 +510,10 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseExport" parent="xslt_parent"
+    <bean id="uk_normaliseExport" parent="XSLTransformationStage"
         p:id="uk_normaliseExport">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_export.xsl"/>
             </bean>
         </property>
@@ -524,7 +524,7 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeUnsignedExportAggregate" parent="serialize_parent"
+    <bean id="serializeUnsignedExportAggregate" parent="SerializationStage"
         p:id="serializeUnsignedExportAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -533,7 +533,7 @@
         </property>
     </bean>
     
-    <bean id="uk_exportPipeline" parent="pipeline_parent"
+    <bean id="uk_exportPipeline" parent="SimplePipeline"
         p:id="uk_exportPipeline">
         <property name="stages">
             <list>
@@ -563,7 +563,7 @@
         *************************************
     -->
     
-    <bean id="generate" parent="pipeline_parent"
+    <bean id="generate" parent="SimplePipeline"
         p:id="generate">
         <property name="stages">
             <list>
@@ -636,7 +636,7 @@
                     Merge in entities from production metadata exchange sources.
                 -->
                 
-                <bean id="mergeProductionMDXEntities" parent="merge_parent"
+                <bean id="mergeProductionMDXEntities" parent="PipelineMergeStage"
                     p:id="mergeProductionMDXortedEntities">
                     <property name="mergedPipelines">
                         <list>
@@ -693,7 +693,7 @@
                     Merge in entities from pre-production metadata exchange sources.
                 -->
 
-                <bean id="mergePreproductionMDXEntities" parent="merge_parent"
+                <bean id="mergePreproductionMDXEntities" parent="PipelineMergeStage"
                     p:id="mergePreproductionMDXEntities">
                     <property name="mergedPipelines">
                         <list>

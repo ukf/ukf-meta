@@ -22,7 +22,7 @@
     -->
     <import resource="classpath:ie_edugate/beans.xml"/>
     
-    <bean id="serializeImported" parent="serialize_parent"
+    <bean id="serializeImported" parent="SerializationStage"
         p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -31,7 +31,7 @@
         </property>
     </bean>
     
-    <bean id="import" parent="pipeline_parent"
+    <bean id="import" parent="SimplePipeline"
         p:id="import">
         <property name="stages">
             <list>
@@ -42,7 +42,7 @@
         </property>
     </bean>
     
-    <bean id="importAll" parent="pipeline_parent"
+    <bean id="importAll" parent="SimplePipeline"
         p:id="importAll">
         <property name="stages">
             <list>
@@ -53,7 +53,7 @@
         </property>
     </bean>
     
-    <bean id="importRaw" parent="pipeline_parent"
+    <bean id="importRaw" parent="SimplePipeline"
         p:id="importRaw">
         <property name="stages">
             <list>

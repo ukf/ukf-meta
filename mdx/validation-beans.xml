@@ -35,10 +35,10 @@
     <!--
         check_future_0
     -->
-    <bean id="check_future_0" parent="check_xslt_parent"
+    <bean id="check_future_0" parent="XSLValidationStage"
         p:id="check_future_0">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_0.xsl"/>
             </bean>
         </property>
@@ -47,10 +47,10 @@
     <!--
         check_future_1
     -->
-    <bean id="check_future_1" parent="check_xslt_parent"
+    <bean id="check_future_1" parent="XSLValidationStage"
         p:id="check_future_1">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_1.xsl"/>
             </bean>
         </property>
@@ -59,10 +59,10 @@
     <!--
         check_future_2
     -->
-    <bean id="check_future_2" parent="check_xslt_parent"
+    <bean id="check_future_2" parent="XSLValidationStage"
         p:id="check_future_2">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_2.xsl"/>
             </bean>
         </property>
@@ -71,10 +71,10 @@
     <!--
         check_future_3
     -->
-    <bean id="check_future_3" parent="check_xslt_parent"
+    <bean id="check_future_3" parent="XSLValidationStage"
         p:id="check_future_3">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_3.xsl"/>
             </bean>
         </property>
@@ -83,10 +83,10 @@
     <!--
         check_future_4
     -->
-    <bean id="check_future_4" parent="check_xslt_parent"
+    <bean id="check_future_4" parent="XSLValidationStage"
         p:id="check_future_4">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_4.xsl"/>
             </bean>
         </property>
@@ -95,10 +95,10 @@
     <!--
         check_future_5
     -->
-    <bean id="check_future_5" parent="check_xslt_parent"
+    <bean id="check_future_5" parent="XSLValidationStage"
         p:id="check_future_5">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_5.xsl"/>
             </bean>
         </property>
@@ -107,10 +107,10 @@
     <!--
         check_future_6
     -->
-    <bean id="check_future_6" parent="check_xslt_parent"
+    <bean id="check_future_6" parent="XSLValidationStage"
         p:id="check_future_6">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_6.xsl"/>
             </bean>
         </property>
@@ -119,10 +119,10 @@
     <!--
         check_future_7
     -->
-    <bean id="check_future_7" parent="check_xslt_parent"
+    <bean id="check_future_7" parent="XSLValidationStage"
         p:id="check_future_7">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_7.xsl"/>
             </bean>
         </property>
@@ -131,10 +131,10 @@
     <!--
         check_future_8
     -->
-    <bean id="check_future_8" parent="check_xslt_parent"
+    <bean id="check_future_8" parent="XSLValidationStage"
         p:id="check_future_8">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_8.xsl"/>
             </bean>
         </property>
@@ -143,10 +143,10 @@
     <!--
         check_future_9
     -->
-    <bean id="check_future_9" parent="check_xslt_parent"
+    <bean id="check_future_9" parent="XSLValidationStage"
         p:id="check_future_9">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_future_9.xsl"/>
             </bean>
         </property>
@@ -157,7 +157,7 @@
         
         Combines all check_future_N stages.
     -->
-    <bean id="check_future" parent="composite_parent"
+    <bean id="check_future" parent="CompositeStage"
         p:id="check_future">
         <property name="composedStages">
             <list>
@@ -188,10 +188,10 @@
     <!--
         check_algsupport
     -->
-    <bean id="check_algsupport" parent="check_xslt_parent"
+    <bean id="check_algsupport" parent="XSLValidationStage"
         p:id="check_algsupport">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_algsupport.xsl"/>
             </bean>
         </property>
@@ -210,10 +210,10 @@
     <!--
         check_adfs
     -->
-    <bean id="check_adfs" parent="check_xslt_parent"
+    <bean id="check_adfs" parent="XSLValidationStage"
         p:id="check_adfs">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_adfs.xsl"/>
             </bean>
         </property>
@@ -222,10 +222,10 @@
     <!--
         check_aggregate
     -->
-    <bean id="check_aggregate" parent="check_xslt_parent"
+    <bean id="check_aggregate" parent="XSLValidationStage"
         p:id="check_aggregate">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_aggregate.xsl"/>
             </bean>
         </property>
@@ -234,10 +234,10 @@
     <!--
         check_bindings
     -->
-    <bean id="check_bindings" parent="check_xslt_parent"
+    <bean id="check_bindings" parent="XSLValidationStage"
         p:id="check_bindings">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_bindings.xsl"/>
             </bean>
         </property>
@@ -246,10 +246,10 @@
     <!--
         check_filtered
     -->
-    <bean id="check_filtered" parent="check_xslt_parent"
+    <bean id="check_filtered" parent="XSLValidationStage"
         p:id="check_filtered">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_filtered.xsl"/>
             </bean>
         </property>
@@ -258,10 +258,10 @@
     <!--
         check_hoksso
     -->
-    <bean id="check_hoksso" parent="check_xslt_parent"
+    <bean id="check_hoksso" parent="XSLValidationStage"
         p:id="check_hoksso">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_hoksso.xsl"/>
             </bean>
         </property>
@@ -270,10 +270,10 @@
     <!--
         check_idpdisc
     -->
-    <bean id="check_idpdisc" parent="check_xslt_parent"
+    <bean id="check_idpdisc" parent="XSLValidationStage"
         p:id="check_idpdisc">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_idpdisc.xsl"/>
             </bean>
         </property>
@@ -282,10 +282,10 @@
     <!--
         check_imported
     -->
-    <bean id="check_imported" parent="check_xslt_parent"
+    <bean id="check_imported" parent="XSLValidationStage"
         p:id="check_imported">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_imported.xsl"/>
             </bean>
         </property>
@@ -294,10 +294,10 @@
     <!--
         check_init
     -->
-    <bean id="check_init" parent="check_xslt_parent"
+    <bean id="check_init" parent="XSLValidationStage"
         p:id="check_init">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_init.xsl"/>
             </bean>
         </property>
@@ -306,10 +306,10 @@
     <!--
         check_mdiop
     -->
-    <bean id="check_mdiop" parent="check_xslt_parent"
+    <bean id="check_mdiop" parent="XSLValidationStage"
         p:id="check_mdiop">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_mdiop.xsl"/>
             </bean>
         </property>
@@ -328,10 +328,10 @@
         
         Miscellaneous MDRPI tests, in XSLT.
     -->
-    <bean id="check_mdrpi_xslt" parent="check_xslt_parent"
+    <bean id="check_mdrpi_xslt" parent="XSLValidationStage"
         p:id="check_mdrpi_xslt">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_mdrpi.xsl"/>
             </bean>
         </property>
@@ -342,7 +342,7 @@
         
         Composite check for the MDRPI specification.
     -->
-    <bean id="check_mdrpi" parent="composite_parent"
+    <bean id="check_mdrpi" parent="CompositeStage"
         p:id="check_mdrpi">
         <property name="composedStages">
             <list>
@@ -359,9 +359,9 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="check_regauth_parent" abstract="true" parent="check_xslt_parent">
+    <bean id="check_regauth_parent" abstract="true" parent="XSLValidationStage">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_regauth.xsl"/>
             </bean>
         </property>
@@ -402,10 +402,10 @@
         
         Miscellaneous MDUI tests, in XSLT.
     -->
-    <bean id="check_mdui_xslt" parent="check_xslt_parent"
+    <bean id="check_mdui_xslt" parent="XSLValidationStage"
         p:id="check_mdui_xslt">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_mdui.xsl"/>
             </bean>
         </property>
@@ -416,7 +416,7 @@
         
         Composite check for the MDUI specification.
     -->
-    <bean id="check_mdui" parent="composite_parent"
+    <bean id="check_mdui" parent="CompositeStage"
         p:id="check_mdui">
         <property name="composedStages">
             <list>
@@ -437,10 +437,10 @@
     <!--
         check_misc
     -->
-    <bean id="check_misc" parent="check_xslt_parent"
+    <bean id="check_misc" parent="XSLValidationStage"
         p:id="check_misc">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_misc.xsl"/>
             </bean>
         </property>
@@ -449,10 +449,10 @@
     <!--
         check_namespaces
     -->
-    <bean id="check_namespaces" parent="check_xslt_parent"
+    <bean id="check_namespaces" parent="XSLValidationStage"
         p:id="check_namespaces">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_namespaces.xsl"/>
             </bean>
         </property>
@@ -461,10 +461,10 @@
     <!--
         check_nokeyname
     -->
-    <bean id="check_nokeyname" parent="check_xslt_parent"
+    <bean id="check_nokeyname" parent="XSLValidationStage"
         p:id="check_nokeyname">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_nokeyname.xsl"/>
             </bean>
         </property>
@@ -475,10 +475,10 @@
         
         Check for regular expressions in Shibboleth Scope elements.  Applied very selectively.
     -->
-    <bean id="check_regscope" parent="check_xslt_parent"
+    <bean id="check_regscope" parent="XSLValidationStage"
         p:id="check_regscope">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_regscope.xsl"/>
             </bean>
         </property>
@@ -487,10 +487,10 @@
     <!--
         check_reqattr
     -->
-    <bean id="check_reqattr" parent="check_xslt_parent"
+    <bean id="check_reqattr" parent="XSLValidationStage"
         p:id="check_reqattr">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_reqattr.xsl"/>
             </bean>
         </property>
@@ -499,10 +499,10 @@
     <!--
         check_saml2int
     -->
-    <bean id="check_saml2int" parent="check_xslt_parent"
+    <bean id="check_saml2int" parent="XSLValidationStage"
         p:id="check_saml2int">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_saml2int.xsl"/>
             </bean>
         </property>
@@ -511,10 +511,10 @@
     <!--
         check_saml1
     -->
-    <bean id="check_saml1" parent="check_xslt_parent"
+    <bean id="check_saml1" parent="XSLValidationStage"
         p:id="check_saml1">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_saml1.xsl"/>
             </bean>
         </property>
@@ -523,10 +523,10 @@
     <!--
         check_saml2
     -->
-    <bean id="check_saml2" parent="check_xslt_parent"
+    <bean id="check_saml2" parent="XSLValidationStage"
         p:id="check_saml2">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_saml2.xsl"/>
             </bean>
         </property>
@@ -535,10 +535,10 @@
     <!--
         check_saml2meta
     -->
-    <bean id="check_saml2meta" parent="check_xslt_parent"
+    <bean id="check_saml2meta" parent="XSLValidationStage"
         p:id="check_saml2meta">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_saml2meta.xsl"/>
             </bean>
         </property>
@@ -547,10 +547,10 @@
     <!--
         check_shibboleth
     -->
-    <bean id="check_shibboleth" parent="check_xslt_parent"
+    <bean id="check_shibboleth" parent="XSLValidationStage"
         p:id="check_shibboleth">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_shibboleth.xsl"/>
             </bean>
         </property>
@@ -579,10 +579,10 @@
     <!--
         check_vhosts
     -->
-    <bean id="check_vhosts" parent="check_xslt_parent"
+    <bean id="check_vhosts" parent="XSLValidationStage"
         p:id="check_vhosts">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_vhosts.xsl"/>
             </bean>
         </property>
@@ -599,7 +599,7 @@
     <!--
         check_incmd
     -->
-    <bean id="check_incmd" parent="check_xslt_parent"
+    <bean id="check_incmd" parent="XSLValidationStage"
         p:id="check_incmd">
         <property name="xslResource">
             <bean parent="FilesystemResource" c:resourcePath="#{ systemProperties['rulesdir'] }/check_incmd.xsl"/>
@@ -617,10 +617,10 @@
     <!--
         check_uk_trust
     -->
-    <bean id="check_uk_trust" parent="check_xslt_parent"
+    <bean id="check_uk_trust" parent="XSLValidationStage"
         p:id="check_uk_trust">
         <property name="xslResource">
-            <bean parent="file_parent">
+            <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['rulesdir'] }/check_uk_trust.xsl"/>
             </bean>
         </property>
@@ -637,7 +637,7 @@
     <!--
         CHECK_std
     -->
-    <bean id="CHECK_std" parent="composite_parent"
+    <bean id="CHECK_std" parent="CompositeStage"
         p:id="CHECK_std">
         <property name="composedStages">
             <list>
@@ -667,7 +667,7 @@
     <!--
         CHECK_imported
     -->
-    <bean id="CHECK_imported" parent="composite_parent"
+    <bean id="CHECK_imported" parent="CompositeStage"
         p:id="CHECK_imported">
         <property name="composedStages">
             <list>

@@ -22,7 +22,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="in_infed_productionAggregate" parent="domResourceStage_parent"
+    <bean id="in_infed_productionAggregate" parent="DomResourceSourceStage"
         p:id="in_infed_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -35,7 +35,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="in_infed_productionEntities" parent="composite_parent"
+    <bean id="in_infed_productionEntities" parent="CompositeStage"
         p:id="in_infed_productionEntities">
         <property name="composedStages">
             <list>

@@ -25,7 +25,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="fi_haka_productionAggregate" parent="domResourceStage_parent"
+    <bean id="fi_haka_productionAggregate" parent="DomResourceSourceStage"
         p:id="fi_haka_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -38,7 +38,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="fi_haka_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="fi_haka_edugainAggregate" parent="DomResourceSourceStage"
         p:id="fi_haka_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -91,7 +91,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="fi_haka_productionEntities" parent="composite_parent"
+    <bean id="fi_haka_productionEntities" parent="CompositeStage"
         p:id="fi_haka_productionEntities">
         <property name="composedStages">
             <list>
@@ -120,7 +120,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="fi_haka_edugainEntities" parent="composite_parent"
+    <bean id="fi_haka_edugainEntities" parent="CompositeStage"
         p:id="fi_haka_edugainEntities">
         <property name="composedStages">
             <list>

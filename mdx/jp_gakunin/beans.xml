@@ -15,7 +15,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="jp_gakunin_productionAggregate" parent="domResourceStage_parent"
+    <bean id="jp_gakunin_productionAggregate" parent="DomResourceSourceStage"
         p:id="jp_gakunin_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -48,7 +48,7 @@
     <!--
         Fetch and process the exported entities as a collection.
     -->
-    <bean id="jp_gakunin_exportedEntities" parent="composite_parent"
+    <bean id="jp_gakunin_exportedEntities" parent="CompositeStage"
         p:id="jp_gakunin_exportedEntities">
         <property name="composedStages">
             <list>

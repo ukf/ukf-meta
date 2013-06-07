@@ -35,7 +35,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="cz_eduid_productionAggregate" parent="domResourceStage_parent"
+    <bean id="cz_eduid_productionAggregate" parent="DomResourceSourceStage"
         p:id="cz_eduid_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -48,7 +48,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="cz_eduid_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="cz_eduid_edugainAggregate" parent="DomResourceSourceStage"
         p:id="cz_eduid_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -81,14 +81,14 @@
     <!--
         Remove the eduID.cz custom metadata tagging namespace.
     -->
-    <bean id="cz_eduid_stripMetadataNamespace" parent="stripNamespace_parent"
+    <bean id="cz_eduid_stripMetadataNamespace" parent="NamespaceStrippingStage"
         p:id="cz_eduid_stripMetadataNamespace"
         p:namespace="http://eduid.cz/schema/metadata/1.0"/>
     
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="cz_eduid_productionEntities" parent="composite_parent"
+    <bean id="cz_eduid_productionEntities" parent="CompositeStage"
         p:id="cz_eduid_productionEntities">
         <property name="composedStages">
             <list>
@@ -119,7 +119,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="cz_eduid_edugainEntities" parent="composite_parent"
+    <bean id="cz_eduid_edugainEntities" parent="CompositeStage"
         p:id="cz_eduid_edugainEntities">
         <property name="composedStages">
             <list>

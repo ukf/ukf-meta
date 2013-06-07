@@ -25,7 +25,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="gr_grnet_productionAggregate" parent="domResourceStage_parent"
+    <bean id="gr_grnet_productionAggregate" parent="DomResourceSourceStage"
         p:id="gr_grnet_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -38,7 +38,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="gr_grnet_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="gr_grnet_edugainAggregate" parent="DomResourceSourceStage"
         p:id="gr_grnet_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -71,7 +71,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="gr_grnet_productionEntities" parent="composite_parent"
+    <bean id="gr_grnet_productionEntities" parent="CompositeStage"
         p:id="gr_grnet_productionEntities">
         <property name="composedStages">
             <list>
@@ -100,7 +100,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="gr_grnet_edugainEntities" parent="composite_parent"
+    <bean id="gr_grnet_edugainEntities" parent="CompositeStage"
         p:id="gr_grnet_edugainEntities">
         <property name="composedStages">
             <list>

@@ -34,7 +34,7 @@
     <!--
         Fetch the IdP metadata.
     -->
-    <bean id="dk_wayf_idpMetadata" parent="domResourceStage_parent"
+    <bean id="dk_wayf_idpMetadata" parent="DomResourceSourceStage"
         p:id="dk_wayf_idpMetadata">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -47,7 +47,7 @@
     <!--
         Fetch the SP metadata.
     -->
-    <bean id="dk_wayf_spMetadata" parent="domResourceStage_parent"
+    <bean id="dk_wayf_spMetadata" parent="DomResourceSourceStage"
         p:id="dk_wayf_spMetadata">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -62,7 +62,7 @@
         
         See http://wayf.dk/en/services/connection-technology-for-services/412
     -->
-    <bean id="dk_wayf_birkMetadata" parent="domResourceStage_parent"
+    <bean id="dk_wayf_birkMetadata" parent="DomResourceSourceStage"
         p:id="dk_wayf_birkMetadata">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -75,7 +75,7 @@
     <!--
         Synthesise a production aggregate.
     -->
-    <bean id="dk_wayf_productionAggregate" parent="composite_parent"
+    <bean id="dk_wayf_productionAggregate" parent="CompositeStage"
         p:id="dk_wayf_productionAggregate">
         <property name="composedStages">
             <list>
@@ -96,7 +96,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="dk_wayf_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="dk_wayf_edugainAggregate" parent="DomResourceSourceStage"
         p:id="dk_wayf_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -131,7 +131,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="dk_wayf_productionEntities" parent="composite_parent"
+    <bean id="dk_wayf_productionEntities" parent="CompositeStage"
         p:id="dk_wayf_productionEntities">
         <property name="composedStages">
             <list>
@@ -155,7 +155,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="dk_wayf_edugainEntities" parent="composite_parent"
+    <bean id="dk_wayf_edugainEntities" parent="CompositeStage"
         p:id="dk_wayf_edugainEntities">
         <property name="composedStages">
             <list>

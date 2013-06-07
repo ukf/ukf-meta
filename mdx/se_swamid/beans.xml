@@ -31,7 +31,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="se_swamid_productionAggregate" parent="domResourceStage_parent"
+    <bean id="se_swamid_productionAggregate" parent="DomResourceSourceStage"
         p:id="se_swamid_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -44,7 +44,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="se_swamid_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="se_swamid_edugainAggregate" parent="DomResourceSourceStage"
         p:id="se_swamid_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -116,7 +116,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="se_swamid_productionEntities" parent="composite_parent"
+    <bean id="se_swamid_productionEntities" parent="CompositeStage"
         p:id="se_swamid_productionEntities">
         <property name="composedStages">
             <list>
@@ -158,7 +158,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="se_swamid_edugainEntities" parent="composite_parent"
+    <bean id="se_swamid_edugainEntities" parent="CompositeStage"
         p:id="se_swamid_edugainEntities">
         <property name="composedStages">
             <list>

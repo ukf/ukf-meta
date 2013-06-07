@@ -25,7 +25,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="lv_laife_productionAggregate" parent="domResourceStage_parent"
+    <bean id="lv_laife_productionAggregate" parent="DomResourceSourceStage"
         p:id="lv_laife_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -38,7 +38,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="lv_laife_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="lv_laife_edugainAggregate" parent="DomResourceSourceStage"
         p:id="lv_laife_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -74,7 +74,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="lv_laife_productionEntities" parent="composite_parent"
+    <bean id="lv_laife_productionEntities" parent="CompositeStage"
         p:id="lv_laife_productionEntities">
         <property name="composedStages">
             <list>
@@ -103,7 +103,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="lv_laife_edugainEntities" parent="composite_parent"
+    <bean id="lv_laife_edugainEntities" parent="CompositeStage"
         p:id="lv_laife_edugainEntities">
         <property name="composedStages">
             <list>

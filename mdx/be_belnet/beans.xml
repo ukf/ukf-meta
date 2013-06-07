@@ -25,7 +25,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="be_belnet_productionAggregate" parent="domResourceStage_parent"
+    <bean id="be_belnet_productionAggregate" parent="DomResourceSourceStage"
         p:id="be_belnet_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -38,7 +38,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="be_belnet_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="be_belnet_edugainAggregate" parent="DomResourceSourceStage"
         p:id="be_belnet_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -71,7 +71,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="be_belnet_productionEntities" parent="composite_parent"
+    <bean id="be_belnet_productionEntities" parent="CompositeStage"
         p:id="be_belnet_productionEntities">
         <property name="composedStages">
             <list>
@@ -100,7 +100,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="be_belnet_edugainEntities" parent="composite_parent"
+    <bean id="be_belnet_edugainEntities" parent="CompositeStage"
         p:id="be_belnet_edugainEntities">
         <property name="composedStages">
             <list>

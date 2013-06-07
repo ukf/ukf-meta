@@ -22,7 +22,7 @@
     -->
     <import resource="classpath:ca_caf/beans.xml"/>
     
-    <bean id="serializeImported" parent="serialize_parent"
+    <bean id="serializeImported" parent="SerializationStage"
         p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -31,7 +31,7 @@
         </property>
     </bean>
     
-    <bean id="importProduction" parent="pipeline_parent"
+    <bean id="importProduction" parent="SimplePipeline"
         p:id="importProduction">
         <property name="stages">
             <list>
@@ -42,7 +42,7 @@
         </property>
     </bean>
     
-    <bean id="importProductionRaw" parent="pipeline_parent"
+    <bean id="importProductionRaw" parent="SimplePipeline"
         p:id="importProductionRaw">
         <property name="stages">
             <list>
@@ -52,7 +52,7 @@
         </property>
     </bean>
     
-    <bean id="importEdugain" parent="pipeline_parent"
+    <bean id="importEdugain" parent="SimplePipeline"
         p:id="importEdugain">
         <property name="stages">
             <list>
@@ -63,7 +63,7 @@
         </property>
     </bean>
     
-    <bean id="importEdugainRaw" parent="pipeline_parent"
+    <bean id="importEdugainRaw" parent="SimplePipeline"
         p:id="importEdugainRaw">
         <property name="stages">
             <list>

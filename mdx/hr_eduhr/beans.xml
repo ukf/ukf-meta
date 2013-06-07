@@ -22,7 +22,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="hr_eduhr_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="hr_eduhr_edugainAggregate" parent="DomResourceSourceStage"
         p:id="hr_eduhr_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -94,7 +94,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="hr_eduhr_edugainEntities" parent="composite_parent"
+    <bean id="hr_eduhr_edugainEntities" parent="CompositeStage"
         p:id="hr_eduhr_edugainEntities">
         <property name="composedStages">
             <list>

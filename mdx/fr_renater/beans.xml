@@ -28,7 +28,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="fr_renater_productionAggregate" parent="domResourceStage_parent"
+    <bean id="fr_renater_productionAggregate" parent="DomResourceSourceStage"
         p:id="fr_renater_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -41,7 +41,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="fr_renater_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="fr_renater_edugainAggregate" parent="DomResourceSourceStage"
         p:id="fr_renater_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -54,7 +54,7 @@
     <!--
         Fetch the test aggregate.
     -->
-    <bean id="fr_renater_testAggregate" parent="domResourceStage_parent"
+    <bean id="fr_renater_testAggregate" parent="DomResourceSourceStage"
         p:id="fr_renater_testAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -146,7 +146,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="fr_renater_productionEntities" parent="composite_parent"
+    <bean id="fr_renater_productionEntities" parent="CompositeStage"
         p:id="fr_renater_productionEntities">
         <property name="composedStages">
             <list>
@@ -179,7 +179,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="fr_renater_edugainEntities" parent="composite_parent"
+    <bean id="fr_renater_edugainEntities" parent="CompositeStage"
         p:id="fr_renater_edugainEntities">
         <property name="composedStages">
             <list>

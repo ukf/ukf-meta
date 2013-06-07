@@ -25,7 +25,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="hu_eduid_productionAggregate" parent="domResourceStage_parent"
+    <bean id="hu_eduid_productionAggregate" parent="DomResourceSourceStage"
         p:id="hu_eduid_productionAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -38,7 +38,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="hu_eduid_edugainAggregate" parent="domResourceStage_parent"
+    <bean id="hu_eduid_edugainAggregate" parent="DomResourceSourceStage"
         p:id="hu_eduid_edugainAggregate">
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
@@ -71,7 +71,7 @@
     <!--
         Remove the eduID.hu custom metadata tagging namespace.
     -->
-    <bean id="hu_eduid_stripEntityAttributesNamespace" parent="stripNamespace_parent"
+    <bean id="hu_eduid_stripEntityAttributesNamespace" parent="NamespaceStrippingStage"
         p:id="hu_eduid_stripEntityAttributesNamespace"
         p:namespace="urn:geant:niif.hu:eduid.hu:entity-attributes:processing-info"/>
 
@@ -102,7 +102,7 @@
     <!--
         Fetch and process the production entities as a collection.
     -->
-    <bean id="hu_eduid_productionEntities" parent="composite_parent"
+    <bean id="hu_eduid_productionEntities" parent="CompositeStage"
         p:id="hu_eduid_productionEntities">
         <property name="composedStages">
             <list>
@@ -134,7 +134,7 @@
     <!--
         Fetch and process the eduGAIN export entities as a collection.
     -->
-    <bean id="hu_eduid_edugainEntities" parent="composite_parent"
+    <bean id="hu_eduid_edugainEntities" parent="CompositeStage"
         p:id="hu_eduid_edugainEntities">
         <property name="composedStages">
             <list>

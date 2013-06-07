@@ -22,7 +22,7 @@
     -->
     <import resource="classpath:uk/beans.xml"/>
 
-    <bean id="serializeCollected" parent="serialize_parent"
+    <bean id="serializeCollected" parent="SerializationStage"
         p:id="serializeCollected">
         <property name="outputFile">
             <bean class="java.io.File">
@@ -31,7 +31,7 @@
         </property>
     </bean>
 
-    <bean id="collect" parent="pipeline_parent"
+    <bean id="collect" parent="SimplePipeline"
         p:id="collect">
         <property name="stages">
             <list>
