@@ -47,8 +47,8 @@
     <bean id="stripEntityScopes" parent="XSLTransformationStage"
         p:id="stripEntityScopes">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/entity_scopes.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/entity_scopes.xsl"/>
             </bean>
         </property>
     </bean>
@@ -101,8 +101,8 @@
     <bean id="fixup_keyuse" parent="XSLTransformationStage"
         p:id="fixup_keyuse">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fixup_keyuse.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/fixup_keyuse.xsl"/>
             </bean>
         </property>
     </bean>
@@ -280,8 +280,8 @@
     <bean id="uk_finaliseProduction" parent="XSLTransformationStage"
         p:id="uk_finaliseProduction">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/final_tweak.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">
@@ -374,8 +374,8 @@
     <bean id="uk_finaliseFallback" parent="XSLTransformationStage"
         p:id="uk_finaliseFallback">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/final_tweak.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">
@@ -436,8 +436,8 @@
     <bean id="uk_finaliseTest" parent="XSLTransformationStage"
         p:id="uk_finaliseTest">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/final_tweak.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">
@@ -498,8 +498,8 @@
     <bean id="uk_finaliseExport" parent="XSLTransformationStage"
         p:id="uk_finaliseExport">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/final_tweak.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/final_tweak.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">

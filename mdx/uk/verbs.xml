@@ -62,8 +62,8 @@
                 <bean id="process" parent="XSLTransformationStage"
                     p:id="process">
                     <property name="xslResource">
-                        <bean parent="FilesystemResource">
-                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/sp_mdui_test.xsl"/>
+                        <bean parent="ClasspathResource">
+                            <constructor-arg value="uk/sp_mdui_test.xsl"/>
                         </bean>
                     </property>
                 </bean>
@@ -218,8 +218,8 @@
                 <bean id="importTransform" parent="XSLTransformationStage"
                     p:id="importTransform">
                     <property name="xslResource">
-                        <bean parent="FilesystemResource">
-                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/import.xsl"/>
+                        <bean parent="ClasspathResource">
+                            <constructor-arg value="uk/import.xsl"/>
                         </bean>
                     </property>
                 </bean>

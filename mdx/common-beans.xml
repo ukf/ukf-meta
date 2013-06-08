@@ -34,6 +34,14 @@
     <bean id="component_parent" abstract="true" init-method="initialize"/>
     
     <!--
+        ClasspathResource
+        
+        Parent for all classpath resource beans.
+    -->
+    <bean id="ClasspathResource" abstract="true" parent="component_parent"
+        class="net.shibboleth.utilities.java.support.resource.ClasspathResource"/>
+    
+    <!--
         FilesystemResource
         
         Parent for all file system resource beans.
@@ -264,8 +272,8 @@
     <bean id="normaliseNamespaces" parent="XSLTransformationStage"
         p:id="normaliseNamespaces">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ns_norm.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="ns_norm.xsl"/>
             </bean>
         </property>
     </bean>
@@ -390,8 +398,8 @@
     -->
     <bean id="default_regauth_parent" abstract="true" parent="XSLTransformationStage">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/default_regauth.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="default_regauth.xsl"/>
             </bean>
         </property>
     </bean>
@@ -533,8 +541,8 @@
     <bean id="cleanImport" parent="XSLTransformationStage"
         p:id="cleanImport">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/clean-import.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="clean-import.xsl"/>
             </bean>
         </property>
     </bean>

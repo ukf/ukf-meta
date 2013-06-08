@@ -153,8 +153,8 @@
     <bean id="uk_processScopes" parent="XSLTransformationStage"
         p:id="uk_processScopes">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/scopes.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/scopes.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">
@@ -208,8 +208,8 @@
     <bean id="uk_fix_mailto" parent="XSLTransformationStage"
         p:id="uk_fix_mailto">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fix_mailto.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/fix_mailto.xsl"/>
             </bean>
         </property>
     </bean>
@@ -226,8 +226,8 @@
     <bean id="uk_hide_idps" parent="XSLTransformationStage"
         p:id="uk_hide_idps">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/hide_idps.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/hide_idps.xsl"/>
             </bean>
         </property>
     </bean>
@@ -276,8 +276,8 @@
     <bean id="uk_addTrustRoots" parent="XSLTransformationStage"
         p:id="uk_addTrustRoots">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust-roots.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/trust-roots.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">
@@ -296,8 +296,8 @@
     <bean id="uk_processFragment" parent="XSLTransformationStage"
         p:id="uk_processFragment">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/fragment.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/fragment.xsl"/>
             </bean>
         </property>
     </bean>
@@ -390,8 +390,8 @@
     <bean id="uk_stripExtensions" parent="XSLTransformationStage"
         p:id="uk_stripExtensions">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/strip_extensions.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/strip_extensions.xsl"/>
             </bean>
         </property>
     </bean>
@@ -490,8 +490,8 @@
     <bean id="uk_generateStatistics" parent="XSLTransformationStage"
         p:id="uk_generateStatistics">
         <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/statistics.xsl"/>
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/statistics.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">
