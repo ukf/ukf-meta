@@ -53,6 +53,25 @@
         </property>
     </bean>
     
+    <!--
+        finalise_parent
+        
+        Template for a stage used in each output pipeline which performs
+        final tweaks on the document.
+    -->
+    <bean id="finalise_parent" abstract="true" parent="XSLTransformationStage">
+        <property name="xslResource">
+            <bean parent="ClasspathResource">
+                <constructor-arg value="uk/final_tweak.xsl"/>
+            </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="publisher" value-ref="uk_federation_uri"/>
+            </map>
+        </property>
+    </bean>
+    
     
     <!--
         ***********************
@@ -277,13 +296,8 @@
         ***************************************************
     -->
     
-    <bean id="uk_finaliseProduction" parent="XSLTransformationStage"
+    <bean id="uk_finaliseProduction" parent="finalise_parent"
         p:id="uk_finaliseProduction">
-        <property name="xslResource">
-            <bean parent="ClasspathResource">
-                <constructor-arg value="uk/final_tweak.xsl"/>
-            </bean>
-        </property>
         <property name="transformParameters">
             <map>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
@@ -371,13 +385,8 @@
         ***********************************************
     -->
     
-    <bean id="uk_finaliseFallback" parent="XSLTransformationStage"
+    <bean id="uk_finaliseFallback" parent="finalise_parent"
         p:id="uk_finaliseFallback">
-        <property name="xslResource">
-            <bean parent="ClasspathResource">
-                <constructor-arg value="uk/final_tweak.xsl"/>
-            </bean>
-        </property>
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Feature fallback metadata; not for production use"/>
@@ -433,13 +442,8 @@
         ***************************************
     -->
     
-    <bean id="uk_finaliseTest" parent="XSLTransformationStage"
+    <bean id="uk_finaliseTest" parent="finalise_parent"
         p:id="uk_finaliseTest">
-        <property name="xslResource">
-            <bean parent="ClasspathResource">
-                <constructor-arg value="uk/final_tweak.xsl"/>
-            </bean>
-        </property>
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Feature test metadata; not for production use"/>
@@ -495,13 +499,8 @@
         *******************************************
     -->
     
-    <bean id="uk_finaliseExport" parent="XSLTransformationStage"
+    <bean id="uk_finaliseExport" parent="finalise_parent"
         p:id="uk_finaliseExport">
-        <property name="xslResource">
-            <bean parent="ClasspathResource">
-                <constructor-arg value="uk/final_tweak.xsl"/>
-            </bean>
-        </property>
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Prototype export metadata; not for production use"/>
