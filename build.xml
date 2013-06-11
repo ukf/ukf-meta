@@ -457,15 +457,33 @@
 	-->
     <macrodef name="MDNORM">
         <attribute name="i"/><!-- input file -->
+        <element name="args" optional="yes"/>
         <sequential>
-            <java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="uk.ac.sdss.mdnorm.Normalise">
+            <java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="uk.org.ukfederation.mdnorm.Normalise">
                 <classpath>
                     <fileset dir="${tools.mdnorm}/lib">
                         <include name="*.jar"/>
                     </fileset>
                 </classpath>
+                <args/>
                 <arg value="@{i}"/>
             </java>
+        </sequential>
+    </macrodef>
+
+    <!--
+        MDNORM.noblank
+        
+        Call MDNORM but discard blank lines from the output.
+    -->
+    <macrodef name="MDNORM.noblank">
+        <attribute name="i"/><!-- input file -->
+        <sequential>
+            <MDNORM i="@{i}">
+                <args>
+                    <arg value="--discardBlankLines"/>
+                </args>
+            </MDNORM>
         </sequential>
     </macrodef>
 
