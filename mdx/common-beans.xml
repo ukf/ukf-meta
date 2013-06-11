@@ -153,6 +153,17 @@
     </bean>
     
     <!--
+        PipelineDemultiplexerStage
+        
+        Parent for demultiplexer stages.  Defaults to waiting for pipelines
+        to complete.
+    -->
+    <bean id="PipelineDemultiplexerStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+        p:waitingForPipelines="true"
+    />
+    
+    <!--
         ***********************************************
         ***                                         ***
         ***   N A M E S P A C E   H A N D L I N G   ***
@@ -405,11 +416,11 @@
     </bean>
     
     <!--
-        *********************
-        ***               ***
-        ***   ( E N D )   ***
-        ***               ***
-        *********************
+        *************************************
+        ***                               ***
+        ***   D O M   U T I L I T I E S   ***
+        ***                               ***
+        *************************************
     -->
     
     <!--
@@ -530,6 +541,29 @@
         p:id="checkSchemas">
         <property name="schemaResources" ref="schemaResources"/>
     </bean>
+
+    <!--
+        stripComments
+        
+        A pipeline stage that removes all XML comments from items.
+    -->
+    
+    <bean id="stripComments" parent="XSLTransformationStage"
+        p:id="stripComments">
+        <property name="xslResource">
+            <bean parent="ClasspathResource">
+                <constructor-arg value="strip-comments.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        *********************
+        ***               ***
+        ***   ( E N D )   ***
+        ***               ***
+        *********************
+    -->
 
     <!--
         cleanImport

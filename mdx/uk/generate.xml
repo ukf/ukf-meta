@@ -378,6 +378,159 @@
     </bean>
     
     <!--
+        ***************************************
+        ***                                 ***
+        ***   C D S   A G G R E G A T E S   ***
+        ***                                 ***
+        ***************************************
+    -->
+    
+    <!--
+        CDSStripUnwanted
+        
+        The CDS needs only a very restricted subset of
+        normal metadata in order to do its job.  This stage
+        removes everything it does not need.
+    -->
+    <bean id="CDSStripUnwanted" parent="CompositeStage"
+        p:id="CDSStripUnwanted">
+        <property name="composedStages">
+            <list>
+                <ref bean="stripComments"/>
+                
+                <ref bean="stripElabNamespace"/>
+                <ref bean="stripMdattrNamespace"/>
+                <ref bean="stripMdrpiNamespace"/>
+                <ref bean="stripUkfedlabelNamespace"/>
+                <ref bean="stripWayfNamespace"/>
+                
+                <bean id="stripAlgNamespace" parent="NamespaceStrippingStage"
+                    p:id="stripAlgNamespace" p:namespace-ref="alg_namespace"/>
+                
+                <bean id="stripInitNamespace" parent="NamespaceStrippingStage"
+                    p:id="stripInitNamespace" p:namespace-ref="init_namespace"/>
+                
+                <bean id="stripArtifactResolutionService" parent="ElementStrippingStage"
+                    p:id="stripArtifactResolutionService"
+                    p:elementName="ArtifactResolutionService"
+                    p:elementNamespace-ref="md_namespace"/>
+                
+                <bean id="stripAttributeAuthorityDescriptor" parent="ElementStrippingStage"
+                    p:id="stripAttributeAuthorityDescriptor"
+                    p:elementName="AttributeAuthorityDescriptor"
+                    p:elementNamespace-ref="md_namespace"/>
+                
+                <bean id="stripAttributeConsumingService" parent="ElementStrippingStage"
+                    p:id="stripAttributeConsumingService"
+                    p:elementName="AttributeConsumingService"
+                    p:elementNamespace-ref="md_namespace"/>
+                
+                <bean id="stripContactPerson" parent="ElementStrippingStage"
+                    p:id="stripContactPerson"
+                    p:elementName="ContactPerson"
+                    p:elementNamespace-ref="md_namespace"/>
+                
+                <bean id="stripKeyDescriptor" parent="ElementStrippingStage"
+                    p:id="stripKeyDescriptor"
+                    p:elementName="KeyDescriptor"
+                    p:elementNamespace-ref="md_namespace"/>
+                
+                <bean id="stripManageNameIDService" parent="ElementStrippingStage"
+                    p:id="stripManageNameIDService"
+                    p:elementName="ManageNameIDService"
+                    p:elementNamespace-ref="md_namespace"/>
+                
+                <bean id="stripNameIDFormat" parent="ElementStrippingStage"
+                    p:id="stripNameIDFormat"
+                    p:elementName="NameIDFormat"
+                    p:elementNamespace-ref="md_namespace"/>
+                
+                <bean id="stripSingleLogoutService" parent="ElementStrippingStage"
+                    p:id="stripSingleLogoutService"
+                    p:elementName="SingleLogoutService"
+                    p:elementNamespace-ref="md_namespace"/>
+                
+                <bean id="stripShibScope" parent="ElementStrippingStage"
+                    p:id="stripShibScope"
+                    p:elementName="Scope"
+                    p:elementNamespace-ref="shibmd_namespace"/>
+                
+                <!-- remove any now-empty Extensions elements -->
+                <ref bean="removeEmptyExtensions"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="CDSFinalise" parent="finalise_parent"
+        p:id="CDSFinalise">
+        <property name="transformParameters">
+            <map>
+                <entry key="extraText"
+                    value="Central Discovery Service metadata; not for end entity use"/>
+                <entry key="publisher" value-ref="uk_federation_uri"/>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="CDSNormaliseNamespaces" parent="XSLTransformationStage"
+        p:id="CDSNormaliseNamespaces">
+        <property name="xslResource">
+            <bean parent="FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_cds.xsl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--
+        *******************************************
+        ***                                     ***
+        ***   C D S A L L   A G G R E G A T E   ***
+        ***                                     ***
+        *******************************************
+    -->
+    
+    <!--
+        Entities in the CDSALL aggregate are restricted to those entities registered by the
+        UK federation plus all identity providers from whatever source.
+    -->
+    <bean id="CDSAllSelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy">
+        <constructor-arg value="/md:EntityDescriptor[md:IDPSSODescriptor or
+            md:Extensions/mdrpi:RegistrationInfo/@registrationAuthority = 'http://ukfederation.org.uk']"/>
+        <constructor-arg ref="commonNamespaces"/>
+    </bean>
+    
+    <bean id="serializeCDSAllAggregate" parent="SerializationStage"
+        p:id="serializeCDSAllAggregate">
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-cdsall-unsigned.xml"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="CDSAllPipeline" parent="SimplePipeline"
+        p:id="CDSAllPipeline">
+        <property name="stages">
+            <list>
+                <!-- make an aggregate first so that we're only traversing one item -->
+                <ref bean="uk_assemble"/>
+                
+                <!-- remove many things that the CDS doesn't look at -->
+                <ref bean="CDSStripUnwanted"/>
+                
+                <ref bean="CDSFinalise"/>
+                <ref bean="CDSNormaliseNamespaces"/>
+                
+                <!-- schema validity check MUST pass -->
+                <ref bean="checkSchemas"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="serializeCDSAllAggregate"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         ***********************************************
         ***                                         ***
         ***   F A L L B A C K   A G G R E G A T E   ***
@@ -598,8 +751,7 @@
                     metadata as closely as possible, so the fork must happen before
                     too many UK-specific transformations are performed.
                 -->
-                <bean id="registrarDemux" parent="stage_parent"
-                    class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+                <bean id="registrarDemux" parent="PipelineDemultiplexerStage"
                     p:id="registrarDemux">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
@@ -660,8 +812,7 @@
                 <!--
                     Fork into new pipelines for the production, fallback and WAYF aggregates.
                 -->
-                <bean id="productionDemux" parent="stage_parent"
-                    class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+                <bean id="productionDemux" parent="PipelineDemultiplexerStage"
                     p:id="productionDemux">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
@@ -716,6 +867,21 @@
                     entities received through both production-status
                     and pre-production-status MDX relationships.
                 -->
+                
+                <!--
+                    Fork into new pipelines for additional aggregates.
+                -->
+                <bean id="preProductionDemux" parent="PipelineDemultiplexerStage"
+                    p:id="preProductionDemux">
+                    <property name="pipelineAndSelectionStrategies">
+                        <list>
+                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
+                                <constructor-arg ref="CDSAllPipeline"/>
+                                <constructor-arg ref="CDSAllSelector"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
                 
                 <!-- pipeline continues to generate test aggregate -->
                 <ref bean="uk_testPipeline"/>

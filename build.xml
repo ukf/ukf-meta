@@ -99,8 +99,8 @@
 	</taskdef>
 	
 	<!--
-		There are five separate processing "streams":  production, test, export,
-		fallback and "wayf".
+		There are six separate processing "streams":  production, test, export,
+		fallback, "wayf" and "cdsall".
 		
 		Each stream has its own unsigned file, as follows:
 	-->
@@ -109,6 +109,7 @@
 	<property name="md.export.unsigned" value="ukfederation-export-unsigned.xml"/>
 	<property name="md.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
 	<property name="md.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
+	<property name="md.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
 	
 	<!--
 		Each stream has its own signed file.
@@ -118,6 +119,7 @@
 	<property name="md.export.signed"   value="ukfederation-export.xml"/>
 	<property name="md.back.signed"     value="ukfederation-back.xml"/>
 	<property name="md.wayf.signed"     value="ukfederation-wayf.xml"/>
+	<property name="md.cdsall.signed"   value="ukfederation-cdsall.xml"/>
 	
 	<!--
 		Null device location.
@@ -272,6 +274,7 @@
 			<fileset dir="${xml.dir}">
 				<include name="${md.prod.signed}"/>
 				<include name="${md.wayf.signed}"/>
+				<include name="${md.cdsall.signed}"/>
 				<include name="${md.test.signed}"/>
 				<include name="${md.back.signed}"/>
 				<include name="${md.export.signed}"/>
@@ -313,6 +316,7 @@
 		<echo>Verifying metadata held at ${remote.url}</echo>
 		<VFY.remote i="${md.prod.signed}"/>
 		<VFY.remote i="${md.wayf.signed}"/>
+		<VFY.remote i="${md.cdsall.signed}"/>
 		<VFY.remote i="${md.test.signed}"/>
 		<VFY.remote i="${md.back.signed}"/>
 		<VFY.remote i="${md.export.signed}"/>
@@ -368,7 +372,7 @@
 		    to generate the following:
 		    
 		       production aggregate
-		       WAYF/DS aggregate
+		       WAYF/CDS aggregates
                test aggregate
 		       export aggregate
 		       fallback aggregate
@@ -381,6 +385,7 @@
 		-->
         <MDNORM i="${xml.dir}/${md.prod.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.wayf.unsigned}"/>
+		<MDNORM.noblank i="${xml.dir}/${md.cdsall.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.test.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.export.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
@@ -745,6 +750,9 @@
 		<echo>Signing UK WAYF metadata.</echo>
 		<SIGN.uk i="${md.wayf.unsigned}" o="${md.wayf.signed}" digest="SHA-1"/>
 
+        <echo>Signing UK CDS full metadata.</echo>
+        <SIGN.uk i="${md.cdsall.unsigned}" o="${md.cdsall.signed}" digest="SHA-256"/>
+
 		<echo>Signing UK test metadata.</echo>
 		<SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}" digest="SHA-256"/>
 
@@ -785,6 +793,9 @@
 
 		<echo>Verifying signed UK WAYF metadata.</echo>
 		<VFY.uk i="${md.wayf.signed}"/>
+
+        <echo>Verifying signed UK CDS full metadata.</echo>
+        <VFY.uk i="${md.cdsall.signed}"/>
 
 		<echo>Verifying signed UK test metadata.</echo>
 		<VFY.uk i="${md.test.signed}"/>
