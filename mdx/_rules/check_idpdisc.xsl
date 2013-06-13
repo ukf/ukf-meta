@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	check_imported.xsl
+	check_idpdisc.xsl
 	
 	Checking ruleset containing rules associated with the SAML IdP Discovery Protocol.
 	
