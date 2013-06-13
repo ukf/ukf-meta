@@ -12,6 +12,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:set="http://exslt.org/sets"

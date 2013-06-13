@@ -13,6 +13,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:set="http://exslt.org/sets"
