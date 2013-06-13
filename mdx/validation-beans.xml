@@ -672,7 +672,6 @@
         <property name="composedStages">
             <list>
                 <ref bean="CHECK_std"/>
-                <ref bean="check_future"/>
                 <ref bean="check_regscope"/>
             </list>
         </property>
