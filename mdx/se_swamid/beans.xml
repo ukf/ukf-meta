@@ -188,6 +188,38 @@
     </bean>
     
     <!--
+        Verify the entities in the eduGAIN export aggregate.
+    -->
+    <bean id="se_swamid_verifyEdugain" parent="CompositeStage"
+        p:id="se_swamid_verifyEdugain">
+        <property name="composedStages">
+            <list>
+                <ref bean="se_swamid_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="se_swamid_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="se_swamid_default_regauth"/>
+                <ref bean="se_swamid_check_regauth"/>
+                
+                <ref bean="standardVerifyActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         Select primary export aggregate.
     -->
     <alias alias="se_swamid_exportedAggregate" name="se_swamid_edugainAggregate"/>

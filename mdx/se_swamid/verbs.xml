@@ -73,6 +73,15 @@
         </property>
     </bean>
     
+    <bean id="verifyEdugain" parent="SimplePipeline"
+        p:id="verifyEdugain">
+        <property name="stages">
+            <list>
+                <ref bean="se_swamid_verifyEdugain"/>
+            </list>
+        </property>
+    </bean>
+    
     <alias alias="import"    name="importEdugain"/>
     <alias alias="importRaw" name="importEdugainRaw"/>
 </beans>

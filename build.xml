@@ -992,7 +992,16 @@
     	<CHANNEL.do verb="importEdugain" channel="no_feide"/>
     	<CHANNEL.do verb="importEdugain" channel="se_swamid"/>
     </target>
-    
+
+    <!--
+        flow.verifyEdugain.all
+        
+        Verify the eduGAIN entities from all channels with this ability.
+    -->
+	<target name="flow.verifyEdugain.all">
+		<CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
+	</target>
+	
     <!--
         flow.importEdugainRaw.all
         

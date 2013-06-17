@@ -645,6 +645,41 @@
     </bean>
     
     <!--
+        standardVerifyActions
+        
+        Standard actions performed on any metadata import channel when verifying the
+        entities instead of importing them.  The only difference between this and
+        standardImportActions is that an errorTerminatingFilter is used at the end
+        instead of an errorAnnouncingFilter.
+        
+        Assumes that the collection has been acquired, had its signature validated, and
+        disassembled into individual entities.
+    -->
+    <bean id="standardVerifyActions" parent="CompositeStage"
+        p:id="standardVerifyActions">
+        <property name="composedStages">
+            <list>
+                <ref bean="populateItemIds"/>
+                
+                <!--
+                    The following three namespaces are always stripped because they are
+                    specific to the UK registrar and can't be valid when imported from
+                    some other source.
+                -->
+                <ref bean="stripElabNamespace"/>
+                <ref bean="stripUkfedlabelNamespace"/>
+                <ref bean="stripWayfNamespace"/>
+                
+                <ref bean="cleanImport"/>
+                <ref bean="removeEmptyExtensions"/>
+                <ref bean="checkSchemas"/>
+                <ref bean="CHECK_imported"/>
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         Basic EntitiesDescriptor assembler pipeline stage.
     -->
     <bean id="assemble" parent="stage_parent"
