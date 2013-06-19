@@ -17,11 +17,6 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 #
 
 #
-# Maximum cryptoperiod for 1024-bit keys.
-#
-my $excessThreshold = 5; # years
-
-#
 # Number of days in the past we should regard as "long expired".
 #
 my $longExpiredDays = 30*3; # about three months
@@ -281,12 +276,6 @@ while (<>) {
 				next;
 			}
 			
-			if (/Not Before: (.*)$/) {
-				$notBefore = $1;
-				$notBeforeTime = str2time($notBefore);
-				next;
-			}
-
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$notAfterTime = str2time($notAfter);
@@ -518,15 +507,6 @@ while (<>) {
 				warning("short key ($pubSize bit) in certificate; expires $notAfter");
 			}
 
-			#
-			# Complain about keys with an excessive cryptoperiod (more than
-			# some given number of years).
-			#
-			my $validYears = ($notAfterTime - $notBeforeTime)/(86400.0*365.0);
-			my $years = sprintf "%.1f", $validYears;
-			if ($validYears >= $excessThreshold) {
-				warning("excess cryptoperiod $years years for short ($pubSize bit) key; expires $notAfter");
-			}
 		}
 
 		#
