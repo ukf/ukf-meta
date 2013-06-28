@@ -1384,26 +1384,183 @@
                 <p>
                     <xsl:value-of select="$e.algsupport.count"/>
                     (<xsl:value-of select="format-number($e.algsupport.count div $entityCount, '0.0%')"/>)
-                    provide algorithm support metadata.
+                    provide algorithm support metadata:
                 </p>
+                
+                <ul>
+                    <xsl:variable name="e.alg.dig" select="$entities[descendant::alg:SigningMethod]"/>
+                    <xsl:variable name="e.alg.dig.count" select="count($e.alg.dig)"/>
+                    <li>
+                        <p>
+                            Declaring support for digest methods:
+                            <xsl:value-of select="$e.alg.dig.count"/>
+                        </p>
+                    </li>
+                    <ul>
+                        <xsl:variable name="e.sha1" select="$entities[
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2000/09/xmldsig#sha1']"/>
+                        <xsl:variable name="e.sha1.count" select="count($e.sha1)"/>
+                        <li>
+                            SHA-1 digests:
+                            <xsl:value-of select="$e.sha1.count"/>
+                            (<xsl:value-of select="format-number($e.sha1.count div $e.alg.dig.count, '0.0%')"/>)
+                        </li>
+                        
+                        <xsl:variable name="e.sha224" select="$entities[
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#sha224']"/>
+                        <xsl:variable name="e.sha224.count" select="count($e.sha224)"/>
+                        <li>
+                            SHA-224 digests:
+                            <xsl:value-of select="$e.sha224.count"/>
+                            (<xsl:value-of select="format-number($e.sha224.count div $e.alg.dig.count, '0.0%')"/>)
+                        </li>
+                        
+                        <xsl:variable name="e.sha256" select="$entities[
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2001/04/xmlenc#sha256']"/>
+                        <xsl:variable name="e.sha256.count" select="count($e.sha256)"/>
+                        <li>
+                            SHA-256 digests:
+                            <xsl:value-of select="$e.sha256.count"/>
+                            (<xsl:value-of select="format-number($e.sha256.count div $e.alg.dig.count, '0.0%')"/>)
+                        </li>
+                        
+                        <xsl:variable name="e.sha384" select="$entities[
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#sha384']"/>
+                        <xsl:variable name="e.sha384.count" select="count($e.sha384)"/>
+                        <li>
+                            SHA-384 digests:
+                            <xsl:value-of select="$e.sha384.count"/>
+                            (<xsl:value-of select="format-number($e.sha384.count div $e.alg.dig.count, '0.0%')"/>)
+                        </li>
+                        
+                        <xsl:variable name="e.sha512" select="$entities[
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2001/04/xmlenc#sha512']"/>
+                        <xsl:variable name="e.sha512.count" select="count($e.sha512)"/>
+                        <li>
+                            SHA-512 digests:
+                            <xsl:value-of select="$e.sha512.count"/>
+                            (<xsl:value-of select="format-number($e.sha512.count div $e.alg.dig.count, '0.0%')"/>)
+                        </li>
+
+                        <xsl:variable name="e.sha3.any" select="$entities[
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2007/05/xmldsig-more#sha3-224' or
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2007/05/xmldsig-more#sha3-256' or
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2007/05/xmldsig-more#sha3-384' or
+                            descendant::alg:DigestMethod/@Algorithm='http://www.w3.org/2007/05/xmldsig-more#sha3-512']"/>
+                        <xsl:variable name="e.sha3.any.count" select="count($e.sha3.any)"/>
+                        <li>
+                            any SHA-3 digest:
+                            <xsl:value-of select="$e.sha3.any.count"/>
+                            (<xsl:value-of select="format-number($e.sha3.any.count div $e.alg.dig.count, '0.0%')"/>)
+                        </li>
+                        
+                    </ul>
+                    
+                    <xsl:variable name="e.alg.sig" select="$entities[descendant::alg:SigningMethod]"/>
+                    <xsl:variable name="e.alg.sig.count" select="count($e.alg.sig)"/>
+                    <li>
+                        <p>
+                            Declaring support for signing methods:
+                            <xsl:value-of select="$e.alg.sig.count"/>
+                        </p>
+                    </li>
+                    <ul>
+                        <xsl:variable name="e.sha1" select="$entities[
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2000/09/xmldsig#rsa-sha1']"/>
+                        <xsl:variable name="e.sha1.count" select="count($e.sha1)"/>
+                        <li>
+                            RSA + SHA-1 signatures:
+                            <xsl:value-of select="$e.sha1.count"/>
+                            (<xsl:value-of select="format-number($e.sha1.count div $e.alg.sig.count, '0.0%')"/>)
+                        </li>
+                        
+                        <xsl:variable name="e.sha224" select="$entities[
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#rsa-sha224']"/>
+                        <xsl:variable name="e.sha224.count" select="count($e.sha224)"/>
+                        <li>
+                            RSA + SHA-224 signatures:
+                            <xsl:value-of select="$e.sha224.count"/>
+                            (<xsl:value-of select="format-number($e.sha224.count div $e.alg.sig.count, '0.0%')"/>)
+                        </li>
+                        
+                        <xsl:variable name="e.sha256" select="$entities[
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#rsa-sha256']"/>
+                        <xsl:variable name="e.sha256.count" select="count($e.sha256)"/>
+                        <li>
+                            RSA + SHA-256 signatures:
+                            <xsl:value-of select="$e.sha256.count"/>
+                            (<xsl:value-of select="format-number($e.sha256.count div $e.alg.sig.count, '0.0%')"/>)
+                        </li>
+
+                        <xsl:variable name="e.sha384" select="$entities[
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#rsa-sha384']"/>
+                        <xsl:variable name="e.sha384.count" select="count($e.sha384)"/>
+                        <li>
+                            RSA + SHA-384 signatures:
+                            <xsl:value-of select="$e.sha384.count"/>
+                            (<xsl:value-of select="format-number($e.sha384.count div $e.alg.sig.count, '0.0%')"/>)
+                        </li>
+
+                        <xsl:variable name="e.sha512" select="$entities[
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#rsa-sha512']"/>
+                        <xsl:variable name="e.sha512.count" select="count($e.sha512)"/>
+                        <li>
+                            RSA + SHA-512 signatures:
+                            <xsl:value-of select="$e.sha512.count"/>
+                            (<xsl:value-of select="format-number($e.sha512.count div $e.alg.sig.count, '0.0%')"/>)
+                        </li>
+                        
+                        <xsl:variable name="e.ec.any" select="$entities[
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1' or
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224' or
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256' or
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384' or
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512']"/>
+                        <xsl:variable name="e.ec.any.count" select="count($e.ec.any)"/>
+                        <li>
+                            elliptic curve DSA signatures of any kind:
+                            <xsl:value-of select="$e.ec.any.count"/>
+                            (<xsl:value-of select="format-number($e.ec.any.count div $e.alg.sig.count, '0.0%')"/>)
+                        </li>
+                        
+                        <xsl:variable name="e.dsa.any" select="$entities[
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2000/09/xmldsig#dsa-sha1' or
+                            descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2009/xmldsig11#dsa-sha256']"/>
+                        <xsl:variable name="e.dsa.any.count" select="count($e.dsa.any)"/>
+                        <li>
+                            non-EC DSA signatures of any kind:
+                            <xsl:value-of select="$e.dsa.any.count"/>
+                            (<xsl:value-of select="format-number($e.dsa.any.count div $e.alg.sig.count, '0.0%')"/>)
+                        </li>
+                        
+                    </ul>
+                    
+                    <xsl:variable name="e.alg.enc" select="$entities[descendant::md:EncryptionMethod]"/>
+                    <xsl:variable name="e.alg.enc.count" select="count($e.alg.enc)"/>
+                    <li>
+                        <p>
+                            Declaring support for encryption methods:
+                            <xsl:value-of select="$e.alg.enc.count"/>
+                        </p>
+                    </li>
+                    <ul>
+                        <xsl:variable name="e.gcm" select="$entities[
+                            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes128-gcm' or
+                            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes192-gcm' or
+                            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes256-gcm']"/>
+                        <xsl:variable name="e.gcm.count" select="count($e.gcm)"/>
+                        <li>
+                            GCM encryption:
+                            <xsl:value-of select="$e.gcm.count"/>
+                            (<xsl:value-of select="format-number($e.gcm.count div $e.alg.enc.count, '0.0%')"/>)
+                        </li>
+                    </ul>
+                    
+                </ul>
+    
             </li>
         </xsl:if>
-        
-        <xsl:variable name="e.gcm" select="$entities[
-            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes128-gcm' or
-            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes192-gcm' or
-            descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes256-gcm']"/>
-        <xsl:variable name="e.gcm.count" select="count($e.gcm)"/>
-        <xsl:if test="$e.gcm.count != 0">
-            <li>
-                <p>
-                    <xsl:value-of select="$e.gcm.count"/>
-                    (<xsl:value-of select="format-number($e.gcm.count div $entityCount, '0.0%')"/>)
-                    support GCM encryption.
-                </p>
-            </li>
-        </xsl:if>
-        
+
     </xsl:template>
     
     <!--
