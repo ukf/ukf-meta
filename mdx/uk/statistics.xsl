@@ -1439,7 +1439,7 @@
                     (<xsl:value-of select="format-number($pkixEntityCount div $entityCount, '0.0%')"/>)
                 </p>
                 <!-- bound specially chosen to exclude the all-entities list (for now) -->
-                <xsl:if test="$pkixEntityCount > 0 and $pkixEntityCount &lt; 50">
+                <xsl:if test="$pkixEntityCount > 0 and $pkixEntityCount &lt; 20">
                     <ul>
                         <xsl:for-each select="$pkixEntities">
                             <li>
