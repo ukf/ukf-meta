@@ -627,7 +627,8 @@
         p:id="uk_testPipeline">
         <property name="composedStages">
             <list>
-                <ref bean="uk_assembleHierarchicalAggregate"/>
+                <ref bean="uk_assemble"/>
+                <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
