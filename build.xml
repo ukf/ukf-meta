@@ -354,6 +354,18 @@
     <target name="flow.uk.collect">
         <CHANNEL.do channel="uk" verb="collect"/>
     </target>
+	
+	<!--
+	    flow.uk.verify
+	    
+	    Runs the MDA on the uk channel's verify verb to verify that the UK-registered
+	    metadata passes all the checks that would be imposed during a signing run.
+	    
+	    No output files are produced by this operation.
+	-->
+	<target name="flow.uk.verify">
+        <CHANNEL.do channel="uk" verb="verify"/>
+	</target>
     
     <!--
         Unsigned metadata generation for the UK Federation.

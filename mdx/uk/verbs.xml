@@ -80,6 +80,38 @@
     </bean>
 
     <!--
+        ***********************
+        ***                 ***
+        ***   V E R I F Y   ***
+        ***                 ***
+        ***********************
+    -->
+    
+    <bean id="verify" parent="SimplePipeline"
+        p:id="verify">
+        <property name="stages">
+            <list>
+                <!--
+                    uk_registeredEntities performs all
+                    per-entity checks and terminates if
+                    any of them fail.
+                -->
+                <ref bean="uk_registeredEntities"/>
+                
+                <!--
+                    Now build an aggregate so that we can perform
+                    checks across the whole aggregate, such as
+                    OrganizationDisplayName uniqueness.
+                -->
+                <ref bean="uk_assemble"/>
+                <ref bean="checkSchemas"/>
+                <ref bean="check_aggregate"/>
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         *********************************
         ***                           ***
         ***   C H E C K   P O R T S   ***
