@@ -30,17 +30,4 @@
 	-->
 	<xsl:import href="check_framework.xsl"/>
 
-	<!--
-		If an entity has mdui:UIInfo, then that must include at least an
-		mdui:DisplayName with an English name.
-	-->
-	<xsl:template match="mdui:UIInfo[not(mdui:DisplayName[@xml:lang='en'])]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">
-				<xsl:text>mdui:UIInfo with no xml:lang='en' DisplayName</xsl:text>
-			</xsl:with-param>
-		</xsl:call-template>
-		
-	</xsl:template>
-	
 </xsl:stylesheet>

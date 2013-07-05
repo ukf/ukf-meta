@@ -412,9 +412,47 @@
     </bean>
     
     <!--
+        mdui_dn_en_match
+        
+        If an IdP has both an OrganizationDisplayName in English, and an
+        mdui:DisplayName in English, they must be identical.
+        
+        UKFTS 1.4 section 3.3
+    -->
+    <bean id="mdui_dn_en_match" parent="XSLValidationStage"
+        p:id="mdui_dn_en_match">
+        <property name="xslResource">
+            <bean parent="FilesystemResource">
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/mdui_dn_en_match.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        mdui_dn_en_present
+        
+        If an entity has mdui:UIInfo, then that must include at least an
+        mdui:DisplayName with an English name.
+    -->
+    <bean id="mdui_dn_en_present" parent="XSLValidationStage"
+        p:id="mdui_dn_en_present">
+        <property name="xslResource">
+            <bean parent="FilesystemResource">
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/mdui_dn_en_present.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         check_mdui
         
         Composite check for the MDUI specification.
+        
+        Omitted the following, which are only applied to
+        UK-registered metadata:
+        
+            mdui_dn_en_present
+            mdui_dn_en_match
     -->
     <bean id="check_mdui" parent="CompositeStage"
         p:id="check_mdui">
