@@ -757,10 +757,10 @@
 	-->
 	<target name="sign">
 		<echo>Signing UK metadata.</echo>
-		<SIGN.uk i="${md.prod.unsigned}" o="${md.prod.signed}" digest="SHA-1"/>
+		<SIGN.uk i="${md.prod.unsigned}" o="${md.prod.signed}" digest="SHA-256"/>
 
 		<echo>Signing UK WAYF metadata.</echo>
-		<SIGN.uk i="${md.wayf.unsigned}" o="${md.wayf.signed}" digest="SHA-1"/>
+		<SIGN.uk i="${md.wayf.unsigned}" o="${md.wayf.signed}" digest="SHA-256"/>
 
         <echo>Signing UK CDS full metadata.</echo>
         <SIGN.uk i="${md.cdsall.unsigned}" o="${md.cdsall.signed}" digest="SHA-256"/>
