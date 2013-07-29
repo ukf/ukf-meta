@@ -194,14 +194,48 @@
         ***                                     ***
         *******************************************
     -->
-    
+
+    <!--
+        removeUKEntities
+        
+        Filter out entities which declare themselves as registered
+        by the UK federation.  We don't want those coming back in
+        from another registrar or metadata exchange as they may be
+        old versions of entities we have deregistered, or spoofed.
+    -->
+    <bean id="removeUKEntities" parent="EntityRegistrationAuthorityFilterStage"
+        p:id="removeUKEntities">
+        <property name="designatedRegistrationAuthorities">
+            <list>
+                <ref bean="uk_federation_uri"/>
+            </list>
+        </property>
+        <property name="requiringRegistrationInformation" value="true"/>
+        <property name="whitelistingRegistrationAuthorities" value="false"/>
+    </bean>
+
+    <!--
+        importCommonTail
+        
+        Common actions to be performed on each import pipeline.
+    -->
+    <bean id="importCommonTail" parent="CompositeStage"
+        p:id="importCommonTail">
+        <property name="composedStages">
+            <list>
+                <ref bean="removeUKEntities"/>
+                <ref bean="uk_fix_mailto"/>
+                <ref bean="uk_hide_idps"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="uk_ie_edugate_importPipeline" parent="SimplePipeline"
         p:id="uk_ie_edugate_importPipeline">
         <property name="stages">
             <list>
                 <ref bean="ie_edugate_exportedEntities"/>
-                <ref bean="uk_fix_mailto"/>
-                <ref bean="uk_hide_idps"/>
+                <ref bean="importCommonTail"/>
             </list>
         </property>
     </bean>
@@ -211,8 +245,7 @@
         <property name="stages">
             <list>
                 <ref bean="se_swamid_edugainEntities"/>
-                <ref bean="uk_fix_mailto"/>
-                <ref bean="uk_hide_idps"/>
+                <ref bean="importCommonTail"/>
             </list>
         </property>
     </bean>
@@ -222,8 +255,7 @@
         <property name="stages">
             <list>
                 <ref bean="us_incommon_exportedEntities"/>
-                <ref bean="uk_fix_mailto"/>
-                <ref bean="uk_hide_idps"/>
+                <ref bean="importCommonTail"/>
             </list>
         </property>
     </bean>
