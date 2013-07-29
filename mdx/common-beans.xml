@@ -164,6 +164,14 @@
     />
     
     <!--
+        EntityRegistrationAuthorityFilterStage
+        
+        Parent for registration authority filtering stages.
+    -->
+    <bean id="EntityRegistrationAuthorityFilterStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntityRegistrationAuthorityFilterStage"/>
+    
+    <!--
         ***********************************************
         ***                                         ***
         ***   N A M E S P A C E   H A N D L I N G   ***
