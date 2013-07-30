@@ -17,6 +17,16 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 #
 
 #
+# Number of days when we issue a warning
+#
+my $daysBeforeWarning = 43;
+
+#
+# Number of days when we issue an error
+#
+my $daysBeforeError = 18;
+
+#
 # Number of days in the past we should regard as "long expired".
 #
 my $longExpiredDays = 30*3; # about three months
@@ -396,10 +406,10 @@ while (<>) {
 				error("EXPIRED ($notAfter)");
 				comment("fingerprint $fingerprint");
 			}
-		} elsif ($days < 18) {
+		} elsif ($days < $daysBeforeError) {
 			$days = int($days);
 			error("expires in $days days ($notAfter)");
-		} elsif ($days < 36) {
+		} elsif ($days < $daysBeforeWarning) {
 			$days = int($days);
 			warning("expires in $days days ($notAfter)");
 		}
