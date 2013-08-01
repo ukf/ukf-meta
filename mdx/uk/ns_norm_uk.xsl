@@ -39,7 +39,7 @@
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	
-	exclude-result-prefixes="alg md mdattr saml"
+	exclude-result-prefixes="alg elab md mdattr saml"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">

@@ -351,6 +351,7 @@
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
+                <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
@@ -394,6 +395,7 @@
         <property name="stages">
             <list>
                 <ref bean="uk_assemble"/>
+                <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_finaliseProduction"/>
