@@ -698,6 +698,15 @@
                         </p>
                     </li>
                     
+                    <li>
+                        <p>
+                            Not supporting SAML 1.1 SSO:
+                            <xsl:variable name="not.saml.1.1" select="$idpCount - $idp.sso.saml.1.1.count"/>
+                            <xsl:value-of select="$not.saml.1.1"/>
+                            (<xsl:value-of select="format-number($not.saml.1.1 div $idpCount, '0.0%')"/>)
+                        </p>
+                    </li>
+                    
                     <xsl:variable name="idp.sso.saml.2.0"
                         select="$idps[contains(md:IDPSSODescriptor/@protocolSupportEnumeration,
                         'urn:oasis:names:tc:SAML:2.0:protocol')]"/>
@@ -726,7 +735,17 @@
                                 (<xsl:value-of select="format-number($idp.sso.saml.2.0.artifact.count div $idp.sso.saml.2.0.count, '0.0%')"/> of SAML 2.0 IdPs,
                                 <xsl:value-of select="format-number($idp.sso.saml.2.0.artifact.count div $idpCount, '0.0%')"/> of all IdPs)
                             </li>
+
                         </ul>
+                    </li>
+                    
+                    <li>
+                        <p>
+                            Not supporting SAML 2.0 SSO:
+                            <xsl:variable name="not.saml.2" select="$idpCount - $idp.sso.saml.2.0.count"/>
+                            <xsl:value-of select="$not.saml.2"/>
+                            (<xsl:value-of select="format-number($not.saml.2 div $idpCount, '0.0%')"/>)
+                        </p>
                     </li>
                     
                 </ul>
@@ -877,7 +896,17 @@
                                     (<xsl:value-of select="format-number($sp.saml.1.1.acs.saml.1.0.artifact.count div $sp.sso.saml.1.1.count, '0.0%')"/>)
                                 </p>
                             </li>
+
                         </ul>
+                    </li>
+                    
+                    <li>
+                        <p>
+                            Not supporting SAML 1.1 SSO:
+                            <xsl:variable name="not.saml.1.1" select="$spCount - $sp.sso.saml.1.1.count"/>
+                            <xsl:value-of select="$not.saml.1.1"/>
+                            (<xsl:value-of select="format-number($not.saml.1.1 div $spCount, '0.0%')"/>)
+                        </p>
                     </li>
                     
                     <xsl:variable name="sp.sso.saml.2.0"
@@ -929,9 +958,19 @@
                                     (<xsl:value-of select="format-number($sp.saml.2.0.acs.saml.2.0.paos.count div $sp.sso.saml.2.0.count, '0.0%')"/>)
                                 </p>
                             </li>                            
+                            
                         </ul>
                     </li>
                     
+                    <li>
+                        <p>
+                            Not supporting SAML 2.0 SSO:
+                            <xsl:variable name="not.saml.2" select="$spCount - $sp.sso.saml.2.0.count"/>
+                            <xsl:value-of select="$not.saml.2"/>
+                            (<xsl:value-of select="format-number($not.saml.2 div $spCount, '0.0%')"/>)
+                        </p>
+                    </li>
+
                 </ul>
                 
                 <xsl:call-template name="entity.breakdown.by.trust">
