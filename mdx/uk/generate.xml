@@ -577,6 +577,7 @@
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Feature fallback metadata; not for production use"/>
+                <entry key="publisher" value-ref="uk_federation_uri"/>
             </map>
         </property>
     </bean>
