@@ -13,6 +13,22 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Location of various resources.
+    -->
+    <!-- production aggregate -->
+    <bean id="at_aconet_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://wayf.aco.net/aconet-metadata.xml"/>
+    </bean>
+    <!-- test aggregate -->
+    <bean id="at_aconet_testAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://wayf.aco.net/md/aconet-metadata.xml"/>
+    </bean>
+    <!-- other test aggregate -->
+    <bean id="at_aconet_otherAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://wayf.aco.net/md/aconet-interfed-metadata.xml"/>
+    </bean>
+    
+    <!--
         Fetch the production aggregate.
     -->
     <bean id="at_aconet_productionAggregate" parent="DomResourceSourceStage"
@@ -20,7 +36,7 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="http://wayf.aco.net/aconet-aai-metadata.xml"/>
+                <constructor-arg name="url"    ref="at_aconet_productionAggregate_url"/>
             </bean>
         </property>
     </bean>
