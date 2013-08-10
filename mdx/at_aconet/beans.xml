@@ -27,6 +27,10 @@
     <bean id="at_aconet_otherAggregate_url" class="java.lang.String">
         <constructor-arg value="https://wayf.aco.net/md/aconet-interfed-metadata.xml"/>
     </bean>
+    <!-- eduGAIN export aggregate -->
+    <bean id="at_aconet_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://wayf.aco.net/md/edugain-upstream.xml"/>
+    </bean>
     
     <!--
         Fetch the production aggregate.
@@ -37,6 +41,19 @@
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="at_aconet_productionAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="at_aconet_edugainAggregate" parent="DomResourceSourceStage"
+        p:id="at_aconet_edugainAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="at_aconet_edugainAggregate_url"/>
             </bean>
         </property>
     </bean>
@@ -62,13 +79,51 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        at_aconet_registrar
+        
+        Unique ID for the registrar associated with this channel.
     -->
-    <bean id="at_aconet_exportedEntities" parent="CompositeStage"
-        p:id="at_aconet_exportedEntities">
+    <bean id="at_aconet_registrar" class="java.lang.String">
+        <constructor-arg value="http://eduid.at"/>
+    </bean>
+    
+    <!--
+        at_aconet_check_regauth
+        
+        Any registrationAuthority already present on an entity in this
+        channel must match the known registration authority value.
+    -->
+    <bean id="at_aconet_check_regauth" parent="check_regauth_parent"
+        p:id="at_aconet_check_regauth">
+        <property name="transformParameters">
+            <map>
+                <entry key="expectedAuthority" value-ref="at_aconet_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
+        at_aconet_default_regauth
+        
+        Provide a default registrationAuthority appropriate to
+        this channel.
+    -->
+    <bean id="at_aconet_default_regauth" parent="default_regauth_parent"
+        p:id="at_aconet_default_regauth">
+        <property name="transformParameters">
+            <map>
+                <entry key="defaultAuthority" value-ref="at_aconet_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch and process the production entities as a collection.
+    -->
+    <bean id="at_aconet_productionEntities" parent="CompositeStage"
+        p:id="at_aconet_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="at_aconet_productionAggregate"/>
                 
                 <!--
@@ -91,4 +146,73 @@
         </property>
     </bean>
     
+    <!--
+        Fetch and process the eduGAIN export entities as a collection.
+    -->
+    <bean id="at_aconet_edugainEntities" parent="CompositeStage"
+        p:id="at_aconet_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="at_aconet_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="at_aconet_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="at_aconet_default_regauth"/>
+                <ref bean="at_aconet_check_regauth"/>
+                
+                <ref bean="standardImportActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Verify the entities in the eduGAIN export aggregate.
+    -->
+    <bean id="at_aconet_verifyEdugain" parent="CompositeStage"
+        p:id="at_aconet_verifyEdugain">
+        <property name="composedStages">
+            <list>
+                <ref bean="at_aconet_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="at_aconet_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="at_aconet_default_regauth"/>
+                <ref bean="at_aconet_check_regauth"/>
+                
+                <ref bean="standardVerifyActions"/>
+                
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+                
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="at_aconet_exportedAggregate" name="at_aconet_edugainAggregate"/>
+    <alias alias="at_aconet_exportedEntities"  name="at_aconet_edugainEntities"/>
 </beans>
