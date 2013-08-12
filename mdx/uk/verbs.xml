@@ -328,6 +328,7 @@
         <property name="stages">
             <list>
                 <ref bean="uk_exportedEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>

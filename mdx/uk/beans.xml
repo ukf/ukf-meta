@@ -531,7 +531,7 @@
     -->
     
     <!--
-        Fetch and process the export entities as a collection.
+        Fetch the export entities as a collection.
     -->
     <bean id="uk_exportedEntities" parent="CompositeStage"
         p:id="uk_exportedEntities">
@@ -552,12 +552,6 @@
                 
                 <ref bean="uk_default_regauth"/>
                 <ref bean="uk_check_regauth"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

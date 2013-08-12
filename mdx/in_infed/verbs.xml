@@ -36,6 +36,7 @@
         <property name="stages">
             <list>
                 <ref bean="in_infed_productionEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>

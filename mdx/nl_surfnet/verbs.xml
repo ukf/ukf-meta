@@ -36,6 +36,7 @@
         <property name="stages">
             <list>
                 <ref bean="nl_surfnet_productionEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -66,6 +67,7 @@
         <property name="stages">
             <list>
                 <ref bean="nl_surfnet_edugainEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>

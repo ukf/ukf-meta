@@ -129,7 +129,7 @@
     </bean>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="dk_wayf_productionEntities" parent="CompositeStage"
         p:id="dk_wayf_productionEntities">
@@ -142,18 +142,12 @@
                 <!-- hub singleton IdP and SP metadata -->
                 <ref bean="dk_wayf_idpMetadata"/>
                 <ref bean="dk_wayf_spMetadata"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="dk_wayf_edugainEntities" parent="CompositeStage"
         p:id="dk_wayf_edugainEntities">
@@ -171,12 +165,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

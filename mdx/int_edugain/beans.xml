@@ -65,7 +65,7 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch the exported entities as a collection.
     -->
     <bean id="int_edugain_exportedEntities" parent="CompositeStage"
         p:id="int_edugain_exportedEntities">
@@ -95,18 +95,12 @@
                     we can't check the actual values.
                 -->
                 <ref bean="check_hasreginfo"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the test entities as a collection.
+        Fetch the test entities as a collection.
     -->
     <bean id="int_edugain_testEntities" parent="CompositeStage"
         p:id="int_edugain_testEntities">
@@ -136,12 +130,6 @@
                     we can't check the actual values.
                 -->
                 <ref bean="check_hasreginfo"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

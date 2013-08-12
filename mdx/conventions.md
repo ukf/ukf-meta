@@ -68,8 +68,10 @@ Most federations publish more than one metadata aggregate.  We use the following
 
 Aggregate names such as the above are used in the construction of bean names:
 
-* `channel_xxxAggregate` is a stage that fetches the channel's `xxx` aggregate.
-* `channel_xxxEntities` is a stage that fetches the channel's `xxx` aggregate, disassembles it into a collection of entites and then processes those entities for UK federation consumption.
+* `channel_xxxAggregate` is a composite stage that fetches the channel's `xxx` aggregate.  The result will normally be a single `DomDocumentItem` whose document element is an `EntitiesDescriptor`.  Execution will be terminated via `errorTerminatingFilter` if, for example, the signature does not verify.
+* `channel_xxxEntities` is a composite stage that fetches the channel's `xxx` aggregate, checks that aggregate's global properties (signature, validity) and then disassembles it into a collection of entites each represented by a `DomDocumentItem` whose document element is an `EntityDescriptor`.  Channel-specific rules such as presence of and appropriate values for `registrationAuthority` are checked but not enforced by this stage.  Channel-independent checks and the enforcement of all checks (announcement, filtering or termination) are the responsibility of the caller.
+
+**Note:** The conventions around which part of the system are responsible for performing and enforcing checks were changed around 2013-08-12.  Previously, `channel_xxxEntities` beans both performed checks and enforced them.  Now, `beans.xml` beans perform only channel-specific checks and never enforce.  In most cases, this means the movement of `standardImportActions` and `stripMdattrNamespace` from the `...Entities` bean to all callers.  `stripMdattrNamespace` has therefore been included in both `standardImportActions` and `standardVerifyActions` to make this transition simpler.
 
 As well as the physical aggregates published by a federation, the name `exported` is used (as for example in the bean name `channel_exportedEntities`) to represent the aggregate that either is that used for import by the UK federation, or is closest in spirit to that purpose.  This aggregate is usually selected as follows, in descending order of preference:
 

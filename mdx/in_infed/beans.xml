@@ -33,13 +33,12 @@
     </bean>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="in_infed_productionEntities" parent="CompositeStage"
         p:id="in_infed_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="in_infed_productionAggregate"/>
                 
                 <!--
@@ -54,12 +53,6 @@
                 -->
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

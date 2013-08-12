@@ -36,6 +36,7 @@
         <property name="stages">
             <list>
                 <ref bean="se_swamid_productionEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -57,6 +58,7 @@
         <property name="stages">
             <list>
                 <ref bean="se_swamid_edugainEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -77,7 +79,8 @@
         p:id="verifyEdugain">
         <property name="stages">
             <list>
-                <ref bean="se_swamid_verifyEdugain"/>
+                <ref bean="se_swamid_edugainEntities"/>
+                <ref bean="standardVerifyActions"/>
             </list>
         </property>
     </bean>

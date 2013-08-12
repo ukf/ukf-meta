@@ -79,7 +79,7 @@
     </bean>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
         
         Fake this up by combining separate IdP and SP aggregates.
     -->
@@ -101,17 +101,12 @@
                 <!-- SP singleton -->
                 <ref bean="nl_surfnet_spAggregate"/>
                 <ref bean="disassemble"/>
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="nl_surfnet_edugainEntities" parent="CompositeStage"
         p:id="nl_surfnet_edugainEntities">
@@ -129,12 +124,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

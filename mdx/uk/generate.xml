@@ -224,6 +224,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="removeUKEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="uk_fix_mailto"/>
                 <ref bean="uk_hide_idps"/>
             </list>

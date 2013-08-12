@@ -89,7 +89,7 @@
     </bean>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="ch_switchaai_productionEntities" parent="CompositeStage"
         p:id="ch_switchaai_productionEntities">
@@ -107,18 +107,12 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="ch_switchaai_edugainEntities" parent="CompositeStage"
         p:id="ch_switchaai_edugainEntities">
@@ -136,12 +130,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

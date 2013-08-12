@@ -67,7 +67,7 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch the exported entities as a collection.
     -->
     <bean id="nl_surfconext_exportedEntities" parent="CompositeStage"
         p:id="nl_surfconext_exportedEntities">
@@ -90,11 +90,6 @@
                 <!-- SP singleton -->
                 <ref bean="nl_surfconext_spAggregate"/>
                 <ref bean="disassemble"/>
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

@@ -86,7 +86,7 @@
         p:namespace="http://eduid.cz/schema/metadata/1.0"/>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="cz_eduid_productionEntities" parent="CompositeStage"
         p:id="cz_eduid_productionEntities">
@@ -106,18 +106,12 @@
                 <ref bean="disassemble"/>
                 
                 <ref bean="cz_eduid_stripMetadataNamespace"/>
-
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="cz_eduid_edugainEntities" parent="CompositeStage"
         p:id="cz_eduid_edugainEntities">
@@ -137,12 +131,6 @@
                 <ref bean="disassemble"/>
                 
                 <ref bean="cz_eduid_stripMetadataNamespace"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

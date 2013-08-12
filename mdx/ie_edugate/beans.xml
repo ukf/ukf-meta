@@ -118,10 +118,10 @@
     </bean>
     
     <!--
-        Fetch and process all entities as a collection.
+        Fetch production entities as a collection.
     -->
-    <bean id="ie_edugate_allEntities" parent="CompositeStage"
-        p:id="ie_edugate_allEntities">
+    <bean id="ie_edugate_productionEntities" parent="CompositeStage"
+        p:id="ie_edugate_productionEntities">
         <property name="composedStages">
             <list>
                 <ref bean="ie_edugate_productionAggregate"/>
@@ -138,17 +138,12 @@
                 <ref bean="disassemble"/>
                 
                 <ref bean="ie_edugate_check_regauth"/>
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch the exported entities as a collection.
     -->
     <bean id="ie_edugate_exportedEntities" parent="CompositeStage"
         p:id="ie_edugate_exportedEntities">
@@ -169,11 +164,6 @@
                 
                 <ref bean="ie_edugate_default_regauth"/>
                 <ref bean="ie_edugate_check_regauth"/>
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

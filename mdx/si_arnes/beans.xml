@@ -46,13 +46,12 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch and process the production entities as a collection.
     -->
-    <bean id="si_arnes_exportedEntities" parent="CompositeStage"
-        p:id="si_arnes_exportedEntities">
+    <bean id="si_arnes_productionEntities" parent="CompositeStage"
+        p:id="si_arnes_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="si_arnes_productionAggregate"/>
 
                 <!--
@@ -70,12 +69,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

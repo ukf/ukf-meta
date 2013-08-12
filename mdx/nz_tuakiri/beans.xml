@@ -46,13 +46,12 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch the production entities as a collection.
     -->
-    <bean id="nz_tuakiri_exportedEntities" parent="CompositeStage"
-        p:id="nz_tuakiri_exportedEntities">
+    <bean id="nz_tuakiri_productionEntities" parent="CompositeStage"
+        p:id="nz_tuakiri_productionEntities">
         <property name="composedStages">
             <list>
-                <!-- no export aggregate; use the production one instead -->
                 <ref bean="nz_tuakiri_productionAggregate"/>
                 
                 <!--
@@ -65,12 +64,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

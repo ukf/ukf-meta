@@ -36,6 +36,7 @@
         <property name="stages">
             <list>
                 <ref bean="dk_wayf_exportedEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -57,6 +58,7 @@
         <property name="stages">
             <list>
                 <ref bean="dk_wayf_edugainEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>

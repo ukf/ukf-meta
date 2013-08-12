@@ -33,7 +33,7 @@
     </bean>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="int_testshib_productionEntities" parent="CompositeStage"
         p:id="int_testshib_productionEntities">
@@ -42,12 +42,6 @@
                 <ref bean="int_testshib_productionAggregate"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

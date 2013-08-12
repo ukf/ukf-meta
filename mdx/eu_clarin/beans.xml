@@ -26,7 +26,7 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch the exported entities as a collection.
     -->
     <bean id="eu_clarin_exportedEntities" parent="CompositeStage"
         p:id="eu_clarin_exportedEntities">
@@ -49,11 +49,6 @@
                 -->
                 
                 <ref bean="disassemble"/>
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

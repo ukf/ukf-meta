@@ -69,7 +69,7 @@
     </bean>
 
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="be_belnet_productionEntities" parent="CompositeStage"
         p:id="be_belnet_productionEntities">
@@ -87,18 +87,12 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="be_belnet_edugainEntities" parent="CompositeStage"
         p:id="be_belnet_edugainEntities">
@@ -116,12 +110,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

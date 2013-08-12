@@ -643,6 +643,9 @@
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="stripWayfNamespace"/>
                 
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+
                 <ref bean="cleanImport"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="checkSchemas"/>
@@ -678,6 +681,9 @@
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="stripWayfNamespace"/>
                 
+                <!-- Strip all entity attributes from this source. -->
+                <ref bean="stripMdattrNamespace"/>
+
                 <ref bean="cleanImport"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="checkSchemas"/>

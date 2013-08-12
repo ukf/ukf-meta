@@ -122,7 +122,7 @@
     </bean>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="at_aconet_productionEntities" parent="CompositeStage"
         p:id="at_aconet_productionEntities">
@@ -140,18 +140,12 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="at_aconet_edugainEntities" parent="CompositeStage"
         p:id="at_aconet_edugainEntities">
@@ -170,46 +164,8 @@
                 
                 <ref bean="disassemble"/>
                 
-                <ref bean="at_aconet_default_regauth"/>
+                <ref bean="check_hasreginfo"/>
                 <ref bean="at_aconet_check_regauth"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
-            </list>
-        </property>
-    </bean>
-    
-    <!--
-        Verify the entities in the eduGAIN export aggregate.
-    -->
-    <bean id="at_aconet_verifyEdugain" parent="CompositeStage"
-        p:id="at_aconet_verifyEdugain">
-        <property name="composedStages">
-            <list>
-                <ref bean="at_aconet_edugainAggregate"/>
-                
-                <!--
-                    Check for fatal errors at the aggregate level:
-                        missing or expired validUntil attribute
-                        invalid signature
-                -->
-                <ref bean="check_validUntil"/>
-                <ref bean="at_aconet_checkSignature"/>
-                <ref bean="errorTerminatingFilter"/>
-                
-                <ref bean="disassemble"/>
-                
-                <ref bean="at_aconet_default_regauth"/>
-                <ref bean="at_aconet_check_regauth"/>
-                
-                <ref bean="standardVerifyActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

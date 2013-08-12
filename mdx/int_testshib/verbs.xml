@@ -39,6 +39,7 @@
         <property name="stages">
             <list>
                 <ref bean="int_testshib_productionEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>

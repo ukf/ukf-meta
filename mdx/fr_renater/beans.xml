@@ -144,7 +144,7 @@
     </bean>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="fr_renater_productionEntities" parent="CompositeStage"
         p:id="fr_renater_productionEntities">
@@ -163,21 +163,12 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="fr_renater_default_regauth"/>
-                <ref bean="fr_renater_check_regauth"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
 
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="fr_renater_edugainEntities" parent="CompositeStage"
         p:id="fr_renater_edugainEntities">
@@ -199,12 +190,6 @@
                 
                 <ref bean="fr_renater_default_regauth"/>
                 <ref bean="fr_renater_check_regauth"/>
-
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

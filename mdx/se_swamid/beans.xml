@@ -114,7 +114,7 @@
     </bean>
     
     <!--
-        Fetch and process the production entities as a collection.
+        Fetch the production entities as a collection.
     -->
     <bean id="se_swamid_productionEntities" parent="CompositeStage"
         p:id="se_swamid_productionEntities">
@@ -145,18 +145,12 @@
                 -->
                 <ref bean="cz_eduid_stripMetadataNamespace"/>
                 <ref bean="hu_eduid_stripEntityAttributesNamespace"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
     
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="se_swamid_edugainEntities" parent="CompositeStage"
         p:id="se_swamid_edugainEntities">
@@ -177,44 +171,6 @@
                 
                 <ref bean="se_swamid_default_regauth"/>
                 <ref bean="se_swamid_check_regauth"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
-            </list>
-        </property>
-    </bean>
-    
-    <!--
-        Verify the entities in the eduGAIN export aggregate.
-    -->
-    <bean id="se_swamid_verifyEdugain" parent="CompositeStage"
-        p:id="se_swamid_verifyEdugain">
-        <property name="composedStages">
-            <list>
-                <ref bean="se_swamid_edugainAggregate"/>
-                
-                <!--
-                    Check for fatal errors at the aggregate level:
-                        missing or expired validUntil attribute
-                        invalid signature
-                -->
-                <ref bean="check_validUntil"/>
-                <ref bean="se_swamid_checkSignature"/>
-                <ref bean="errorTerminatingFilter"/>
-                
-                <ref bean="disassemble"/>
-                
-                <ref bean="se_swamid_default_regauth"/>
-                <ref bean="se_swamid_check_regauth"/>
-                
-                <ref bean="standardVerifyActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

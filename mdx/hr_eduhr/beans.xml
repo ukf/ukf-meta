@@ -92,7 +92,7 @@
     </bean>
     
     <!--
-        Fetch and process the eduGAIN export entities as a collection.
+        Fetch the eduGAIN export entities as a collection.
     -->
     <bean id="hr_eduhr_edugainEntities" parent="CompositeStage"
         p:id="hr_eduhr_edugainEntities">
@@ -117,12 +117,6 @@
                 
                 <ref bean="hr_eduhr_default_regauth"/>
                 <ref bean="hr_eduhr_check_regauth"/>
-
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

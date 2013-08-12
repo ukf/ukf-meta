@@ -35,7 +35,7 @@
     </bean>
     
     <!--
-        Fetch the prodiction aggregate.
+        Fetch the production aggregate.
         
         There isn't one of these, so make one by wrapping the IdP metadata.
     -->
@@ -83,18 +83,13 @@
     </bean>
     
     <!--
-        Fetch and process the exported entities as a collection.
+        Fetch the exported entities as a collection.
     -->
     <bean id="no_feide_productionEntities" parent="CompositeStage"
         p:id="no_feide_productionEntities">
         <property name="composedStages">
             <list>
                 <ref bean="no_feide_idpMetadata"/>
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>
@@ -118,12 +113,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
-                
-                <ref bean="standardImportActions"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-                
             </list>
         </property>
     </bean>

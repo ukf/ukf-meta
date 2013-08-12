@@ -31,19 +31,20 @@
         </property>
     </bean>
     
-    <bean id="import" parent="SimplePipeline"
-        p:id="import">
+    <bean id="importProduction" parent="SimplePipeline"
+        p:id="importProduction">
         <property name="stages">
             <list>
                 <ref bean="nz_tuakiri_exportedEntities"/>
+                <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
         </property>
     </bean>
 
-    <bean id="importRaw" parent="SimplePipeline"
-        p:id="importRaw">
+    <bean id="importProductionRaw" parent="SimplePipeline"
+        p:id="importProductionRaw">
         <property name="stages">
             <list>
                 <ref bean="nz_tuakiri_productionAggregate"/>
