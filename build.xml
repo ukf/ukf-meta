@@ -936,7 +936,6 @@
 	
 	<target name="flow.test.all"
 		depends="flow.importEdugain.all, flow.importProduction.all">
-		<CHANNEL.import channel="at_aconet"/>
         <CHANNEL.import channel="au_aaf"/>
         <CHANNEL.import channel="eu_clarin"/>
         <CHANNEL.import channel="ie_edugate"/>
@@ -958,6 +957,7 @@
         Exception: int_testshib, which is too large and anarchic to be worthwhile.
     -->
     <target name="flow.importProduction.all">
+    	<CHANNEL.do verb="importProduction" channel="at_aconet"/>
         <CHANNEL.do verb="importProduction" channel="be_belnet"/>
         <CHANNEL.do verb="importProduction" channel="br_cafe"/>
     	<CHANNEL.do verb="importProduction" channel="ca_caf"/>
@@ -985,6 +985,7 @@
         Run the importEdugain flow on each channel that has one.
     -->
     <target name="flow.importEdugain.all">
+        <CHANNEL.do verb="importEdugain" channel="at_aconet"/>
         <CHANNEL.do verb="importEdugain" channel="be_belnet"/>
         <CHANNEL.do verb="importEdugain" channel="br_cafe"/>
         <CHANNEL.do verb="importEdugain" channel="ca_caf"/>
