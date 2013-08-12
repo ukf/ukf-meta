@@ -939,12 +939,8 @@
         <CHANNEL.import channel="au_aaf"/>
         <CHANNEL.import channel="eu_clarin"/>
         <CHANNEL.import channel="ie_edugate"/>
-		<CHANNEL.do channel="ie_edugate" verb="importAll"/>
         <CHANNEL.import channel="int_edugain"/>
-        <CHANNEL.import channel="jp_gakunin"/>
 		<CHANNEL.import channel="nl_surfconext"/>
-		<CHANNEL.import channel="nz_tuakiri"/>
-        <CHANNEL.import channel="si_arnes"/>
         <CHANNEL.import channel="uk_eduserv"/>
 		<CHANNEL.import channel="us_incommon"/>
 	</target>
@@ -973,10 +969,13 @@
     	<CHANNEL.do verb="importProduction" channel="ie_edugate"/>
     	<CHANNEL.do verb="importProduction" channel="in_infed"/>
     	<CHANNEL.do verb="importProduction" channel="it_idem"/>
+    	<CHANNEL.do verb="importProduction" channel="jp_gakunin"/>
     	<CHANNEL.do verb="importProduction" channel="lv_laife"/>
     	<CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
     	<CHANNEL.do verb="importProduction" channel="no_feide"/>
+    	<CHANNEL.do verb="importProduction" channel="nz_tuakiri"/>
     	<CHANNEL.do verb="importProduction" channel="se_swamid"/>
+    	<CHANNEL.do verb="importProduction" channel="si_arnes"/>
         <CHANNEL.do verb="importProduction" channel="us_incommon"/>
     </target>
     
@@ -1038,6 +1037,7 @@
         Run the importEdugainRaw flow on each channel that has one.
     -->
     <target name="flow.importEdugainRaw.all">
+        <CHANNEL.do verb="importEdugainRaw" channel="at_aconet"/>
         <CHANNEL.do verb="importEdugainRaw" channel="be_belnet"/>
         <CHANNEL.do verb="importEdugainRaw" channel="br_cafe"/>
         <CHANNEL.do verb="importEdugainRaw" channel="ca_caf"/>
@@ -1047,6 +1047,7 @@
         <CHANNEL.do verb="importEdugainRaw" channel="dk_wayf"/>
         <CHANNEL.do verb="importEdugainRaw" channel="es_sir"/>
         <CHANNEL.do verb="importEdugainRaw" channel="fi_haka"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="fr_renater"/>
         <CHANNEL.do verb="importEdugainRaw" channel="gr_grnet"/>
         <CHANNEL.do verb="importEdugainRaw" channel="hr_eduhr"/>
         <CHANNEL.do verb="importEdugainRaw" channel="hu_eduid"/>
