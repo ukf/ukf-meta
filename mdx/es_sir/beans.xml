@@ -49,12 +49,12 @@
     </bean>
     
     <!--
-        Signing key.
+        Signing certificate.
     -->
-    <bean id="es_sir_signingKey" class="net.shibboleth.ext.spring.factory.PublicKeyFactoryBean">
-        <property name="publicKeyFile">
+    <bean id="es_sir_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/es_sir/sirpubkey.pem"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/es_sir/metadata-signer.crt"/>
             </bean>
         </property>
     </bean>
@@ -65,7 +65,7 @@
     <bean id="es_sir_checkSignature" parent="stage_parent"
         class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
         p:id="es_sir_checkSignature">
-        <property name="verificationKey" ref="es_sir_signingKey"/>
+        <property name="verificationCertificate" ref="es_sir_signingCertificate"/>
     </bean>
     
     <!--
@@ -105,11 +105,7 @@
                         missing or expired validUntil attribute
                         invalid signature
                 -->
-                <!--
-                    Aggregate does not include validUntil
-                    
-                    <ref bean="check_validUntil"/>
-                -->
+                <ref bean="check_validUntil"/>
                 <ref bean="es_sir_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
