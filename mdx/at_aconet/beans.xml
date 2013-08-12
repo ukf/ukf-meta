@@ -15,6 +15,10 @@
     <!--
         Location of various resources.
     -->
+    <!-- "old" (ACOnet-registered-only) production metadata -->
+    <bean id="at_aconet_oldProductionAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://wayf.aco.net/OLD-aconet-metadata.xml"/>
+    </bean>
     <!-- production aggregate -->
     <bean id="at_aconet_productionAggregate_url" class="java.lang.String">
         <constructor-arg value="https://wayf.aco.net/aconet-metadata.xml"/>
@@ -23,8 +27,8 @@
     <bean id="at_aconet_testAggregate_url" class="java.lang.String">
         <constructor-arg value="https://wayf.aco.net/md/aconet-metadata.xml"/>
     </bean>
-    <!-- other test aggregate -->
-    <bean id="at_aconet_otherAggregate_url" class="java.lang.String">
+    <!-- test aggregate containing ACOnet-registered and imported entities -->
+    <bean id="at_aconet_allAggregate_url" class="java.lang.String">
         <constructor-arg value="https://wayf.aco.net/md/aconet-interfed-metadata.xml"/>
     </bean>
     <!-- eduGAIN export aggregate -->
