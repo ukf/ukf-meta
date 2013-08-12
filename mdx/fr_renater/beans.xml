@@ -19,7 +19,7 @@
         <constructor-arg value="https://services-federation.renater.fr/metadata/renater-metadata.xml"/>
     </bean>
     <bean id="fr_renater_edugainAggregate_url" class="java.lang.String">
-        <constructor-arg value="https://fedregistry.renater.fr/edugain/edugain-metadata.xml"/>
+        <constructor-arg value="https://federation.renater.fr/edugain_upstream/edugain-metadata.xml"/>
     </bean>
     <bean id="fr_renater_testAggregate_url" class="java.lang.String">
         <constructor-arg value="https://services-federation.renater.fr/metadata/renater-test-metadata.xml"/>
@@ -110,7 +110,7 @@
         Unique ID for the registrar associated with this channel.
     -->
     <bean id="fr_renater_registrar" class="java.lang.String">
-        <constructor-arg value="https://federation.renater.fr/gestion"/>
+        <constructor-arg value="https://federation.renater.fr/"/>
     </bean>
     
     <!--
