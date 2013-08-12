@@ -931,7 +931,7 @@
     </target>
     
     <target name="flow.int_edugain.testImport">
-        <CHANNEL.do channel="int_edugain" verb="testImport"/>
+        <CHANNEL.do channel="int_edugain" verb="importTest"/>
     </target>
 	
 	<target name="flow.test.all"
@@ -939,7 +939,6 @@
         <CHANNEL.import channel="au_aaf"/>
         <CHANNEL.import channel="eu_clarin"/>
         <CHANNEL.import channel="ie_edugate"/>
-        <CHANNEL.import channel="int_edugain"/>
 		<CHANNEL.import channel="nl_surfconext"/>
         <CHANNEL.import channel="uk_eduserv"/>
 		<CHANNEL.import channel="us_incommon"/>
@@ -968,6 +967,7 @@
     	<CHANNEL.do verb="importProduction" channel="hu_eduid"/>
     	<CHANNEL.do verb="importProduction" channel="ie_edugate"/>
     	<CHANNEL.do verb="importProduction" channel="in_infed"/>
+    	<CHANNEL.do verb="importProduction" channel="int_edugain"/>
     	<CHANNEL.do verb="importProduction" channel="it_idem"/>
     	<CHANNEL.do verb="importProduction" channel="jp_gakunin"/>
     	<CHANNEL.do verb="importProduction" channel="lv_laife"/>
@@ -1007,31 +1007,6 @@
     </target>
 
     <!--
-        flow.verifyEdugain
-        
-        Verify the eduGAIN entities from a particular channel.
-        
-        The intention is that this be called within Jenkins
-        with the channel name passed as a property, e.g.:
-        
-            ant flow.verifyEdugain -Dchannel=se_swamid
-            
-    -->
-	<target name="flow.verifyEdugain">
-		<CHANNEL.do verb="verifyEdugain" channel="${channel}"/>
-	</target>
-	
-    <!--
-        flow.verifyEdugain.all
-        
-        Verify the eduGAIN entities from all channels with this ability.
-    -->
-	<target name="flow.verifyEdugain.all">
-        <CHANNEL.do verb="verifyEdugain" channel="at_aconet"/>
-		<CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
-	</target>
-	
-    <!--
         flow.importEdugainRaw.all
         
         Run the importEdugainRaw flow on each channel that has one.
@@ -1056,6 +1031,31 @@
         <CHANNEL.do verb="importEdugainRaw" channel="nl_surfnet"/>
         <CHANNEL.do verb="importEdugainRaw" channel="no_feide"/>
         <CHANNEL.do verb="importEdugainRaw" channel="se_swamid"/>
+    </target>
+    
+    <!--
+        flow.verifyEdugain
+        
+        Verify the eduGAIN entities from a particular channel.
+        
+        The intention is that this be called within Jenkins
+        with the channel name passed as a property, e.g.:
+        
+            ant flow.verifyEdugain -Dchannel=se_swamid
+            
+    -->
+    <target name="flow.verifyEdugain">
+        <CHANNEL.do verb="verifyEdugain" channel="${channel}"/>
+    </target>
+    
+    <!--
+        flow.verifyEdugain.all
+        
+        Verify the eduGAIN entities from all channels with this ability.
+    -->
+    <target name="flow.verifyEdugain.all">
+        <CHANNEL.do verb="verifyEdugain" channel="at_aconet"/>
+        <CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
     </target>
     
 	<!--

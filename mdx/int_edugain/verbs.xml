@@ -31,11 +31,11 @@
         </property>
     </bean>
     
-    <bean id="import" parent="SimplePipeline"
-        p:id="import">
+    <bean id="importProduction" parent="SimplePipeline"
+        p:id="importProduction">
         <property name="stages">
             <list>
-                <ref bean="int_edugain_exportedEntities"/>
+                <ref bean="int_edugain_productionEntities"/>
                 <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
@@ -43,8 +43,8 @@
         </property>
     </bean>
 
-    <bean id="importRaw" parent="SimplePipeline"
-        p:id="importRaw">
+    <bean id="importProductionRaw" parent="SimplePipeline"
+        p:id="importProductionRaw">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionAggregate"/>
@@ -53,8 +53,8 @@
         </property>
     </bean>
     
-    <bean id="testImport" parent="SimplePipeline"
-        p:id="testImport">
+    <bean id="importTest" parent="SimplePipeline"
+        p:id="importTest">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_testEntities"/>

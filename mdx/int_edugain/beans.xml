@@ -65,10 +65,10 @@
     </bean>
     
     <!--
-        Fetch the exported entities as a collection.
+        Fetch the production entities as a collection.
     -->
-    <bean id="int_edugain_exportedEntities" parent="CompositeStage"
-        p:id="int_edugain_exportedEntities">
+    <bean id="int_edugain_productionEntities" parent="CompositeStage"
+        p:id="int_edugain_productionEntities">
         <property name="composedStages">
             <list>
                 <ref bean="int_edugain_productionAggregate"/>
