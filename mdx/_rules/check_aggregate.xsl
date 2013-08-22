@@ -40,19 +40,6 @@
 			</xsl:for-each>
 		</xsl:for-each>
 		
-		<!-- check for duplicate OrganisationDisplayName values -->
-		<xsl:variable name="distinct.ODNs"
-			select="set:distinct($idps/md:Organization/md:OrganizationDisplayName)"/>
-		<xsl:variable name="dup.ODNs"
-			select="set:distinct(set:difference($idps/md:Organization/md:OrganizationDisplayName, $distinct.ODNs))"/>
-		<xsl:for-each select="$dup.ODNs">
-			<xsl:variable name="dup.ODN" select="."/>
-			<xsl:for-each select="$idps[md:Organization/md:OrganizationDisplayName = $dup.ODN]">
-				<xsl:call-template name="error">
-					<xsl:with-param name="m">duplicate OrganisationDisplayName: <xsl:value-of select='$dup.ODN'/></xsl:with-param>
-				</xsl:call-template>
-			</xsl:for-each>
-		</xsl:for-each>
 	</xsl:template>
 	
 </xsl:stylesheet>
