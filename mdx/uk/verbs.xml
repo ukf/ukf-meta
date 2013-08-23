@@ -101,7 +101,7 @@
                 <!--
                     Now build an aggregate so that we can perform
                     checks across the whole aggregate, such as
-                    OrganizationDisplayName uniqueness.
+                    entityID uniqueness.
                 -->
                 <ref bean="uk_assemble"/>
                 <ref bean="checkSchemas"/>
