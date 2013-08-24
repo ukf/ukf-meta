@@ -220,18 +220,6 @@
     </bean>
     
     <!--
-        check_aggregate
-    -->
-    <bean id="check_aggregate" parent="XSLValidationStage"
-        p:id="check_aggregate">
-        <property name="xslResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_aggregate.xsl"/>
-            </bean>
-        </property>
-    </bean>
-    
-    <!--
         check_bindings
     -->
     <bean id="check_bindings" parent="XSLValidationStage"
@@ -663,6 +651,47 @@
             </bean>
         </property>
     </bean>
+    
+    <!--
+        *******************************************************
+        ***                                                 ***
+        ***   C O L L E C T I O N   C O N S I S T E N C Y   ***
+        ***                                                 ***
+        *******************************************************
+    -->
+    
+    <!--
+        These checks are for consistency across a collection of entities
+        rather than on each entity independently.
+    -->
+    
+    <!--
+        check_aggregate
+        
+        Checks for duplicate entityID values across a set of entities.
+        
+        It is assumed that the entities are wrapped in a single EntitiesDescriptor.
+    -->
+    <bean id="check_aggregate" parent="XSLValidationStage"
+        p:id="check_aggregate">
+        <property name="xslResource">
+            <bean parent="FilesystemResource">
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_aggregate.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        check_dup_display
+        
+        Checks for duplicate identity provider display names across a set of entities.
+        
+        It is assumed that the entities are independently represented as EntityDescriptor
+        items in the item collection.
+    -->
+    <bean id="check_dup_display" parent="stage_parent"
+        p:id="check_dup_display"
+        class="uk.org.ukfederation.mda.IdPDisplayNameDuplicateDetectingStage"/>
     
     <!--
         *********************************************

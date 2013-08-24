@@ -376,6 +376,7 @@
                 <ref bean="check_ukreg"/>
                 <ref bean="mdui_dn_en_present"/>
                 <ref bean="mdui_dn_en_match"/>
+                <ref bean="check_dup_display"/>
                 
                 <!-- failure of any check on registered metadata is fatal -->
                 <ref bean="errorTerminatingFilter"/>

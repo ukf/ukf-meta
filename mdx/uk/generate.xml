@@ -351,6 +351,12 @@
         p:id="uk_productionPipeline">
         <property name="stages">
             <list>
+                <!--
+                    Enforce IdP display name uniqueness before assembling aggregate
+                -->
+                <ref bean="check_dup_display"/>
+                <ref bean="errorTerminatingFilter"/>
+                
                 <ref bean="uk_assemble"/>
                 <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
@@ -395,6 +401,12 @@
         p:id="uk_wayfPipeline">
         <property name="stages">
             <list>
+                <!--
+                    Enforce IdP display name uniqueness before assembling aggregate
+                -->
+                <ref bean="check_dup_display"/>
+                <ref bean="errorTerminatingFilter"/>
+                
                 <ref bean="uk_assemble"/>
                 <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
@@ -547,6 +559,12 @@
         p:id="CDSAllPipeline">
         <property name="stages">
             <list>
+                <!--
+                    Enforce IdP display name uniqueness before assembling aggregate
+                -->
+                <ref bean="check_dup_display"/>
+                <ref bean="errorTerminatingFilter"/>
+                
                 <!-- make an aggregate first so that we're only traversing one item -->
                 <ref bean="uk_assemble"/>
                 
@@ -605,6 +623,12 @@
         p:id="uk_fallbackPipeline">
         <property name="stages">
             <list>
+                <!--
+                    Enforce IdP display name uniqueness before assembling aggregate
+                -->
+                <ref bean="check_dup_display"/>
+                <ref bean="errorTerminatingFilter"/>
+                
                 <ref bean="uk_assemble"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
@@ -663,6 +687,12 @@
         p:id="uk_testPipeline">
         <property name="composedStages">
             <list>
+                <!--
+                    Enforce IdP display name uniqueness before assembling aggregate
+                -->
+                <ref bean="check_dup_display"/>
+                <ref bean="errorTerminatingFilter"/>
+                
                 <ref bean="uk_assemble"/>
                 <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
@@ -726,6 +756,12 @@
         p:id="uk_exportPipeline">
         <property name="stages">
             <list>
+                <!--
+                    Enforce IdP display name uniqueness before assembling aggregate
+                -->
+                <ref bean="check_dup_display"/>
+                <ref bean="errorTerminatingFilter"/>
+                
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="stripKeyNames"/>
