@@ -47,10 +47,6 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 	
-	<xsl:template match="elab:*">
-		<xsl:apply-templates/>
-	</xsl:template>
-	
 	<xsl:template match="hoksso:*">
 		<xsl:apply-templates/>
 	</xsl:template>

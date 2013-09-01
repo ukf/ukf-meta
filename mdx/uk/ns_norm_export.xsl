@@ -27,7 +27,6 @@
 <xsl:stylesheet version="1.0"
 	xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-	xmlns:elab="http://eduserv.org.uk/labels"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
@@ -39,7 +38,7 @@
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	
-	exclude-result-prefixes="alg md mdattr elab saml ukfedlabel wayf"
+	exclude-result-prefixes="alg md mdattr saml ukfedlabel wayf"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">

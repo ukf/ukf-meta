@@ -183,6 +183,7 @@
                 <ref bean="check_aggregate"/>
                 <ref bean="check_filtered"/>
                 <ref bean="check_fixup_keyuse"/>
+                <ref bean="check_namespaces"/>
             </list>
         </property>
     </bean>
@@ -358,7 +359,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
@@ -408,7 +408,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_finaliseProduction"/>
@@ -445,7 +444,6 @@
             <list>
                 <ref bean="stripComments"/>
                 
-                <ref bean="stripElabNamespace"/>
                 <ref bean="stripMdattrNamespace"/>
                 <ref bean="stripMdrpiNamespace"/>
                 <ref bean="stripUkfedlabelNamespace"/>
@@ -694,7 +692,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="stripElabNamespace"/>                
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
@@ -771,8 +768,15 @@
                 <ref bean="uk_finaliseExport"/>
                 <ref bean="uk_normaliseExport"/>
                 
-                <!-- schema validity check MUST pass -->
+                <!--
+                    Schema validity and other checks MUST pass.
+                    
+                    These are a subset of the publishability tests applied to
+                    aggregates published to federation members.
+                -->
                 <ref bean="checkSchemas"/>
+                <ref bean="check_aggregate"/>
+                <ref bean="check_namespaces"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedExportAggregate"/>
@@ -798,9 +802,41 @@
                 <ref bean="uk_registeredEntities"/>
                 
                 <!--
-                    Remove all "administrative" contacts.
+                    *******************************************************
+                    ***                                                 ***
+                    ***   R A W   R E G I S T R A R   E N T I T I E S   ***
+                    ***                                                 ***
+                    *******************************************************
+                    
+                    At this point, the collection contains only entities
+                    registered by the UK federation registrar.  The minimum
+                    changes possible have been performed, so that the statistics
+                    report can be as comprehensive as possible.
+                -->
+                
+                <!--
+                    Fork a new output pipeline for the registrar statistics.
+                -->
+                <bean id="rawRegistrarDemux" parent="PipelineDemultiplexerStage"
+                    p:id="rawRegistrarDemux">
+                    <property name="pipelineAndSelectionStrategies">
+                        <list>
+                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
+                                <constructor-arg ref="uk_statisticsPipeline"/>
+                                <constructor-arg ref="everythingSelector"/>
+                            </bean>
+                        </list>
+                    </property>
+                    <property name="waitingForPipelines" value="true"/>
+                </bean>
+                
+                <!--
+                    Remove constructs which we no longer publish to any
+                    external registry clients.
                 -->
                 <ref bean="uk_stripAdminContacts"/>
+                <ref bean="stripElabNamespace"/>                
+                <ref bean="removeEmptyExtensions"/>
                 
                 <!--
                     ***********************************************
@@ -814,8 +850,7 @@
                 -->
                 
                 <!--
-                    Fork into new pipelines for the export aggregate and for
-                    the registrar statistics.
+                    Fork a new output pipeline for the export aggregate.
                     
                     The export aggregate only includes UK-registered entities,
                     so the fork needs to occur before any others are introduced.
@@ -832,10 +867,6 @@
                                 <constructor-arg ref="uk_exportPipeline"/>
                                 <constructor-arg ref="uk_exportSelector"/>
                             </bean>
-                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
-                                <constructor-arg ref="uk_statisticsPipeline"/>
-                                <constructor-arg ref="everythingSelector"/>
-                            </bean>
                         </list>
                     </property>
                     <property name="waitingForPipelines" value="true"/>
@@ -846,6 +877,8 @@
                     
                     This is performed independently on the export pipeline because
                     selection for that pipeline is based on these same extensions.
+                    A better solution would be to extract the ExportOptIn label into
+                    an item metadata object, and move this section before the export fork.
                 -->
                 <ref bean="uk_stripExtensions"/>
                 <ref bean="removeEmptyExtensions"/>
