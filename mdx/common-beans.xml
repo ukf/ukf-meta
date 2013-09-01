@@ -639,7 +639,6 @@
                     specific to the UK registrar and can't be valid when imported from
                     some other source.
                 -->
-                <ref bean="stripElabNamespace"/>
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="stripWayfNamespace"/>
                 
@@ -677,7 +676,6 @@
                     specific to the UK registrar and can't be valid when imported from
                     some other source.
                 -->
-                <ref bean="stripElabNamespace"/>
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="stripWayfNamespace"/>
                 
