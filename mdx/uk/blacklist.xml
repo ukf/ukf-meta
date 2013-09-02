@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <!--
+        *********************************************************
+        ***                                                   ***
+        ***   I M P O R T   E N T I T Y   B L A C K L I S T   ***
+        ***                                                   ***
+        *********************************************************
+    -->
+
+    <!--
+        Any entity listed in the set below will be discarded from all import channels
+        without being processed.  This will mean that no errors will be observed for it,
+        reducing the noise involved in a signing run.
+    -->
+    <util:set id="importEntityBlacklist">
+    </util:set>
+    
+</beans>

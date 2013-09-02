@@ -21,6 +21,7 @@
         Import channel-specific beans.
     -->
     <import resource="classpath:uk/beans.xml"/>
+    <import resource="classpath:uk/blacklist.xml"/>
     
     <!--
         Import beans from other channels.
@@ -28,6 +29,7 @@
     <import resource="classpath:ie_edugate/beans.xml"/>
     <import resource="classpath:se_swamid/beans.xml"/>
     <import resource="classpath:us_incommon/beans.xml"/>
+    <import resource="classpath:int_edugain/beans.xml"/>
 
 
     <!--
@@ -216,6 +218,17 @@
     </bean>
 
     <!--
+        removeBlacklistedEntities
+        
+        Filter out entities which are included in our global import blacklist.
+    -->
+    <bean id="removeBlacklistedEntities" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
+        p:id="us_incommon_pilot_filterEntities"
+        p:whitelistingEntities="false"
+        p:designatedEntities-ref="importEntityBlacklist"/>
+
+    <!--
         importCommonTail
         
         Common actions to be performed on each import pipeline.
@@ -225,6 +238,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="removeUKEntities"/>
+                <ref bean="removeBlacklistedEntities"/>
                 <ref bean="standardImportActions"/>
                 <ref bean="uk_fix_mailto"/>
                 <ref bean="uk_hide_idps"/>
@@ -232,6 +246,16 @@
         </property>
     </bean>
 
+    <bean id="uk_int_edugain_importPipeline" parent="SimplePipeline"
+        p:id="uk_int_edugain_importPipeline">
+        <property name="stages">
+            <list>
+                <ref bean="int_edugain_productionEntities"/>
+                <ref bean="importCommonTail"/>
+            </list>
+        </property>
+    </bean>
+    
     <bean id="uk_ie_edugate_importPipeline" parent="SimplePipeline"
         p:id="uk_ie_edugate_importPipeline">
         <property name="stages">
@@ -957,6 +981,7 @@
                             <ref bean="uk_ie_edugate_importPipeline"/>
                             <ref bean="uk_us_incommon_importPipeline"/>
                             <ref bean="uk_se_swamid_importPipeline"/>
+                            <ref bean="uk_int_edugain_importPipeline"/>
                         </list>
                     </property>
                 </bean>
