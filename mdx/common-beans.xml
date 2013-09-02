@@ -349,6 +349,10 @@
                 <entry key="http://rr.aai.switch.ch/"         value="CH"/>
                 <entry key="http://www.surfconext.nl/"        value="NL"/>
                 <entry key="http://ukfederation.org.uk"       value="UK"/>
+                
+                <!-- not yet eduGAIN members -->
+                <entry key="http://edugate.heanet.ie"         value="IE"/>
+                <entry key="https://incommon.org"             value="US"/>
             </map>
         </property>
     </bean>
