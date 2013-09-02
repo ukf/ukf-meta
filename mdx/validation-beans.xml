@@ -738,6 +738,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="CHECK_std"/>
+                <ref bean="check_dup_display"/>
                 <ref bean="check_regscope"/>
                 <ref bean="check_namespaces"/>
             </list>
