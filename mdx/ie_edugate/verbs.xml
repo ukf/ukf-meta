@@ -31,13 +31,23 @@
         </property>
     </bean>
     
-    <bean id="import" parent="SimplePipeline"
+    <bean id="importExported" parent="SimplePipeline"
         p:id="import">
         <property name="stages">
             <list>
                 <ref bean="ie_edugate_exportedEntities"/>
                 <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
+                <ref bean="serializeImported"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="importExportedRaw" parent="SimplePipeline"
+        p:id="importExportedRaw">
+        <property name="stages">
+            <list>
+                <ref bean="ie_edugate_exportAggregate"/>
                 <ref bean="serializeImported"/>
             </list>
         </property>
@@ -65,4 +75,6 @@
         </property>
     </bean>
     
+    <alias alias="import"    name="importExported"/>
+    <alias alias="importRaw" name="importExportedRaw"/>
 </beans>
