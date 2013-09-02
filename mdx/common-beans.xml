@@ -351,6 +351,7 @@
                 <entry key="http://ukfederation.org.uk"       value="UK"/>
                 
                 <!-- not yet eduGAIN members -->
+                <entry key="http://eduid.at"                  value="AT"/>
                 <entry key="http://edugate.heanet.ie"         value="IE"/>
                 <entry key="https://incommon.org"             value="US"/>
             </map>
