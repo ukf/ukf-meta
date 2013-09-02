@@ -144,6 +144,10 @@
 					<xsl:attribute name="registrationInstant">
 						<xsl:value-of select="mdxDates:dateAdd(date:date-time(), 0)"/>
 					</xsl:attribute>
+					<xsl:element name="mdrpi:RegistrationPolicy">
+						<xsl:attribute name="xml:lang">en</xsl:attribute>
+						<xsl:text>http://ukfederation.org.uk/doc/mdrps-20130902</xsl:text>
+					</xsl:element>
 				</xsl:element>
 				
 			</Extensions>
