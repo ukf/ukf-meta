@@ -19,16 +19,15 @@
     <import resource="classpath:hu_eduid/beans.xml"/>
     
     <!--
-        Fetch the eduGAIN test aggregate.
+        Location of various resources.
     -->
-    <bean id="int_edugain_testAggregate" parent="DomResourceSourceStage"
-        p:id="int_edugain_testAggregate">
-        <property name="domResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
-                <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="http://mds-test.edugain.org"/>
-            </bean>
-        </property>
+    <!-- production aggregate -->
+    <bean id="int_edugain_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://mds.edugain.org"/>
+    </bean>
+    <!-- test aggregate -->
+    <bean id="int_edugain_testAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://mds-test.edugain.org"/>
     </bean>
 
     <!--
@@ -39,7 +38,20 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" value="http://mds.edugain.org"/>
+                <constructor-arg name="url" ref="int_edugain_productionAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN test aggregate.
+    -->
+    <bean id="int_edugain_testAggregate" parent="DomResourceSourceStage"
+        p:id="int_edugain_testAggregate">
+        <property name="domResource">
+            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url" ref="int_edugain_testAggregate_url"/>
             </bean>
         </property>
     </bean>

@@ -65,4 +65,6 @@
         </property>
     </bean>
     
+    <alias alias="import"    name="importProduction"/>
+    <alias alias="importRaw" name="importProductionRaw"/>
 </beans>
