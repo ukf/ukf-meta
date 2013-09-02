@@ -315,7 +315,43 @@
         
         Standard item identifier strategy.
     -->
-    <bean id="identifierStrategy" class="uk.org.ukfederation.mda.UKItemIdentificationStrategy"/>
+    <bean id="identifierStrategy" class="uk.org.ukfederation.mda.UKItemIdentificationStrategy">
+        <property name="ignoredAuthorities">
+            <set>
+                <value>http://ukfederation.org.uk</value>
+            </set>
+        </property>
+        <property name="displayNames">
+            <map>
+                <!--
+                    eduGAIN participant registration authority display names as country codes.
+                
+                    The ordering here is as on the eduGAIN status page:
+                    
+                    http://www.edugain.org/technical/status.php
+                -->
+                <entry key="http://federation.belnet.be/"     value="BE"/>
+                <entry key="http://cafe.rnp.br"               value="BR"/>
+                <entry key="http://www.canarie.ca"            value="CA"/>
+                <entry key="http://www.srce.hr"               value="HR"/>
+                <entry key="http://www.eduid.cz/"             value="CZ"/>
+                <entry key="https://www.wayf.dk"              value="DK"/>
+                <entry key="http://www.csc.fi/haka"           value="FI"/>
+                <entry key="https://federation.renater.fr/"   value="FR"/>
+                <entry key="https://www.aai.dfn.de"           value="DE"/>
+                <entry key="http://aai.grnet.gr/"             value="GR"/>
+                <entry key="http://eduid.hu"                  value="HU"/>
+                <entry key="http://www.idem.garr.it/"         value="IT"/>
+                <entry key="http://laife.lanet.lv/"           value="LV"/>
+                <entry key="http://feide.no/"                 value="NO"/>
+                <entry key="http://www.rediris.es/"           value="ES"/>
+                <entry key="http://www.swamid.se/"            value="SE"/>
+                <entry key="http://rr.aai.switch.ch/"         value="CH"/>
+                <entry key="http://www.surfconext.nl/"        value="NL"/>
+                <entry key="http://ukfederation.org.uk"       value="UK"/>
+            </map>
+        </property>
+    </bean>
     
     <!--
         errorAnnouncer
@@ -604,6 +640,13 @@
         p:id="populateItemIds"/>
     
     <!--
+        Populate RegistrationAuthority values from entities.
+    -->
+    <bean id="populateRegistrationAuthorities" parent="stage_parent"
+        class="uk.org.ukfederation.mda.validate.mdrpi.RegistrationAuthorityPopulationStage"
+        p:id="populateRegistrationAuthorities"/>
+    
+    <!--
         stripKeyNames
         
         Remove all ds:KeyName elements.
@@ -633,6 +676,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="populateItemIds"/>
+                <ref bean="populateRegistrationAuthorities"/>
 
                 <!--
                     The following three namespaces are always stripped because they are
@@ -670,6 +714,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="populateItemIds"/>
+                <ref bean="populateRegistrationAuthorities"/>
                 
                 <!--
                     The following three namespaces are always stripped because they are
