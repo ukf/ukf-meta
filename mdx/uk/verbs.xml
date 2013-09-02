@@ -136,6 +136,7 @@
                 <ref bean="disassemble"/>
                 <ref bean="populateItemIds"/>
                 <ref bean="uk_populateIds"/>
+                <ref bean="populateRegistrationAuthorities"/>
                 
                 <ref bean="check_vhosts"/>
                 <ref bean="errorAnnouncingFilter"/>
@@ -168,6 +169,7 @@
                 <ref bean="disassemble"/>
                 <ref bean="populateItemIds"/>
                 <ref bean="uk_populateIds"/>
+                <ref bean="populateRegistrationAuthorities"/>
                 
                 <ref bean="check_future"/>
                 <ref bean="errorAnnouncingFilter"/>
