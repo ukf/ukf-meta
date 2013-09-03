@@ -62,8 +62,7 @@
         <!-- Duplicate IdP display names -->
         <value>https://lu-idp.lu.lv</value>
         <value>https://lu-idp1.lu.lv</value>
-        <!-- simpleSAMLphp HoK issue -->
-        <value>https://monitor.eduroam.org/sp/module.php/saml/sp/metadata.php/default-sp</value>
+
         <!-- excludes both name identifier formats -->
         <value>https://services-federation.renater.fr/validation/ressource</value>
         <!-- no POST support on SAML 1.1 SP -->
