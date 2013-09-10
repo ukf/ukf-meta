@@ -675,6 +675,10 @@
         Standard actions performed on any metadata import channel.  Assumes that the
         collection has been acquired, had its signature validated, and disassembled into
         individual entities.
+        
+        The result is a collection of entities, some of which may be labelled with
+        errors.  No announcement of removal of those entities is performed here;
+        that is left to the caller.
     -->
     <bean id="standardImportActions" parent="CompositeStage"
         p:id="standardImportActions">
@@ -698,45 +702,6 @@
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_imported"/>
-                <ref bean="errorAnnouncingFilter"/>
-            </list>
-        </property>
-    </bean>
-    
-    <!--
-        standardVerifyActions
-        
-        Standard actions performed on any metadata import channel when verifying the
-        entities instead of importing them.  The only difference between this and
-        standardImportActions is that an errorTerminatingFilter is used at the end
-        instead of an errorAnnouncingFilter.
-        
-        Assumes that the collection has been acquired, had its signature validated, and
-        disassembled into individual entities.
-    -->
-    <bean id="standardVerifyActions" parent="CompositeStage"
-        p:id="standardVerifyActions">
-        <property name="composedStages">
-            <list>
-                <ref bean="populateItemIds"/>
-                <ref bean="populateRegistrationAuthorities"/>
-                
-                <!--
-                    The following three namespaces are always stripped because they are
-                    specific to the UK registrar and can't be valid when imported from
-                    some other source.
-                -->
-                <ref bean="stripUkfedlabelNamespace"/>
-                <ref bean="stripWayfNamespace"/>
-                
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-
-                <ref bean="cleanImport"/>
-                <ref bean="removeEmptyExtensions"/>
-                <ref bean="checkSchemas"/>
-                <ref bean="CHECK_imported"/>
-                <ref bean="errorTerminatingFilter"/>
             </list>
         </property>
     </bean>
@@ -759,6 +724,8 @@
         p:id="standardImportTail">
         <property name="composedStages">
             <list>
+                <!-- announce and remove any entities with errors -->
+                <ref bean="errorAnnouncingFilter"/>
                 <ref bean="assemble"/>
                 <ref bean="normaliseNamespaces"/>
             </list>

@@ -80,7 +80,8 @@
         <property name="stages">
             <list>
                 <ref bean="at_aconet_edugainEntities"/>
-                <ref bean="standardVerifyActions"/>
+                <ref bean="standardImportActions"/>
+                <ref bean="errorTerminatingFilter"/>
             </list>
         </property>
     </bean>
