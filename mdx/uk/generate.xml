@@ -240,7 +240,13 @@
                 <ref bean="removeUKEntities"/>
                 <ref bean="removeBlacklistedEntities"/>
                 <ref bean="standardImportActions"/>
-                <ref bean="errorAnnouncingFilter"/>
+                
+                <!--
+                    Silently remove entities which are marked as
+                    having errors.
+                -->
+                <ref bean="errorRemover"/>
+                
                 <ref bean="uk_fix_mailto"/>
                 <ref bean="uk_hide_idps"/>
             </list>

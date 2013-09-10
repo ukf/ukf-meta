@@ -19,66 +19,22 @@
 
     <!--
         Any entity listed in the set below will be discarded from all import channels
-        without being processed.  This will mean that no errors will be observed for it,
-        reducing the noise involved in a signing run.
+        without being processed.  This is usually only necessary in the case where letting
+        the entity through actually causes a signing run to fail, as the normal processing
+        silently discards entities containing errors anyway.
     -->
     <util:set id="importEntityBlacklist">
         
         <!--
-            Problems in ie_edugate metadata updated 2013-09-02.
+            Problems in int_edugain metadata updated 2013-09-10.
         -->
-        <!-- duplicated IdP entity for Dublin Institute of Technology -->
-        <value>https://idp.dit.ie/idp/shibboleth</value>
-        
         <!--
-            Problems in int_edugain metadata updated 2013-09-02.
+            Duplicate IdP display names.
+            
+            If we left this to normal processing, both entities would be rejected.
+            By blacklisting one, we allow the other to be processed normally.
         -->
-        <!-- URL-encoded Location attributes -->
-        <value>http://adfs.tue.nl/adfs/services/trust</value>
-        <!-- SAML 2.0 AttributeAuthority without appropriate AttributeService -->
-        <value>https://caroa.univasf.edu.br/shib-idp</value>
-        <!-- OrganizationDisplayName contains a line break -->
-        <value>https://cloudidp1.canarie.ca/idp/shibboleth</value>
-        <!-- Bad Logo URL, no encryption key -->
-        <value>https://engine.surfconext.nl/authentication/sp/metadata</value>
-        <!-- UIInfo in AttributeAuthorityDescriptor -->
-        <value>https://idemfero.units.it/idp/shibboleth</value>
-        <!-- UIInfo in AttributeAuthorityDescriptor -->
-        <value>https://idp.dir.garr.it/idp/shibboleth</value>
-        <!-- excludes SAML 2 transient -->
-        <value>https://idp.lrz.de/idp/shibboleth</value>
-        <!-- URL-encoded Location attributes -->
-        <value>https://idp.surfnet.nl</value>
-        <!-- Bad Logo URL -->
-        <value>https://idp.ujep.cz/idp/shibboleth</value>
-        <!-- UIInfo in AttributeAuthorityDescriptor -->
-        <value>https://idp.uniparthenope.it/idp/shibboleth</value>
-        <!-- UIInfo in AttributeAuthorityDescriptor -->
-        <value>https://idp.uniroma3.it/idp/shibboleth</value>
-        <!-- UIInfo in AttributeAuthorityDescriptor -->
-        <value>https://idp.uqam.ca/idp/shibboleth</value>
-        <!-- URL-encoded Location attributes -->
-        <value>https://login.terena.org/idp/saml2/idp/metadata.php</value>
-        <!-- Duplicate IdP display names -->
         <value>https://lu-idp.lu.lv</value>
-        <!-- excludes both name identifier formats -->
-        <value>https://services-federation.renater.fr/validation/ressource</value>
-        <!-- no POST support on SAML 1.1 SP -->
-        <value>https://sgw.garr.it/shibboleth</value>
-        <!-- excludes both name identifier formats -->
-        <value>https://sourcesup.cru.fr/shibboleth</value>
-        <!-- simpleSAMLphp HoK issue -->
-        <value>https://sp.upv.es/saml/module.php/saml/sp/metadata.php/upv-sp-saml</value>
-        <!-- non-https Locations, excludes transient, no AA key -->
-        <value>https://www.rediris.es/sir/aesiridp</value>
-        <!-- non-https Locations -->
-        <value>https://www.rediris.es/sir/rediristestidp</value>
-        <!-- non-https Locations, excludes transient, no AA key -->
-        <value>https://www.rediris.es/sir/umaidp</value>
-        <!-- bad Logo URL -->
-        <value>https://www2.eduid.cz/shibboleth</value>
-        <!-- unacceptable entityID -->
-        <value>urn:geant:edugain:component:be:aaieduhr:aaiedu.hr</value>
         
     </util:set>
     
