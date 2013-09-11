@@ -1058,6 +1058,17 @@
         <CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
     </target>
     
+    <!--
+        flow.verifyEdugain.output
+        
+        Verify the eduGAIN production aggregate.
+        
+        The intention is that this be called from Jenkins.
+    -->
+    <target name="flow.verifyEdugain.output">
+        <CHANNEL.do verb="verify" channel="int_edugain"/>
+    </target>
+    
 	<!--
 	    flow.importRaw.all
 	    

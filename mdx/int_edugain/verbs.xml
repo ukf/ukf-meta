@@ -65,6 +65,17 @@
         </property>
     </bean>
     
+    <bean id="verify" parent="SimplePipeline"
+        p:id="verify">
+        <property name="stages">
+            <list>
+                <ref bean="int_edugain_productionEntities"/>
+                <ref bean="standardImportActions"/>
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+
     <alias alias="import"    name="importProduction"/>
     <alias alias="importRaw" name="importProductionRaw"/>
 </beans>
