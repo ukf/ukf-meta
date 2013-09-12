@@ -172,6 +172,14 @@
     <bean id="EntityRegistrationAuthorityFilterStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.EntityRegistrationAuthorityFilterStage"/>
     
+
+    <!-- *** Parent beans for ukf-mda. *** -->
+    
+    <bean id="ElementWhitespaceTrimmingStage" abstract="true" parent="stage_parent"
+        class="uk.org.ukfederation.mda.dom.ElementWhitespaceTrimmingStage"/>
+    
+    
+    
     <!--
         ***********************************************
         ***                                         ***
@@ -728,6 +736,23 @@
     </bean>
     
     <!--
+        trimImportElementWhitespace
+        
+        Trim whitespace from the specified elements in imported
+        entities.  These would often be errors in UK-registered
+        metadata.
+    -->
+    <bean id="trimImportElementWhitespace" parent="ElementWhitespaceTrimmingStage"
+        p:id="trimImportElementWhitespace">
+        <property name="elementNames">
+            <set>
+                <ref bean="md-NameIDFormat"/>
+                <ref bean="md-OrganizationDisplayName"/>
+            </set>
+        </property>
+    </bean>
+    
+    <!--
         standardImportActions
         
         Standard actions performed on any metadata import channel.  Assumes that the
@@ -757,6 +782,7 @@
                 <ref bean="stripMdattrNamespace"/>
 
                 <ref bean="cleanImport"/>
+                <ref bean="trimImportElementWhitespace"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_imported"/>
