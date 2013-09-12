@@ -1049,11 +1049,11 @@
     </target>
     
     <!--
-        flow.verifyEdugain.all
+        flow.verifyEdugain.inputs
         
         Verify the eduGAIN entities from all channels with this ability.
     -->
-    <target name="flow.verifyEdugain.all">
+    <target name="flow.verifyEdugain.inputs">
         <CHANNEL.do verb="verifyEdugain" channel="at_aconet"/>
         <CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
     </target>
