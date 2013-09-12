@@ -24,6 +24,7 @@
         Java class parent shorthand beans.
     -->
     <bean id="String" abstract="true" class="java.lang.String"/>
+    <bean id="QName" abstract="true" class="javax.xml.namespace.QName"/>
     
     <!--
         component_parent
@@ -440,6 +441,53 @@
         </property>
     </bean>
     
+    
+    
+    <!--
+        *************************************
+        ***                               ***
+        ***   S A M L   M E T A D A T A   ***
+        ***                               ***
+        *************************************
+    -->
+    
+    <!--
+        QNames for SAML metadata elements.
+    -->
+    <bean id="md-NameIDFormat"            parent="QName" c:_0-ref="md_namespace" c:_1="NameIDFormat"/>
+    <bean id="md-OrganizationDisplayName" parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationDisplayName"/>
+
+    <!--
+        Basic EntitiesDescriptor disassembler pipeline stage.
+    -->
+    <bean id="disassemble" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorDisassemblerStage"
+        p:id="disassemble"/>
+    
+    <!--
+        Basic EntitiesDescriptor assembler pipeline stage.
+    -->
+    <bean id="assemble" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
+        p:id="assemble"/>
+    
+    <!--
+        Populate ItemId values from entities.
+    -->
+    <bean id="populateItemIds" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntityDescriptorItemIdPopulationStage"
+        p:id="populateItemIds"/>
+
+    <!--
+        Remove any empty Extensions elements.
+    -->
+    <bean id="removeEmptyExtensions" parent="EmptyContainerStrippingStage"
+        p:id="removeEmptyExtensions"
+        p:elementName="Extensions"
+        p:elementNamespace="urn:oasis:names:tc:SAML:2.0:metadata"/>
+    
+    
+    
     <!--
         *************************************************
         ***                                           ***
@@ -447,6 +495,13 @@
         ***                                           ***
         *************************************************
     -->
+    
+    <!--
+        Populate RegistrationAuthority values from entities.
+    -->
+    <bean id="populateRegistrationAuthorities" parent="stage_parent"
+        class="uk.org.ukfederation.mda.validate.mdrpi.RegistrationAuthorityPopulationStage"
+        p:id="populateRegistrationAuthorities"/>
     
     <!--
         default_regauth_parent
@@ -463,6 +518,28 @@
             </bean>
         </property>
     </bean>
+    
+
+
+    <!--
+        ***************************
+        ***                     ***
+        ***   X M L   D S I G   ***
+        ***                     ***
+        ***************************
+    -->
+    
+    <!--
+        stripKeyNames
+        
+        Remove all ds:KeyName elements.
+    -->
+    <bean id="stripKeyNames" parent="ElementStrippingStage"
+        p:id="stripKeyNames"
+        p:elementName="KeyName"
+        p:elementNamespace="http://www.w3.org/2000/09/xmldsig#"/>
+    
+    
     
     <!--
         *************************************
@@ -607,11 +684,31 @@
     </bean>
     
     <!--
-        *********************
-        ***               ***
-        ***   ( E N D )   ***
-        ***               ***
-        *********************
+        everythingSelector
+        
+        An item selection strategy that selects all items.
+    -->
+    <bean id="everythingSelector" class="com.google.common.base.Predicates"
+        factory-method="alwaysTrue"/>
+    
+    <!--
+        Standard serializer.
+    -->
+    <bean id="serializer" class="net.shibboleth.metadata.dom.DomElementSerializer"/>
+    
+    <!--
+        Merge strategy that removes duplicates.
+    -->
+    <bean id="deduplicateMergeStrategy" class="net.shibboleth.metadata.DeduplicatingItemIdMergeStrategy"/>
+    
+
+
+    <!--
+        ***********************
+        ***                 ***
+        ***   I M P O R T   ***
+        ***                 ***
+        ***********************
     -->
 
     <!--
@@ -629,45 +726,6 @@
             </bean>
         </property>
     </bean>
-    
-    <!--
-        Basic EntitiesDescriptor disassembler pipeline stage.
-    -->
-    <bean id="disassemble" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorDisassemblerStage"
-        p:id="disassemble"/>
-    
-    <!--
-        Populate ItemId values from entities.
-    -->
-    <bean id="populateItemIds" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.EntityDescriptorItemIdPopulationStage"
-        p:id="populateItemIds"/>
-    
-    <!--
-        Populate RegistrationAuthority values from entities.
-    -->
-    <bean id="populateRegistrationAuthorities" parent="stage_parent"
-        class="uk.org.ukfederation.mda.validate.mdrpi.RegistrationAuthorityPopulationStage"
-        p:id="populateRegistrationAuthorities"/>
-    
-    <!--
-        stripKeyNames
-        
-        Remove all ds:KeyName elements.
-    -->
-    <bean id="stripKeyNames" parent="ElementStrippingStage"
-        p:id="stripKeyNames"
-        p:elementName="KeyName"
-        p:elementNamespace="http://www.w3.org/2000/09/xmldsig#"/>
-    
-    <!--
-        Remove any empty Extensions elements.
-    -->
-    <bean id="removeEmptyExtensions" parent="EmptyContainerStrippingStage"
-        p:id="removeEmptyExtensions"
-        p:elementName="Extensions"
-        p:elementNamespace="urn:oasis:names:tc:SAML:2.0:metadata"/>
     
     <!--
         standardImportActions
@@ -707,13 +765,6 @@
     </bean>
     
     <!--
-        Basic EntitiesDescriptor assembler pipeline stage.
-    -->
-    <bean id="assemble" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage"
-        p:id="assemble"/>
-    
-    <!--
         standardImportTail
         
         Standard actions performed at the end of any metadata import flow.  As imports
@@ -731,23 +782,5 @@
             </list>
         </property>
     </bean>
-    
-    <!--
-        everythingSelector
-        
-        An item selection strategy that selects all items.
-    -->
-    <bean id="everythingSelector" class="com.google.common.base.Predicates"
-        factory-method="alwaysTrue"/>
-    
-    <!--
-        Standard serializer.
-    -->
-    <bean id="serializer" class="net.shibboleth.metadata.dom.DomElementSerializer"/>
-    
-    <!--
-        Merge strategy that removes duplicates.
-    -->
-    <bean id="deduplicateMergeStrategy" class="net.shibboleth.metadata.DeduplicatingItemIdMergeStrategy"/>
     
 </beans>
