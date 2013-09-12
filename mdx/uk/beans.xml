@@ -254,6 +254,19 @@
     
     
     <!--
+        check_uk_urlenc
+    -->
+    <bean id="check_uk_urlenc" parent="XSLValidationStage"
+        p:id="check_uk_urlenc">
+        <property name="xslResource">
+            <bean parent="FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_urlenc.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+
+    <!--
         uk_trustRootsDocument
         
         This bean contains the contents of the master.xml file as a DOM Document.
@@ -375,6 +388,7 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_ukreg"/>
+                <ref bean="check_uk_urlenc"/>
                 <ref bean="mdui_dn_en_present"/>
                 <ref bean="mdui_dn_en_match"/>
                 <ref bean="check_dup_display"/>
