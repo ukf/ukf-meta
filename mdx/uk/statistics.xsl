@@ -20,13 +20,12 @@
     xmlns:members="http://ukfederation.org.uk/2007/01/members"
     xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
-    xmlns:eduservlabel="http://eduserv.org.uk/labels"
     xmlns:math="http://exslt.org/math"
     xmlns:date="http://exslt.org/dates-and-times"
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    exclude-result-prefixes="xsl ds md mdui xsi members wayf ukfedlabel math date dyn set eduservlabel idpdisc"
+    exclude-result-prefixes="xsl ds md mdui xsi members wayf ukfedlabel math date dyn set idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
@@ -1884,7 +1883,9 @@
             -->
             <xsl:variable name="entities.openathens.virtual.in" select="$entities.gateways.out"/>
             <xsl:variable name="entities.openathens.virtual"
-                select="$entities.openathens.virtual.in[md:Extensions/eduservlabel:AthensPUIDAuthority]"/>
+                select="$entities.openathens.virtual.in[
+                    descendant::md:AttributeService/@Location=
+                        'https://gateway.athensams.net:5057/services/SAML11AttributeAuthority']"/>
             <xsl:variable name="entities.openathens.virtual.out"
                 select="set:difference($entities.openathens.virtual.in, $entities.openathens.virtual)"/>
             
