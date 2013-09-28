@@ -1569,6 +1569,13 @@
                             non-EC DSA signatures of any kind:
                             <xsl:value-of select="$e.dsa.any.count"/>
                             (<xsl:value-of select="format-number($e.dsa.any.count div $e.alg.sig.count, '0.0%')"/>)
+                            <xsl:variable name="e.dsa.old" select="$entities[
+                                descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2000/09/xmldsig#dsa-sha1']"/>
+                            <xsl:variable name="e.dsa.old.count" select="count($e.dsa.old)"/>
+                            <xsl:variable name="e.dsa.new" select="$entities[
+                                descendant::alg:SigningMethod/@Algorithm='http://www.w3.org/2009/xmldsig11#dsa-sha256']"/>
+                            <xsl:variable name="e.dsa.new.count" select="count($e.dsa.new)"/>
+                            [<xsl:value-of select="$e.dsa.old.count"/>, <xsl:value-of select="$e.dsa.new.count"/>]
                         </li>
                         
                     </ul>
