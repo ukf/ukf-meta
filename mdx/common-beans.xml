@@ -196,7 +196,6 @@
     <bean id="alg_namespace"        parent="String" c:_0="urn:oasis:names:tc:SAML:metadata:algsupport"/>
     <bean id="ds_namespace"         parent="String" c:_0="http://www.w3.org/2000/09/xmldsig#"/>
     <bean id="dsig11_namespace"     parent="String" c:_0="http://www.w3.org/2009/xmldsig11#"/>
-    <bean id="elab_namespace"       parent="String" c:_0="http://eduserv.org.uk/labels"/>
     <bean id="hoksso_namespace"     parent="String" c:_0="urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser"/>
     <bean id="icmd_namespace"       parent="String" c:_0="http://id.incommon.org/metadata"/>
     <bean id="idpdisc_namespace"    parent="String" c:_0="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"/>
@@ -228,7 +227,6 @@
                 <entry key="alg"        value-ref="alg_namespace"/>
                 <entry key="ds"         value-ref="ds_namespace"/>
                 <entry key="dsig11"     value-ref="dsig11_namespace"/>
-                <entry key="elab"       value-ref="elab_namespace"/>
                 <entry key="hoksso"     value-ref="hoksso_namespace"/>
                 <entry key="icmd"       value-ref="icmd_namespace"/>
                 <entry key="idpdisc"    value-ref="idpdisc_namespace"/>
@@ -251,14 +249,6 @@
         </constructor-arg>
     </bean>
     
-    <!--
-        stripElabNamespace
-        
-        Remove the Eduserv label namespace.
-    -->
-    <bean id="stripElabNamespace" parent="NamespaceStrippingStage"
-        p:id="stripElabNamespace" p:namespace-ref="elab_namespace"/>
-
     <!--
         stripMdattrNamespace
         
