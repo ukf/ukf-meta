@@ -866,7 +866,6 @@
                     external registry clients.
                 -->
                 <ref bean="uk_stripAdminContacts"/>
-                <ref bean="stripElabNamespace"/>                
                 <ref bean="removeEmptyExtensions"/>
                 
                 <!--
