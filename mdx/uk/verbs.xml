@@ -296,6 +296,7 @@
                 <ref bean="check_shibboleth"/>
                 <ref bean="check_uk_trust"/>
                 
+                <ref bean="check_uk_mdrps"/>
                 <ref bean="check_uk_urlenc"/>
                 <ref bean="check_future"/>
                 <ref bean="check_imported"/>
