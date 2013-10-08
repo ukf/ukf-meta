@@ -248,6 +248,9 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="errorTerminatingFilter"/>
                 
+                <!-- fix mailto: in contacts -->
+                <ref bean="uk_fix_mailto"/>
+                
                 <!-- transform into a fragment using our local conventions -->
                 <bean id="importTransform" parent="XSLTransformationStage"
                     p:id="importTransform">
