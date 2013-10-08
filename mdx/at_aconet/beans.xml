@@ -15,25 +15,13 @@
     <!--
         Location of various resources.
     -->
-    <!-- "old" (ACOnet-registered-only) production metadata -->
-    <bean id="at_aconet_oldProductionAggregate_url" class="java.lang.String">
-        <constructor-arg value="https://wayf.aco.net/OLD-aconet-metadata.xml"/>
-    </bean>
-    <!-- production aggregate -->
-    <bean id="at_aconet_productionAggregate_url" class="java.lang.String">
-        <constructor-arg value="https://wayf.aco.net/aconet-metadata.xml"/>
-    </bean>
-    <!-- test aggregate -->
-    <bean id="at_aconet_testAggregate_url" class="java.lang.String">
-        <constructor-arg value="https://wayf.aco.net/md/aconet-metadata.xml"/>
-    </bean>
-    <!-- test aggregate containing ACOnet-registered and imported entities -->
-    <bean id="at_aconet_allAggregate_url" class="java.lang.String">
-        <constructor-arg value="https://wayf.aco.net/md/aconet-interfed-metadata.xml"/>
+    <!-- ACOnet-registered entities without interfederation -->
+    <bean id="at_aconet_registrarAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://eduid.at/md/aconet-registered.xml"/>
     </bean>
     <!-- eduGAIN export aggregate -->
     <bean id="at_aconet_edugainAggregate_url" class="java.lang.String">
-        <constructor-arg value="https://wayf.aco.net/md/edugain-upstream.xml"/>
+        <constructor-arg value="http://eduid.at/md/upstream-edugain.xml"/>
     </bean>
     
     <!--
@@ -44,7 +32,7 @@
         <property name="domResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url"    ref="at_aconet_productionAggregate_url"/>
+                <constructor-arg name="url"    ref="at_aconet_registrarAggregate_url"/>
             </bean>
         </property>
     </bean>
