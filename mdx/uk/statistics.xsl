@@ -25,7 +25,7 @@
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    exclude-result-prefixes="xsl ds md mdui xsi members wayf ukfedlabel math date dyn set idpdisc"
+    exclude-result-prefixes="xsl alg ds init md mdui xsi members wayf ukfedlabel math date dyn set idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
