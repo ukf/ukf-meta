@@ -26,7 +26,6 @@
     <!--
         Import beans from other channels.
     -->
-    <import resource="classpath:ie_edugate/beans.xml"/>
     <import resource="classpath:se_swamid/beans.xml"/>
     <import resource="classpath:us_incommon/beans.xml"/>
     <import resource="classpath:int_edugain/beans.xml"/>
@@ -258,16 +257,6 @@
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
-                <ref bean="importCommonTail"/>
-            </list>
-        </property>
-    </bean>
-    
-    <bean id="uk_ie_edugate_importPipeline" parent="SimplePipeline"
-        p:id="uk_ie_edugate_importPipeline">
-        <property name="stages">
-            <list>
-                <ref bean="ie_edugate_exportedEntities"/>
                 <ref bean="importCommonTail"/>
             </list>
         </property>
@@ -984,7 +973,6 @@
                     <property name="mergedPipelines">
                         <list>
                             <!-- entries earlier in the list have higher precedence -->
-                            <ref bean="uk_ie_edugate_importPipeline"/>
                             <ref bean="uk_us_incommon_importPipeline"/>
                             <ref bean="uk_se_swamid_importPipeline"/>
                             <ref bean="uk_int_edugain_importPipeline"/>
