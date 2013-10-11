@@ -996,7 +996,7 @@
                 <p>
                     This section is intended to be largely self-explanatory. 
                     Any items in [...] brackets give additional information about the entity: 
-                    its type, the software used, etc. 
+                    its type, the trust engine, etc. 
                  </p>
                 <ul>
                     <xsl:apply-templates select="$ownerNames" mode="enumerate">
@@ -1372,16 +1372,6 @@
             <xsl:otherwise>
                 <xsl:value-of select="@name"/>
             </xsl:otherwise>
-        </xsl:choose>
-        <xsl:choose>
-            <xsl:when test="@fullVersion">
-                <xsl:text> </xsl:text>
-                <xsl:value-of select="@fullVersion"/>
-            </xsl:when>
-            <xsl:when test="@version">
-                <xsl:text> </xsl:text>
-                <xsl:value-of select="@version"/>
-            </xsl:when>
         </xsl:choose>
         <xsl:text>]</xsl:text>
     </xsl:template>
