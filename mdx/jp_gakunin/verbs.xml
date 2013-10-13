@@ -35,7 +35,7 @@
         p:id="importProduction">
         <property name="stages">
             <list>
-                <ref bean="jp_gakunin_exportedEntities"/>
+                <ref bean="jp_gakunin_productionEntities"/>
                 <ref bean="standardImportActions"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
