@@ -250,6 +250,30 @@
     </bean>
     
     <!--
+        stripAlgNamespace
+        
+        Remove the algorithm support namespace.
+    -->
+    <bean id="stripAlgNamespace" parent="NamespaceStrippingStage"
+        p:id="stripAlgNamespace" p:namespace-ref="alg_namespace"/>
+    
+    <!--
+        stripIdpdiscNamespace
+        
+        Remove the IdP discovery namespace.
+    -->
+    <bean id="stripIdpdiscNamespace" parent="NamespaceStrippingStage"
+        p:id="stripIdpdiscNamespace" p:namespace-ref="idpdisc_namespace"/>
+
+    <!--
+        stripInitNamespace
+        
+        Remove the session initiation namespace.
+    -->
+    <bean id="stripInitNamespace" parent="NamespaceStrippingStage"
+        p:id="stripInitNamespace" p:namespace-ref="init_namespace"/>
+    
+    <!--
         stripMdattrNamespace
         
         Remove the namespace used by the entity attributes extension.
@@ -484,6 +508,60 @@
         p:elementName="Extensions"
         p:elementNamespace="urn:oasis:names:tc:SAML:2.0:metadata"/>
     
+    <!--
+        Beans to strip out selected SAML metadata elements.
+    -->
+    
+    <bean id="stripArtifactResolutionService" parent="ElementStrippingStage"
+        p:id="stripArtifactResolutionService"
+        p:elementName="ArtifactResolutionService"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripAssertionConsumerService" parent="ElementStrippingStage"
+        p:id="stripAssertionConsumerService"
+        p:elementName="AssertionConsumerService"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripAttributeAuthorityDescriptor" parent="ElementStrippingStage"
+        p:id="stripAttributeAuthorityDescriptor"
+        p:elementName="AttributeAuthorityDescriptor"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripAttributeConsumingService" parent="ElementStrippingStage"
+        p:id="stripAttributeConsumingService"
+        p:elementName="AttributeConsumingService"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripContactPerson" parent="ElementStrippingStage"
+        p:id="stripContactPerson"
+        p:elementName="ContactPerson"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripKeyDescriptor" parent="ElementStrippingStage"
+        p:id="stripKeyDescriptor"
+        p:elementName="KeyDescriptor"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripManageNameIDService" parent="ElementStrippingStage"
+        p:id="stripManageNameIDService"
+        p:elementName="ManageNameIDService"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripNameIDFormat" parent="ElementStrippingStage"
+        p:id="stripNameIDFormat"
+        p:elementName="NameIDFormat"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripSingleLogoutService" parent="ElementStrippingStage"
+        p:id="stripSingleLogoutService"
+        p:elementName="SingleLogoutService"
+        p:elementNamespace-ref="md_namespace"/>
+    
+    <bean id="stripSingleSignOnService" parent="ElementStrippingStage"
+        p:id="stripSingleSignOnService"
+        p:elementName="SingleSignOnService"
+        p:elementNamespace-ref="md_namespace"/>
+    
     
     
     <!--
@@ -493,6 +571,13 @@
         ***                                           ***
         *************************************************
     -->
+    
+    <bean id="stripMDUIDiscoHints" parent="ElementStrippingStage"
+        p:id="stripMDUIDiscoHints"
+        p:elementName="DiscoHints"
+        p:elementNamespace-ref="mdui_namespace"/>
+    
+    
     
     <!--
         Populate RegistrationAuthority values from entities.
@@ -516,6 +601,29 @@
             </bean>
         </property>
     </bean>
+    
+
+
+    <!--
+        ***********************************************
+        ***                                         ***
+        ***   M D U I   S P E C I F I C A T I O N   ***
+        ***                                         ***
+        ***********************************************
+    -->
+    
+    <!--
+        *****************************************************
+        ***                                               ***
+        ***   S H I B B O L E T H   E X T E N S I O N S   ***
+        ***                                               ***
+        *****************************************************
+    -->
+    
+    <bean id="stripShibScope" parent="ElementStrippingStage"
+        p:id="stripShibScope"
+        p:elementName="Scope"
+        p:elementNamespace-ref="shibmd_namespace"/>
     
 
 

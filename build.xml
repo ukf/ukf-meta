@@ -99,8 +99,8 @@
 	</taskdef>
 	
 	<!--
-		There are six separate processing "streams":  production, test, export,
-		fallback, "wayf" and "cdsall".
+		There are many separate processing "streams":  production, test, export,
+		fallback, "wayf", "cdsall" and "cms".
 		
 		Each stream has its own unsigned file, as follows:
 	-->
@@ -110,9 +110,10 @@
 	<property name="md.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
 	<property name="md.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
 	<property name="md.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
+	<property name="md.cms.unsigned"    value="cms-metadata.xml"/>
 	
 	<!--
-		Each stream has its own signed file.
+		Each stream except the CMS stream has its own signed file.
 	-->
 	<property name="md.prod.signed"     value="ukfederation-metadata.xml"/>
 	<property name="md.test.signed"     value="ukfederation-test.xml"/>
@@ -398,6 +399,7 @@
         <MDNORM i="${xml.dir}/${md.prod.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.wayf.unsigned}"/>
 		<MDNORM.noblank i="${xml.dir}/${md.cdsall.unsigned}"/>
+		<MDNORM.noblank i="${xml.dir}/${md.cms.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.test.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.export.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
