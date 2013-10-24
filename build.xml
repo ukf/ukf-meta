@@ -264,6 +264,7 @@
 				<include name="members.xml"/>
 				<include name="ukfederation-members.xsd"/>
 				<include name="ukfederation-stats.html"/>
+				<include name="${md.cms.unsigned}"/>
 			</fileset>
 		</scp>
 		<!--
