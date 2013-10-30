@@ -993,6 +993,7 @@
         <CHANNEL.do verb="importEdugain" channel="br_cafe"/>
         <CHANNEL.do verb="importEdugain" channel="ca_caf"/>
         <CHANNEL.do verb="importEdugain" channel="ch_switchaai"/>
+    	<CHANNEL.do verb="importEdugain" channel="cl_cofre"/>
         <CHANNEL.do verb="importEdugain" channel="cz_eduid"/>
         <CHANNEL.do verb="importEdugain" channel="de_dfnaai"/>
         <CHANNEL.do verb="importEdugain" channel="dk_wayf"/>
@@ -1020,6 +1021,7 @@
         <CHANNEL.do verb="importEdugainRaw" channel="br_cafe"/>
         <CHANNEL.do verb="importEdugainRaw" channel="ca_caf"/>
         <CHANNEL.do verb="importEdugainRaw" channel="ch_switchaai"/>
+    	<CHANNEL.do verb="importEdugainRaw" channel="cl_cofre"/>
         <CHANNEL.do verb="importEdugainRaw" channel="cz_eduid"/>
         <CHANNEL.do verb="importEdugainRaw" channel="de_dfnaai"/>
         <CHANNEL.do verb="importEdugainRaw" channel="dk_wayf"/>
@@ -1058,6 +1060,7 @@
     -->
     <target name="flow.verifyEdugain.inputs">
         <CHANNEL.do verb="verifyEdugain" channel="at_aconet"/>
+    	<CHANNEL.do verb="verifyEdugain" channel="cl_cofre"/>
         <CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
     </target>
     
