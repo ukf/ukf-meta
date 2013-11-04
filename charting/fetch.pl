@@ -14,13 +14,13 @@ foreach $month (@months) {
 	
 	my $dest1 = "cache/$month.xml";
 	if (!-e $dest1) {
-		system("/opt/local/bin/svn update $fn --quiet --revision \\{$month-01T00:00:00Z\\}");
+		system("/usr/bin/env svn update $fn --quiet --revision \\{$month-01T00:00:00Z\\}");
 		system("cp $fn $dest1");
 	}
 	
 	my $dest2 = "cache/$month.html";
 	if (!-e $dest2) {
-		system("/opt/local/bin/svn update $fn2 --quiet --revision \\{$month-01T00:00:00Z\\}");
+		system("/usr/bin/env svn update $fn2 --quiet --revision \\{$month-01T00:00:00Z\\}");
 		system("cp $fn2 $dest2");
 	}
 	
