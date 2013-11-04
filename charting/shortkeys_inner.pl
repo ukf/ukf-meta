@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 use POSIX qw(floor);
 use File::Temp qw(tempfile);
 use Date::Format;
