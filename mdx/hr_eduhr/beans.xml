@@ -22,9 +22,9 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="hr_eduhr_edugainAggregate" parent="DomResourceSourceStage"
+    <bean id="hr_eduhr_edugainAggregate" parent="DOMResourceSourceStage"
         p:id="hr_eduhr_edugainAggregate">
-        <property name="domResource">
+        <property name="DOMResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="hr_eduhr_edugainAggregate_url"/>

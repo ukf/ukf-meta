@@ -43,9 +43,9 @@
     <!--
         Fetch the IdP aggregate.
     -->
-    <bean id="nl_surfconext_idpAggregate" parent="DomResourceSourceStage"
+    <bean id="nl_surfconext_idpAggregate" parent="DOMResourceSourceStage"
         p:id="nl_surfconext_idpAggregate">
-        <property name="domResource">
+        <property name="DOMResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://engine.surfconext.nl/authentication/proxy/idps-metadata"/>
@@ -56,9 +56,9 @@
     <!--
         Fetch the SP aggregate.
     -->
-    <bean id="nl_surfconext_spAggregate" parent="DomResourceSourceStage"
+    <bean id="nl_surfconext_spAggregate" parent="DOMResourceSourceStage"
         p:id="nl_surfconext_spAggregate">
-        <property name="domResource">
+        <property name="DOMResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="http://federatie.surfnet.nl/metadata-sfs-sp-saml20-signed.xml"/>

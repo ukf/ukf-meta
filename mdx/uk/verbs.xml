@@ -191,7 +191,7 @@
         Fetches the contents of the file used to hold metadata to be imported
         into a UK federation fragment file.
     -->
-    <bean id="fetchImportMetadata" parent="DomFilesystemSourceStage"
+    <bean id="fetchImportMetadata" parent="DOMFilesystemSourceStage"
         p:id="fetchImportMetadata">
         <property name="source">
             <bean class="java.io.File">
@@ -206,7 +206,7 @@
         Fetches the contents of the file used to hold metadata just imported
         by the federation's import transform.
     -->
-    <bean id="fetchImportedMetadata" parent="DomFilesystemSourceStage"
+    <bean id="fetchImportedMetadata" parent="DOMFilesystemSourceStage"
         p:id="fetchImportedMetadata">
         <property name="source">
             <bean class="java.io.File">

@@ -25,9 +25,9 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="ch_switchaai_productionAggregate" parent="DomResourceSourceStage"
+    <bean id="ch_switchaai_productionAggregate" parent="DOMResourceSourceStage"
         p:id="ch_switchaai_productionAggregate">
-        <property name="domResource">
+        <property name="DOMResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="ch_switchaai_productionAggregate_url"/>
@@ -38,9 +38,9 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="ch_switchaai_edugainAggregate" parent="DomResourceSourceStage"
+    <bean id="ch_switchaai_edugainAggregate" parent="DOMResourceSourceStage"
         p:id="ch_switchaai_edugainAggregate">
-        <property name="domResource">
+        <property name="DOMResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="ch_switchaai_edugainAggregate_url"/>

@@ -15,9 +15,9 @@
     <!--
         Fetch the export aggregate.
     -->
-    <bean id="eu_clarin_exportAggregate" parent="DomResourceSourceStage"
+    <bean id="eu_clarin_exportAggregate" parent="DOMResourceSourceStage"
         p:id="eu_clarin_exportAggregate">
-        <property name="domResource">
+        <property name="DOMResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="http://www.clarin.eu/aai/clarin-sp-metadata.xml"/>

@@ -118,18 +118,18 @@
         
         Parent for DOM filesystem source stages.
     -->
-    <bean id="DomFilesystemSourceStage" abstract="true" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.DomFilesystemSourceStage">
+    <bean id="DOMFilesystemSourceStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.DOMFilesystemSourceStage">
         <property name="parserPool" ref="parserPool"/>
     </bean>
 
     <!--
-        DomResourceSourceStage
+        DOMResourceSourceStage
         
         Parent for DOM resource source stages.
     -->
-    <bean id="DomResourceSourceStage" abstract="true" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.DomResourceSourceStage">
+    <bean id="DOMResourceSourceStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.DOMResourceSourceStage">
         <property name="parserPool" ref="parserPool"/>
     </bean>
 
@@ -313,7 +313,7 @@
     -->
     <bean id="normaliseNamespaces" parent="XSLTransformationStage"
         p:id="normaliseNamespaces">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="ClasspathResource">
                 <constructor-arg value="ns_norm.xsl"/>
             </bean>
@@ -584,7 +584,7 @@
         Populate RegistrationAuthority values from entities.
     -->
     <bean id="populateRegistrationAuthorities" parent="stage_parent"
-        class="uk.org.ukfederation.mda.validate.mdrpi.RegistrationAuthorityPopulationStage"
+        class="net.shibboleth.metadata.dom.saml.mdrpi.RegistrationAuthorityPopulationStage"
         p:id="populateRegistrationAuthorities"/>
     
     <!--
@@ -596,7 +596,7 @@
         channel must match the known registration authority value.
     -->
     <bean id="default_regauth_parent" abstract="true" parent="XSLTransformationStage">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="ClasspathResource">
                 <constructor-arg value="default_regauth.xsl"/>
             </bean>
@@ -783,7 +783,7 @@
     
     <bean id="stripComments" parent="XSLTransformationStage"
         p:id="stripComments">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="ClasspathResource">
                 <constructor-arg value="strip-comments.xsl"/>
             </bean>
@@ -801,7 +801,7 @@
     <!--
         Standard serializer.
     -->
-    <bean id="serializer" class="net.shibboleth.metadata.dom.DomElementSerializer"/>
+    <bean id="serializer" class="net.shibboleth.metadata.dom.DOMElementSerializer"/>
     
     <!--
         Merge strategy that removes duplicates.
@@ -827,7 +827,7 @@
     -->
     <bean id="cleanImport" parent="XSLTransformationStage"
         p:id="cleanImport">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="ClasspathResource">
                 <constructor-arg value="clean-import.xsl"/>
             </bean>

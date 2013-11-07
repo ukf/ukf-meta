@@ -33,9 +33,9 @@
     <!--
         Fetches the eduGAIN production aggregate.
     -->
-    <bean id="int_edugain_productionAggregate" parent="DomResourceSourceStage"
+    <bean id="int_edugain_productionAggregate" parent="DOMResourceSourceStage"
         p:id="int_edugain_productionAggregate">
-        <property name="domResource">
+        <property name="DOMResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" ref="int_edugain_productionAggregate_url"/>
@@ -46,9 +46,9 @@
     <!--
         Fetch the eduGAIN test aggregate.
     -->
-    <bean id="int_edugain_testAggregate" parent="DomResourceSourceStage"
+    <bean id="int_edugain_testAggregate" parent="DOMResourceSourceStage"
         p:id="int_edugain_testAggregate">
-        <property name="domResource">
+        <property name="DOMResource">
             <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" ref="int_edugain_testAggregate_url"/>

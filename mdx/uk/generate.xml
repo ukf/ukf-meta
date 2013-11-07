@@ -47,7 +47,7 @@
     -->
     <bean id="stripEntityScopes" parent="XSLTransformationStage"
         p:id="stripEntityScopes">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="ClasspathResource">
                 <constructor-arg value="uk/entity_scopes.xsl"/>
             </bean>
@@ -61,7 +61,7 @@
         final tweaks on the document.
     -->
     <bean id="finalise_parent" abstract="true" parent="XSLTransformationStage">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="ClasspathResource">
                 <constructor-arg value="uk/final_tweak.xsl"/>
             </bean>
@@ -120,7 +120,7 @@
     -->
     <bean id="fixup_keyuse" parent="XSLTransformationStage"
         p:id="fixup_keyuse">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="ClasspathResource">
                 <constructor-arg value="uk/fixup_keyuse.xsl"/>
             </bean>
@@ -149,7 +149,7 @@
     -->
     <bean id="check_fixup_encmethod" parent="XSLValidationStage"
         p:id="check_fixup_encmethod">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_fixup_encmethod.xsl"/>
             </bean>
@@ -161,7 +161,7 @@
     -->
     <bean id="check_fixup_keyuse" parent="XSLValidationStage"
         p:id="check_fixup_keyuse">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_fixup_keyuse.xsl"/>
             </bean>
@@ -501,7 +501,7 @@
     
     <bean id="CDSNormaliseNamespaces" parent="XSLTransformationStage"
         p:id="CDSNormaliseNamespaces">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_cds.xsl"/>
             </bean>
@@ -583,7 +583,7 @@
     
     <bean id="uk_normaliseFallback" parent="XSLTransformationStage"
         p:id="uk_normaliseFallback">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_back.xsl"/>
             </bean>
@@ -647,7 +647,7 @@
     
     <bean id="uk_normaliseTest" parent="XSLTransformationStage"
         p:id="uk_normaliseTest">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_test.xsl"/>
             </bean>
@@ -710,7 +710,7 @@
     
     <bean id="uk_normaliseExport" parent="XSLTransformationStage"
         p:id="uk_normaliseExport">
-        <property name="xslResource">
+        <property name="XSLResource">
             <bean parent="FilesystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_export.xsl"/>
             </bean>
