@@ -254,6 +254,19 @@
     
     
     <!--
+        check_uk_expkeyname
+    -->
+    <bean id="check_uk_expkeyname" parent="XSLValidationStage"
+        p:id="check_uk_expkeyname">
+        <property name="XSLResource">
+            <bean parent="FilesystemResource">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_expkeyname.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    
+    <!--
         check_uk_mdrps
     -->
     <bean id="check_uk_mdrps" parent="XSLValidationStage"
@@ -401,6 +414,7 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_ukreg"/>
+                <ref bean="check_uk_expkeyname"/>
                 <ref bean="check_uk_mdrps"/>
                 <ref bean="check_uk_urlenc"/>
                 <ref bean="mdui_dn_en_present"/>
