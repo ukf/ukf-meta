@@ -485,18 +485,6 @@
     </bean>
     
     <!--
-        check_nokeyname
-    -->
-    <bean id="check_nokeyname" parent="XSLValidationStage"
-        p:id="check_nokeyname">
-        <property name="XSLResource">
-            <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_nokeyname.xsl"/>
-            </bean>
-        </property>
-    </bean>
-    
-    <!--
         check_regscope
         
         Check for regular expressions in Shibboleth Scope elements.  Applied very selectively.
