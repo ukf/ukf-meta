@@ -1,0 +1,71 @@
+Release Notes - Metadata Aggregator - Version 0.8.0
+===================================================
+
+Highlights
+   * API changes for new Shibboleth coding conventions, and in the
+     use of generic types
+   * Signature validation can reject empty references, blacklist
+     algorithm URIs and protects against "wrapping" attacks.
+   * New stage to extract MDRPI registrationInfo into item metadata.
+   * Moved to Java 7, Apache Santuario V1.5
+   * Improved CLI experience
+   * bug fixes
+
+   
+API Changes
+   * DomElementItem becomes DOMElementItem
+   * DomElementSerializer becomes DOMElementSerializer
+   * DomFilesystemSourceStage becomes DOMFilesystemSourceStage
+   * DomResourceSourceStage becomes DOMResourceSourceStage
+   * domResource bean properties become DOMResource
+      * getDomResource becomes getDOMResource
+      * setDomResource becomes setDOMResource
+   * xpathExpression bean properties become XPathResource
+      * getXpathExpression becomes getXPathExpression
+      * setXpathExpression becomes setXPathExpression
+   * xslResource bean properties become XSLResource
+      * getXslResource becomes getXSLResource
+      * setXslResource becomes setXSLResource
+   * BaseDomTest test class becomes BaseDOMTest
+   * Stages and Pipelines with generic types are parameterised by the
+     type *wrapped* in the Item, not the implementation type.  For example,
+     you would now use a Stage<Element> rather than a Stage<DOMElementItem>
+   * Most internal Stage APIs have been changed in a similar way.  For example,
+     Collection<DOMElementItem> would become Collection<Item<Element>>.
+   * The generic type changes mean that the DOM-based stages can work over any
+     class implementing Item<Element>, not just the supplied DOMElementItem.
+
+
+** Bug
+    * [MDA-44] - exceptions should be propagated up from subordinate pipelines
+    * [MDA-81] - address multiple failed tests
+    * [MDA-83] - PullUpCacheDurationStage ignores cacheDuration on EntityDescriptor elements
+    * [MDA-87] - EntitiesDescriptorAssemblerStage does not declare namespace prefix
+    * [MDA-90] - default identifier strategy used by GenerateIdStage sometimes generates bad IDs
+    * [MDA-98] - review use of debug vs. trace logging in aggregator stages
+    * [MDA-101] - XMLSignatureSigningStage does not work under Santuario 1.5.x
+    * [MDA-112] - signature validation stage should protect against wrapping attacks
+
+** Improvement
+    * [MDA-66] - should be possible to have CLI termination without a stack dump
+    * [MDA-85] - Guava Closeables.closeQuietly is deprecated
+    * [MDA-86] - tests shouldn't pull UK production metadata
+    * [MDA-89] - add license and release notes to aggregator-cli package
+    * [MDA-95] - API changes for new Shibboleth coding conventions
+    * [MDA-111] - bundle spring-extensions in MDA cli package
+    * [MDA-113] - improve use of generic types internally and in API
+    * [MDA-118] - correct double initialisation of ID attribute list in signing stage
+
+** New Feature
+    * [MDA-88] - assist debugging of signature creation by making pre-digest data available
+    * [MDA-91] - allow checking that SAML metadata is signed using ID, not empty reference
+    * [MDA-102] - allow configuration of URI resolver for XSLT stages
+    * [MDA-120] - signature validation stage should allow algorithm blacklisting
+    * [MDA-121] - add stage to extract mdrpi registrationAuthority value into item metadata
+
+** Task
+    * [MDA-68] - Convert command line interface to use JCommander
+    * [MDA-70] - Move ClassToInstanceMultiMap to java-support
+    * [MDA-80] - compile using, and require, Java 7
+    * [MDA-107] - release process for MDA 0.8.0
+    * [MDA-108] - make use of Java 7 type inference
