@@ -1097,21 +1097,18 @@
         <CHANNEL.do verb="importRaw" channel="gr_grnet"/>
         <CHANNEL.do verb="importRaw" channel="hr_eduhr"/>
         <CHANNEL.do verb="importRaw" channel="hu_eduid"/>
-        <CHANNEL.do verb="importRaw" channel="ie_edugate"/>
 		<CHANNEL.do verb="importRaw" channel="in_infed"/>
         <CHANNEL.do verb="importRaw" channel="int_edugain"/>
 		<CHANNEL.do verb="importRaw" channel="int_testshib"/>
         <CHANNEL.do verb="importRaw" channel="it_idem"/>
         <CHANNEL.do verb="importRaw" channel="jp_gakunin"/>
         <CHANNEL.do verb="importRaw" channel="lv_laife"/>
-        <CHANNEL.do verb="importRaw" channel="nl_surfconext"/>
         <CHANNEL.do verb="importRaw" channel="nl_surfnet"/>
         <CHANNEL.do verb="importRaw" channel="no_feide"/>
         <CHANNEL.do verb="importRaw" channel="nz_tuakiri"/>
         <CHANNEL.do verb="importRaw" channel="se_swamid"/>
         <CHANNEL.do verb="importRaw" channel="si_arnes"/>
 		<CHANNEL.do verb="collect"   channel="uk"/>
-        <CHANNEL.do verb="importRaw" channel="uk_eduserv"/>
         <CHANNEL.do verb="importRaw" channel="us_incommon"/>
 	</target>
     
