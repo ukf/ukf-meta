@@ -1,0 +1,4 @@
+#!/bin/bash
+
+find ../entities -name uk\*.xml \
+    -exec python normalise_fragment \{\} \;

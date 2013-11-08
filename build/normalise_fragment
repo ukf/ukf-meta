@@ -1,0 +1,131 @@
+#!/usr/bin/env python
+
+'''
+Normalises a fragment file.
+
+The assumption is that the input file has already been pretty-printed to
+some extent. This script normalises it by adjusting the start of the
+file:
+
+   * ensures that the file starts with an appropriate XML declaration
+
+   * arranges for all appropriate namespaces to appear on the EntityDescriptor
+
+   * arranges for an appropriate collection on schemaLocation values
+
+   * puts any ID and entityID attributes in the right place
+
+The script also modifies any use of the shibmeta prefix to the modern shibmd form.
+
+None of this can really be done by any means within XML itself, so this
+is a pure text processing application.
+
+With no command-line arguments, the script acts as a filter.
+
+With one command-line argument, the script overwrites the named file.
+
+With two command-line arguments, the script reads from one file and
+writes to another.
+
+This script was developed under Python 2.7, but will probably work under 2.6.
+Let me know if that turns out not to be the case.
+'''
+
+import re
+import sys
+from string import Template
+
+#
+# Template to use for the start of the file, up to the EntityDescriptor.
+#
+# Note that the indentation in this template should be four *spaces* per
+# level, independent of the type of indentation used for the rest of the
+# script.
+#
+ED_TEMPLATE = Template('''<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+    xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
+    xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
+    xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+    xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
+    xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
+    xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata ../xml/saml-schema-metadata-2.0.xsd
+        urn:oasis:names:tc:SAML:metadata:algsupport ../xml/sstc-saml-metadata-algsupport-v1.0.xsd
+        urn:oasis:names:tc:SAML:metadata:rpi ../xml/saml-metadata-rpi-v1.0.xsd
+        urn:oasis:names:tc:SAML:metadata:ui ../xml/sstc-saml-metadata-ui-v1.0.xsd
+        urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol ../xml/sstc-saml-idp-discovery.xsd
+        urn:oasis:names:tc:SAML:profiles:SSO:request-init ../xml/sstc-request-initiation.xsd
+        urn:mace:shibboleth:metadata:1.0 ../xml/shibboleth-metadata-1.0.xsd
+        http://ukfederation.org.uk/2006/11/label ../xml/uk-fed-label.xsd
+        http://www.w3.org/2001/04/xmlenc# ../xml/xenc-schema.xsd
+        http://www.w3.org/2009/xmlenc11# ../xml/xenc-schema-11.xsd
+        http://www.w3.org/2000/09/xmldsig# ../xml/xmldsig-core-schema.xsd"
+    ID="${ID}" entityID="${entityID}">
+''')
+
+def ingest(input):
+	'''Read the given input file and split it into header and remainder.'''
+	text = input.read()
+	regex = r"^(.*<EntityDescriptor[^>]+?>[ \t]*?\n?)(.*)$"
+	pattern = re.compile(regex, re.DOTALL)
+	return pattern.match(text).groups()
+
+def extract(header):
+	'''Extract ID and entityID attributes from the header.'''
+	entityID = re.search(r"(?:\bentityID=[\'\"](.*?)[\'\"])", header).group(1)
+	ID = re.search(r"(?:\bID=[\'\"](.*?)[\'\"])", header).group(1)
+	return ID, entityID
+
+def construct_header(ID, entityID):
+	'''Construct a new header with the given attributes.'''
+	return ED_TEMPLATE.substitute(ID=ID, entityID=entityID)
+
+def fix_scope_prefix(text):
+	'''Changes any use of the shibmeta prefix into shibmd.'''
+	return re.sub(r"\bshibmeta:", "shibmd:", text)
+
+def usage():
+	'''Display usage information for script.'''
+	print '''Usage: normalise_fragment.py [[infile] outfile]'''
+
+def main(args):
+	'''Command-line application.'''
+	if not args:
+		# no command line arguments, read from standard input
+		infile = sys.stdin
+	elif len(args) <= 2:
+		# read from a named file
+		infile = file(args[0], "r")
+	else:
+		usage();
+		sys.exit(1)
+
+	(head, remainder) = ingest(infile)
+	infile.close()
+	# print "head:%s:\nrest:%s:" % (head, remainder)
+	(ID, entityID) = extract(head)
+	new_head = construct_header(ID, entityID)
+	remainder = fix_scope_prefix(remainder)
+	new_text = new_head + remainder
+
+	if not args:
+		outfile = sys.stdout
+	elif len(args) == 1:
+		outfile = file(args[0], "w")
+	elif len(args) == 2:
+		outfile = file(args[1], "w")
+	else:
+		usage()
+		sys.exit(1)
+
+	outfile.write(new_text)
+	outfile.close()
+
+if __name__ == "__main__":
+	main(sys.argv[1:])
+
