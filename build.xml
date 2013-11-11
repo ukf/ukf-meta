@@ -837,6 +837,7 @@
         <delete file="${entities.dir}/imported.xml" quiet="true" verbose="false"/>
 		<CHANNEL.do channel="uk" verb="import.metadata"/>
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
+        <fixcrlf file="${entities.dir}/imported.xml"/>
         <XALAN
             i="${entities.dir}/imported.xml"
             o="${xml.dir}/embedded.pem"
