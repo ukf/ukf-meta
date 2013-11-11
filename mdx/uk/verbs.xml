@@ -254,7 +254,7 @@
                 <!-- transform into a fragment using our local conventions -->
                 <bean id="importTransform" parent="XSLTransformationStage"
                     p:id="importTransform">
-                    <property name="xslResource">
+                    <property name="XSLResource">
                         <bean parent="ClasspathResource">
                             <constructor-arg value="uk/import.xsl"/>
                         </bean>
@@ -264,7 +264,7 @@
                 <!-- normalise namespaces in a specific way -->
                 <bean id="normalizeFragment" parent="XSLTransformationStage"
                     p:id="normalizeFragment">
-                    <property name="xslResource">
+                    <property name="XSLResource">
                         <bean parent="FilesystemResource">
                             <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_fragment.xsl"/>
                         </bean>
