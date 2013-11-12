@@ -64,8 +64,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="ca_caf_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="ca_caf_checkSignature" parent="XMLSignatureValidationStage"
         p:id="ca_caf_checkSignature">
         <property name="verificationCertificate" ref="ca_caf_signingCertificate"/>
     </bean>
@@ -86,8 +85,7 @@
     <!--
         Check "cafshib" signing signature.
     -->
-    <bean id="ca_caf_cafShibCheckSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="ca_caf_cafShibCheckSignature" parent="XMLSignatureValidationStage"
         p:id="ca_caf_checkSignature">
         <property name="verificationCertificate" ref="ca_caf_cafShibSigningCertificate"/>
     </bean>

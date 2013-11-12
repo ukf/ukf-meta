@@ -62,8 +62,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="gr_grnet_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="gr_grnet_checkSignature" parent="XMLSignatureValidationStage"
         p:id="gr_grnet_checkSignature">
         <property name="verificationCertificate" ref="gr_grnet_signingCertificate"/>
     </bean>

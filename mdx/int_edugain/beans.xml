@@ -70,8 +70,7 @@
     <!--
         Check a signature against the eduGAIN signing certificate.
     -->
-    <bean id="int_edugain_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="int_edugain_checkSignature" parent="XMLSignatureValidationStage"
         p:id="int_edugain_checkSignature">
         <property name="verificationCertificate" ref="int_edugain_signingCertificate"/>
     </bean>

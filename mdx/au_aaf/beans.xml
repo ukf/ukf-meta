@@ -39,8 +39,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="au_aaf_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="au_aaf_checkSignature" parent="XMLSignatureValidationStage"
         p:id="au_aaf_checkSignature">
         <property name="verificationCertificate" ref="au_aaf_signingCertificate"/>
     </bean>

@@ -47,8 +47,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="cl_cofre_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="cl_cofre_checkSignature" parent="XMLSignatureValidationStage"
         p:id="cl_cofre_checkSignature">
         <property name="verificationCertificate" ref="cl_cofre_signingCertificate"/>
     </bean>

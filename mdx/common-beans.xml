@@ -74,6 +74,28 @@
         class="net.shibboleth.metadata.pipeline.CompositeStage"/>
 
     <!--
+        XMLSignatureValidationStage
+        
+        Parent for XML Signature validation stages.
+        
+        Applies global algorithm blacklists. For values, see:
+            http://www.w3.org/TR/xmlsec-algorithms/
+    -->
+    <bean id="XMLSignatureValidationStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
+        <property name="blacklistedDigests">
+            <list>
+                <value>http://www.w3.org/2001/04/xmldsig-more#md5</value>
+            </list>
+        </property>
+        <property name="blacklistedSignatureMethods">
+            <list>
+                <value>http://www.w3.org/2001/04/xmldsig-more#rsa-md5</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--
         XSLTransformationStage
         
         Parent for XSLT-based checking stages.

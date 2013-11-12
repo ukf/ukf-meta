@@ -62,8 +62,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="it_idem_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="it_idem_checkSignature" parent="XMLSignatureValidationStage"
         p:id="it_idem_checkSignature">
         <property name="verificationCertificate" ref="it_idem_signingCertificate"/>
     </bean>

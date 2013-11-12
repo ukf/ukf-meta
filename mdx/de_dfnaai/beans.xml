@@ -62,8 +62,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="de_dfnaai_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="de_dfnaai_checkSignature" parent="XMLSignatureValidationStage"
         p:id="de_dfnaai_checkSignature">
         <property name="verificationCertificate" ref="de_dfnaai_signingCertificate"/>
     </bean>

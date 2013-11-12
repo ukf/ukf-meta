@@ -39,8 +39,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="nz_tuakiri_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="nz_tuakiri_checkSignature" parent="XMLSignatureValidationStage"
         p:id="nz_tuakiri_checkSignature">
         <property name="verificationCertificate" ref="nz_tuakiri_signingCertificate"/>
     </bean>

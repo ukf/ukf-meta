@@ -34,8 +34,7 @@
     <!--
         Check the signature on a document.
     -->
-    <bean id="nl_surfconext_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="nl_surfconext_checkSignature" parent="XMLSignatureValidationStage"
         p:id="nl_surfnet_checkSignature">
         <property name="verificationCertificate" ref="nl_surfconext_signingCertificate"/>
     </bean>

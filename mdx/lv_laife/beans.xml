@@ -65,8 +65,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="lv_laife_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="lv_laife_checkSignature" parent="XMLSignatureValidationStage"
         p:id="lv_laife_checkSignature">
         <property name="verificationCertificate" ref="lv_laife_signingCertificate"/>
     </bean>

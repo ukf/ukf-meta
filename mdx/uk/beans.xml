@@ -83,8 +83,7 @@
     <!--
         Check the signature on a document.
     -->
-    <bean id="uk_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="uk_checkSignature" parent="XMLSignatureValidationStage"
         p:id="uk_checkSignature">
         <property name="verificationCertificate" ref="uk_signingCertificate"/>
     </bean>

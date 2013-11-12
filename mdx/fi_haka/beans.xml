@@ -62,8 +62,7 @@
     <!--
         Check federation signature.
     -->
-    <bean id="fi_haka_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="fi_haka_checkSignature" parent="XMLSignatureValidationStage"
         p:id="fi_haka_checkSignature">
         <property name="verificationCertificate" ref="fi_haka_signingCertificate"/>
     </bean>
@@ -82,8 +81,7 @@
     <!--
         Check eduGAIN signature.
     -->
-    <bean id="fi_haka_checkEdugainSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="fi_haka_checkEdugainSignature" parent="XMLSignatureValidationStage"
         p:id="fi_haka_checkEdugainSignature">
         <property name="verificationCertificate" ref="fi_haka_edugainSigningCertificate"/>
     </bean>

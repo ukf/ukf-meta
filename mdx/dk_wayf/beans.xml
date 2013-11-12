@@ -122,8 +122,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="dk_wayf_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="dk_wayf_checkSignature" parent="XMLSignatureValidationStage"
         p:id="dk_wayf_checkSignature">
         <property name="verificationCertificate" ref="dk_wayf_signingCertificate"/>
     </bean>

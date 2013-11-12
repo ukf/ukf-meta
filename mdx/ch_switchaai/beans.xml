@@ -73,8 +73,7 @@
     <!--
         Check against federation signature.
     -->
-    <bean id="ch_switchaai_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="ch_switchaai_checkSignature" parent="XMLSignatureValidationStage"
         p:id="ch_switchaai_checkSignature">
         <property name="verificationCertificate" ref="ch_switchaai_signingCertificate"/>
     </bean>
@@ -82,8 +81,7 @@
     <!--
         Check against federation signature.
     -->
-    <bean id="ch_switchaai_checkInterfedSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="ch_switchaai_checkInterfedSignature" parent="XMLSignatureValidationStage"
         p:id="ch_switchaai_checkInterfedSignature">
         <property name="verificationCertificate" ref="ch_switchaai_interfedSigningCertificate"/>
     </bean>

@@ -46,8 +46,7 @@
     <!--
         Check InCommon signing signature.
     -->
-    <bean id="us_incommon_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="us_incommon_checkSignature" parent="XMLSignatureValidationStage"
         p:id="us_incommon_checkSignature">
         <property name="verificationCertificate" ref="us_incommon_signingCertificate"/>
     </bean>

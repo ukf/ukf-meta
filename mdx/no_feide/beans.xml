@@ -76,8 +76,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="no_feide_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="no_feide_checkSignature" parent="XMLSignatureValidationStage"
         p:id="no_feide_checkSignature">
         <property name="verificationCertificate" ref="no_feide_signingCertificate"/>
     </bean>

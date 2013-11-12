@@ -62,8 +62,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="es_sir_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="es_sir_checkSignature" parent="XMLSignatureValidationStage"
         p:id="es_sir_checkSignature">
         <property name="verificationCertificate" ref="es_sir_signingCertificate"/>
     </bean>

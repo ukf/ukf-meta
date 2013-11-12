@@ -46,8 +46,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="hr_eduhr_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="hr_eduhr_checkSignature" parent="XMLSignatureValidationStage"
         p:id="hr_eduhr_checkSignature">
         <property name="verificationCertificate" ref="hr_eduhr_signingCertificate"/>
     </bean>

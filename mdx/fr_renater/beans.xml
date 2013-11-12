@@ -78,8 +78,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="fr_renater_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="fr_renater_checkSignature" parent="XMLSignatureValidationStage"
         p:id="fr_renater_checkSignature">
         <property name="verificationCertificate" ref="fr_renater_signingCertificate"/>
     </bean>
@@ -98,8 +97,7 @@
     <!--
         Check eduGAIN signing signature.
     -->
-    <bean id="fr_renater_edugainCheckSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="fr_renater_edugainCheckSignature" parent="XMLSignatureValidationStage"
         p:id="fr_renater_edugainCheckSignature">
         <property name="verificationCertificate" ref="fr_renater_edugainSigningCertificate"/>
     </bean>

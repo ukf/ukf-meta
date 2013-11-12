@@ -39,8 +39,7 @@
     <!--
         Check signing signature.
     -->
-    <bean id="jp_gakunin_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="jp_gakunin_checkSignature" parent="XMLSignatureValidationStage"
         p:id="jp_gakunin_checkSignature">
         <property name="verificationCertificate" ref="jp_gakunin_signingCertificate"/>
     </bean>

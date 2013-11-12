@@ -39,8 +39,7 @@
     <!--
         Check ARNES signing signature.
     -->
-    <bean id="si_arnes_checkSignature" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.XMLSignatureValidationStage"
+    <bean id="si_arnes_checkSignature" parent="XMLSignatureValidationStage"
         p:id="si_arnes_checkSignature">
         <property name="verificationCertificate" ref="si_arnes_signingCertificate"/>
     </bean>
