@@ -42,6 +42,7 @@
     <bean id="au_aaf_checkSignature" parent="XMLSignatureValidationStage"
         p:id="au_aaf_checkSignature">
         <property name="verificationCertificate" ref="au_aaf_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

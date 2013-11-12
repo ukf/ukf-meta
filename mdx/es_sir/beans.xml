@@ -65,6 +65,7 @@
     <bean id="es_sir_checkSignature" parent="XMLSignatureValidationStage"
         p:id="es_sir_checkSignature">
         <property name="verificationCertificate" ref="es_sir_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

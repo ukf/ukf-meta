@@ -71,6 +71,7 @@
     <bean id="se_swamid_checkSignature" parent="XMLSignatureValidationStage"
         p:id="se_swamid_checkSignature">
         <property name="verificationCertificate" ref="se_swamid_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

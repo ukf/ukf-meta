@@ -68,6 +68,7 @@
     <bean id="lv_laife_checkSignature" parent="XMLSignatureValidationStage"
         p:id="lv_laife_checkSignature">
         <property name="verificationCertificate" ref="lv_laife_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

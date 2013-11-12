@@ -55,6 +55,7 @@
     <bean id="ie_edugate_checkSignature" parent="XMLSignatureValidationStage"
         p:id="ie_edugate_checkSignature">
         <property name="verificationCertificate" ref="ie_edugate_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

@@ -76,6 +76,7 @@
     <bean id="ch_switchaai_checkSignature" parent="XMLSignatureValidationStage"
         p:id="ch_switchaai_checkSignature">
         <property name="verificationCertificate" ref="ch_switchaai_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--
@@ -84,6 +85,7 @@
     <bean id="ch_switchaai_checkInterfedSignature" parent="XMLSignatureValidationStage"
         p:id="ch_switchaai_checkInterfedSignature">
         <property name="verificationCertificate" ref="ch_switchaai_interfedSigningCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

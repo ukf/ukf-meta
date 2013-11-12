@@ -75,6 +75,7 @@
     <bean id="cz_eduid_checkSignature" parent="XMLSignatureValidationStage"
         p:id="cz_eduid_checkSignature">
         <property name="verificationCertificate" ref="cz_eduid_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

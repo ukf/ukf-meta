@@ -65,6 +65,7 @@
     <bean id="it_idem_checkSignature" parent="XMLSignatureValidationStage"
         p:id="it_idem_checkSignature">
         <property name="verificationCertificate" ref="it_idem_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

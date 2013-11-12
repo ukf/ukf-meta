@@ -80,6 +80,11 @@
         
         Applies global algorithm blacklists. For values, see:
             http://www.w3.org/TR/xmlsec-algorithms/
+            
+        Establishes a default of *not* permitting empty references
+        in signatures, per the SAML specification. This will be
+        overridden in specific beans where a signature is known to
+        require it.
     -->
     <bean id="XMLSignatureValidationStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.XMLSignatureValidationStage">
@@ -93,6 +98,7 @@
                 <value>http://www.w3.org/2001/04/xmldsig-more#rsa-md5</value>
             </list>
         </property>
+        <property name="permittingEmptyReferences" value="false"/>
     </bean>
 
     <!--

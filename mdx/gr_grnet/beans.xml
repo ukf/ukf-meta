@@ -65,6 +65,7 @@
     <bean id="gr_grnet_checkSignature" parent="XMLSignatureValidationStage"
         p:id="gr_grnet_checkSignature">
         <property name="verificationCertificate" ref="gr_grnet_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

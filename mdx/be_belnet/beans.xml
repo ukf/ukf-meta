@@ -65,6 +65,7 @@
     <bean id="be_belnet_checkSignature" parent="XMLSignatureValidationStage"
         p:id="be_belnet_checkSignature">
         <property name="verificationCertificate" ref="be_belnet_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
 
     <!--

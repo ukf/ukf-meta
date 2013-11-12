@@ -42,6 +42,7 @@
     <bean id="si_arnes_checkSignature" parent="XMLSignatureValidationStage"
         p:id="si_arnes_checkSignature">
         <property name="verificationCertificate" ref="si_arnes_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

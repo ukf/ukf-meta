@@ -86,8 +86,9 @@
         Check "cafshib" signing signature.
     -->
     <bean id="ca_caf_cafShibCheckSignature" parent="XMLSignatureValidationStage"
-        p:id="ca_caf_checkSignature">
+        p:id="ca_caf_cafShibCheckSignature">
         <property name="verificationCertificate" ref="ca_caf_cafShibSigningCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

@@ -81,6 +81,7 @@
     <bean id="fr_renater_checkSignature" parent="XMLSignatureValidationStage"
         p:id="fr_renater_checkSignature">
         <property name="verificationCertificate" ref="fr_renater_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--
@@ -100,6 +101,7 @@
     <bean id="fr_renater_edugainCheckSignature" parent="XMLSignatureValidationStage"
         p:id="fr_renater_edugainCheckSignature">
         <property name="verificationCertificate" ref="fr_renater_edugainSigningCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--

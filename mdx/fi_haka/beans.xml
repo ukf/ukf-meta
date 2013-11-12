@@ -65,6 +65,7 @@
     <bean id="fi_haka_checkSignature" parent="XMLSignatureValidationStage"
         p:id="fi_haka_checkSignature">
         <property name="verificationCertificate" ref="fi_haka_signingCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--
@@ -84,6 +85,7 @@
     <bean id="fi_haka_checkEdugainSignature" parent="XMLSignatureValidationStage"
         p:id="fi_haka_checkEdugainSignature">
         <property name="verificationCertificate" ref="fi_haka_edugainSigningCertificate"/>
+        <property name="permittingEmptyReferences" value="true"/>
     </bean>
     
     <!--
