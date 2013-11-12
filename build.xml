@@ -942,7 +942,6 @@
 		depends="flow.importEdugain.all, flow.importProduction.all">
         <CHANNEL.import channel="au_aaf"/>
         <CHANNEL.import channel="eu_clarin"/>
-        <CHANNEL.import channel="ie_edugate"/>
 		<CHANNEL.import channel="nl_surfconext"/>
         <CHANNEL.import channel="uk_eduserv"/>
 		<CHANNEL.import channel="us_incommon"/>
