@@ -206,6 +206,11 @@
     <bean id="ElementWhitespaceTrimmingStage" abstract="true" parent="stage_parent"
         class="uk.org.ukfederation.mda.dom.ElementWhitespaceTrimmingStage"/>
     
+    <bean id="X509CertificateValidationStage" abstract="true" parent="stage_parent"
+        class="uk.org.ukfederation.mda.validate.X509CertificateValidationStage"/>
+
+    <bean id="X509CertificateRSAKeyLengthValidator" abstract="true"
+        class="uk.org.ukfederation.mda.validate.X509CertificateRSAKeyLengthValidator"/>
     
     
     <!--

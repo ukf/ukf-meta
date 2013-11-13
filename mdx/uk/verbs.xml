@@ -171,6 +171,17 @@
                 <ref bean="uk_populateIds"/>
                 <ref bean="populateRegistrationAuthorities"/>
                 
+                <bean parent="X509CertificateValidationStage"
+                    p:id="checkCertificates">
+                    <property name="validators">
+                        <list>
+                            <!-- Error on RSA key length less than 2048 bits. -->
+                            <bean parent="X509CertificateRSAKeyLengthValidator"
+                                p:warningBoundary="0" p:errorBoundary="2048"/>
+                        </list>
+                    </property>
+                </bean>
+                
                 <ref bean="check_future"/>
                 <ref bean="errorAnnouncingFilter"/>
             </list>
@@ -200,21 +211,6 @@
         </property>
     </bean>
     
-    <!--
-        fetchImportedMetadata
-        
-        Fetches the contents of the file used to hold metadata just imported
-        by the federation's import transform.
-    -->
-    <bean id="fetchImportedMetadata" parent="DOMFilesystemSourceStage"
-        p:id="fetchImportedMetadata">
-        <property name="source">
-            <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/entities/imported.xml"/>
-            </bean>
-        </property>
-    </bean>
-
     <!--
         serializeImportedMetadata
         
@@ -298,6 +294,17 @@
                 <!-- <ref bean="check_saml2meta"/> -->
                 <ref bean="check_shibboleth"/>
                 <ref bean="check_uk_trust"/>
+                
+                <bean parent="X509CertificateValidationStage"
+                    p:id="checkCertificates">
+                    <property name="validators">
+                        <list>
+                            <!-- Error on RSA key length less than 2048 bits. -->
+                            <bean parent="X509CertificateRSAKeyLengthValidator"
+                                p:warningBoundary="0" p:errorBoundary="2048"/>
+                        </list>
+                    </property>
+                </bean>
                 
                 <ref bean="check_uk_mdrps"/>
                 <ref bean="check_uk_urlenc"/>
