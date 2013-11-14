@@ -94,6 +94,35 @@
         </property>
     </bean>
 
+    <!--
+        verify.all
+        
+        Same as verify, but not making use of the validation
+        blacklist. Can be used to check up on blacklisted entities.
+    -->
+    <bean id="verify.all" parent="SimplePipeline"
+        p:id="verify.all">
+        <property name="stages">
+            <list>
+                <ref bean="int_edugain_productionEntities"/>
+                
+                <bean parent="X509CertificateValidationStage"
+                    p:id="checkCertificates">
+                    <property name="validators">
+                        <list>
+                            <!-- Error on RSA key length less than 2048 bits. -->
+                            <bean parent="X509CertificateRSAKeyLengthValidator"
+                                p:warningBoundary="0" p:errorBoundary="2048"/>
+                        </list>
+                    </property>
+                </bean>
+                
+                <ref bean="standardImportActions"/>
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+    
     <alias alias="import"    name="importProduction"/>
     <alias alias="importRaw" name="importProductionRaw"/>
 </beans>
