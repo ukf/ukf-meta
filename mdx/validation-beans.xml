@@ -682,6 +682,45 @@
         class="uk.org.ukfederation.mda.IdPDisplayNameDuplicateDetectingStage"/>
     
     <!--
+        ***********************************************
+        ***                                         ***
+        ***   X . 5 0 9   C E R T I F I C A T E S   ***
+        ***                                         ***
+        ***********************************************
+    -->
+    
+    <!--
+        Debian weak key blacklists.
+    -->
+
+    <bean id="debian.1024" parent="X509CertificateRSAOpenSSLBlacklistValidator"
+        p:id="debian.1024" p:keySize="1024">
+        <property name="blacklistResource">
+            <bean parent="ClasspathResource">
+                <constructor-arg value="_openssl_blacklists/blacklist.RSA-1024"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="debian.2048" parent="X509CertificateRSAOpenSSLBlacklistValidator"
+        p:id="debian.2048" p:keySize="2048">
+        <property name="blacklistResource">
+            <bean parent="ClasspathResource">
+                <constructor-arg value="_openssl_blacklists/blacklist.RSA-2048"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="debian.4096" parent="X509CertificateRSAOpenSSLBlacklistValidator"
+        p:id="debian.4096" p:keySize="4096">
+        <property name="blacklistResource">
+            <bean parent="ClasspathResource">
+                <constructor-arg value="_openssl_blacklists/blacklist.RSA-4096"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         *********************************************
         ***                                       ***
         ***   A G G R E G A T E D   C H E C K S   ***
