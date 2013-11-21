@@ -4,9 +4,17 @@ This document describes the current conventions for the metadata aggregation fra
 
 Because these conventions have been developed over time, and are still being developed, not all of them are currently implemented by all parts of the framework.  These conventions should be applied in their then-current state for any new work, and when significant changes are made to existing code.
 
-## Ruleset Directory
+## "Underscore" Directories
 
-The `_rules` subdirectory of `/mdx/` holds checking rulesets.  The underscore at the start of the directory name is intended to be used as a continuing convention to allow functional subdirectories to be distinguished from channels.
+An underscore ('`_`') at the start of a directory name indicates that the directory is functional rather than containing a channel.
+
+### OpenSSL Blacklists Directory
+
+The `_openssl_blacklists` directory holds a copy of the Debian weak key blacklists, extracted from Debian 7.2 "Wheezy". These blacklists are in OpenSSL format.
+
+### Ruleset Directory
+
+The `_rules` subdirectory of `/mdx/` holds checking rulesets.
 
 ## Channels
 
