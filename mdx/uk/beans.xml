@@ -433,6 +433,8 @@
                             <ref bean="debian.1024"/>
                             <ref bean="debian.2048"/>
                             <ref bean="debian.4096"/>
+                            <!-- Compromised key blacklists. -->
+                            <ref bean="compromised.1024"/>
                         </list>
                     </property>
                 </bean>

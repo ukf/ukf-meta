@@ -1,0 +1,18 @@
+#
+# This is a list of known-compromised 1024-bit keys in OpenSSL format.
+#
+# Derive new values from a private key file as follows:
+#
+#   openssl rsa -noout -modulus -in /tmp/key.pem | sha1sum | cut -d ' ' -f 1
+#
+# You can also derive a new blacklist value from an X.509 certificate as follows:
+#
+#   openssl x509 -noout -modulus -in /tmp/cert.pem | sha1sum | cut -d ' ' -f 2
+#
+# In either case, you should then remove the first 20 characters; in other words,
+# the blacklist line should be the lower 80 bits of the fingerprint).
+#
+# simpleSAMLphp example key, shipped up to version 1.11
+4817f3e0b5df319289ad
+# Shibboleth SP dummy key, shipped in pre-2.0.0 releases
+8a69bcdc8677c7ecb37a

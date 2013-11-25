@@ -964,7 +964,9 @@
     	<CHANNEL.do verb="importProduction" channel="it_idem"/>
     	<CHANNEL.do verb="importProduction" channel="jp_gakunin"/>
     	<CHANNEL.do verb="importProduction" channel="lv_laife"/>
+    	<!--
     	<CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
+    	-->
     	<CHANNEL.do verb="importProduction" channel="no_feide"/>
     	<CHANNEL.do verb="importProduction" channel="nz_tuakiri"/>
     	<CHANNEL.do verb="importProduction" channel="se_swamid"/>
