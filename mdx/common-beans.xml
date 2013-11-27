@@ -639,13 +639,6 @@
         *************************************************
     -->
     
-    <bean id="stripMDUIDiscoHints" parent="ElementStrippingStage"
-        p:id="stripMDUIDiscoHints"
-        p:elementName="DiscoHints"
-        p:elementNamespace-ref="mdui_namespace"/>
-    
-    
-    
     <!--
         Populate RegistrationAuthority values from entities.
     -->
@@ -678,6 +671,13 @@
         ***                                         ***
         ***********************************************
     -->
+    
+    <bean id="stripMDUIDiscoHints" parent="ElementStrippingStage"
+        p:id="stripMDUIDiscoHints"
+        p:elementName="DiscoHints"
+        p:elementNamespace-ref="mdui_namespace"/>
+    
+    
     
     <!--
         *****************************************************
