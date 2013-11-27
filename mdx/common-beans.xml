@@ -100,6 +100,29 @@
         </property>
         <property name="permittingEmptyReferences" value="false"/>
     </bean>
+    
+    <!--
+        XMLSignatureValidationStageSHA256
+        
+        Parent for XML signature validation stages where we know
+        the signature will not be made with MD5 or SHA-1.
+    -->
+    <bean id="XMLSignatureValidationStageSHA256" abstract="true"
+        parent="XMLSignatureValidationStage">
+        <property name="blacklistedDigests">
+            <list>
+                <value>http://www.w3.org/2000/09/xmldsig#sha1</value>
+                <value>http://www.w3.org/2001/04/xmldsig-more#md5</value>
+            </list>
+        </property>
+        <property name="blacklistedSignatureMethods">
+            <list>
+                <value>http://www.w3.org/2000/09/xmldsig#rsa-sha1</value>
+                <value>http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1</value>
+                <value>http://www.w3.org/2001/04/xmldsig-more#rsa-md5</value>
+            </list>
+        </property>
+    </bean>
 
     <!--
         XSLTransformationStage
