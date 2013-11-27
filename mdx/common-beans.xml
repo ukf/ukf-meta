@@ -423,6 +423,7 @@
                 <entry key="http://federation.belnet.be/"     value="BE"/>
                 <entry key="http://cafe.rnp.br"               value="BR"/>
                 <entry key="http://www.canarie.ca"            value="CA"/>
+                <entry key="http://cofre.reuna.cl/"           value="CL"/>
                 <entry key="http://www.srce.hr"               value="HR"/>
                 <entry key="http://www.eduid.cz/"             value="CZ"/>
                 <entry key="https://www.wayf.dk"              value="DK"/>
@@ -434,6 +435,7 @@
                 <entry key="http://www.idem.garr.it/"         value="IT"/>
                 <entry key="http://laife.lanet.lv/"           value="LV"/>
                 <entry key="http://feide.no/"                 value="NO"/>
+                <entry key="http://aai.arnes.si"              value="SI"/>
                 <entry key="http://www.rediris.es/"           value="ES"/>
                 <entry key="http://www.swamid.se/"            value="SE"/>
                 <entry key="http://rr.aai.switch.ch/"         value="CH"/>
@@ -441,8 +443,7 @@
                 <entry key="http://ukfederation.org.uk"       value="UK"/>
                 
                 <!-- not yet eduGAIN members -->
-                <entry key="http://cofre.reuna.cl"            value="CL"/>
-                <entry key="http://edugate.heanet.ie"         value="IE"/>
+                <entry key="http://edugate.ie/"               value="IE"/>
                 <entry key="https://incommon.org"             value="US"/>
             </map>
         </property>
