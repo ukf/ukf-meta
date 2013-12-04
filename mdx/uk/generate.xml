@@ -246,7 +246,6 @@
                 <ref bean="errorRemover"/>
                 
                 <ref bean="uk_fix_mailto"/>
-                <ref bean="uk_hide_idps"/>
             </list>
         </property>
     </bean>
@@ -267,6 +266,7 @@
             <list>
                 <ref bean="us_incommon_exportedEntities"/>
                 <ref bean="importCommonTail"/>
+                <ref bean="uk_hide_idps"/>
             </list>
         </property>
     </bean>
@@ -592,6 +592,23 @@
         p:id="uk_fallbackPipeline">
         <property name="stages">
             <list>
+                <!--
+                    Discard entities registered other than by the UK federation.
+                    This allows the fallback aggregate to be used temporarily by
+                    systems which can't deal with the rise in metadata size from
+                    the eduGAIN import.
+                -->
+                <bean parent="EntityRegistrationAuthorityFilterStage"
+                    p:id="retainUKEntities">
+                    <property name="designatedRegistrationAuthorities">
+                        <list>
+                            <ref bean="uk_federation_uri"/>
+                        </list>
+                    </property>
+                    <property name="requiringRegistrationInformation" value="true"/>
+                    <property name="whitelistingRegistrationAuthorities" value="true"/>
+                </bean>
+                
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
@@ -963,6 +980,7 @@
                     <property name="mergedPipelines">
                         <list>
                             <!-- entries earlier in the list have higher precedence -->
+                            <ref bean="uk_int_edugain_importPipeline"/>
                         </list>
                     </property>
                 </bean>
@@ -1020,7 +1038,6 @@
                         <list>
                             <!-- entries earlier in the list have higher precedence -->
                             <ref bean="uk_us_incommon_importPipeline"/>
-                            <ref bean="uk_int_edugain_importPipeline"/>
                         </list>
                     </property>
                 </bean>
@@ -1051,6 +1068,7 @@
                             </bean>
                         </list>
                     </property>
+                    <property name="waitingForPipelines" value="true"/>
                 </bean>
                 
                 <!-- pipeline continues to generate test aggregate -->
