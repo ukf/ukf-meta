@@ -273,65 +273,6 @@
     
     
     <!--
-        ***********************************************************************
-        ***                                                                 ***
-        ***   H I E R A R C H I C A L   A G G R E G A T E   B U I L D E R   ***
-        ***                                                                 ***
-        ***********************************************************************
-    -->
-    
-    
-    <!--
-        uk_memberEntitySelector
-        
-        Selection strategy which is true for entities owned by UK federation
-        members.
-    -->
-    <bean id="uk_memberEntitySelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy">
-        <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:UKFederationMember]"/>
-        <constructor-arg ref="commonNamespaces"/>
-    </bean>
-    
-    <!--
-        Assemble a nested EntitiesDescriptor structure with the
-        UK federation entities inside an inner element.
-    -->
-    <bean id="uk_assembleHierarchicalAggregate" parent="CompositeStage"
-        p:id="uk_assembleHierarchicalAggregate">
-        <property name="composedStages">
-            <list>
-                <!--
-                    Step 1: put all UK entities inside a UK-named EntitiesDescriptor
-                -->
-                <bean id="uk_buildNestedEntitiesDescriptor" parent="stage_parent"
-                    class="net.shibboleth.metadata.pipeline.SplitMergeStage"
-                    p:id="uk_buildNestedEntitiesDescriptor">
-                    <property name="selectionStrategy">
-                        <ref bean="uk_memberEntitySelector"/>
-                    </property>
-                    <property name="selectedItemPipeline">
-                        <bean name="uk_assemblePipeline" parent="SimplePipeline"
-                            p:id="uk_assemblePipeline">
-                            <property name="stages">
-                                <list>
-                                    <ref bean="uk_assemble"/>
-                                </list>
-                            </property>
-                        </bean>
-                    </property>
-                </bean>
-                
-                <!--
-                    Step 2: put that EntitiesDescriptor plus all remaining entities inside an
-                    anonymous outer EntitiesDescriptor.
-                -->
-                <ref bean="uk_assembleUnnamed"/>
-            </list>
-        </property>
-    </bean>
-
-
-    <!--
         ***************************************************
         ***                                             ***
         ***   P R O D U C T I O N   A G G R E G A T E   ***
