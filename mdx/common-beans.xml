@@ -937,7 +937,7 @@
                 <ref bean="populateRegistrationAuthorities"/>
 
                 <!--
-                    The following three namespaces are always stripped because they are
+                    The following two namespaces are always stripped because they are
                     specific to the UK registrar and can't be valid when imported from
                     some other source.
                 -->
