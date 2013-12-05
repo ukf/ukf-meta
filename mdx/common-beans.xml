@@ -432,6 +432,7 @@
                 <entry key="https://www.aai.dfn.de"           value="DE"/>
                 <entry key="http://aai.grnet.gr/"             value="GR"/>
                 <entry key="http://eduid.hu"                  value="HU"/>
+                <entry key="http://www.heanet.ie"             value="IE"/>
                 <entry key="http://www.idem.garr.it/"         value="IT"/>
                 <entry key="http://laife.lanet.lv/"           value="LV"/>
                 <entry key="http://feide.no/"                 value="NO"/>
@@ -442,8 +443,10 @@
                 <entry key="http://www.surfconext.nl/"        value="NL"/>
                 <entry key="http://ukfederation.org.uk"       value="UK"/>
                 
+                <!-- Joining eduGAIN -->
+                <entry key="http://aai.pionier.net.pl"        value="PL"/>
+                
                 <!-- not yet eduGAIN members -->
-                <entry key="http://edugate.ie/"               value="IE"/>
                 <entry key="https://incommon.org"             value="US"/>
             </map>
         </property>
