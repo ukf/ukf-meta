@@ -1930,6 +1930,7 @@
                 <xsl:with-param name="entities" select="$entities.shib.13"/>
                 <xsl:with-param name="name">Shibboleth 1.3</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
+                <xsl:with-param name="show.max" select="10"/>
             </xsl:call-template>
 
             <xsl:call-template name="entity.breakdown.by.software.line">
@@ -2017,6 +2018,7 @@
         <xsl:param name="total"/>
         <xsl:param name="show">0</xsl:param>
         <xsl:param name="show.software">0</xsl:param>
+        <xsl:param name="show.max">8</xsl:param>
         <xsl:variable name="n" select="count($entities)"/>
         <xsl:if test="$n != 0">
             <li>
@@ -2024,7 +2026,7 @@
                     <xsl:value-of select="$name"/>: <xsl:value-of select="$n"/>
                     (<xsl:value-of select="format-number($n div $total, '0.0%')"/>)
                 </p>
-                <xsl:if test="($show != 0) or ($n &lt;= 8)">
+                <xsl:if test="($show != 0) or ($n &lt;= $show.max)">
                     <ul>
                         <xsl:for-each select="$entities">
                             <li>
