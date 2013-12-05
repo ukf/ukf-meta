@@ -114,10 +114,17 @@
             </head>
             <body>
                 <h1>UK Federation metadata statistics</h1>
-                <p>This document contains up-to-date information on the metadata for the Identity
-                   Providers and Service Providers in the UK Access Management Federation.
-                   It is regenerated each time the UK Federation metadata is built.</p>
-                <p>This version was created at <xsl:value-of select="$now"/>.</p>
+                <p>
+                    This document contains up-to-date information on the metadata for the entities
+                    (identity providers and service providers) registered by the UK Access Management
+                    Federation for Education and Research. Note that the UK federation also
+                    republishes metadata from other registrars and acquired through the eduGAIN
+                    system; such "imported" metadata is not taken into account here.
+                </p>
+                <p>
+                    The document is regenerated each time the UK Federation metadata is built;
+                    this version was created at <xsl:value-of select="$now"/>.
+                </p>
                 <p>This document is produced as a working document of the UK federation core team. 
                    Some of the statistics may be approximations, and the report may be used to track
                    details of current team interest. 
