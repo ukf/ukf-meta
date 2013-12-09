@@ -681,6 +681,19 @@
         p:elementName="DiscoHints"
         p:elementNamespace-ref="mdui_namespace"/>
     
+    <!--
+        stripAAMDUI
+        
+        Remove all MDUI metadata from attribute authority roles.
+    -->
+    <bean id="stripAAMDUI" parent="XSLTransformationStage"
+        p:id="stripAAMDUI">
+        <property name="XSLResource">
+            <bean parent="ClasspathResource">
+                <constructor-arg value="strip-aa-mdui.xsl"/>
+            </bean>
+        </property>
+    </bean>
     
     
     <!--
@@ -951,6 +964,7 @@
                 <ref bean="stripMdattrNamespace"/>
 
                 <ref bean="cleanImport"/>
+                <ref bean="stripAAMDUI"/>
                 <ref bean="trimImportElementWhitespace"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="checkSchemas"/>
