@@ -64,8 +64,12 @@
     <!--
         Check signing signature.
     -->
-    <bean id="at_aconet_checkSignature" parent="XMLSignatureValidationStage"
-        p:id="at_aconet_checkSignature">
+    <bean id="at_aconet_checkProductionSignature" parent="XMLSignatureValidationStage"
+        p:id="at_aconet_checkProductionSignature">
+        <property name="verificationCertificate" ref="at_aconet_signingCertificate"/>
+    </bean>
+    <bean id="at_aconet_checkEdugainSignature" parent="XMLSignatureValidationStageSHA256"
+        p:id="at_aconet_checkEdugainSignature">
         <property name="verificationCertificate" ref="at_aconet_signingCertificate"/>
     </bean>
     
@@ -123,7 +127,7 @@
                         invalid signature
                 -->
                 <ref bean="check_validUntil"/>
-                <ref bean="at_aconet_checkSignature"/>
+                <ref bean="at_aconet_checkProductionSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
@@ -146,7 +150,7 @@
                         invalid signature
                 -->
                 <ref bean="check_validUntil"/>
-                <ref bean="at_aconet_checkSignature"/>
+                <ref bean="at_aconet_checkEdugainSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
