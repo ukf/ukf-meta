@@ -62,8 +62,12 @@
     <!--
         Check signing signature.
     -->
-    <bean id="de_dfnaai_checkSignature" parent="XMLSignatureValidationStage"
-        p:id="de_dfnaai_checkSignature">
+    <bean id="de_dfnaai_checkEdugainSignature" parent="XMLSignatureValidationStageSHA256"
+        p:id="de_dfnaai_checkEdugainSignature">
+        <property name="verificationCertificate" ref="de_dfnaai_signingCertificate"/>
+    </bean>
+    <bean id="de_dfnaai_checkProductionSignature" parent="XMLSignatureValidationStage"
+        p:id="de_dfnaai_checkProductionSignature">
         <property name="verificationCertificate" ref="de_dfnaai_signingCertificate"/>
     </bean>
     
@@ -82,7 +86,7 @@
                         invalid signature
                 -->
                 <ref bean="check_validUntil"/>
-                <ref bean="de_dfnaai_checkSignature"/>
+                <ref bean="de_dfnaai_checkProductionSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
@@ -105,7 +109,7 @@
                         invalid signature
                 -->
                 <ref bean="check_validUntil"/>
-                <ref bean="de_dfnaai_checkSignature"/>
+                <ref bean="de_dfnaai_checkEdugainSignature"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="disassemble"/>
