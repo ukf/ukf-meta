@@ -59,24 +59,6 @@ $issuerMark{'Cybertrust Educational CA'} = 'x'; # ex trust root
 $issuerMark{'Thawte Premium Server CA'} = 'x'; # ex trust root; directly signs; 1024 bit key
 
 #
-# Load RSA key blacklists.
-#
-#print "Loading key blacklists...\n";
-open KEYS, '../build/blacklist.RSA-1024' || die "can't open RSA 1024 blacklist";
-while (<KEYS>) {
-	chomp;
-	$rsa1024{$_} = 1;
-}
-close KEYS;
-open KEYS, '../build/blacklist.RSA-2048' || die "can't open RSA 2048 blacklist";
-while (<KEYS>) {
-	chomp;
-	$rsa2048{$_} = 1;
-}
-close KEYS;
-#print "Blacklists loaded.\n";
-
-#
 # Load expiry whitelist.
 #
 open WL, '../build/expiry_whitelist.txt' || die "can't open certificate expiry whitelist";
@@ -318,44 +300,6 @@ while (<>) {
 			}
 
 			#
-			# Check for weak (Debian) keys
-			#
-			# Weak key fingerprints loaded from files are hex SHA-1 digests of the
-			# line you get from "openssl x509 -modulus", including the "Modulus=".
-			#
-			if (/^Modulus=(.*)$/) {
-				$modulus = $_;
-				# print "   modulus: $modulus\n";
-				$fpr = sha1_hex($modulus);
-				# print "   fpr: $fpr\n";
-				if ($pubSize == 1024) {
-					if (defined($rsa1024{$fpr})) {
-						error("WEAK DEBIAN KEY");
-					}
-				} elsif ($pubSize == 2048) {
-					if (defined($rsa2048{$fpr})) {
-						error("WEAK DEBIAN KEY");
-					}
-				}
-				next;
-			}
-			
-			#
-			# Look for reasonable public exponent values.
-			#
-			if (/Exponent: (\d+)/) {
-				$exponent = $1;
-				# print "   exponent: $exponent\n";
-				if (($exponent & 1) == 0) {
-					error("RSA public exponent $exponent is even");
-				} elsif ($exponent <= 3) {
-					error("insecure RSA public exponent $exponent");
-				} elsif ($exponent < 65537) {
-					warning("small RSA public exponent $exponent")
-				}
-			}
-			
-			#
 			# subjectAlternativeName
 			#
 			if (/X509v3 Subject Alternative Name:/) {
@@ -505,19 +449,6 @@ while (<>) {
 		#
 		$pubSizeCount{$pubSize}++;
 		# print "   Public key size: $pubSize\n";
-		if ($pubSize < 1024) {
-
-			error('PUBLIC KEY TOO SHORT');
-
-		} elsif ($pubSize < 2048) {
-
-			if ($days < 0) {
-				error("short key ($pubSize bit) in expired certificate");
-			} else {
-				warning("short key ($pubSize bit) in certificate; expires $notAfter");
-			}
-
-		}
 
 		#
 		# Close the temporary file, which will also cause
