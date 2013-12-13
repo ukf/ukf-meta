@@ -179,8 +179,7 @@
                     p:id="checkCertificates">
                     <property name="validators">
                         <list>
-                            <!-- Error on inconsistent subjectAltNames. -->
-                            <bean parent="X509CertificateConsistentNameValidator"/>
+                            <!-- none at present -->
                         </list>
                     </property>
                 </bean>
