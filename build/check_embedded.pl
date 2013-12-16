@@ -45,18 +45,11 @@ my %issuerMark;
 $issuerMark{'AddTrust External CA Root'} = 'R';
 $issuerMark{'UTN-USERFirst-Hardware'} = 'i';
 $issuerMark{'TERENA SSL CA'} = 'i';
-$issuerMark{'VeriSign Class 3 Secure Server CA'} = '<'; # has unnamed 1024 bit root
-$issuerMark{'VeriSign Class 3 Secure Server CA - G2'} = '<'; # has unnamed 1024 bit root
 $issuerMark{'VeriSign Class 3 Public Primary Certification Authority - G3'} = 'R'; # root alone
 $issuerMark{'GlobalSign Root CA'} = 'R';
 $issuerMark{'GlobalSign Organization Validation CA'} = 'i';
 $issuerMark{'GlobalSign Primary Secure Server CA'} = 'i';
 $issuerMark{'GlobalSign ServerSign CA'} = 'i';
-#$issuerMark{'VeriSign International Server CA - Class 3'} = '?';
-
-# NOT from master.xml
-$issuerMark{'Cybertrust Educational CA'} = 'x'; # ex trust root
-$issuerMark{'Thawte Premium Server CA'} = 'x'; # ex trust root; directly signs; 1024 bit key
 
 #
 # Load expiry whitelist.
@@ -468,6 +461,10 @@ while (<>) {
 				warning("issuer '$issuerCN' suspect; verify");
 			}
 		}
+		if ($hasKeyName && ($issuerCN =~ /(Global|Veri)Sign/)) {
+			warning("issuer $issuerCN to be retired; expires $notAfter; remove KeyName?");
+			$issuerMark{$issuerCN} = '<';
+		}
 
 		#
 		# Count issuers.
@@ -479,6 +476,9 @@ while (<>) {
 				$issuers{$issuer}++;
 			} else {
 				$issuers{$issuerCN}++;
+			}
+			if ($hasKeyName) {
+				$knIssuers{$issuerCN}++;
 			}
 		}
 
@@ -522,6 +522,15 @@ if ($distinct_certs > 1) {
 		my $mark = $issuerMark{$issuer} ? $issuerMark{$issuer}: ' ';
 		print " $mark $issuer: $count\n";
 	}
+	print "\n";
+
+	print "KeyName certificate issuers:\n";
+	foreach $issuer (sort keys %knIssuers) {
+		my $count = $knIssuers{$issuer};
+		my $mark = $issuerMark{$issuer} ? $issuerMark{$issuer}: ' ';
+		print " $mark $issuer: $count\n";
+	}
+	print "\n";
 
 	my $first = 1;
 	foreach $fingerprint (sort keys %expiry_whitelist) {
