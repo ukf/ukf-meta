@@ -454,16 +454,13 @@ while (<>) {
 		#
 		if (defined $issuerMark{$issuerCN}) {
 			my $mark = $issuerMark{$issuerCN};
-			if ($mark eq '<') {
-				warning("issuer '$issuerCN' associated with a 1024-bit root, expiry $notAfter");
-			}
 			if ($mark eq '?') {
 				warning("issuer '$issuerCN' suspect; verify");
 			}
 		}
 		if ($hasKeyName && ($issuerCN =~ /(Global|Veri)Sign/)) {
-			warning("issuer $issuerCN to be retired; expires $notAfter; remove KeyName?");
-			$issuerMark{$issuerCN} = '<';
+			warning("issuer \"$issuerCN\" to be retired; certificate expires $notAfter; remove KeyName?");
+			$issuerMark{$issuerCN} = '*';
 		}
 
 		#
