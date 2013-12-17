@@ -105,9 +105,6 @@
         <xsl:variable name="entities.artifact.saml1" select="set:distinct($idps.artifact.saml1 | $sps.artifact.saml1)"/>
         <xsl:variable name="entities.artifact.saml1.count" select="count($entities.artifact.saml1)"/>
         
-        <xsl:variable name="embeddedX509Entities" select="$entities[descendant::ds:X509Data]"/>
-        <xsl:variable name="embeddedX509EntityCount" select="count($embeddedX509Entities)"/>
-        
         <html>
             <head>
                 <title>UK Federation metadata statistics</title>
@@ -484,21 +481,6 @@
                             <xsl:value-of select="format-number($entities.artifact.saml1.count div $entities.saml1.count, '0.0%')"/>
                             of SAML 1.1 entities)
                             support the SAML 1.1 Browser/Artifact profile.
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <xsl:value-of select="$embeddedX509EntityCount"/>
-                            (<xsl:value-of select="format-number($embeddedX509EntityCount div $entityCount, '0.0%')"/>)
-                            <xsl:choose>
-                                <xsl:when test="$embeddedX509EntityCount = 1">
-                                    has
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    have
-                                </xsl:otherwise>
-                            </xsl:choose>
-                            at least one embedded <code>ds:X509Data</code> element providing explicit key material.
                         </p>
                     </li>
 
@@ -1622,42 +1604,13 @@
         -->
         <xsl:variable name="pkixCapableEntities" select="$entities[descendant::ds:KeyName]"/>
         <xsl:variable name="dkeyCapableEntities" select="$entities[descendant::ds:X509Data]"/>
-        <xsl:variable name="pkixEntities" select="set:difference($pkixCapableEntities, $dkeyCapableEntities)"/>
         <xsl:variable name="dkeyEntities" select="set:difference($dkeyCapableEntities, $pkixCapableEntities)"/>
         <xsl:variable name="hybridEntities" select="set:intersection($pkixCapableEntities, $dkeyCapableEntities)"/>
-        <xsl:variable name="pkixEntityCount" select="count($pkixEntities)"/>
         <xsl:variable name="dkeyEntityCount" select="count($dkeyEntities)"/>
         <xsl:variable name="hybridEntityCount" select="count($hybridEntities)"/>
         
         <p>Trust models:</p>
         <ul>
-            <li>
-                <p>
-                    PKIX only:
-                    <xsl:value-of select="$pkixEntityCount"/>
-                    (<xsl:value-of select="format-number($pkixEntityCount div $entityCount, '0.0%')"/>)
-                </p>
-                <!-- bound specially chosen to exclude the all-entities list (for now) -->
-                <xsl:if test="$pkixEntityCount > 0 and $pkixEntityCount &lt; 20">
-                    <ul>
-                        <xsl:for-each select="$pkixEntities">
-                            <li>
-                                <xsl:value-of select="@ID"/>
-                                <xsl:text>: </xsl:text>
-                                <code><xsl:value-of select="@entityID"/></code>
-                                <xsl:if test="md:IDPSSODescriptor">
-                                    <xsl:text> (</xsl:text>
-                                    <xsl:value-of select="md:Organization/md:OrganizationDisplayName"/>
-                                    <xsl:text>)</xsl:text>
-                                    <xsl:if test="md:Extensions/wayf:HideFromWAYF">
-                                        <xsl:text> [HIDDEN]</xsl:text>
-                                    </xsl:if>
-                                </xsl:if>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
-            </li>
             <li>
                 <p>
                     Hybrid (PKIX and direct key):
@@ -1672,40 +1625,6 @@
                     (<xsl:value-of select="format-number($dkeyEntityCount div $entityCount, '0.0%')"/>)
                 </p>
             </li>
-            
-            <xsl:variable name="e.keyonly" select="$entities[descendant::md:KeyDescriptor[not(descendant::ds:X509Data)]]"/>
-            <li>
-                <p>
-                    At least one <code>KeyName</code>-only <code>KeyDescriptor</code>:
-                    <xsl:value-of select="count($e.keyonly)"/>
-                </p>
-            </li>
-            
-            <xsl:variable name="e.nokey" select="$entities[descendant::md:KeyDescriptor[not(descendant::ds:KeyName)]]"/>
-            <li>
-                <p>
-                    At least one no-<code>KeyName</code>
-                    <xsl:text> </xsl:text><code>KeyDescriptor</code>:
-                    <xsl:value-of select="count($e.nokey)"/>
-                </p>
-            </li>
-            
-            <xsl:variable name="e.oneofeach" select="set:intersection($e.keyonly, $e.nokey)"/>
-            <xsl:if test="count($e.oneofeach) != 0">
-                <li>
-                    <p>
-                        At least one <code>KeyName</code>-only <code>KeyDescriptor</code>
-                        <xsl:text> </xsl:text><i>and</i> at least one no-<code>KeyName</code>
-                        <xsl:text> </xsl:text><code>KeyDescriptor</code>:
-                        <xsl:value-of select="count($e.oneofeach)"/>
-                    </p>
-                    <ul>
-                        <xsl:for-each select="$e.oneofeach">
-                            <li><code><xsl:value-of select="@entityID"/></code></li>
-                        </xsl:for-each>
-                    </ul>
-                </li>
-            </xsl:if>
         </ul>
         
     </xsl:template>        
@@ -2082,20 +2001,6 @@
                 <xsl:call-template name="keydescriptor.line">
                     <xsl:with-param name="kd.count" select="$kd.count"/>
                     <xsl:with-param name="sub" select="$kd[descendant::ds:KeyName]"/>
-                </xsl:call-template>
-            </li>
-            <li>
-                With only <code>KeyName</code>:
-                <xsl:call-template name="keydescriptor.line">
-                    <xsl:with-param name="kd.count" select="$kd.count"/>
-                    <xsl:with-param name="sub" select="$kd[not(descendant::ds:X509Data)][descendant::ds:KeyName]"/>
-                </xsl:call-template>
-            </li>
-            <li>
-                With both:
-                <xsl:call-template name="keydescriptor.line">
-                    <xsl:with-param name="kd.count" select="$kd.count"/>
-                    <xsl:with-param name="sub" select="$kd[descendant::ds:X509Data][descendant::ds:KeyName]"/>
                 </xsl:call-template>
             </li>
         </ul>
