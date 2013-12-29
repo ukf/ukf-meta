@@ -373,12 +373,6 @@
         Unsigned metadata generation for the UK Federation.
     -->
 	<target name="gen.uk.unsigned">
-        <!--
-            Delete intermediate files from the old system.
-        -->
-        <delete file="${xml.dir}/entities.xml" quiet="true" verbose="false"/>
-        <delete file="${xml.dir}/ukfederation-metadata-master.xml" quiet="true" verbose="false"/>
-
 		<echo>Generating unsigned UK metadata files.</echo>
 		
 		<!--
