@@ -38,7 +38,7 @@
     <bean id="us_incommon_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/us_incommon/incommon.pem"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/us_incommon/inc-md-cert.pem"/>
             </bean>
         </property>
     </bean>
