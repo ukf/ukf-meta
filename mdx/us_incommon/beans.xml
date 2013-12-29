@@ -16,6 +16,15 @@
         Location of various resources.
     -->
     <bean id="us_incommon_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://md.incommon.org/InCommon/InCommon-metadata.xml"/>
+    </bean>
+    <bean id="us_incommon_fallbackAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://md.incommon.org/InCommon/InCommon-metadata-fallback.xml"/>
+    </bean>
+    <bean id="us_incommon_previewAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://md.incommon.org/InCommon/InCommon-metadata-preview.xml"/>
+    </bean>
+    <bean id="us_incommon_legacyAggregate_url" class="java.lang.String">
         <constructor-arg value="http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml"/>
     </bean>
     
@@ -46,7 +55,7 @@
     <!--
         Check InCommon signing signature.
     -->
-    <bean id="us_incommon_checkSignature" parent="XMLSignatureValidationStage"
+    <bean id="us_incommon_checkSignature" parent="XMLSignatureValidationStageSHA256"
         p:id="us_incommon_checkSignature">
         <property name="verificationCertificate" ref="us_incommon_signingCertificate"/>
     </bean>
