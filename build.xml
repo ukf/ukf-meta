@@ -1303,6 +1303,7 @@
 			<arg value="${build.dir}/check_embedded.pl"/>
 			<arg value="-q"/>
 		</exec>
+        <delete file="${xml.dir}/embedded.pem" quiet="true" verbose="false"/>
 	</target>
 	
 	<!--
