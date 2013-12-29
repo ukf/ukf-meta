@@ -41,7 +41,7 @@ my $verboseIssuers = 0;
 #
 my %issuerMark;
 
-# From master.xml
+# From the UK federation trust roots document.
 $issuerMark{'AddTrust External CA Root'} = 'R';
 $issuerMark{'UTN-USERFirst-Hardware'} = 'i';
 $issuerMark{'TERENA SSL CA'} = 'i';

@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitiesDescriptor
+	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
+	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+	Name="http://ukfederation.org.uk"
+	xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata ../../xml/saml-schema-metadata-2.0.xsd
+		urn:mace:shibboleth:metadata:1.0 ../../xml/shibboleth-metadata-1.0.xsd
+		http://www.w3.org/2001/04/xmlenc# ../../xml/xenc-schema.xsd
+		http://www.w3.org/2000/09/xmldsig# ../../xml/xmldsig-core-schema.xsd">
+
+	<Extensions>
+
+		<shibmd:KeyAuthority VerifyDepth="3">
+            <!--
+		          Authorities accepted for the federation.
+		          
+		          The KeyAuthority element's VerifyDepth attribute must be at least as
+		          large as the verification depth required by each root certificate below.
+            -->
+              
+		    <!--
+		        *******************************
+		        ***                         ***
+		        ***   T E R E N A   T C S   ***
+		        ***                         ***
+		        *******************************
+		        
+		        The following root and intermediate certificates support PKIX use of
+		        end entity certificates issued by the TERENA Certificate Service (TCS).
+		        
+		        These certificates are supplied under an arrangement with Comodo
+		        originally set to run from July 2009 to June 2012 but later
+		        extended until June 2013.
+		        
+		        Note that certificates issued under the TCS share a root certificate
+		        with certain Comodo commercial certificate products, but the
+		        intermediate certificates used are different.  In addition, the chain of
+		        intermediates is longer than the VerifyDepth declared above allows for.
+		    -->
+		    
+		    <ds:KeyInfo>
+		        <!--
+		            
+		            AddTrust External CA Root
+		            
+		            Subject and issuer:
+		                C=SE
+		                O=AddTrust AB
+		                OU=AddTrust External TTP Network
+		                CN=AddTrust External CA Root
+
+                    This is used to sign:
+		                UTN-USERFirst-Hardware intermediate, below
+		                which signs TERENA SSL CA intermediate, below
+		                which signs end entity certificates
+		            
+		            Two intermediate CAs below the root, so requires a verification depth of at least 3.
+		            
+		            Validity
+		                Not Before: May 30 10:48:38 2000 GMT
+		                Not After : May 30 10:48:38 2020 GMT
+		            
+		        -->
+		        <ds:X509Data>
+		            <ds:X509Certificate>
+		                MIIENjCCAx6gAwIBAgIBATANBgkqhkiG9w0BAQUFADBvMQswCQYDVQQGEwJTRTEU
+		                MBIGA1UEChMLQWRkVHJ1c3QgQUIxJjAkBgNVBAsTHUFkZFRydXN0IEV4dGVybmFs
+		                IFRUUCBOZXR3b3JrMSIwIAYDVQQDExlBZGRUcnVzdCBFeHRlcm5hbCBDQSBSb290
+		                MB4XDTAwMDUzMDEwNDgzOFoXDTIwMDUzMDEwNDgzOFowbzELMAkGA1UEBhMCU0Ux
+		                FDASBgNVBAoTC0FkZFRydXN0IEFCMSYwJAYDVQQLEx1BZGRUcnVzdCBFeHRlcm5h
+		                bCBUVFAgTmV0d29yazEiMCAGA1UEAxMZQWRkVHJ1c3QgRXh0ZXJuYWwgQ0EgUm9v
+		                dDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALf3GjPm8gAELTngTlvt
+		                H7xsD821+iO2zt6bETOXpClMfZOfvUq8k+0DGuOPz+VtUFrWlymUWoCwSXrbLpX9
+		                uMq/NzgtHj6RQa1wVsfwTz/oMp50ysiQVOnGXw94nZpAPA6sYapeFI+eh6FqUNzX
+		                mk6vBbOmcZSccbNQYArHE504B4YCqOmoaSYYkKtMsE8jqzpPhNjfzp/haW+710LX
+		                a0Tkx63ubUFfclpxCDezeWWkWaCUN/cALw3CknLa0Dhy2xSoRcRdKn23tNbE7qzN
+		                E0S3ySvdQwAl+mG5aWpYIxG3pzOPVnVZ9c0p10a3CitlttNCbxWyuHv77+ldU9U0
+		                WicCAwEAAaOB3DCB2TAdBgNVHQ4EFgQUrb2YejS0Jvf6xCZU7wO94CTLVBowCwYD
+		                VR0PBAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wgZkGA1UdIwSBkTCBjoAUrb2YejS0
+		                Jvf6xCZU7wO94CTLVBqhc6RxMG8xCzAJBgNVBAYTAlNFMRQwEgYDVQQKEwtBZGRU
+		                cnVzdCBBQjEmMCQGA1UECxMdQWRkVHJ1c3QgRXh0ZXJuYWwgVFRQIE5ldHdvcmsx
+		                IjAgBgNVBAMTGUFkZFRydXN0IEV4dGVybmFsIENBIFJvb3SCAQEwDQYJKoZIhvcN
+		                AQEFBQADggEBALCb4IUlwtYj4g+WBpKdQZic2YR5gdkeWxQHIzZlj7DYd7usQWxH
+		                YINRsPkyPef89iYTx4AWpb9a/IfPeHmJIZriTAcKhjW88t5RxNKWt9x+Tu5w/Rw5
+		                6wwCURQtjr0W4MHfRnXnJK3s9EK0hZNwEGe6nQY1ShjTK3rMUUKhemPR5ruhxSvC
+		                Nr4TDea9Y355e6cJDUCrat2PisP29owaQgVR1EX1n6diIWgVIEM8med8vSTYqZEX
+		                c4g/VhsxOBi0cQ+azcgOno4uG+GMmIPLHzHxREzGBHNJdmAPx/i9F4BrLunMTA5a
+		                mnkPIAou1Z5jJh5VkpTYghdae9C8x49OhgQ=
+		            </ds:X509Certificate>
+		        </ds:X509Data>
+		    </ds:KeyInfo>
+
+		    <ds:KeyInfo>
+		        <!--
+		            
+		            UTN-USERFirst-Hardware intermediate
+		            
+		            Subject:
+		                C=US
+		                ST=UT
+		                L=Salt Lake City
+		                O=The USERTRUST Network
+		                OU=http://www.usertrust.com, 
+		                CN=UTN-USERFirst-Hardware
+		            
+		            Issuer:
+		                C=SE
+		                O=AddTrust AB
+		                OU=AddTrust External TTP Network
+		                CN=AddTrust External CA Root
+		            
+		            This is used to sign:
+    		            TERENA SSL CA intermediate, below
+	    	            which signs end entity certificates
+		            
+                    Validity
+                        Not Before: Jun  7 08:09:10 2005 GMT
+                        Not After : May 30 10:48:38 2020 GMT
+                    
+		        -->
+		        <ds:X509Data>
+		            <ds:X509Certificate>
+		                MIIEPDCCAySgAwIBAgIQSEus8arH1xND0aJ0NUmXJTANBgkqhkiG9w0BAQUFADBv
+		                MQswCQYDVQQGEwJTRTEUMBIGA1UEChMLQWRkVHJ1c3QgQUIxJjAkBgNVBAsTHUFk
+		                ZFRydXN0IEV4dGVybmFsIFRUUCBOZXR3b3JrMSIwIAYDVQQDExlBZGRUcnVzdCBF
+		                eHRlcm5hbCBDQSBSb290MB4XDTA1MDYwNzA4MDkxMFoXDTIwMDUzMDEwNDgzOFow
+		                gZcxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJVVDEXMBUGA1UEBxMOU2FsdCBMYWtl
+		                IENpdHkxHjAcBgNVBAoTFVRoZSBVU0VSVFJVU1QgTmV0d29yazEhMB8GA1UECxMY
+		                aHR0cDovL3d3dy51c2VydHJ1c3QuY29tMR8wHQYDVQQDExZVVE4tVVNFUkZpcnN0
+		                LUhhcmR3YXJlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsffDOD+0
+		                qH/POYJRZ9Btn9L/WPPnnyvsDYlUmbk4mRb34CF5SMK7YXQSlh08anLVPBBnOjnt
+		                KxPNZuuVCTOkbJex6MbswXV5nEZejavQav25KlUXEFSzGfCa9vGxXbanbfvgcRdr
+		                ooj7AN/+GjF3DJoBerEy4ysBBzhuw6VeI7xFm3tQwckwj9vlK3rTW/szQB6g1ZgX
+		                vIuHw4nTXaCOsqqq9o5piAbF+okh8widaS4JM5spDUYPjMxJNLBpUb35Bs1orWZM
+		                vD6sYb0KiA7I3z3ufARMnQpea5HW7sftKI2rTYeJc9BupNAeFosU4XZEA39jrOTN
+		                SZzFkvSrMqFIWwIDAQABo4GqMIGnMB8GA1UdIwQYMBaAFK29mHo0tCb3+sQmVO8D
+		                veAky1QaMB0GA1UdDgQWBBShcl8mGyiYQ5VdBzfVhZadS9LDRTAOBgNVHQ8BAf8E
+		                BAMCAQYwDwYDVR0TAQH/BAUwAwEB/zBEBgNVHR8EPTA7MDmgN6A1hjNodHRwOi8v
+		                Y3JsLnVzZXJ0cnVzdC5jb20vQWRkVHJ1c3RFeHRlcm5hbENBUm9vdC5jcmwwDQYJ
+		                KoZIhvcNAQEFBQADggEBADzse+Cuow6WbTDXhcbSaFtFWoKmNA+wyZIjXhFtCBGy
+		                dAkjOjUlc1heyrl8KPpH7PmgA1hQtlPvjNs55Gfp2MooRtSn4PU4dfjny1y/HRE8
+		                akCbLURW0/f/BSgyDBXIZEWT6CEkjy3aeoR7T8/NsiV8dxDTlNEEkaglHAkiD31E
+		                NREU768A/l7qX46w2ZJZuvwTlqAYAVbO2vYoC7Gv3VxPXLLzj1pxz+0YrWOIHY6V
+		                9+qV5x+tkLiECEeFfyIvGh1IMNZMCNg3GWcyK+tc0LL8blefBDVekAB+EcfeEyrN
+		                pG1FJseIVqDwavfY5/wnfmcI0L36tsNhAgFlubgvz1o=
+		            </ds:X509Certificate>
+		        </ds:X509Data>
+		    </ds:KeyInfo>
+		    
+		    <ds:KeyInfo>
+		        <!--
+		            
+		            TERENA SSL CA intermediate
+		            
+		            Subject:
+		                C=NL
+		                O=TERENA
+		                CN=TERENA SSL CA
+		            
+		            Issuer:
+		                C=US
+		                ST=UT
+		                L=Salt Lake City
+		                O=The USERTRUST Network
+		                OU=http://www.usertrust.com, 
+		                CN=UTN-USERFirst-Hardware
+		            
+		            This is used to sign end entity certificates.
+		            
+		            Validity
+		                Not Before: May 18 00:00:00 2009 GMT
+		                Not After : May 30 10:48:38 2020 GMT
+		            
+		        -->
+		        <ds:X509Data>
+		            <ds:X509Certificate>
+		                MIIEmDCCA4CgAwIBAgIQS8gUAy8H+mqk8Nop32F5ujANBgkqhkiG9w0BAQUFADCB
+		                lzELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAlVUMRcwFQYDVQQHEw5TYWx0IExha2Ug
+		                Q2l0eTEeMBwGA1UEChMVVGhlIFVTRVJUUlVTVCBOZXR3b3JrMSEwHwYDVQQLExho
+		                dHRwOi8vd3d3LnVzZXJ0cnVzdC5jb20xHzAdBgNVBAMTFlVUTi1VU0VSRmlyc3Qt
+		                SGFyZHdhcmUwHhcNMDkwNTE4MDAwMDAwWhcNMjAwNTMwMTA0ODM4WjA2MQswCQYD
+		                VQQGEwJOTDEPMA0GA1UEChMGVEVSRU5BMRYwFAYDVQQDEw1URVJFTkEgU1NMIENB
+		                MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw+NIxC9cwcupmf0booNd
+		                ij2tOtDipEMfTQ7+NSUwpWkbxOjlwY9UfuFqoppcXN49/ALOlrhfj4NbzGBAkPjk
+		                tjolnF8UUeyx56+eUKExVccCvaxSin81joL6hK0V/qJ/gxA6VVOULAEWdJRUYyij
+		                8lspPZSIgCDiFFkhGbSkmOFg5vLrooCDQ+CtaPN5GYtoQ1E/iptBhQw1jF218bbl
+		                p8ODtWsjb9Sl61DllPFKX+4nSxQSFSRMDc9ijbcAIa06Mg9YC18em9HfnY6pGTVQ
+		                L0GprTvG4EWyUzl/Ib8iGodcNK5Sbwd9ogtOnyt5pn0T3fV/g3wvWl13eHiRoBS/
+		                fQIDAQABo4IBPjCCATowHwYDVR0jBBgwFoAUoXJfJhsomEOVXQc31YWWnUvSw0Uw
+		                HQYDVR0OBBYEFAy9k2gM896ro0lrKzdXR+qQ47ntMA4GA1UdDwEB/wQEAwIBBjAS
+		                BgNVHRMBAf8ECDAGAQH/AgEAMBgGA1UdIAQRMA8wDQYLKwYBBAGyMQECAh0wRAYD
+		                VR0fBD0wOzA5oDegNYYzaHR0cDovL2NybC51c2VydHJ1c3QuY29tL1VUTi1VU0VS
+		                Rmlyc3QtSGFyZHdhcmUuY3JsMHQGCCsGAQUFBwEBBGgwZjA9BggrBgEFBQcwAoYx
+		                aHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VUTkFkZFRydXN0U2VydmVyX0NBLmNy
+		                dDAlBggrBgEFBQcwAYYZaHR0cDovL29jc3AudXNlcnRydXN0LmNvbTANBgkqhkiG
+		                9w0BAQUFAAOCAQEATiPuSJz2hYtxxApuc5NywDqOgIrZs8qy1AGcKM/yXA4hRJML
+		                thoh45gBlA5nSYEevj0NTmDa76AxTpXv8916WoIgQ7ahY0OzUGlDYktWYrA0irkT
+		                Q1mT7BR5iPNIk+idyfqHcgxrVqDDFY1opYcfcS3mWm08aXFABFXcoEOUIEU4eNe9
+		                itg5xt8Jt1qaqQO4KBB4zb8BG1oRPjj02Bs0ec8z0gH9rJjNbUcRkEy7uVvYcOfV
+		                r7bMxIbmdcCeKbYrDyqlaQIN4+mitF3A884saoU4dmHGSYKrUbOCprlBmCiY+2v+
+		                ihb/MX5UR6g83EMmqZsFt57ANEORMNQywxFa4Q==
+		            </ds:X509Certificate>
+		        </ds:X509Data>
+		    </ds:KeyInfo>
+		    
+		    <!--
+		        *******************************************************
+		        ***                                                 ***
+		        ***   V E R I S I G N   C L A S S   3   G E N   3   ***
+		        ***                                                 ***
+		        *******************************************************
+		        
+		        The following root certificate partially supports PKIX use of
+		        certain commercial end entity certificates issued by VeriSign.
+		        
+		        Note that no intermediate CA certificates associated with this
+		        root have ever been included in the UK federation trust fabric.
+		    -->
+		    
+			<ds:KeyInfo>
+				<!--
+				
+					VeriSign Class 3 Public Primary CA (generation 3)
+					
+					There are various versions ("generations") of the VeriSign Class3
+					Public Primary CA certificate.  This is the third generation root.
+					
+					Subject and Issuer:
+					    C=US
+					    O=VeriSign, Inc.
+					    OU=VeriSign Trust Network
+					    OU=(c) 1999 VeriSign, Inc. - For authorized use only
+					    CN=VeriSign Class 3 Public Primary Certification Authority - G3
+					
+					This is used to sign a number of intermediate CA certificates,
+					according to the VeriSign Trust Network CA Hierarchy diagram dated 30-Apr-2009.
+					
+					One intermediate CA below the root, so requires a verification depth of at least 2.
+
+					Validity
+						Not Before: Oct  1 00:00:00 1999 GMT
+						Not After : Jul 16 23:59:59 2036 GMT
+
+				-->
+				<ds:X509Data>
+					<ds:X509Certificate>MIIEGjCCAwICEQCbfgZJoz5iudXukEhxKe9XMA0GCSqGSIb3DQEBBQUAMIHKMQsw
+CQYDVQQGEwJVUzEXMBUGA1UEChMOVmVyaVNpZ24sIEluYy4xHzAdBgNVBAsTFlZl
+cmlTaWduIFRydXN0IE5ldHdvcmsxOjA4BgNVBAsTMShjKSAxOTk5IFZlcmlTaWdu
+LCBJbmMuIC0gRm9yIGF1dGhvcml6ZWQgdXNlIG9ubHkxRTBDBgNVBAMTPFZlcmlT
+aWduIENsYXNzIDMgUHVibGljIFByaW1hcnkgQ2VydGlmaWNhdGlvbiBBdXRob3Jp
+dHkgLSBHMzAeFw05OTEwMDEwMDAwMDBaFw0zNjA3MTYyMzU5NTlaMIHKMQswCQYD
+VQQGEwJVUzEXMBUGA1UEChMOVmVyaVNpZ24sIEluYy4xHzAdBgNVBAsTFlZlcmlT
+aWduIFRydXN0IE5ldHdvcmsxOjA4BgNVBAsTMShjKSAxOTk5IFZlcmlTaWduLCBJ
+bmMuIC0gRm9yIGF1dGhvcml6ZWQgdXNlIG9ubHkxRTBDBgNVBAMTPFZlcmlTaWdu
+IENsYXNzIDMgUHVibGljIFByaW1hcnkgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkg
+LSBHMzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMu6nFL8eB8aHm8b
+N3O9+MlrlBIwT/A2R/XQkQr1F8ilYcEWQE37imGQ5XYgwREGfassbqb1EUGO+i2t
+KmFZpGcmTNDovFJbcCAEWNF6yaRpvIMXZK0Fi7zQWM6NjPXr8EJJC52XJ2cybuGu
+kxUccLwgTS8Y3pKI6GyFVxEa6X7jJhFUokWWVYPKMIno3Nij7SqAP395ZVc+FSBm
+CC+Vk7+qRy+oRpfwEuL+wgorUeZ25rdGt+INpsyow0xZVYnm6FNcHOqd8GIWC6fJ
+Xwzw3sJ2zq/3avL6QaaiMxTJ5Xpj055iN9WFZZ4O5lMkdBteHRJTW8cs54NJOxWu
+imi5V5cCAwEAATANBgkqhkiG9w0BAQUFAAOCAQEAERSWwauSCPc/L8my/uRan2Te
+2yFPhpk0djZX3dAVL8WtfxUfN2JzPtTnX84XA9s1+ivbrmAJXx5fj267Cz3qWhMe
+DGBvtcC1IyIuBwvLqXTLR7sdwdela8wv0kL9Sd2nic9TutoAWii/gt/4uhMdUIaC
+/Y4wjylGsB49Ndo4YhYYSq3mtlFs3q9i6wHQHiT+eo8SGhJouPtmmRQURVyu565p
+F4ErWjfJXir0xuKhXFSbplQAz/DxwceYMBo7Nhbbo27q/a2ywtrvAkcTisDxszGt
+TxzhT5yvDwyd93gN2PQ1VoDat20Xj50egWTh/sVFuq1ruQp6Tk9LhO5L8X3dEQ==
+</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+
+		    <!--
+		        *******************************
+		        ***                         ***
+		        ***   G L O B A L S I G N   ***
+		        ***                         ***
+		        *******************************
+		        
+		        The following root and intermediate certificates support PKIX use of
+		        certain commercial end entity certificates issued by GlobalSign.
+		        
+		        Note that the root certificate used for the TERENA SCS (2006-2010)
+		        is different.
+		    -->
+		    
+		    <ds:KeyInfo>
+				<!--
+				
+					GlobalSign Root CA
+				
+					* CN=GlobalSign Root CA, OU=Root CA, O=GlobalSign nv-sa, C=BE
+					
+						Up to Summer 2007 this was used to sign the legacy ServerSign hierarchy:
+						
+						* CN=GlobalSign Primary Secure Server CA, OU=Primary Secure Server CA, O=GlobalSign nv-sa, C=BE
+						
+							This is used to sign:
+							
+							* CN=GlobalSign ServerSign CA, OU=ServerSign CA, O=GlobalSign nv-sa, C=BE
+							
+								This in turn is used to sign ServerSign end certificates.					
+	
+						Post Summer 2007, it is used to sign:
+
+						* CN=GlobalSign Organization Validation CA, OU=Organization Validation CA, O=GlobalSign
+
+							This is used directly to sign OrganizationSSL end certificates.
+
+					Potentially two levels of intermediate certificate below the root,
+					so requires a verification depth of at least 3.
+					
+					Validity
+						Not Before: Sep  1 12:00:00 1998 GMT
+						Not After : Jan 28 12:00:00 2014 GMT
+
+				-->
+				<ds:X509Data>
+					<ds:X509Certificate>MIIDdTCCAl2gAwIBAgILAgAAAAAA1ni3lAUwDQYJKoZIhvcNAQEEBQAwVzELMAkG
+A1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExEDAOBgNVBAsTB1Jv
+b3QgQ0ExGzAZBgNVBAMTEkdsb2JhbFNpZ24gUm9vdCBDQTAeFw05ODA5MDExMjAw
+MDBaFw0xNDAxMjgxMjAwMDBaMFcxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9i
+YWxTaWduIG52LXNhMRAwDgYDVQQLEwdSb290IENBMRswGQYDVQQDExJHbG9iYWxT
+aWduIFJvb3QgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDaDuaZ
+jc6j40+Kfvvxi4Mla+pIH/EqsLmVEQS98GPR4mdmzxzdzxtIK+6NiY6arymAZavp
+xy0Sy6scTHAHoT0KMM0VjU/43dSMUBUc71DuxC73/OlS8pF94G3VNTCOXkNz8kHp
+1Wrjsok6Vjk4bwY8iGlbKk3Fp1S4bInMm/k8yuX9ifUSPJJ4ltbcdG6TRGHRjcdG
+snUOhugZitVtbNV4FpWi6cgKOOvyJBNPc1STE4U6G7weNLWLBYy5d4ux2x8gkasJ
+U26Qzns3dLlwR5EiUWMWea6xrkEmCMgZK9FGqkjWZCrXgzT/LCrBbBlDSgeF59N8
+9iFo7+ryUp9/k5DPAgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIABjAdBgNVHQ4EFgQU
+YHtmGkUNl8qJUC99BM00qP/8/UswDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B
+AQQFAAOCAQEArqqf/LfSyx9fOSkoGJ40yWxPbxrwZKJwSk8ThptgKJ7ogUmYfQq7
+5bCdPTbbjwVR/wkxKh/diXeeDy5slQTthsu0AD+EAk2AaioteAuubyuig0SDH81Q
+gkwkr733pbTIWg/050deSY43lv6aiAU62cDbKYfmGZZHpzqmjIs8d/5GY6dT2iHR
+rH5Jokvmw2dZL7OKDrssvamqQnw1wdh/1acxOk5jQzmvCLBhNIzTmKlDNPYPhyk7
+ncJWWJh3w/cbrPad+D6qp1RF8PX51TFl/mtYnHGzHtdS6jIX/EBgHcl5JLL2bP2o
+Zg6C3ZjL2sJETy6ge/L3ayx2EYRGinij4w==
+</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+	
+			<ds:KeyInfo>
+				<!--
+				
+					GlobalSign Organization Validation CA
+				
+					* CN=GlobalSign Organization Validation CA, OU=Organization Validation CA, O=GlobalSign
+					
+						This is used to sign OrganizationSSL end certificates.					
+	
+					No intermediate certificates below this, so only requires a
+					verification depth of at least 1.
+
+					This is an intermediate CA, signed by:
+
+						* CN=GlobalSign Root CA, OU=Root CA, O=GlobalSign nv-sa, C=BE
+				
+					Validity
+						Not Before: Apr 11 12:00:00 2007 GMT
+						Not After : Jan 27 11:00:00 2014 GMT
+
+				-->
+				<ds:X509Data>
+					<ds:X509Certificate>MIIEZzCCA0+gAwIBAgILBAAAAAABEd/obGYwDQYJKoZIhvcNAQEFBQAwVzELMAkG
+A1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExEDAOBgNVBAsTB1Jv
+b3QgQ0ExGzAZBgNVBAMTEkdsb2JhbFNpZ24gUm9vdCBDQTAeFw0wNzA0MTExMjAw
+MDBaFw0xNDAxMjcxMTAwMDBaMGoxIzAhBgNVBAsTGk9yZ2FuaXphdGlvbiBWYWxp
+ZGF0aW9uIENBMRMwEQYDVQQKEwpHbG9iYWxTaWduMS4wLAYDVQQDEyVHbG9iYWxT
+aWduIE9yZ2FuaXphdGlvbiBWYWxpZGF0aW9uIENBMIIBIjANBgkqhkiG9w0BAQEF
+AAOCAQ8AMIIBCgKCAQEAoS/EvM6HA+lnwYnI5ZP8fbStnvZjTmronCxziaIB9I8h
++P0lnVgWbYb27klXdX516iIRfj37x0JB3PzFDJFVgHvrZDMdm/nKOOmrxiVDUSVA
+9OR+GFVqqY8QOkAe1leD738vNC8t0vZTwhkNt+3JgfVGLLQjQl6dEwN17Opq/Fd8
+yTaXO5jcExPs7EH6XTTquZPnEBZlzJyS/fXFnT5KuQn85F8eaV9N9FZyRLEdIwPI
+NvZliMi/ORZFjh4mbFEWxSoAOMWkE2mVfasBO6jEFLSA2qwaRCDV/qkGexQnr+Aw
+Id2Q9KnVIxkuHgPmwd+VKeTBlEPdPpCqy0vJvorTOQIDAQABo4IBHzCCARswDgYD
+VR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFH1tKuxm
+q6dRNqsCafFwj8RZC5ofMEsGA1UdIAREMEIwQAYJKwYBBAGgMgEUMDMwMQYIKwYB
+BQUHAgEWJWh0dHA6Ly93d3cuZ2xvYmFsc2lnbi5uZXQvcmVwb3NpdG9yeS8wMwYD
+VR0fBCwwKjAooCagJIYiaHR0cDovL2NybC5nbG9iYWxzaWduLm5ldC9yb290LmNy
+bDARBglghkgBhvhCAQEEBAMCAgQwIAYDVR0lBBkwFwYKKwYBBAGCNwoDAwYJYIZI
+AYb4QgQBMB8GA1UdIwQYMBaAFGB7ZhpFDZfKiVAvfQTNNKj//P1LMA0GCSqGSIb3
+DQEBBQUAA4IBAQA3qI82eQA8GOgaxfJ7IihrvxmPF5rtpsTWodZjLXv7BFso2sz5
+tu4CVBnebJHyYQ39fyggzI820WGHoFlJqgeW3vmzLPm17hUpM820E53HkM5NfPJa
+EYd7+tSN0S9VmRpf7xYIsT3SPR7LtfBXl1I6EmNitvK8zeKmnBfOKODGD1rsv3C9
+WudUvvHPxj2fX3raty5l6sLT6ce6vk3L2jOuVZ2uFPYyCGLhieQ0KnU8KgWpK1A4
+u1mGpoRahMO9Q7qfHxUFzrV3DdTdL0nI/liVS7xOlhMAHpy4J3dxHcRhy/QejDOz
+AGcNt7KsjD063DgvZC0AgYk12OK5MRf+Ol/R
+</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+				
+			<ds:KeyInfo>
+				<!--
+				
+					GlobalSign Primary Secure Server CA
+				
+					* CN=GlobalSign Primary Secure Server CA, OU=Primary Secure Server CA, O=GlobalSign nv-sa, C=BE
+					
+						This is used to sign:
+						
+						* CN=GlobalSign ServerSign CA, OU=ServerSign CA, O=GlobalSign nv-sa, C=BE
+						
+							This in turn is used to sign ServerSign end certificates.					
+	
+					One level of intermediate certificate below this, so requires a
+					verification depth of at least 2.
+
+					This is an intermediate CA, signed by:
+				
+						* CN=GlobalSign Root CA, OU=Root CA, O=GlobalSign nv-sa, C=BE
+
+					Validity
+						Not Before: Jan 28 12:00:00 1999 GMT
+						Not After : Jan 27 11:00:00 2014 GMT
+
+				-->
+				<ds:X509Data>
+					<ds:X509Certificate>MIID7zCCAtegAwIBAgILBAAAAAABCNlhHh4wDQYJKoZIhvcNAQEFBQAwVzELMAkG
+A1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExEDAOBgNVBAsTB1Jv
+b3QgQ0ExGzAZBgNVBAMTEkdsb2JhbFNpZ24gUm9vdCBDQTAeFw05OTAxMjgxMjAw
+MDBaFw0xNDAxMjcxMTAwMDBaMHkxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9i
+YWxTaWduIG52LXNhMSEwHwYDVQQLExhQcmltYXJ5IFNlY3VyZSBTZXJ2ZXIgQ0Ex
+LDAqBgNVBAMTI0dsb2JhbFNpZ24gUHJpbWFyeSBTZWN1cmUgU2VydmVyIENBMIIB
+IjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9mrtqGswoy2s6UKeGDXAHvdv
+dMu3QiRTrTHL76XJxT0DXqWdds0Z4uEWLaQtRCDxGh/3fWDNpscVqauKoslmbN0Q
+o9ibdynupkDNLzQ2f6MXBQvLWKUipnw15o1doVPCmsXaXf7YDn07IpdSLN2yPAuQ
+3AX9suUKVR5dnmL7f+O4lvSfJqyiXITZgrrg6PWVbgQKlmRJow+eg6lj58khmWug
+FpElyBTZvdzsPHdTR1ZDhH7WY+XjKK88T8B9tBj2175XC4nb1sGDkpLjnDDRWUyl
+cZBfhgdw6E6UFMnyTqOAwloRqejo4rwCnL84TXraPFFj7rz4fFF+oLjgSKmvrQID
+AQABo4GZMIGWMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1Ud
+DgQWBBTRZoP1iV7Qvn9h0t2oyvorekp/MTAzBgNVHR8ELDAqMCigJqAkhiJodHRw
+Oi8vY3JsLmdsb2JhbHNpZ24ubmV0L1Jvb3QuY3JsMB8GA1UdIwQYMBaAFGB7ZhpF
+DZfKiVAvfQTNNKj//P1LMA0GCSqGSIb3DQEBBQUAA4IBAQCc/xTUC7yfoztsuSwh
+yDfDRU0w+0uSkOBYBb30bknZlLUJiGhuU9zOLHajg0ooxYo/RdDxLwBloK4XBzgA
+1Cjiw+JJbLcC4Sk9lNzUx9pjAU88q+HnhGFE5v4tfP/iXBm8TFnMvpq0cUgizi2b
+tH7B2ue+jWeIdmXqkSUDVuoEjiVlaFQjGZEm37JGdjFYqwr9qDXioMQlr3owBIcd
+/8B7a4AeSnd70iwU0giZBlwCjdVJo1sAFKoznEmRbCoBi+IXncx0w2oK5uuBOKX8
+J6mFIJZtXOCLMhhh+cO801XohixLfQk38vjRkXZrvPqQcLo4WiQpff/N0n41bdnu
+mvjF
+</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+			
+			<ds:KeyInfo>
+				<!--
+				
+					GlobalSign ServerSign CA
+				
+					* CN=GlobalSign ServerSign CA, OU=ServerSign CA, O=GlobalSign nv-sa, C=BE
+					
+						This is used to sign ServerSign end certificates.					
+	
+					No intermediate certificates below this, so only requires a
+					verification depth of at least 1.
+
+					This is an intermediate CA, signed by:
+
+						* CN=GlobalSign Primary Secure Server CA, OU=Primary Secure Server CA, O=GlobalSign nv-sa, C=BE
+				
+					Validity
+						Not Before: Jan 22 09:00:00 2004 GMT
+						Not After : Jan 27 10:00:00 2014 GMT
+
+				-->
+				<ds:X509Data>
+					<ds:X509Certificate>MIIEFzCCAv+gAwIBAgILBAAAAAABCNlhJc8wDQYJKoZIhvcNAQEFBQAweTELMAkG
+A1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExITAfBgNVBAsTGFBy
+aW1hcnkgU2VjdXJlIFNlcnZlciBDQTEsMCoGA1UEAxMjR2xvYmFsU2lnbiBQcmlt
+YXJ5IFNlY3VyZSBTZXJ2ZXIgQ0EwHhcNMDQwMTIyMDkwMDAwWhcNMTQwMTI3MTAw
+MDAwWjBjMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEW
+MBQGA1UECxMNU2VydmVyU2lnbiBDQTEhMB8GA1UEAxMYR2xvYmFsU2lnbiBTZXJ2
+ZXJTaWduIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0dkNqei/
+yW/6JO5Wc7YT0C4NnfG/7TxWnxjFjMkdi2adIiSYRJmYkKyY7VKVYAjSIdpOelaO
+cjfkWiLKYUVa+Bznik0EASFwGcWh12YgscLaFwaPINsO0EbU77Akx+ObdvXJwtIE
+CSL8sGX/bPbWKZdjJQjtkNaK/IkHvazrAxZjeuqj+IKGdFT3dabWXLKkqqx/s3C8
+TiXHW8YDXaqxteXa+CzXsTI9dPm6C9PQ5wMaZFc7bMOxi3jiA9CVt4Scb/VRWRWB
+86UxBpD5Aw0Wg9g4RrfG3vJbec5q6NU4gGINHDQJOj3ZoZmbWk6EVm22jH3sHa5I
+aW84jH70y+nX7QIDAQABo4G1MIGyMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8E
+CDAGAQH/AgEAMB0GA1UdDgQWBBRIu6i/W4TSV0jkYemRIJHYHSXffzA5BgNVHR8E
+MjAwMC6gLKAqhihodHRwOi8vY3JsLmdsb2JhbHNpZ24ubmV0L3ByaW1zZXJ2ZXIu
+Y3JsMBEGCWCGSAGG+EIBAQQEAwICBDAfBgNVHSMEGDAWgBTRZoP1iV7Qvn9h0t2o
+yvorekp/MTANBgkqhkiG9w0BAQUFAAOCAQEAP/iVafKvW0zupGPQ/4Kc2OqZSCLo
+lwkE0+tsZzH7q/oIL5o1HKzEA4acHOHMoxZ7PrUL24sZz+9KoGxsZaz3+pj7JSih
+/k0kFaLkJ+jcDqGz441uhRWRfP0Nv8o/GvMsGxAwZHUa3cW1ytEKHUvzgSnKqr0o
+rGbJSoAb59oezXnB6YWkel+4840tciE/DwwYfBFL7Kq6SFdSM8ioDsOfz7bsDbnt
+nk67vMUgBiiiFFoQymb++pOpIMBYV5Bvqtc5vUGla6fOL53iU4GiwPnUEMqVwpra
+HBtFP+DIpNCr0Iai5G1wY5rfdmdz9TaJPi3YtwXLdNfZAf9KfJv5q547rQ==
+</ds:X509Certificate>
+				</ds:X509Data>
+			</ds:KeyInfo>
+				
+		</shibmd:KeyAuthority>
+	</Extensions>
+	
+	<EntityDescriptor entityID="dummy">
+		<!--
+			Dummy entity, present simply because the schema for EntitiesDescriptor
+			requires at least one.  Removed by applications that read this file.
+			
+			*** DO NOT REMOVE THIS ENTITY FROM THE MASTER FILE ***
+		-->
+		<SPSSODescriptor protocolSupportEnumeration="dummy">
+			<AssertionConsumerService index="0" Binding="dummy" Location="dummy"/>
+		</SPSSODescriptor>
+	</EntityDescriptor>
+	
+</EntitiesDescriptor>
+

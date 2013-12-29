@@ -18,24 +18,6 @@ sub comment {
 	print '   (' . $s . ')' . "\n";
 }
 
-#
-# Load RSA key blacklists.
-#
-print "Loading key blacklists...\n";
-open KEYS, '../build/blacklist.RSA-1024' || die "can't open RSA 1024 blacklist";
-while (<KEYS>) {
-	chomp;
-	$rsa1024{$_} = 1;
-}
-close KEYS;
-open KEYS, '../build/blacklist.RSA-2048' || die "can't open RSA 2048 blacklist";
-while (<KEYS>) {
-	chomp;
-	$rsa2048{$_} = 1;
-}
-close KEYS;
-print "Blacklists loaded.\n";
-
 while (<>) {
 
 	#
@@ -166,24 +148,6 @@ while (<>) {
 			print "   expires in $days days at $notAfter\n";
 		}
 
-		#
-		# Check for weak (Debian) keys
-		#
-		# Weak key fingerprints loaded from files are hex SHA-1 digests of the
-		# line you get from "openssl x509 -modulus", including the "Modulus=".
-		#
-		$fpr = sha1_hex($modulus);
-		# print "   fpr: $fpr\n";
-		if ($pubSize == 1024) {
-			if (defined($rsa1024{$fpr})) {
-				print "   *** WEAK DEBIAN KEY ***\n";
-			}
-		} elsif ($pubSize == 2048) {
-			if (defined($rsa2048{$fpr})) {
-				print "   *** WEAK DEBIAN KEY ***\n";
-			}
-		}
-			
 		#
 		# Look for reasonable public exponent values.
 		#

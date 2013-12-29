@@ -307,13 +307,13 @@
     <!--
         uk_trustRootsDocument
         
-        This bean contains the contents of the master.xml file as a DOM Document.
+        This bean contains the contents of the trust roots file as a DOM Document.
     -->
     <bean id="uk_trustRootsDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean">
         <property name="parserPool" ref="parserPool"/>
         <property name="documentResource">
             <bean parent="FilesystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/master.xml"/>
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust-roots.xml"/>
             </bean>
         </property>
     </bean>    

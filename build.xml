@@ -708,19 +708,6 @@
     </macrodef>
 
 	<!--
-		Macro to run the Xalan XSLT engine, taking files from pre-defined
-		locations.
-	-->
-	<macrodef name="XALAN.xmldir">
-		<attribute name="i"/>
-		<attribute name="o"/>
-		<attribute name="x"/>
-		<sequential>
-			<XALAN i="${xml.dir}/@{i}" o="${xml.dir}/@{o}" x="${build.dir}/@{x}"/>
-		</sequential>
-	</macrodef>
-
-	<!--
 		*******************************************
 		***                                     ***
 		***   M E T A D A T A   S I G N I N G   ***
@@ -1191,10 +1178,10 @@
 	-->
 	<target name="extract.authorities">
 		<echo>Extracting key authorities</echo>
-		<XALAN.xmldir
-			i="master.xml"
-			o="authorities.pem"
-			x="extract_authorities.xsl"/>
+		<XALAN
+			i="${mdx.dir}/uk/trust-roots.xml"
+			o="${mdx.dir}/uk/authorities.pem"
+			x="${mdx.dir}/uk/extract_authorities.xsl"/>
 	</target>
 	
 	<!--
@@ -1202,9 +1189,9 @@
 	-->
 	<target name="check.authorities">
 		<echo>Checking authority certificates</echo>
-		<exec executable="perl" dir="${xml.dir}"
-			input="${xml.dir}/authorities.pem">
-			<arg value="${build.dir}/check_authorities.pl"/>
+		<exec executable="perl" dir="${mdx.dir}/uk"
+			input="${mdx.dir}/uk/authorities.pem">
+			<arg value="${mdx.dir}/uk/check_authorities.pl"/>
 		</exec>
 	</target>
 
