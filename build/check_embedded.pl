@@ -365,7 +365,7 @@ while (<>) {
 		#
 		my $error = '';
 		$serverOK = 1;
-		$cmd = "openssl verify -CAfile authorities.pem -purpose sslserver $filename |";
+		$cmd = "openssl verify -CAfile ../mdx/uk/authorities.pem -purpose sslserver $filename |";
 		open(SSL, $cmd) || die "could not open openssl subcommand 2";
 		while (<SSL>) {
 			chomp;
@@ -376,7 +376,7 @@ while (<>) {
 		}
 		close SSL;
 		$clientOK = 1;
-		$cmd = "openssl verify -CAfile authorities.pem -purpose sslclient $filename |";
+		$cmd = "openssl verify -CAfile ../mdx/uk/authorities.pem -purpose sslclient $filename |";
 		open(SSL, $cmd) || die "could not open openssl subcommand 3";
 		while (<SSL>) {
 			chomp;
