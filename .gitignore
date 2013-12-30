@@ -1,0 +1,150 @@
+
+# /
+/private
+/build.properties
+
+# /build/
+/build/locations.txt
+
+# /charting/
+/charting/cache
+/charting/temp.tmp
+
+# /entities/
+/entities/import.xml
+/entities/imported.xml
+
+# /mdx/at_aconet/
+/mdx/at_aconet/imported.xml
+
+# /mdx/au_aaf/
+/mdx/au_aaf/imported.xml
+
+# /mdx/be_belnet/
+/mdx/be_belnet/imported.xml
+
+# /mdx/br_cafe/
+/mdx/br_cafe/imported.xml
+
+# /mdx/ca_caf/
+/mdx/ca_caf/imported.xml
+
+# /mdx/ch_switchaai/
+/mdx/ch_switchaai/imported.xml
+
+# /mdx/cl_cofre/
+/mdx/cl_cofre/imported.xml
+
+# /mdx/cz_eduid/
+/mdx/cz_eduid/imported.xml
+
+# /mdx/de_dfnaai/
+/mdx/de_dfnaai/imported.xml
+
+# /mdx/dk_wayf/
+/mdx/dk_wayf/imported.xml
+
+# /mdx/es_sir/
+/mdx/es_sir/imported.xml
+
+# /mdx/eu_clarin/
+/mdx/eu_clarin/imported.xml
+
+# /mdx/fi_haka/
+/mdx/fi_haka/imported.xml
+
+# /mdx/fr_renater/
+/mdx/fr_renater/imported.xml
+
+# /mdx/gr_grnet/
+/mdx/gr_grnet/imported.xml
+
+# /mdx/hr_eduhr/
+/mdx/hr_eduhr/imported.xml
+
+# /mdx/hu_eduid/
+/mdx/hu_eduid/imported.xml
+
+# /mdx/ie_edugate/
+/mdx/ie_edugate/imported.xml
+
+# /mdx/in_infed/
+/mdx/in_infed/imported.xml
+
+# /mdx/int_edugain/
+/mdx/int_edugain/imported.xml
+/mdx/int_edugain/test-imported.xml
+/mdx/int_edugain/testImported.xml
+
+# /mdx/int_testshib/
+/mdx/int_testshib/imported.xml
+
+# /mdx/it_idem/
+/mdx/it_idem/imported.xml
+
+# /mdx/jp_gakunin/
+/mdx/jp_gakunin/imported.xml
+
+# /mdx/lv_laife/
+/mdx/lv_laife/imported.xml
+
+# /mdx/nl_surfconext/
+/mdx/nl_surfconext/imported.xml
+
+# /mdx/nl_surfnet/
+/mdx/nl_surfnet/imported.xml
+
+# /mdx/no_feide/
+/mdx/no_feide/imported.xml
+
+# /mdx/nz_tuakiri/
+/mdx/nz_tuakiri/imported.xml
+
+# /mdx/se_swamid/
+/mdx/se_swamid/imported.xml
+
+# /mdx/si_arnes/
+/mdx/si_arnes/imported.xml
+
+# /mdx/test/
+/mdx/test/imported.xml
+/mdx/test/input.xml
+
+# /mdx/uk/
+/mdx/uk/collected.xml
+/mdx/uk/ukfederation-metadata-unsigned.xml
+/mdx/uk/ukfederation-export-unsigned.xml
+/mdx/uk/ukfederation-wayf-unsigned.xml
+/mdx/uk/ukfederation-test-unsigned.xml
+/mdx/uk/ukfederation-back-unsigned.xml
+/mdx/uk/ukfederation-stats.html
+/mdx/uk/temp.html
+/mdx/uk/imported.xml
+
+# /mdx/uk_eduserv/
+/mdx/uk_eduserv/imported.xml
+
+# /mdx/us_incommon/
+/mdx/us_incommon/imported.xml
+
+# /xml/
+/xml/ukfederation-trust-12-unsigned.xml
+/xml/ukfederation-sites-12-unsigned.xml
+/xml/ukfederation-wayf-unsigned.xml
+/xml/entities.xml
+/xml/sdss-wayf-unsigned.xml
+/xml/ukfederation-metadata-unsigned.xml
+/xml/embedded.pem
+/xml/member-dates.txt
+/xml/ukfederation-metadata-master.xml
+/xml/ukfederation-export-unsigned.xml
+/xml/ukfederation-test-unsigned.xml
+/xml/ukfederation-export.xml
+/xml/ukfederation-test.xml
+/xml/ukfederation-back-unsigned.xml
+/xml/test-metadata.xml
+/xml/test-metadata-master.xml
+/xml/temp.xml
+/xml/temp2.xml
+/xml/ukfederation-cdsall-unsigned.xml
+/xml/cms-metadata.xml
