@@ -10,7 +10,7 @@ There are two variants of the repository:
 
 * The public, read-only variant of the repository is made available on [GitHub](https://github.com/ukf/ukf-meta). If you're reading this, you're probably accessing this more restricted version. We provide it for the benefit of other federation operators who may be wondering how the UK federation systems operate, perhaps with a view to implementing something similar.
 
-The public repository is kept roughly in synchronisation with the private one using [`svn2git`](https://github.com/nirvdrum/svn2git). We do this when we have made significant changes to the toolset and we think other federation operators may find the changes of interest.
+The public repository is kept roughly in synchronisation with the private one using [our `ukf-meta-meta` tools](https://github.com/ukf/ukf-meta-meta). We do this when we have made significant changes to the toolset and we think other federation operators may find the changes of interest.
 
 We exclude a significant amount of material from the public repository. One reason for this is to save space: for example, the private repository retains a copy of every signed metadata aggregate we have ever produced, going back to 2005.
 
