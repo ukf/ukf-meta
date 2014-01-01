@@ -3,7 +3,7 @@
 
 	check_uk_keydesc_key.xsl
 	
-    UKf-specific check that all KeyDescriptor elements contain a key.
+    UKf-specific check that all KeyDescriptor elements contain an embedded key.
 	
 	Author: Ian A. Young <ian@iay.org.uk>
 
@@ -25,7 +25,7 @@
 	<xsl:template match="md:KeyDescriptor[not(descendant::ds:X509Data)]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
-				<xsl:text>KeyDescriptor lacks key material</xsl:text>
+				<xsl:text>KeyDescriptor lacks embedded key material</xsl:text>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
