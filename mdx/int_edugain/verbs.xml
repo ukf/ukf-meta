@@ -77,17 +77,6 @@
                     p:whitelistingEntities="false"
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
 
-                <bean parent="X509CertificateValidationStage"
-                    p:id="checkCertificates">
-                    <property name="validators">
-                        <list>
-                            <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509CertificateRSAKeyLengthValidator"
-                                p:warningBoundary="0" p:errorBoundary="2048"/>
-                        </list>
-                    </property>
-                </bean>
-
                 <ref bean="standardImportActions"/>
                 <ref bean="errorTerminatingFilter"/>
             </list>
@@ -105,17 +94,6 @@
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
-                
-                <bean parent="X509CertificateValidationStage"
-                    p:id="checkCertificates">
-                    <property name="validators">
-                        <list>
-                            <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509CertificateRSAKeyLengthValidator"
-                                p:warningBoundary="0" p:errorBoundary="2048"/>
-                        </list>
-                    </property>
-                </bean>
                 
                 <ref bean="standardImportActions"/>
                 <ref bean="errorTerminatingFilter"/>
