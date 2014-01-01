@@ -974,17 +974,26 @@
                     p:id="checkCertificates">
                     <property name="validators">
                         <list>
-                            <!-- Error on RSA key length less than 1024 bits. -->
+                            <!-- Error on RSA key length less than 2048 bits. -->
                             <bean parent="X509CertificateRSAKeyLengthValidator"
-                                p:warningBoundary="0" p:errorBoundary="1024"/>
+                                p:warningBoundary="0" p:errorBoundary="2048"/>
                             <!-- Error on small RSA public exponents. -->
                             <bean parent="X509CertificateRSAExponentValidator"/>
-                            <!-- Debian weak key blacklists. -->
-                            <ref bean="debian.1024"/>
+                            
+                            <!--
+                                Debian weak key blacklists.
+                                
+                                Don't need to check for keys below our minimum key size.
+                            -->
                             <ref bean="debian.2048"/>
                             <ref bean="debian.4096"/>
-                            <!-- Compromised key blacklists. -->
-                            <ref bean="compromised.1024"/>
+                            
+                            <!--
+                                Compromised key blacklists.
+                                
+                                Again, don't need to check for keys below our minimum key size.
+                                This currently means there are no compromised keys to check for.
+                            -->
                         </list>
                     </property>
                 </bean>
