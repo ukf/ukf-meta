@@ -1636,10 +1636,16 @@
     -->
     <xsl:template name="list.shibboleth.1.3.entities">
         <xsl:param name="entities"/>
-        <!-- remove everything that says it is something other than Shibboleth -->
+        <!--
+            Remove everything that says it is something other than Shibboleth, or which includes
+            a SAML 2.0 token in any of its role descriptors' protocolSupportEnumerations.
+        -->
         <xsl:variable name="entities.1"
             select="set:difference($entities,
-                $entities[md:Extensions/ukfedlabel:Software[@name != 'Shibboleth']])"/>
+                $entities[
+                    md:Extensions/ukfedlabel:Software[@name != 'Shibboleth'] |
+                    md:*[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
+                ])"/>
         <!-- remove things that look like Shibboleth 2.x -->
         <xsl:variable name="entities.2"
             select="set:difference($entities.1,
@@ -1788,6 +1794,8 @@
                     md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '1.3'] |
                     md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '-idp/SSO')] |
                     md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]
+                ][
+                    not(md:*[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')])
                 ]"/>
             <xsl:variable name="entities.shib.13.out"
                 select="set:difference($entities.shib.13.in, $entities.shib.13)"/>
