@@ -23,7 +23,7 @@
 	
 	
 	<!--
-		FTS 1.4 second draft, section 3.10
+		FTS 1.5, section 3.10, first paragraph.
 		
 		Each <IDPSSODescriptor>, <SPSSODescriptor> and <AttributeAuthorityDescriptor>
 		role descriptor appearing in metadata published by the UK federation SHALL
@@ -50,12 +50,12 @@
 	
 	
 	<!--
-        FTS 1.4 second draft, section 3.10
+        FTS 1.5 draft of 2014-01-02, section 3.10, second paragraph.
         
-        In roles supporting SAML 2.0 profiles (roles whose protocolSupportEnumeration contains
-        urn:oasis:names:tc:SAML:2.0:protocol) each <KeyDescriptor> MUST support the direct
-        key verification scheme as described in section 2.1.1 above.
-    -->
+		In roles which indicate support through their protocolSupportEnumeration values for
+		SAML 2.0 or SAML 1.1 profiles, each <KeyDescriptor> MUST support the direct key
+		verification scheme as described in section 2.1.1.
+	-->
 	<xsl:template match="md:IDPSSODescriptor
 		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
 		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
@@ -80,4 +80,28 @@
 		</xsl:call-template>
 	</xsl:template>
 	
+	<xsl:template match="md:IDPSSODescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]
+		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">SAML 1.1 IdP has KeyDescriptor without embedded key</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="md:AttributeAuthorityDescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]
+		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">SAML 1.1 AttributeAuthority has KeyDescriptor without embedded key</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="md:SPSSODescriptor
+		[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]
+		[md:KeyDescriptor[not(descendant::ds:X509Data)]]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">SAML 1.1 SP has KeyDescriptor without embedded key</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
 </xsl:stylesheet>
