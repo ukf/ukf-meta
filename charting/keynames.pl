@@ -1,9 +1,9 @@
 #!/usr/bin/env perl -w
 
 #
-# shortkeys.pl
+# keynames.pl
 #
-# Extracts statistics about short embedded keys from the published metadata.
+# Extracts statistics about KeyName elements from the published metadata.
 #
 use lib "../build";
 use Xalan;
@@ -29,19 +29,20 @@ foreach $month (@months) {
 	# print "command is $command\n";
 	system($command); # || print "ignoring claimed failure in sub command\n";
 	#print "Xalan run on $fn\n";
-	open(TXT, "perl shortkeys_inner.pl -q <temp.tmp|") || die "could not open input file";
-	my $count = 0;
+	open(TXT, "perl keynames_inner.pl -q <temp.tmp|") || die "could not open input file";
 	while (<TXT>) {
-		if (/^   1024: (\d+)$/) {
+		if (/^Total: (\d+)$/) {
 			$count = $1;
 		}
-		#print $_;
+		print $_ unless $allMonths;
 	}
-	push @counts, "$month: $count";
 	close TXT;
+	push @counts, "$month: $count";
 }
 
-print "Key count:\n";
-foreach $count (@counts) {
-	print "$count\n";
+if ($allMonths) {
+	print "KeyName count:\n";
+	foreach $count (@counts) {
+		print "$count\n";
+	}
 }
