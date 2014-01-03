@@ -13,14 +13,16 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	exclude-result-prefixes="md">
+	exclude-result-prefixes="md mdrpi">
 	
 	<!-- Output is plain text -->
 	<xsl:output method="text"/>
 	
 	<xsl:template match="md:EntitiesDescriptor">
-		<xsl:variable name="entities" select="//md:EntityDescriptor"/>
+		<xsl:variable name="entities" select="//md:EntityDescriptor
+		[descendant::mdrpi:RegistrationInfo/@registrationAuthority='http://ukfederation.org.uk']"/>
 		<xsl:value-of select="count($entities)"/><xsl:text> </xsl:text>
 		<xsl:variable name="idps" select="$entities[md:IDPSSODescriptor]"/>
 		<xsl:value-of select="count($idps)"/><xsl:text> </xsl:text>
