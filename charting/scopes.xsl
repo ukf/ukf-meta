@@ -14,20 +14,32 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<!-- Output is plain text -->
 	<xsl:output method="text"/>
 
+	<!--
+		Discard entities registered by other federations.
+	-->
+	<xsl:template match="md:EntityDescriptor
+		[descendant::mdrpi:RegistrationInfo/@registrationAuthority!='http://ukfederation.org.uk']">
+		<!-- do nothing -->
+	</xsl:template>
+
+	<!--
+		Discard regular expression scopes.
+	-->
 	<xsl:template match="//shibmd:Scope[@regex = 'true']">
 		<!-- do nothing -->
 	</xsl:template>
-	
+
 	<xsl:template match="//shibmd:Scope">
 		<xsl:value-of select="."/>
 		<xsl:text>&#x0a;</xsl:text>
 	</xsl:template>
-	
+
 	<xsl:template match="text()">
 		<!-- do nothing -->
 	</xsl:template>
