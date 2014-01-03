@@ -45,7 +45,6 @@ my %issuerMark;
 $issuerMark{'AddTrust External CA Root'} = 'R';
 $issuerMark{'UTN-USERFirst-Hardware'} = 'i';
 $issuerMark{'TERENA SSL CA'} = 'i';
-$issuerMark{'VeriSign Class 3 Public Primary Certification Authority - G3'} = 'R'; # root alone
 $issuerMark{'GlobalSign Root CA'} = 'R';
 $issuerMark{'GlobalSign Organization Validation CA'} = 'i';
 $issuerMark{'GlobalSign Primary Secure Server CA'} = 'i';
