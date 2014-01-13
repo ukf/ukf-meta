@@ -425,6 +425,16 @@ while (<>) {
 			} elsif ($error eq 'unable to get local issuer certificate') {
 				$error = "non trust fabric issuer: $issuerCN: remove KeyName?";
 			}
+
+			#
+			# KeyName with an expired certificate indicates some kind of misconfiguration.
+			# Either the KeyDescriptor isn't working, or the expired certificate is still
+			# in use (in which case the KeyName is superfluous) or a different certificate
+			# is in use via PKIX (which means we have the wrong one).
+			#
+			if ($days < 0) {
+				error("expired certificate has KeyName; acquire/ensure correct certificate and remove KeyName");
+			}
 		}
 
 		if ($error eq 'certificate has expired' && $days < 0) {
