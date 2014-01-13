@@ -769,7 +769,7 @@
     <!--
         schemaResources
         
-        A list of all schema documents that we make common use of.
+        A list of all schema documents that we make common use of in SAML metadata.
     -->
     <util:list id="schemaResources">
         <bean parent="FilesystemResource" c:resourcePath="#{ systemProperties['basedir'] }/xml/incommon-metadata.xsd"/>
@@ -814,9 +814,6 @@
         </bean>
         <bean parent="FilesystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/uk-fed-label.xsd"/>
-        </bean>
-        <bean parent="FilesystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-members.xsd"/>
         </bean>
         <bean parent="FilesystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-addr.xsd"/>
