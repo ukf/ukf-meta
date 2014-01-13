@@ -30,4 +30,10 @@
 	-->
 	<xsl:import href="check_framework.xsl"/>
 
+	<xsl:template match="md:SPSSODescriptor[descendant::ds:KeyName]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">service provider with KeyName element</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 </xsl:stylesheet>
