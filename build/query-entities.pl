@@ -14,11 +14,13 @@ $DEBUG = 0;
 sub help {
 	print<<'EOF';
 
-usage: entities.pl [--help] [--idp] [--sp] [--reg <registrationAuthority>] [--notreg <registrationAuthority>] <file>
+usage: query-entities.pl [--help] [--head] [--idp] [--sp] [--reg <registrationAuthority>] [--notreg <registrationAuthority>] <file>
 
-Outputs the entityID and display name(s) of a entities in the supplied file.
+Outputs the entityID, display name(s) and other information about entities in the given SAML metadata aggregate file.
 
 --help			- prints this help and exits
+
+--head			- prints out a header for the CSV file
 
 --idp 			- only outputs IdPs
 --sp			- only outputs SPs
@@ -27,6 +29,16 @@ Outputs the entityID and display name(s) of a entities in the supplied file.
 --reg <registrationAuthority>		- outputs entities registered by registrationAuthority
 --notreg <registrationAuthority>	- outputs those entities NOT registered by registrationAuthority
 	(By default the script outputs all entities; can only have one of -reg or -notreg)
+	
+Example 1:
+To output all SPs in the UK federation metadata which have been imported (i.e. are not registered by the UKAMF registrationAuthority http://ukfederation.org.uk), and to include a header on the CSV file:
+
+query-entities.pl --head --sp --notreg http://ukfederation.org.uk ukfederation-metadata.xml 
+
+Example 2:
+To output all IdPs exported by the UK federation, and include a header
+
+query-entities.pl --head --idp -reg http://ukfederation.org.uk ukfederation-export.xml
 
 EOF
 }
@@ -36,13 +48,15 @@ my $sp;
 my $reg;
 my $notreg;
 my $help;
+my $head;
 
 my $result = GetOptions(
 		"idp" => \$idp,
 		"sp" => \$sp,	
 		"reg=s" => \$reg,
 		"notreg=s" => \$notreg,
-		"help=s" => \$help,
+		"help" => \$help,
+		"head" => \$head
 		);
 
 if ($help) {
@@ -68,7 +82,7 @@ if ( ! -r $ARGV[0] ) {
 
 my $infile = $ARGV[0];
 
-# If no IdP/SP descriminator set, 
+# If no IdP/SP discriminator set, 
 if ( ! $idp && ! $sp ) { $idp = 1; $sp = 1; }
 
 # Can only have one of -reg and -notreg set
@@ -101,6 +115,14 @@ if (!length $xml) {
 	exit 4;
 }
 
+#
+# print header
+#
+if ($head) { print "# type, entityID, registrationAuthority, OrganizationDisplayName, OrganizationURL\n"; }
+
+#
+# Workhorse
+#
 my $twig = XML::Twig->new(
 		pretty_print => "indented",
 		twig_handlers =>
@@ -112,7 +134,7 @@ $twig->parse($xml);
 
 sub is_entity () {
 	my ($t, $section)= @_;
-	my ($entityID, $ODN, $MDUI, $URL, $registrationAuthority, $type, $temp);
+	my ($entityID, $ODN, $URL, $registrationAuthority, $type, $temp);
 
 	$entityID = "No entityID found";
 	$entityID = $section->{'att'}->{'entityID'};
@@ -133,8 +155,6 @@ sub is_entity () {
 		}	
 	}
 	
-	$MDUI = "No MDUI display name found";
-	
 	$registrationAuthority = "No registrationAuthority found";
 	if ( $temp = $section->first_child('Extensions')->first_child('mdrpi:RegistrationInfo')->{'att'}->{'registrationAuthority'} ) {
 		$registrationAuthority = $temp;
@@ -148,18 +168,6 @@ sub is_entity () {
 	if ( $section->first_child('SPSSODescriptor') ) { $type = "SP"; }	
 
 	if ( ($sp && $type eq "SP") || ($idp && $type eq "IdP") ) {
-
-# This is crying out for object-orientation and/or a MVC framework
-#	print "---------------------------------\n";
-#	print "entityID: $entityID\n";
-#	print "OrganzationDisplayName: $ODN\n";
-##	print "MDUI display name: $MDUI\n";
-#	print "OrganizationURL: $URL\n";
-#	print "registrationAuthority: $registrationAuthority\n";
-#	print "type: $type\n";
-	
-	# ... however CSV is the file format of the future :)
-	print "$type, $entityID, $registrationAuthority, \"$ODN\", $URL\n"
-	
+		print "$type, $entityID, $registrationAuthority, \"$ODN\", $URL\n"
 	}
 }
