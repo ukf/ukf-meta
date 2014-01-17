@@ -93,13 +93,9 @@ while (<>) {
 			}
 			
 			#
-			# Extract the public key modulus and exponent.
+			# Extract the public key exponent.
 			#
-			if (/^Modulus=(.*)$/) {
-				$modulus = $_;
-				# print "   modulus: $modulus\n";
-				next;
-			} elsif (/Exponent: (\d+)/) {
+			if (/Exponent: (\d+)/) {
 				$exponent = $1;
 				# print "   exponent: $exponent\n";
 				next;
