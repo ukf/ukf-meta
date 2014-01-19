@@ -45,10 +45,12 @@ my %issuerMark;
 $issuerMark{'AddTrust External CA Root'} = 'R';
 $issuerMark{'UTN-USERFirst-Hardware'} = 'i';
 $issuerMark{'TERENA SSL CA'} = 'i';
-$issuerMark{'GlobalSign Root CA'} = 'R';
-$issuerMark{'GlobalSign Organization Validation CA'} = 'i';
-$issuerMark{'GlobalSign Primary Secure Server CA'} = 'i';
-$issuerMark{'GlobalSign ServerSign CA'} = 'i';
+
+# ex-roots
+$issuerMark{'GlobalSign Root CA'} = 'X';
+$issuerMark{'GlobalSign Organization Validation CA'} = 'x';
+$issuerMark{'GlobalSign Primary Secure Server CA'} = 'x';
+$issuerMark{'GlobalSign ServerSign CA'} = 'x';
 
 #
 # Load expiry whitelist.
@@ -153,7 +155,15 @@ while (<>) {
 			$oline .= "has no KeyName";
 		}
 		push(@olines, $oline);
-		$blob = $oline;		# start building a new blob
+
+		#
+		# Start building a new blob.
+		#
+		# The blob contains the entity name, so de-duplication
+		# only occurs within a particular entity and not across
+		# entities.
+		#
+		$blob = $oline;
 
 		#
 		# Create a temporary file for this certificate in PEM format.
@@ -504,7 +514,7 @@ while (<>) {
 if ($distinct_certs > 1) {
 	print "Total certificates: $total_certs\n";
 	if ($distinct_certs != $total_certs) {
-		print "Distinct certificates: $distinct_certs\n";
+		print "Distinct certificate/entity combinations: $distinct_certs\n";
 	}
 	print "\n";
 
