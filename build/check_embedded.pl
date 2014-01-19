@@ -9,7 +9,7 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 # UK federation metadata.
 #
 # The certificates are provided on standard input in PEM format with header lines
-# indicating the entity with which they are associated.
+# indicating the entity with which they are associated.
 #
 # Command line options:
 #
@@ -145,7 +145,7 @@ while (<>) {
 		$keyname = $args[3];
 		
 		#
-		# Output header line.
+		# Output header line.
 		#
 		$oline = "Entity $entity ";
 		$hasKeyName = !($keyname eq '(none)');
@@ -217,7 +217,7 @@ while (<>) {
 		my %names;
 		
 		#
-		# Use openssl to convert the certificate to text
+		# Use openssl to convert the certificate to text
 		#
 		my(@lines, $subject, $issuer, $subjectCN, $issuerCN, $fingerprint);
 		$cmd = "openssl x509 -in $filename -noout -text -nameopt RFC2253 -modulus -fingerprint|";
@@ -317,8 +317,8 @@ while (<>) {
 				#
 				$next =~ s/\s*//g;
 				my @altNames = split /\s*,\s*/, $next;
-				# my $altSet = "{" . join(", ", @altNames) . "}";
-				# print "Alt set: $altSet\n";
+				# my $altSet = "{" . join(", ", @altNames) . "}";
+				# print "Alt set: $altSet\n";
 				
 				#
 				# Each "DNS" component is an additional name for this certificate.
@@ -397,7 +397,7 @@ while (<>) {
 		close SSL;
 		
 		#
-		# Irrespective of what went wrong, client and server results should match.
+		# Irrespective of what went wrong, client and server results should match.
 		#
 		if ($clientOK != $serverOK) {
 			error("client/server purpose result mismatch: $clientOK != $serverOK");
