@@ -122,6 +122,11 @@ my $deadlineTime = str2time($deadline);
 my $nowYearMonth = time2str('%Y-%m-01T00:00:00', time());
 my $validStart = str2time($nowYearMonth);
 
+#
+# Total size of deduplicated blobs.
+#
+my $dedupTotal = 0;
+
 while (<>) {
 
 	#
@@ -196,6 +201,7 @@ while (<>) {
 		#
 		$total_certs++;
 		if (defined($blobs{$blob})) {
+			$dedupTotal += (length($blob) - length($_) - 1);
 			# print "skipping a blob\n";
 			close $fh;
 			next;
@@ -338,4 +344,6 @@ if ($total_certs > 1) {
 	print "Total: $total\n";
 
 	print "\n";
+
+	print "Deduplication saves: $dedupTotal\n";
 }
