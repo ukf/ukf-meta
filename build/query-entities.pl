@@ -14,13 +14,15 @@ $DEBUG = 0;
 sub help {
 	print<<'EOF';
 
-usage: query-entities.pl [--help] [--head] [--idp] [--sp] [--reg <registrationAuthority>] [--notreg <registrationAuthority>] <file>
+usage: query-entities.pl [--help] [--head] [--entityID] [--idp] [--sp] [--reg <registrationAuthority>] [--notreg <registrationAuthority>] <file>
 
 Outputs the entityID, display name(s) and other information about entities in the given SAML metadata aggregate file.
 
 --help			- prints this help and exits
 
 --head			- prints out a header for the CSV file
+--entityID		- outputs a list of entityIDs only
+	(can only have one of --head and --entityID specified)
 
 --idp 			- only outputs IdPs
 --sp			- only outputs SPs
@@ -28,7 +30,7 @@ Outputs the entityID, display name(s) and other information about entities in th
 
 --reg <registrationAuthority>		- outputs entities registered by registrationAuthority
 --notreg <registrationAuthority>	- outputs those entities NOT registered by registrationAuthority
-	(By default the script outputs all entities; can only have one of -reg or -notreg)
+	(By default the script outputs all entities; can only have one of --reg or --notreg)
 	
 Example 1:
 To output all SPs in the UK federation metadata which have been imported (i.e. are not registered by the UKAMF registrationAuthority http://ukfederation.org.uk), and to include a header on the CSV file:
@@ -49,6 +51,7 @@ my $reg;
 my $notreg;
 my $help;
 my $head;
+my $entityID;
 
 my $result = GetOptions(
 		"idp" => \$idp,
@@ -56,7 +59,8 @@ my $result = GetOptions(
 		"reg=s" => \$reg,
 		"notreg=s" => \$notreg,
 		"help" => \$help,
-		"head" => \$head
+		"head" => \$head,
+		"entityID" => \$entityID
 		);
 
 if ($help) {
@@ -90,6 +94,13 @@ if ( $reg && $notreg ) {
 	print "\nError: can only have one of --reg and --notreg set at the same time\n";
 	help();
 	exit 3;
+}
+
+# Can only have one of --head and --entityID
+if ( $head && $entityID ) {
+	print "\nError: can only have one of --head and --entityID set at the same time\n";
+	help();
+	exit 3
 }
 
 #
@@ -168,6 +179,10 @@ sub is_entity () {
 	if ( $section->first_child('SPSSODescriptor') ) { $type = "SP"; }	
 
 	if ( ($sp && $type eq "SP") || ($idp && $type eq "IdP") ) {
-		print "$type, $entityID, $registrationAuthority, \"$ODN\", $URL\n"
+		if ($entityID) {
+			print "$entityID\n";
+		} else {	
+			print "$type, $entityID, $registrationAuthority, \"$ODN\", $URL\n"
+		}
 	}
 }
