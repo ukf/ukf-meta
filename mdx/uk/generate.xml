@@ -621,6 +621,7 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
+                <ref bean="uk_removeGatewayKeyName"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
