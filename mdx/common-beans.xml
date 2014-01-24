@@ -229,22 +229,22 @@
     <bean id="ElementWhitespaceTrimmingStage" abstract="true" parent="stage_parent"
         class="uk.org.ukfederation.mda.dom.ElementWhitespaceTrimmingStage"/>
     
-    <bean id="X509CertificateValidationStage" abstract="true" parent="stage_parent"
-        class="uk.org.ukfederation.mda.validate.X509CertificateValidationStage"/>
+    <bean id="X509ValidationStage" abstract="true" parent="stage_parent"
+        class="uk.org.ukfederation.mda.validate.X509ValidationStage"/>
     
     <bean id="validator_parent" abstract="true" parent="component_parent"/>
 
-    <bean id="X509CertificateConsistentNameValidator" abstract="true" parent="validator_parent"
-        class="uk.org.ukfederation.mda.validate.X509CertificateConsistentNameValidator"/>
+    <bean id="X509ConsistentNameValidator" abstract="true" parent="validator_parent"
+        class="uk.org.ukfederation.mda.validate.X509ConsistentNameValidator"/>
     
-    <bean id="X509CertificateRSAExponentValidator" abstract="true" parent="validator_parent"
-        class="uk.org.ukfederation.mda.validate.X509CertificateRSAExponentValidator"/>
+    <bean id="X509RSAExponentValidator" abstract="true" parent="validator_parent"
+        class="uk.org.ukfederation.mda.validate.X509RSAExponentValidator"/>
     
-    <bean id="X509CertificateRSAKeyLengthValidator" abstract="true" parent="validator_parent"
-        class="uk.org.ukfederation.mda.validate.X509CertificateRSAKeyLengthValidator"/>
+    <bean id="X509RSAKeyLengthValidator" abstract="true" parent="validator_parent"
+        class="uk.org.ukfederation.mda.validate.X509RSAKeyLengthValidator"/>
     
-    <bean id="X509CertificateRSAOpenSSLBlacklistValidator" abstract="true" parent="validator_parent"
-        class="uk.org.ukfederation.mda.validate.X509CertificateRSAOpenSSLBlacklistValidator"/>
+    <bean id="X509RSAOpenSSLBlacklistValidator" abstract="true" parent="validator_parent"
+        class="uk.org.ukfederation.mda.validate.X509RSAOpenSSLBlacklistValidator"/>
     
     <!--
         ***********************************************
@@ -400,11 +400,11 @@
     <import resource="classpath:validation-beans.xml"/>
     
     <!--
-        identifierStrategy
+        identificationStrategy
         
         Standard item identifier strategy.
     -->
-    <bean id="identifierStrategy" class="uk.org.ukfederation.mda.UKItemIdentificationStrategy">
+    <bean id="identificationStrategy" class="uk.org.ukfederation.mda.UKItemIdentificationStrategy">
         <property name="ignoredAuthorities">
             <set>
                 <value>http://ukfederation.org.uk</value>
@@ -461,7 +461,7 @@
     <bean id="errorAnnouncer" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.StatusMetadataLoggingStage"
         p:id="errorAnnouncer">
-        <property name="identifierStrategy" ref="identifierStrategy"/>
+        <property name="identifierStrategy" ref="identificationStrategy"/>
         <property name="selectionRequirements">
             <list>
                 <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
@@ -478,7 +478,7 @@
     <bean id="errorRemover" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.ItemMetadataFilterStage"
         p:id="errorRemover">
-        <property name="identifierStrategy" ref="identifierStrategy"/>
+        <property name="identifierStrategy" ref="identificationStrategy"/>
         <property name="selectionRequirements">
             <list>
                 <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
@@ -494,7 +494,7 @@
     <bean id="errorTerminator" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.ItemMetadataTerminationStage"
         p:id="errorTerminator">
-        <property name="identifierStrategy" ref="identifierStrategy"/>
+        <property name="identifierStrategy" ref="identificationStrategy"/>
         <property name="selectionRequirements">
             <list>
                 <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
@@ -967,15 +967,15 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_imported"/>
 
-                <bean parent="X509CertificateValidationStage"
+                <bean parent="X509ValidationStage"
                     p:id="checkCertificates">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509CertificateRSAKeyLengthValidator"
+                            <bean parent="X509RSAKeyLengthValidator"
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                             <!-- Error on small RSA public exponents. -->
-                            <bean parent="X509CertificateRSAExponentValidator"/>
+                            <bean parent="X509RSAExponentValidator"/>
                             
                             <!--
                                 Debian weak key blacklists.

@@ -449,17 +449,17 @@
                 <ref bean="mdui_dn_en_match"/>
                 <ref bean="check_dup_display"/>
                 
-                <bean parent="X509CertificateValidationStage"
+                <bean parent="X509ValidationStage"
                     p:id="checkCertificates">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509CertificateRSAKeyLengthValidator"
+                            <bean parent="X509RSAKeyLengthValidator"
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                             <!-- Error on small RSA public exponents. -->
-                            <bean parent="X509CertificateRSAExponentValidator"/>
+                            <bean parent="X509RSAExponentValidator"/>
                             <!-- Error on inconsistent subjectAltNames. -->
-                            <bean parent="X509CertificateConsistentNameValidator"/>
+                            <bean parent="X509ConsistentNameValidator"/>
                             
                             <!--
                                 Debian weak key blacklists.

@@ -82,7 +82,7 @@
                 <ref bean="se_swamid_edugainEntities"/>
                 <ref bean="standardImportActions"/>
 
-                <bean parent="X509CertificateValidationStage"
+                <bean parent="X509ValidationStage"
                     p:id="checkCertificates">
                     <property name="validators">
                         <list>

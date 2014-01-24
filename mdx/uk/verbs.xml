@@ -175,7 +175,7 @@
                     Additional X.509 certificate checks, over and above those
                     performed in uk_registeredEntities.
                 -->
-                <bean parent="X509CertificateValidationStage"
+                <bean parent="X509ValidationStage"
                     p:id="checkCertificates">
                     <property name="validators">
                         <list>
@@ -297,17 +297,17 @@
                 <ref bean="check_shibboleth"/>
                 <ref bean="check_uk_trust"/>
                 
-                <bean parent="X509CertificateValidationStage"
+                <bean parent="X509ValidationStage"
                     p:id="checkCertificates">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509CertificateRSAKeyLengthValidator"
+                            <bean parent="X509RSAKeyLengthValidator"
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                             <!-- Error on small RSA public exponents. -->
-                            <bean parent="X509CertificateRSAExponentValidator"/>
+                            <bean parent="X509RSAExponentValidator"/>
                             <!-- Error on inconsistent subjectAltNames. -->
-                            <bean parent="X509CertificateConsistentNameValidator"/>
+                            <bean parent="X509ConsistentNameValidator"/>
 
                             <!--
                                 Debian weak key blacklists.

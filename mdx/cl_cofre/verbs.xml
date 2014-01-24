@@ -60,12 +60,12 @@
                 <ref bean="cl_cofre_edugainEntities"/>
                 <ref bean="standardImportActions"/>
 
-                <bean parent="X509CertificateValidationStage"
+                <bean parent="X509ValidationStage"
                     p:id="checkCertificates">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509CertificateRSAKeyLengthValidator"
+                            <bean parent="X509RSAKeyLengthValidator"
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                         </list>
                     </property>

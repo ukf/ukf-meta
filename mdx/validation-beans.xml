@@ -679,6 +679,7 @@
     -->
     <bean id="check_dup_display" parent="stage_parent"
         p:id="check_dup_display"
+        p:identificationStrategy-ref="identificationStrategy"
         class="uk.org.ukfederation.mda.IdPDisplayNameDuplicateDetectingStage"/>
     
     <!--
@@ -693,7 +694,7 @@
         Debian weak key blacklists.
     -->
 
-    <bean id="debian.1024" parent="X509CertificateRSAOpenSSLBlacklistValidator"
+    <bean id="debian.1024" parent="X509RSAOpenSSLBlacklistValidator"
         p:id="debian.1024" p:keySize="1024">
         <property name="blacklistResource">
             <bean parent="ClasspathResource">
@@ -702,7 +703,7 @@
         </property>
     </bean>
 
-    <bean id="debian.2048" parent="X509CertificateRSAOpenSSLBlacklistValidator"
+    <bean id="debian.2048" parent="X509RSAOpenSSLBlacklistValidator"
         p:id="debian.2048" p:keySize="2048">
         <property name="blacklistResource">
             <bean parent="ClasspathResource">
@@ -711,7 +712,7 @@
         </property>
     </bean>
 
-    <bean id="debian.4096" parent="X509CertificateRSAOpenSSLBlacklistValidator"
+    <bean id="debian.4096" parent="X509RSAOpenSSLBlacklistValidator"
         p:id="debian.4096" p:keySize="4096">
         <property name="blacklistResource">
             <bean parent="ClasspathResource">
@@ -724,7 +725,7 @@
         Blacklist of known compromised 1024-bit keys, e.g., "dummy" keys shipped with
         SAML products that are sometimes deployed by accident.
     -->
-    <bean id="compromised.1024" parent="X509CertificateRSAOpenSSLBlacklistValidator"
+    <bean id="compromised.1024" parent="X509RSAOpenSSLBlacklistValidator"
         p:id="compromised.1024" p:keySize="1024">
         <property name="blacklistResource">
             <bean parent="ClasspathResource">
