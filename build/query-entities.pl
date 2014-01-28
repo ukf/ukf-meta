@@ -14,15 +14,15 @@ $DEBUG = 0;
 sub help {
 	print<<'EOF';
 
-usage: query-entities.pl [--help] [--head] [--entityID] [--idp] [--sp] [--reg <registrationAuthority>] [--notreg <registrationAuthority>] <file>
+usage: query-entities.pl [--help] [--head] [--idonly] [--idp] [--sp] [--reg <registrationAuthority>] [--notreg <registrationAuthority>] <file>
 
 Outputs the entityID, display name(s) and other information about entities in the given SAML metadata aggregate file.
 
 --help			- prints this help and exits
 
 --head			- prints out a header for the CSV file
---entityID		- outputs a list of entityIDs only
-	(can only have one of --head and --entityID specified)
+--idonly		- outputs a list of entityIDs only
+	(can only have one of --head and --idonly specified)
 
 --idp 			- only outputs IdPs
 --sp			- only outputs SPs
@@ -51,7 +51,7 @@ my $reg;
 my $notreg;
 my $help;
 my $head;
-my $entityID;
+my $idonly;
 
 my $result = GetOptions(
 		"idp" => \$idp,
@@ -60,7 +60,7 @@ my $result = GetOptions(
 		"notreg=s" => \$notreg,
 		"help" => \$help,
 		"head" => \$head,
-		"entityID" => \$entityID
+		"idonly" => \$idonly
 		);
 
 if ($help) {
@@ -97,8 +97,8 @@ if ( $reg && $notreg ) {
 }
 
 # Can only have one of --head and --entityID
-if ( $head && $entityID ) {
-	print "\nError: can only have one of --head and --entityID set at the same time\n";
+if ( $head && $idonly ) {
+	print "\nError: can only have one of --head and --idonly set at the same time\n";
 	help();
 	exit 3
 }
@@ -167,8 +167,15 @@ sub is_entity () {
 	}
 	
 	$registrationAuthority = "No registrationAuthority found";
-	if ( $temp = $section->first_child('Extensions')->first_child('mdrpi:RegistrationInfo')->{'att'}->{'registrationAuthority'} ) {
-		$registrationAuthority = $temp;
+	# Even though eduGAIN Metadata profile says entities MUST have MDRPI, turns out the eduGAIN aggregate does not enforce this rule. However, the eduGAIN site allows people to validate federations' incoming aggregates. See http://www.edugain.org/technical/status.php and go to countries' entry 'validate this metadata set'
+	if ( $section->first_child('Extensions')) { 
+		if ( $section->first_child('Extensions')->first_child('mdrpi:RegistrationInfo') ) {
+			if ( $section->first_child('Extensions')->first_child('mdrpi:RegistrationInfo')->{'att'} ) {
+				if ( $section->first_child('Extensions')->first_child('mdrpi:RegistrationInfo')->{'att'}->{'registrationAuthority'} ) {
+				$registrationAuthority = $section->first_child('Extensions')->first_child('mdrpi:RegistrationInfo')->{'att'}->{'registrationAuthority'};
+				}
+			}
+		}
 	}
 	
 	if ( $notreg && $notreg eq $registrationAuthority ) { return; }
@@ -179,7 +186,7 @@ sub is_entity () {
 	if ( $section->first_child('SPSSODescriptor') ) { $type = "SP"; }	
 
 	if ( ($sp && $type eq "SP") || ($idp && $type eq "IdP") ) {
-		if ($entityID) {
+		if ($idonly) {
 			print "$entityID\n";
 		} else {	
 			print "$type, $entityID, $registrationAuthority, \"$ODN\", $URL\n"
