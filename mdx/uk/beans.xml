@@ -618,6 +618,7 @@
         <property name="stages">
             <list>
                 <ref bean="assemble"/>
+                <ref bean="uk_removeGatewayKeyName"/>
                 <ref bean="uk_generateStatistics"/>
                 <ref bean="uk_serializeStatistics"/>
             </list>
