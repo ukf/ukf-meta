@@ -608,7 +608,6 @@
                 
                 <ref bean="uk_assemble"/>
                 <ref bean="uk_removeGatewayKeyName"/>
-                <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseTest"/>
@@ -616,7 +615,6 @@
                 
                 <!-- test aggregate MUST pass publishability test -->
                 <ref bean="checkPublishable"/>
-                <ref bean="check_fixup_encmethod"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedTestAggregate"/>
