@@ -355,21 +355,6 @@
     
     
     <!--
-        uk_removeGatewayKeyName
-        
-        Remove the Athens gateway's KeyName wherever it appears.
-    -->
-    <bean id="uk_removeGatewayKeyName" parent="XSLTransformationStage"
-        p:id="uk_removeGatewayKeyName">
-        <property name="XSLResource">
-            <bean parent="ClasspathResource">
-                <constructor-arg value="uk/remove_gw_keyname.xsl"/>
-            </bean>
-        </property>
-    </bean>
-    
-    
-    <!--
         uk_stripAdminContacts
         
         Remove any md:ContactPerson elements with contactType of "administrative".
@@ -618,7 +603,6 @@
         <property name="stages">
             <list>
                 <ref bean="assemble"/>
-                <ref bean="uk_removeGatewayKeyName"/>
                 <ref bean="uk_generateStatistics"/>
                 <ref bean="uk_serializeStatistics"/>
             </list>
