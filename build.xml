@@ -1012,6 +1012,15 @@
     </target>
     
     <!--
+        flow.verify.cobweb
+        
+        Verify the COBWEB metadata. Callable from Jenkins.
+    -->
+	<target name="flow.verify.cobweb">
+		   <CHANNEL.do verb="importProduction" channel="int_cobweb"/>
+	</target>
+
+	<!--
         flow.verifyEdugain.input
         
         Verify the eduGAIN entities from a particular channel.
