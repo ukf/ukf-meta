@@ -577,7 +577,7 @@
     <bean id="removeEmptyExtensions" parent="EmptyContainerStrippingStage"
         p:id="removeEmptyExtensions"
         p:elementName="Extensions"
-        p:elementNamespace="urn:oasis:names:tc:SAML:2.0:metadata"/>
+        p:elementNamespace-ref="md_namespace"/>
     
     <!--
         Beans to strip out selected SAML metadata elements.
@@ -727,7 +727,7 @@
     <bean id="stripKeyNames" parent="ElementStrippingStage"
         p:id="stripKeyNames"
         p:elementName="KeyName"
-        p:elementNamespace="http://www.w3.org/2000/09/xmldsig#"/>
+        p:elementNamespace-ref="ds_namespace"/>
     
     
     
