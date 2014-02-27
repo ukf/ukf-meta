@@ -43,6 +43,17 @@
         </property>
     </bean>
     
+    <bean id="verifyProduction" parent="SimplePipeline"
+        p:id="verifyProduction">
+        <property name="stages">
+            <list>
+                <ref bean="int_cobweb_productionEntities"/>
+                <ref bean="standardImportActions"/>
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+    
     <bean id="importProductionRaw" parent="SimplePipeline"
         p:id="importProductionRaw">
         <property name="stages">

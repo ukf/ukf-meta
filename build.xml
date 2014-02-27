@@ -1017,7 +1017,7 @@
         Verify the COBWEB metadata. Callable from Jenkins.
     -->
 	<target name="flow.verify.cobweb">
-		   <CHANNEL.do verb="importProduction" channel="int_cobweb"/>
+		   <CHANNEL.do verb="verifyProduction" channel="int_cobweb"/>
 	</target>
 
 	<!--
