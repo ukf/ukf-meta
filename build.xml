@@ -756,7 +756,7 @@
 		<SIGN.uk i="${md.export.unsigned}" o="${md.export.signed}" digest="SHA-256"/>
 
 		<echo>Signing UK fallback metadata.</echo>
-		<SIGN.uk i="${md.back.unsigned}" o="${md.back.signed}" digest="SHA-1"/>
+		<SIGN.uk i="${md.back.unsigned}" o="${md.back.signed}" digest="SHA-256"/>
 		
 		<echo>Generated signed UK metadata.</echo>
 	</target>
