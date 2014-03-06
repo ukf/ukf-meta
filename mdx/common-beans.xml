@@ -223,6 +223,10 @@
     <bean id="EntityRegistrationAuthorityFilterStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.EntityRegistrationAuthorityFilterStage"/>
     
+    <!-- *** Parent beans for Shibboleth MDA components. *** -->
+
+    <bean id="EntityFilterStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.EntityFilterStage"/>
 
     <!-- *** Parent beans for ukf-mda. *** -->
     

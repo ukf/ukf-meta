@@ -66,14 +66,21 @@
         </property>
     </bean>
     
+    <!--
+        verify
+        
+        Verifies that entities being imported from eduGAIN match our checks.
+        Intended to be run from Jenkins once a week. Errors on the verification
+        blacklist are ignored, so that we only need to deal with each entity
+        entering an error state once.
+    -->
     <bean id="verify" parent="SimplePipeline"
         p:id="verify">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
-                <bean id="removeBlacklistedEntities" parent="stage_parent"
-                    class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
-                    p:id="us_incommon_pilot_filterEntities"
+                <bean id="removeBlacklistedEntities" parent="EntityFilterStage"
+                    p:id="removeBlacklistedEntities"
                     p:whitelistingEntities="false"
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
 
@@ -83,6 +90,42 @@
         </property>
     </bean>
 
+    <!--
+        verify.recovered
+        
+        Looks for eduGAIN entities which *were* in an error state, as shown by
+        their inclusion in our verification blacklist, but have now recovered.
+    -->
+    <bean id="verify.recovered" parent="SimplePipeline"
+        p:id="verify.recovered">
+        <property name="stages">
+            <list>
+                <ref bean="int_edugain_productionEntities"/>
+                
+                <!-- remove all entities which still have errors -->
+                <ref bean="standardImportActions"/>
+                <ref bean="errorRemover"/>
+                
+                <!-- remove all entities *other* than the ones in the blacklist -->
+                <bean id="removeAllButBlacklistedEntities" parent="EntityFilterStage"
+                    p:id="removeAllButBlacklistedEntities"
+                    p:whitelistingEntities="true"
+                    p:designatedEntities-ref="int_edugain_verify_blacklist"/>
+                
+                <!-- flag up any remaining entities -->
+                <bean id="check_recovered" parent="XSLValidationStage"
+                    p:id="check_recovered">
+                    <property name="XSLResource">
+                        <bean parent="FilesystemResource">
+                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_edugain/check_recovered.xsl"/>
+                        </bean>
+                    </property>
+                </bean>
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+    
     <!--
         verify.all
         
