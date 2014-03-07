@@ -280,6 +280,7 @@ while (<>) {
 				#
 				if ($notAfter =~ /(\d\d\d\d)/) {
 					my $year = $1;
+					$expiryYear = $year;
 					if ($year > $maxYear) {
 						$maxYear = $year;
 					}
@@ -480,6 +481,9 @@ while (<>) {
 		if ($hasKeyName && ($issuerCN =~ /(Global|Veri)Sign/)) {
 			warning("issuer \"$issuerCN\" to be retired; certificate expires $notAfter; remove KeyName?");
 			$issuerMark{$issuerCN} = '*';
+		}
+		if ($hasKeyName && ($expiryYear > 2014)) {
+			warning("expires $notAfter, which is later than 2014");
 		}
 
 		#
