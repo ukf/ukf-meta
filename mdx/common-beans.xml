@@ -781,7 +781,9 @@
         A list of all schema documents that we make common use of in SAML metadata.
     -->
     <util:list id="schemaResources">
-        <bean parent="FileSystemResource" c:resourcePath="#{ systemProperties['basedir'] }/xml/incommon-metadata.xsd"/>
+        <bean parent="FileSystemResource">
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/incommon-metadata.xsd"/>
+        </bean>
         <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/MetadataExchange.xsd"/>
         </bean>

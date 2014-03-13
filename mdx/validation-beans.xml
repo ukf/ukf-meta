@@ -363,7 +363,9 @@
     <bean id="check_hasreginfo" parent="XSLValidationStage"
         p:id="check_hasreginfo">
         <property name="XSLResource">
-            <bean parent="FileSystemResource" c:resourcePath="#{ systemProperties['rulesdir'] }/check_hasreginfo.xsl"/>
+            <bean parent="FileSystemResource">
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_hasreginfo.xsl"/>
+            </bean>
         </property>
     </bean>
     
@@ -616,7 +618,9 @@
     <bean id="check_incmd" parent="XSLValidationStage"
         p:id="check_incmd">
         <property name="XSLResource">
-            <bean parent="FileSystemResource" c:resourcePath="#{ systemProperties['rulesdir'] }/check_incmd.xsl"/>
+            <bean parent="FileSystemResource">
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_incmd.xsl"/>
+            </bean>
         </property>
     </bean>
     
