@@ -152,7 +152,7 @@
     <bean id="uk_processScopes" parent="XSLTransformationStage"
         p:id="uk_processScopes">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="uk/scopes.xsl"/>
             </bean>
         </property>
@@ -169,7 +169,7 @@
         
         A Resource referencing the members.xml document.
     -->
-    <bean id="uk_membersResource" parent="FilesystemResource">
+    <bean id="uk_membersResource" parent="FileSystemResource">
         <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
     </bean>
     
@@ -207,7 +207,7 @@
     <bean id="uk_fix_mailto" parent="XSLTransformationStage"
         p:id="uk_fix_mailto">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="uk/fix_mailto.xsl"/>
             </bean>
         </property>
@@ -225,7 +225,7 @@
     <bean id="uk_hide_idps" parent="XSLTransformationStage"
         p:id="uk_hide_idps">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="uk/hide_idps.xsl"/>
             </bean>
         </property>
@@ -240,7 +240,7 @@
     <bean id="check_ukreg" parent="XSLValidationStage"
         p:id="check_ukreg">
         <property name="XSLResource">
-            <bean parent="FilesystemResource">
+            <bean parent="FileSystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_ukreg.xsl"/>
             </bean>
         </property>
@@ -258,7 +258,7 @@
     <bean id="check_uk_expkeyname" parent="XSLValidationStage"
         p:id="check_uk_expkeyname">
         <property name="XSLResource">
-            <bean parent="FilesystemResource">
+            <bean parent="FileSystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_expkeyname.xsl"/>
             </bean>
         </property>
@@ -271,7 +271,7 @@
     <bean id="check_uk_keydesc_key" parent="XSLValidationStage"
         p:id="check_uk_keydesc_key">
         <property name="XSLResource">
-            <bean parent="FilesystemResource">
+            <bean parent="FileSystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_keydesc_key.xsl"/>
             </bean>
         </property>
@@ -284,7 +284,7 @@
     <bean id="check_uk_mdrps" parent="XSLValidationStage"
         p:id="check_uk_mdrps">
         <property name="XSLResource">
-            <bean parent="FilesystemResource">
+            <bean parent="FileSystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_mdrps.xsl"/>
             </bean>
         </property>
@@ -297,7 +297,7 @@
     <bean id="check_uk_urlenc" parent="XSLValidationStage"
         p:id="check_uk_urlenc">
         <property name="XSLResource">
-            <bean parent="FilesystemResource">
+            <bean parent="FileSystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_urlenc.xsl"/>
             </bean>
         </property>
@@ -312,7 +312,7 @@
     <bean id="uk_trustRootsDocument" class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean">
         <property name="parserPool" ref="parserPool"/>
         <property name="documentResource">
-            <bean parent="FilesystemResource">
+            <bean parent="FileSystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust-roots.xml"/>
             </bean>
         </property>
@@ -327,7 +327,7 @@
     <bean id="uk_addTrustRoots" parent="XSLTransformationStage"
         p:id="uk_addTrustRoots">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="uk/trust-roots.xsl"/>
             </bean>
         </property>
@@ -347,7 +347,7 @@
     <bean id="uk_processFragment" parent="XSLTransformationStage"
         p:id="uk_processFragment">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="uk/fragment.xsl"/>
             </bean>
         </property>
@@ -479,7 +479,7 @@
     <bean id="uk_stripExtensions" parent="XSLTransformationStage"
         p:id="uk_stripExtensions">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="uk/strip_extensions.xsl"/>
             </bean>
         </property>
@@ -504,7 +504,7 @@
     <bean id="uk_normaliseNamespaces" parent="XSLTransformationStage"
         p:id="uk_normaliseNamespaces">
         <property name="XSLResource">
-            <bean parent="FilesystemResource">
+            <bean parent="FileSystemResource">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_uk.xsl"/>
             </bean>
         </property>
@@ -579,7 +579,7 @@
     <bean id="uk_generateStatistics" parent="XSLTransformationStage"
         p:id="uk_generateStatistics">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="uk/statistics.xsl"/>
             </bean>
         </property>

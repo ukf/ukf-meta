@@ -116,7 +116,7 @@
                 <bean id="check_recovered" parent="XSLValidationStage"
                     p:id="check_recovered">
                     <property name="XSLResource">
-                        <bean parent="FilesystemResource">
+                        <bean parent="FileSystemResource">
                             <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_edugain/check_recovered.xsl"/>
                         </bean>
                     </property>

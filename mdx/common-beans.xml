@@ -27,6 +27,18 @@
     <bean id="QName" abstract="true" class="javax.xml.namespace.QName"/>
     
     <!--
+        File system and class path Resource parent shorthand beans.
+        
+        These are currently defined as Shibboleth resources, but will become
+        Spring resources in Shibboleth MDA 0.9. The parent beans are named
+        after the Spring Resource classes to ease migration later.
+    -->
+    <bean id="ClassPathResource" abstract="true" parent="component_parent"
+        class="net.shibboleth.utilities.java.support.resource.ClasspathResource"/>
+    <bean id="FileSystemResource" abstract="true" parent="component_parent"
+        class="net.shibboleth.utilities.java.support.resource.FilesystemResource"/>
+    
+    <!--
         Shibboleth-defined Resource class parent bean.
         
         Note: this is named for the Spring-derived but Shibboleth-defined Resource
@@ -43,22 +55,6 @@
     -->
     <bean id="component_parent" abstract="true" init-method="initialize"/>
     
-    <!--
-        ClasspathResource
-        
-        Parent for all classpath resource beans.
-    -->
-    <bean id="ClasspathResource" abstract="true" parent="component_parent"
-        class="net.shibboleth.utilities.java.support.resource.ClasspathResource"/>
-    
-    <!--
-        FilesystemResource
-        
-        Parent for all file system resource beans.
-    -->
-    <bean id="FilesystemResource" abstract="true" parent="component_parent"
-        class="net.shibboleth.utilities.java.support.resource.FilesystemResource"/>
-
     <!--
         SimplePipeline
         
@@ -393,7 +389,7 @@
     <bean id="normaliseNamespaces" parent="XSLTransformationStage"
         p:id="normaliseNamespaces">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="ns_norm.xsl"/>
             </bean>
         </property>
@@ -673,7 +669,7 @@
     -->
     <bean id="default_regauth_parent" abstract="true" parent="XSLTransformationStage">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="default_regauth.xsl"/>
             </bean>
         </property>
@@ -702,7 +698,7 @@
     <bean id="stripAAMDUI" parent="XSLTransformationStage"
         p:id="stripAAMDUI">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="strip-aa-mdui.xsl"/>
             </bean>
         </property>
@@ -785,74 +781,74 @@
         A list of all schema documents that we make common use of in SAML metadata.
     -->
     <util:list id="schemaResources">
-        <bean parent="FilesystemResource" c:resourcePath="#{ systemProperties['basedir'] }/xml/incommon-metadata.xsd"/>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource" c:resourcePath="#{ systemProperties['basedir'] }/xml/incommon-metadata.xsd"/>
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/MetadataExchange.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-assertion-2.0.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-metadata-2.0.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/shibboleth-metadata-1.0.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-metadata-attr.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-request-initiation.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-holder-of-key-browser-sso.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-idp-discovery.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-algsupport-v1.0.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-ui-v1.0.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/uk-fed-label.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-addr.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-authorization.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-federation.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-securitypolicy-1.2.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema-11.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xml.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig-core-schema.xsd"/>
         </bean>
-        <bean parent="FilesystemResource">
+        <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig11-schema.xsd"/>
         </bean>
     </util:list>
@@ -877,7 +873,7 @@
     <bean id="stripComments" parent="XSLTransformationStage"
         p:id="stripComments">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="strip-comments.xsl"/>
             </bean>
         </property>
@@ -921,7 +917,7 @@
     <bean id="cleanImport" parent="XSLTransformationStage"
         p:id="cleanImport">
         <property name="XSLResource">
-            <bean parent="ClasspathResource">
+            <bean parent="ClassPathResource">
                 <constructor-arg value="clean-import.xsl"/>
             </bean>
         </property>
