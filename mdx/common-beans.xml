@@ -779,78 +779,108 @@
         schemaResources
         
         A list of all schema documents that we make common use of in SAML metadata.
+        
+        The schemas are organised such that each schema appears before any of the schemas importing it,
+        so that the parser is not required to explicitly resolve any imports.
     -->
     <util:list id="schemaResources">
         <bean parent="FileSystemResource">
+            <!-- no imports -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/incommon-metadata.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/MetadataExchange.xsd"/>
+            <!-- no imports -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xml.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+            <!-- no imports -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig-core-schema.xsd"/>
+        </bean>
+        <bean parent="FileSystemResource">
+            <!-- imports xmldsig-core-schema.xsd -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema.xsd"/>
+        </bean>
+        <bean parent="FileSystemResource">
+            <!-- imports xmldsig-core-schema.xsd, xenc-schema.xsd -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-assertion-2.0.xsd"/>
+        </bean>
+        <bean parent="FileSystemResource">
+            <!-- imports xmldsig-core-schema.xsd, xenc-schema.xsd, saml-schema-assertion-2.0.xsd, xml.xsd -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-metadata-2.0.xsd"/>
+        </bean>
+        <bean parent="FileSystemResource">
+            <!-- no imports -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-addr.xsd"/>
+        </bean>
+        <bean parent="FileSystemResource">
+            <!-- imports ws-addr.xsd -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-securitypolicy-1.2.xsd"/>
+        </bean>
+        <bean parent="FileSystemResource">
+            <!-- no imports -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/MetadataExchange.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!-- imports oasis-200401-wss-wssecurity-utility-1.0.xsd, xml.xsd, xmldsig-core-schema.xsd -->
+            <constructor-arg value="#{ systemProperties['basedir'] }/xml/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+        </bean>
+        <bean parent="FileSystemResource">
+            <!-- imports saml-schema-metadata-2.0.xsd, xml.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-metadata-rpi-v1.0.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-assertion-2.0.xsd"/>
-        </bean>
-        <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/saml-schema-metadata-2.0.xsd"/>
-        </bean>
-        <bean parent="FileSystemResource">
+            <!-- imports xmldsig-core-schema.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/shibboleth-metadata-1.0.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!-- imports saml-schema-assertion-2.0.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-metadata-attr.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!-- imports saml-schema-metadata-2.0.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-request-initiation.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!-- no imports -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-holder-of-key-browser-sso.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!-- imports saml-schema-metadata-2.0.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-idp-discovery.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!-- no imports -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-algsupport-v1.0.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!-- imports saml-schema-metadata-2.0.xsd, xml.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/sstc-saml-metadata-ui-v1.0.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!-- no imports -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/uk-fed-label.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-addr.xsd"/>
-        </bean>
-        <bean parent="FileSystemResource">
+            <!-- imports xenc-schema.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-authorization.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
+            <!--
+                Imports oasis-200401-wss-wssecurity-secext-1.0.xsd, oasis-200401-wss-wssecurity-utility-1.0.xsd,
+                ws-addr.xsd, MetadataExchange.xsd, saml-schema-metadata-2.0.xsd, ws-securitypolicy-1.2.xsd,
+                ws-authorization.xsd.
+            -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-federation.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/ws-securitypolicy-1.2.xsd"/>
-        </bean>
-        <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema.xsd"/>
-        </bean>
-        <bean parent="FileSystemResource">
+            <!-- imports xmldsig-core-schema.xsd, xenc-schema.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xenc-schema-11.xsd"/>
         </bean>
         <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xml.xsd"/>
-        </bean>
-        <bean parent="FileSystemResource">
-            <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig-core-schema.xsd"/>
-        </bean>
-        <bean parent="FileSystemResource">
+            <!-- imports xmldsig-core-schema.xsd -->
             <constructor-arg value="#{ systemProperties['basedir'] }/xml/xmldsig11-schema.xsd"/>
         </bean>
     </util:list>
