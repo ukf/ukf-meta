@@ -18,7 +18,7 @@
     <bean id="jp_gakunin_productionAggregate" parent="DOMResourceSourceStage"
         p:id="jp_gakunin_productionAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://metadata.gakunin.nii.ac.jp/gakunin-metadata.xml"/>
             </bean>

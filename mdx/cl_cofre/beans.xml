@@ -26,7 +26,7 @@
     <bean id="cl_cofre_edugainAggregate" parent="DOMResourceSourceStage"
         p:id="cl_cofre_edugainAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="cl_cofre_edugainAggregate_url"/>
             </bean>

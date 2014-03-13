@@ -27,6 +27,15 @@
     <bean id="QName" abstract="true" class="javax.xml.namespace.QName"/>
     
     <!--
+        Shibboleth-defined Resource class parent bean.
+        
+        Note: this is named for the Spring-derived but Shibboleth-defined Resource
+        class that will be included in Shibboleth MDA 0.9, to simplify migration.
+    -->
+    <bean id="HTTPResource" abstract="true"
+        class="net.shibboleth.utilities.java.support.httpclient.HttpResource"/>
+
+    <!--
         component_parent
         
         Parent for anything based on the component system.

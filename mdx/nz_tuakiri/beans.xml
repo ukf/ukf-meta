@@ -18,7 +18,7 @@
     <bean id="nz_tuakiri_productionAggregate" parent="DOMResourceSourceStage"
         p:id="nz_tuakiri_productionAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="http://directory.test.tuakiri.ac.nz/metadata/tuakiri-test-metadata-signed.xml"/>
             </bean>

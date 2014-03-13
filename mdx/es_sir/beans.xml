@@ -28,7 +28,7 @@
     <bean id="es_sir_productionAggregate" parent="DOMResourceSourceStage"
         p:id="es_sir_productionAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="es_sir_productionAggregate_url"/>
             </bean>
@@ -41,7 +41,7 @@
     <bean id="es_sir_edugainAggregate" parent="DOMResourceSourceStage"
         p:id="es_sir_edugainAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="es_sir_edugainAggregate_url"/>
             </bean>

@@ -28,7 +28,7 @@
     <bean id="lv_laife_productionAggregate" parent="DOMResourceSourceStage"
         p:id="lv_laife_productionAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="lv_laife_productionAggregate_url"/>
             </bean>
@@ -41,7 +41,7 @@
     <bean id="lv_laife_edugainAggregate" parent="DOMResourceSourceStage"
         p:id="lv_laife_edugainAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"    ref="lv_laife_edugainAggregate_url"/>
             </bean>

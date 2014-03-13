@@ -18,7 +18,7 @@
     <bean id="si_arnes_productionAggregate" parent="DOMResourceSourceStage"
         p:id="si_arnes_productionAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="http://ds.aai.arnes.si/metadata/aai.arnes.si.signed.xml"/>
             </bean>

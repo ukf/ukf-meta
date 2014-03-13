@@ -46,7 +46,7 @@
     <bean id="uk_exportAggregate" parent="DOMResourceSourceStage"
         p:id="uk_exportAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" ref="uk_exportAggregate_url"/>        
             </bean>
@@ -60,7 +60,7 @@
     <bean id="uk_productionAggregate" parent="DOMResourceSourceStage"
         p:id="uk_productionAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" ref="uk_productionAggregate_url"/>        
             </bean>

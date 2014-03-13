@@ -18,7 +18,7 @@
     <bean id="ie_edugate_exportAggregate" parent="DOMResourceSourceStage"
         p:id="ie_edugate_exportAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://edugate.heanet.ie/edugate-ukfed-signed.xml"/>        
             </bean>
@@ -31,7 +31,7 @@
     <bean id="ie_edugate_productionAggregate" parent="DOMResourceSourceStage"
         p:id="ie_edugate_productionAggregate">
         <property name="DOMResource">
-            <bean class="net.shibboleth.utilities.java.support.httpclient.HttpResource">
+            <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" value="https://edugate.heanet.ie/edugate-metadata-signed.xml"/>        
             </bean>
