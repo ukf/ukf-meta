@@ -50,7 +50,7 @@
     <!--
         component_parent
         
-        Parent for anything based on the component system.
+        Parent for anything based on the Shibboleth component system.
         These all require initialization before use.
     -->
     <bean id="component_parent" abstract="true" init-method="initialize"/>
@@ -200,16 +200,6 @@
     </bean>
     
     <!--
-        PipelineMergeStage
-        
-        Parent for merge stages.  Defaults strategy to deduplication.
-    -->
-    <bean id="PipelineMergeStage" abstract="true" parent="stage_parent"
-        class="net.shibboleth.metadata.pipeline.PipelineMergeStage">
-        <property name="collectionMergeStrategy" ref="deduplicateMergeStrategy"/>
-    </bean>
-    
-    <!--
         PipelineDemultiplexerStage
         
         Parent for demultiplexer stages.  Defaults to waiting for pipelines
@@ -233,6 +223,12 @@
     <bean id="EntityFilterStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.EntityFilterStage"/>
 
+    <bean id="PipelineMergeStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.PipelineMergeStage"/>
+
+    <bean id="PipelineMergeStage.deduplicate" abstract="true" parent="PipelineMergeStage"
+        p:collectionMergeStrategy-ref="deduplicateMergeStrategy"/>
+    
     <!-- *** Parent beans for ukf-mda. *** -->
     
     <bean id="ElementWhitespaceTrimmingStage" abstract="true" parent="stage_parent"

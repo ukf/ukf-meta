@@ -897,7 +897,7 @@
                     Merge in entities from production metadata exchange sources.
                 -->
                 
-                <bean id="mergeProductionMDXEntities" parent="PipelineMergeStage"
+                <bean id="mergeProductionMDXEntities" parent="PipelineMergeStage.deduplicate"
                     p:id="mergeProductionMDXortedEntities">
                     <property name="mergedPipelines">
                         <list>
@@ -954,7 +954,7 @@
                     Merge in entities from pre-production metadata exchange sources.
                 -->
 
-                <bean id="mergePreproductionMDXEntities" parent="PipelineMergeStage"
+                <bean id="mergePreproductionMDXEntities" parent="PipelineMergeStage.deduplicate"
                     p:id="mergePreproductionMDXEntities">
                     <property name="mergedPipelines">
                         <list>
