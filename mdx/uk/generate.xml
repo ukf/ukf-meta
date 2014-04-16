@@ -222,7 +222,7 @@
     -->
     <bean id="removeBlacklistedEntities" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
-        p:id="us_incommon_pilot_filterEntities"
+        p:id="removeBlacklistedEntities"
         p:whitelistingEntities="false"
         p:designatedEntities-ref="importEntityBlacklist"/>
 
