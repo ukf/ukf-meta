@@ -36,6 +36,20 @@
         -->
         <value>https://lu-idp.lu.lv</value>
         
+        <!--
+            Temporary mitigation of Heartbleed vulnerability 2014-04-16.
+            
+            Remove eduGAIN entities that are still known to be vulnerable.
+        -->
+        <value>https://butare.ifrn.edu.br/idp/shibboleth</value>
+        <value>https://cafe.ifb.edu.br/idp/shibboleth</value>
+        <value>https://cafe.uesb.br/idp/shibboleth</value>
+        <value>https://dourado.ufs.br/idp/shibboleth</value>
+        <value>https://federacao.ifpi.edu.br/idp/shibboleth</value>
+        <value>https://idp.ifpb.edu.br/idp/shibboleth</value>
+        <value>https://marte.ifsertao-pe.edu.br/idp/shibboleth</value>
+        <value>https://shibboleth-idp.dti.ufv.br/idp/shibboleth</value>
+        
     </util:set>
     
 </beans>
