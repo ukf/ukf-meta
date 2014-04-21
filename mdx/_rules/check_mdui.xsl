@@ -18,6 +18,7 @@
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+	xmlns:mdxURL="xalan://uk.ac.sdss.xalan.md.URLchecker"
 	xmlns:set="http://exslt.org/sets"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
@@ -188,6 +189,21 @@
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:if>
+	</xsl:template>
+	
+	<!--
+		Section 2.1.6 Element <mdui:InformationURL>
+		
+		Require that the URL is valid.
+	-->
+	<xsl:template match="md:InformationURL[mdxURL:invalidURL(.)]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:value-of select='local-name()'/>
+				<xsl:text> is not a valid URL: </xsl:text>
+				<xsl:value-of select="mdxURL:whyInvalid(.)"/>
+			</xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 	
 	<!--
