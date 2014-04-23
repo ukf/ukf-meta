@@ -72,6 +72,21 @@
 	<!--
 		Section 2.1.1
 		
+		registrationInstant values MUST be expressed in the UTC timezone using the 'Z' timezone identifier.
+	-->
+	<xsl:template match="mdrpi:RegistrationInfo[@registrationInstant]
+		[substring(@registrationInstant, string-length(@registrationInstant)) != 'Z']">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>registrationInstant does not end with 'Z': </xsl:text>
+				<xsl:value-of select="@registrationInstant"/>
+			</xsl:with-param>
+		</xsl:call-template>        
+	</xsl:template>
+	
+	<!--
+		Section 2.1.1
+		
 		RegistrationPolicy elements are required to have unique xml:lang values within a given container.
 	-->
 	<xsl:template match="mdrpi:RegistrationInfo">
