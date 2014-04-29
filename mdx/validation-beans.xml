@@ -304,6 +304,26 @@
     </bean>
     
     <!--
+        ***************************************************
+        ***                                             ***
+        ***   M D A T T R   S P E C I F I C A T I O N   ***
+        ***                                             ***
+        ***************************************************
+    -->
+
+    <!--
+        check_mdattr
+    -->
+    <bean id="check_mdattr" parent="XSLValidationStage"
+        p:id="check_mdattr">
+        <property name="XSLResource">
+            <bean parent="FileSystemResource">
+                <constructor-arg value="#{ systemProperties['rulesdir'] }/check_mdattr.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         *************************************************
         ***                                           ***
         ***   M D R P I   S P E C I F I C A T I O N   ***
@@ -760,6 +780,7 @@
                 <ref bean="check_idpdisc"/>
                 <ref bean="check_incmd"/>
                 <ref bean="check_init"/>
+                <ref bean="check_mdattr"/>
                 <ref bean="check_mdiop"/>
                 <ref bean="check_mdrpi"/>
                 <ref bean="check_mdui"/>
