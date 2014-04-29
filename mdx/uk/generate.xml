@@ -309,6 +309,7 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
+                <ref bean="stripMdattrNamespace"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
@@ -358,6 +359,7 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
+                <ref bean="stripMdattrNamespace"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_finaliseProduction"/>
@@ -540,6 +542,7 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
+                <ref bean="stripMdattrNamespace"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="removeEmptyExtensions"/>
@@ -604,6 +607,7 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
+                <ref bean="stripMdattrNamespace"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseTest"/>
@@ -673,6 +677,7 @@
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
+                <ref bean="stripMdattrNamespace"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
