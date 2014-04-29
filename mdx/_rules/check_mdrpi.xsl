@@ -33,7 +33,7 @@
 		RegistrationInfo MUST appear within the Extensions of either
 		EntitiesDescriptor or EntityDescriptor.
 	-->
-	<xsl:template match="md:RegistrationInfo[not(parent::md:Extensions)]">
+	<xsl:template match="mdrpi:RegistrationInfo[not(parent::md:Extensions)]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">RegistrationInfo must only appear within an Extensions element</xsl:with-param>
 		</xsl:call-template>
