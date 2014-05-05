@@ -26,17 +26,6 @@
     <util:set id="importEntityBlacklist">
         
         <!--
-            Problems in int_edugain metadata updated 2013-09-10.
-        -->
-        <!--
-            Duplicate IdP display names.
-            
-            If we left this to normal processing, both entities would be rejected.
-            By blacklisting one, we allow the other to be processed normally.
-        -->
-        <value>https://lu-idp.lu.lv</value>
-        
-        <!--
             Temporary mitigation of Heartbleed vulnerability 2014-04-16 (Bugzilla 1098).
             
             Remove eduGAIN entities that are still known to be vulnerable.
