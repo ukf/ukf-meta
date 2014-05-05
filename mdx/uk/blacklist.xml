@@ -25,14 +25,6 @@
     -->
     <util:set id="importEntityBlacklist">
         
-        <!--
-            Temporary mitigation of Heartbleed vulnerability 2014-04-16 (Bugzilla 1098).
-            
-            Remove eduGAIN entities that are still known to be vulnerable.
-        -->
-        <value>https://butare.ifrn.edu.br/idp/shibboleth</value>
-        <value>https://shibboleth-idp.dti.ufv.br/idp/shibboleth</value>
-        
     </util:set>
     
 </beans>
