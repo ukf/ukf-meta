@@ -13,6 +13,11 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
     
     <!--
+        Import additional channel-local beans.
+    -->
+    <import resource="classpath:int_edugain/entity-blacklist.xml"/>
+    
+    <!--
         Import eduGAIN participant beans for namespace stripping stages.
     -->
     <import resource="classpath:cz_eduid/beans.xml"/>
@@ -74,7 +79,15 @@
         p:id="int_edugain_checkSignature">
         <property name="verificationCertificate" ref="int_edugain_signingCertificate"/>
     </bean>
-    
+
+    <!--
+        Remove blacklisted entities.
+    -->
+    <bean id="int_edugain_removeBlacklistedEntities" parent="EntityFilterStage"
+        p:id="int_edugain_removeBlacklistedEntities"
+        p:whitelistingEntities="false"
+        p:designatedEntities-ref="int_edugain_entity_blacklist"/>
+
     <!--
         Fetch the production entities as a collection.
     -->
@@ -95,6 +108,8 @@
                 
                 <ref bean="disassemble"/>
                 
+                <ref bean="int_edugain_removeBlacklistedEntities"/>
+
                 <!--
                     Strip participant-specific namespaces.
                 -->
@@ -130,6 +145,8 @@
                 
                 <ref bean="disassemble"/>
 
+                <ref bean="int_edugain_removeBlacklistedEntities"/>
+                
                 <!--
                     Strip participant-specific namespaces.
                 -->
