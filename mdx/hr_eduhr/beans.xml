@@ -52,15 +52,6 @@
     </bean>
 
     <!--
-        hr_eduhr_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="hr_eduhr_registrar" class="java.lang.String">
-        <constructor-arg value="http://www.aaiedu.hr"/>
-    </bean>
-    
-    <!--
         hr_eduhr_check_regauth
         
         Any registrationAuthority already present on an entity in this

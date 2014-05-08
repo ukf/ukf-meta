@@ -405,6 +405,11 @@
     <import resource="classpath:validation-beans.xml"/>
     
     <!--
+        Federation registrationAuthority URIs.
+    -->
+    <bean id="hr_eduhr_registrar" parent="String" c:_0="http://www.srce.hr"/>
+    
+    <!--
         identificationStrategy
         
         Standard item identifier strategy.
@@ -429,7 +434,7 @@
                 <entry key="http://cafe.rnp.br"               value="BR"/>
                 <entry key="http://www.canarie.ca"            value="CA"/>
                 <entry key="http://cofre.reuna.cl"            value="CL"/>
-                <entry key="http://www.srce.hr"               value="HR"/>
+                <entry key-ref="hr_eduhr_registrar"           value="HR"/>
                 <entry key="http://www.eduid.cz/"             value="CZ"/>
                 <entry key="https://www.wayf.dk"              value="DK"/>
                 <entry key="http://www.csc.fi/haka"           value="FI"/>
