@@ -607,7 +607,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="stripMdattrNamespace"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseTest"/>
