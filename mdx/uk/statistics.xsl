@@ -1215,6 +1215,10 @@
                     OrganizationDisplayName element, and without parentheses if it is taken from
                     MDUI metadata.
                 </p>
+                <p>
+                    The software used by the entity, if known, is included at the end of the listing within
+                    brackets [like this].
+                </p>
                 <ul>
                     <xsl:for-each select="$sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
                         'urn:oasis:names:tc:SAML:2.0:protocol'))]]">
@@ -1234,6 +1238,7 @@
                                     <xsl:text>)</xsl:text>
                                 </xsl:otherwise>
                             </xsl:choose>
+                            <xsl:apply-templates select="md:Extensions/ukfedlabel:Software" mode="short"/>
                         </li>
                     </xsl:for-each>
                 </ul>
