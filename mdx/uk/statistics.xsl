@@ -139,6 +139,7 @@
                     <li><p><a href="#shib13">Shibboleth 1.3 Remnants</a></p></li>
                     <li><p><a href="#mdui">Entities with mdui:UIInfo support</a></p></li>
                     <li><p><a href="#export">Entities in Export Aggregate</a></p></li>
+                    <li><p><a href="#nosaml2">Entities Without SAML 2.0 Support</a></p></li>
                 </ul>
                 
 
@@ -1203,6 +1204,46 @@
                     </ul>
                 </xsl:if>
                 
+                <!--
+                    *****************************************************************************
+                    ***                                                                       ***
+                    ***   E N T I T I E S   W I T H O U T   S A M L   2 . 0   S U P P O R T   ***
+                    ***                                                                       ***
+                    *****************************************************************************
+                -->
+                <h2><a name="nosaml2">Entities Without SAML 2.0 Support</a></h2>
+                <h3>Service Providers Without SAML 2.0 Support</h3>
+                <p>
+                    This list shows the entity ID, entity owner and display name for all service provider
+                    entities which do not declare support for the SAML 2.0 protocol. It is sorted by
+                    entity owner. The display name is shown in parentheses if it is taken from the
+                    OrganizationDisplayName element, and without parentheses if it is taken from
+                    MDUI metadata.
+                </p>
+                <ul>
+                    <xsl:for-each select="$sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                        'urn:oasis:names:tc:SAML:2.0:protocol'))]]">
+                        <xsl:sort select="descendant::md:OrganizationName"/>
+                        <li>
+                            <xsl:value-of select="@ID"/>
+                            <xsl:text>: </xsl:text>
+                            <xsl:value-of select="descendant::md:OrganizationName"/>
+                            <xsl:text>: </xsl:text>
+                            <xsl:choose>
+                                <xsl:when test="descendant::mdui:DisplayName">
+                                    <xsl:value-of select="descendant::mdui:DisplayName"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:text>(</xsl:text>
+                                    <xsl:value-of select="descendant::md:OrganizationDisplayName"/>
+                                    <xsl:text>)</xsl:text>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+
+
             </body>
         </html>
     </xsl:template>
