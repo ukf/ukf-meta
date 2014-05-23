@@ -1186,19 +1186,14 @@
                                         <xsl:text>)</xsl:text>
                                     </xsl:otherwise>
                                 </xsl:choose>
-                                <ul>
-                                    <li>
-                                        <xsl:choose>
-                                            <xsl:when test="descendant::*[contains(@protocolSupportEnumeration,
-                                                'urn:oasis:names:tc:SAML:2.0:protocol')]">
-                                                Supports SAML 2.0
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                No SAML 2.0 support
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </li>
-                                </ul>
+                                <xsl:if test="not(descendant::*[contains(@protocolSupportEnumeration,
+                                    'urn:oasis:names:tc:SAML:2.0:protocol')])">
+                                    <ul>
+                                        <li>
+                                            No SAML 2.0 support
+                                        </li>
+                                    </ul>                                    
+                                </xsl:if>
                             </li>
                         </xsl:for-each>
                     </ul>
