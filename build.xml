@@ -950,6 +950,7 @@
     	-->
     	<CHANNEL.do verb="importProduction" channel="no_feide"/>
     	<CHANNEL.do verb="importProduction" channel="nz_tuakiri"/>
+        <CHANNEL.do verb="importProduction" channel="pl_pionier"/>
     	<CHANNEL.do verb="importProduction" channel="se_swamid"/>
     	<CHANNEL.do verb="importProduction" channel="si_arnes"/>
         <CHANNEL.do verb="importProduction" channel="us_incommon"/>
@@ -980,6 +981,7 @@
     	<CHANNEL.do verb="importEdugain" channel="lv_laife"/>
     	<CHANNEL.do verb="importEdugain" channel="nl_surfnet"/>
     	<CHANNEL.do verb="importEdugain" channel="no_feide"/>
+    	<CHANNEL.do verb="importEdugain" channel="pl_pionier"/>
     	<CHANNEL.do verb="importEdugain" channel="se_swamid"/>
     </target>
 
@@ -1008,6 +1010,7 @@
     	<CHANNEL.do verb="importEdugainRaw" channel="lv_laife"/>
         <CHANNEL.do verb="importEdugainRaw" channel="nl_surfnet"/>
         <CHANNEL.do verb="importEdugainRaw" channel="no_feide"/>
+    	<CHANNEL.do verb="importEdugainRaw" channel="pl_pionier"/>
         <CHANNEL.do verb="importEdugainRaw" channel="se_swamid"/>
     </target>
     
@@ -1043,6 +1046,7 @@
     <target name="flow.verifyEdugain.inputs">
         <CHANNEL.do verb="verifyEdugain" channel="at_aconet"/>
     	<CHANNEL.do verb="verifyEdugain" channel="cl_cofre"/>
+    	<CHANNEL.do verb="verifyEdugain" channel="pl_pionier"/>
         <CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
     </target>
     
@@ -1094,6 +1098,7 @@
         <CHANNEL.do verb="importRaw" channel="nl_surfnet"/>
         <CHANNEL.do verb="importRaw" channel="no_feide"/>
         <CHANNEL.do verb="importRaw" channel="nz_tuakiri"/>
+		<CHANNEL.do verb="importRaw" channel="pl_pionier"/>
         <CHANNEL.do verb="importRaw" channel="se_swamid"/>
         <CHANNEL.do verb="importRaw" channel="si_arnes"/>
 		<CHANNEL.do verb="collect"   channel="uk"/>

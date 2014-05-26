@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Common beans for this channel.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+    
+    <!--
+        Location of various resources.
+    -->
+    <!-- production aggregate -->
+    <bean id="pl_pionier_productionAggregate_url" class="java.lang.String">
+        <constructor-arg value="http://aai.pionier.net.pl/pionierid.xml"/>
+    </bean>
+    <!-- eduGAIN export aggregate -->
+    <bean id="pl_pionier_edugainAggregate_url" class="java.lang.String">
+        <constructor-arg value="https://aai.pionier.net.pl/pionier-to-edugain.xml"/>
+    </bean>
+    
+    <!--
+        Fetch the production aggregate.
+    -->
+    <bean id="pl_pionier_productionAggregate" parent="DOMResourceSourceStage"
+        p:id="pl_pionier_productionAggregate">
+        <property name="DOMResource">
+            <bean parent="HTTPResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="pl_pionier_productionAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export aggregate.
+    -->
+    <bean id="pl_pionier_edugainAggregate" parent="DOMResourceSourceStage"
+        p:id="pl_pionier_edugainAggregate">
+        <property name="DOMResource">
+            <bean parent="HTTPResource">
+                <constructor-arg name="client" ref="httpClient"/>
+                <constructor-arg name="url"    ref="pl_pionier_edugainAggregate_url"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Federation signing certificate.
+    -->
+    <bean id="pl_pionier_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/pl_pionier/pionier.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        eduGAIN signing certificate.
+    -->
+    <bean id="pl_pionier_edugainCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+        <property name="certificateFile">
+            <bean class="java.io.File">
+                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/pl_pionier/edugain.crt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
+        Check signing signature.
+    -->
+    <bean id="pl_pionier_checkSignature" parent="XMLSignatureValidationStageSHA256"
+        p:id="pl_pionier_checkSignature">
+        <property name="verificationCertificate" ref="pl_pionier_signingCertificate"/>
+    </bean>
+    <bean id="pl_pionier_checkEdugainSignature" parent="XMLSignatureValidationStageSHA256"
+        p:id="pl_pionier_checkEdugainSignature">
+        <property name="verificationCertificate" ref="pl_pionier_edugainCertificate"/>
+    </bean>
+    
+    <!--
+        pl_pionier_registrar
+        
+        Unique ID for the registrar associated with this channel.
+    -->
+    <bean id="pl_pionier_registrar" class="java.lang.String">
+        <constructor-arg value="https://aai.pionier.net.pl"/>
+    </bean>
+    
+    <!--
+        pl_pionier_check_regauth
+        
+        Any registrationAuthority already present on an entity in this
+        channel must match the known registration authority value.
+    -->
+    <bean id="pl_pionier_check_regauth" parent="check_regauth_parent"
+        p:id="pl_pionier_check_regauth">
+        <property name="transformParameters">
+            <map>
+                <entry key="expectedAuthority" value-ref="pl_pionier_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
+        pl_pionier_default_regauth
+        
+        Provide a default registrationAuthority appropriate to
+        this channel.
+    -->
+    <bean id="pl_pionier_default_regauth" parent="default_regauth_parent"
+        p:id="pl_pionier_default_regauth">
+        <property name="transformParameters">
+            <map>
+                <entry key="defaultAuthority" value-ref="pl_pionier_registrar"/>
+            </map>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the production entities as a collection.
+    -->
+    <bean id="pl_pionier_productionEntities" parent="CompositeStage"
+        p:id="pl_pionier_productionEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="pl_pionier_productionAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="pl_pionier_checkProductionSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Fetch the eduGAIN export entities as a collection.
+    -->
+    <bean id="pl_pionier_edugainEntities" parent="CompositeStage"
+        p:id="pl_pionier_edugainEntities">
+        <property name="composedStages">
+            <list>
+                <ref bean="pl_pionier_edugainAggregate"/>
+                
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="pl_pionier_checkEdugainSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="disassemble"/>
+                
+                <ref bean="check_hasreginfo"/>
+                <ref bean="pl_pionier_check_regauth"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!--
+        Select primary export aggregate.
+    -->
+    <alias alias="pl_pionier_exportedAggregate" name="pl_pionier_edugainAggregate"/>
+    <alias alias="pl_pionier_exportedEntities"  name="pl_pionier_edugainEntities"/>
+</beans>
