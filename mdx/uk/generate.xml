@@ -676,7 +676,6 @@
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
-                <ref bean="stripMdattrNamespace"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="removeEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
