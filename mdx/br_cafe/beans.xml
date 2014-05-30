@@ -51,7 +51,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="br_cafe_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="br_cafe_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/br_cafe/metadata.crt"/>

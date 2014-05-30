@@ -51,7 +51,7 @@
     <!--
         Federation signing certificate.
     -->
-    <bean id="fi_haka_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="fi_haka_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fi_haka/haka-sign.csc.fi.pem"/>
@@ -71,7 +71,7 @@
     <!--
         eduGAIN signing certificate.
     -->
-    <bean id="fi_haka_edugainSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="fi_haka_edugainSigningCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fi_haka/edugain.crt"/>

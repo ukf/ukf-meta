@@ -36,7 +36,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="cl_cofre_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="cl_cofre_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/cl_cofre/metadata-signer.crt"/>

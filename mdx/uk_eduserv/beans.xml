@@ -28,7 +28,7 @@
     <!--
         Metadata signing certificate.
     -->
-    <bean id="uk_eduserv_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="uk_eduserv_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk_eduserv/metadata-signer.crt"/>

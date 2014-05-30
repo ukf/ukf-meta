@@ -35,7 +35,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="int_cobweb_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="int_cobweb_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_cobweb/cobweb.pem"/>

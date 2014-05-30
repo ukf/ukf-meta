@@ -51,7 +51,7 @@
     <!--
         Federation signing certificate.
     -->
-    <bean id="ch_switchaai_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="ch_switchaai_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ch_switchaai/metadata.crt"/>
@@ -62,7 +62,7 @@
     <!--
         Interfederation signing certificate.
     -->
-    <bean id="ch_switchaai_interfedSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="ch_switchaai_interfedSigningCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ch_switchaai/interfed.crt"/>

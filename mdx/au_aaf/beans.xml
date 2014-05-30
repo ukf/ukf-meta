@@ -28,7 +28,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="au_aaf_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="au_aaf_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/au_aaf/aaf-metadata-cert.pem"/>

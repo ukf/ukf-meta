@@ -67,7 +67,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="fr_renater_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="fr_renater_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fr_renater/metadata-federation-renater.crt"/>
@@ -87,7 +87,7 @@
     <!--
         eduGAIN signing certificate.
     -->
-    <bean id="fr_renater_edugainSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="fr_renater_edugainSigningCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fr_renater/renater-federation-metadata.crt"/>

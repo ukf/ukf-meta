@@ -53,7 +53,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="at_aconet_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="at_aconet_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/at_aconet/aconet-aai-metadata-signing.crt"/>

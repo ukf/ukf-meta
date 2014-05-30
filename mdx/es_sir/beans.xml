@@ -51,7 +51,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="es_sir_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="es_sir_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/es_sir/metadata-signer.crt"/>

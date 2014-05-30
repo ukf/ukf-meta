@@ -65,7 +65,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="no_feide_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="no_feide_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/no_feide/metadata.crt"/>

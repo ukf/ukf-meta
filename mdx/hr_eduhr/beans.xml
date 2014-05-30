@@ -35,7 +35,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="hr_eduhr_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="hr_eduhr_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/hr_eduhr/metadata.crt"/>

@@ -53,7 +53,7 @@
         
         This one is used to sign the eduGAIN aggregate.
     -->
-    <bean id="ca_caf_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="ca_caf_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ca_caf/metadata-signer.crt"/>
@@ -74,7 +74,7 @@
         
         This one is used to sign the production aggregate.
     -->
-    <bean id="ca_caf_cafShibSigningCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="ca_caf_cafShibSigningCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ca_caf/cafshib_metadata_verify.crt"/>

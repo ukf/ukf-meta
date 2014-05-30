@@ -51,7 +51,7 @@
     <!--
         Signing certificate.
     -->
-    <bean id="gr_grnet_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="gr_grnet_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/gr_grnet/wayf.grnet.gr.pem"/>

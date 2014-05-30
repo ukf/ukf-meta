@@ -53,7 +53,7 @@
     <!--
         Federation signing certificate.
     -->
-    <bean id="pl_pionier_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="pl_pionier_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/pl_pionier/pionier.crt"/>
@@ -64,7 +64,7 @@
     <!--
         eduGAIN signing certificate.
     -->
-    <bean id="pl_pionier_edugainCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="pl_pionier_edugainCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/pl_pionier/edugain.crt"/>

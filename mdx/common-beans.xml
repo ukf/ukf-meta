@@ -218,6 +218,20 @@
     <bean id="EntityRegistrationAuthorityFilterStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.EntityRegistrationAuthorityFilterStage"/>
     
+    <!-- *** Parent beans for Shibboleth spring-extensions factory beans. *** -->
+
+    <bean id="PrivateKeyFactoryBean" abstract="true"
+        class="net.shibboleth.ext.spring.factory.PrivateKeyFactoryBean"/>
+    
+    <bean id="PublicKeyFactoryBean" abstract="true"
+        class="net.shibboleth.ext.spring.factory.PublicKeyFactoryBean"/>
+    
+    <bean id="X509CertificateChainFactoryBean" abstract="true"
+        class="net.shibboleth.ext.spring.factory.X509CertificateChainFactoryBean"/>
+
+    <bean id="X509CertificateFactoryBean" abstract="true"
+        class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"/>
+
     <!-- *** Parent beans for Shibboleth MDA components. *** -->
 
     <bean id="EntityFilterStage" abstract="true" parent="stage_parent"

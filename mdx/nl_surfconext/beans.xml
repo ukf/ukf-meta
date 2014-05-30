@@ -23,7 +23,7 @@
     <!--
         Metadata signing certificate.
     -->
-    <bean id="nl_surfconext_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="nl_surfconext_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/nl_surfconext/metadata-signer.crt"/>

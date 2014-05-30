@@ -28,7 +28,7 @@
     <!--
         ARNES signing certificate.
     -->
-    <bean id="si_arnes_signingCertificate" class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean">
+    <bean id="si_arnes_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
                 <constructor-arg value="#{ systemProperties['basedir'] }/mdx/si_arnes/aai.arnes.si.crt"/>
