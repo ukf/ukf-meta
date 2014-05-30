@@ -8,6 +8,8 @@ Because these conventions have been developed over time, and are still being dev
 
 An underscore ('`_`') at the start of a directory name indicates that the directory is functional rather than containing a channel.
 
+Note that the `schema` directory is functional but does not follow this convention, instead following the convention established for classpath schema resources used by the Shibboleth project.
+
 ### OpenSSL Blacklists Directory
 
 The `_openssl_blacklists` directory holds a copy of the Debian weak key blacklists, extracted from Debian 7.2 "Wheezy". These blacklists are in OpenSSL format.
@@ -16,10 +18,14 @@ The `_openssl_blacklists` directory holds a copy of the Debian weak key blacklis
 
 The `_rules` subdirectory of `/mdx/` holds checking rulesets.
 
+### Schema Directory
+
+The `schema` subdirectory of `/mdx/` contains the XML schema files used to validate metadata. This directory name does not use the `'_'` convention but instead matches up with the conventional location for schemas used by the Shibboleth project.
+
 ## Channels
 
 Each directory under `/mdx/` whose name does not start with an underscore
-represents a source of metadata, referred to as a
+(and is not `schema`) represents a source of metadata, referred to as a
 channel. In most cases, a channel corresponds to a access management federation.
 
 Most channels are named in the form "*country*`_`*source*".  For example,
