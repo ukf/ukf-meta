@@ -633,7 +633,7 @@
         p:id="uk_finaliseExport">
         <property name="transformParameters">
             <map>
-                <entry key="extraText" value="Prototype export metadata; not for production use"/>
+                <entry key="extraText" value="Export metadata for use by partner federations"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
             </map>
         </property>
