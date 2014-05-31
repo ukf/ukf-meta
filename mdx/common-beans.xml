@@ -53,7 +53,8 @@
         Parent for anything based on the Shibboleth component system.
         These all require initialization before use.
     -->
-    <bean id="component_parent" abstract="true" init-method="initialize"/>
+    <bean id="component_parent" abstract="true"
+        init-method="initialize" destroy-method="destroy"/>
     
     <!--
         SimplePipeline
