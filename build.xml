@@ -428,7 +428,7 @@
         <MDNORM i="${xml.dir}/${md.test.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.export.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
-        <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf"/>
+        <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf" encoding="UTF-8"/>
 		
         <echo>Generated UK unsigned metadata.</echo>
 	</target>
@@ -658,7 +658,7 @@
 			</XMLSECTOOL>
 			
 			<!-- Force the output file to use Unix line endings -->
-			<fixcrlf file="${xml.dir}/@{o}" eol="lf"/>
+			<fixcrlf file="${xml.dir}/@{o}" eol="lf" encoding="UTF-8"/>
 
 		</sequential>
 	</macrodef>
@@ -851,7 +851,7 @@
         <delete file="${entities.dir}/imported.xml" quiet="true" verbose="false"/>
 		<CHANNEL.do channel="uk" verb="import.metadata"/>
 		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
-        <fixcrlf file="${entities.dir}/imported.xml"/>
+        <fixcrlf file="${entities.dir}/imported.xml" encoding="UTF-8"/>
 	</target>
 	
     <!--
@@ -1199,7 +1199,7 @@
 	-->
 	<target name="stats">
 		<CHANNEL.do channel="uk" verb="statistics"/>
-		<fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf"/>
+		<fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf" encoding="UTF-8"/>
 	</target>
 	
 	<!--
