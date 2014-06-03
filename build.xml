@@ -1377,4 +1377,13 @@
     	<echo>Check complete.</echo>
     </target>
     
+    <!--
+        echoproperties
+        
+        List all the properties ant is using.
+    -->
+    <target name="echoproperties">
+        <echoproperties/>
+    </target>
+
 </project>
