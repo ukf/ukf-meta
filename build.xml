@@ -286,6 +286,10 @@
 
 	<!--
 		Verify a metadata file held on the master distribution site.
+		
+		Verification is performed using only xmlsectool. This should be
+		used when compatibility with the Shibboleth 1.3 IdP is not a
+		concern.
 	-->
 	<macrodef name="VFY.remote">
 		<attribute name="i"/>
@@ -293,11 +297,6 @@
 			<echo>Verifying @{i}...</echo>
 			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
 			<get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
-			
-			<!--
-				Verify using metadatatool.
-			-->
-			<MDT.VFY.uk i="temp.xml"/>
 
 			<!--
 				Verify using xmlsectool.
@@ -311,16 +310,47 @@
 		</sequential>
 	</macrodef>
 	
+    <!--
+        Verify a metadata file held on the master distribution site.
+        
+        Verification is performed using both metadatatool and xmlsectool.
+        This should be used when the file being verified must be compatible
+        with the Shibboleth 1.3 IdP.
+    -->
+    <macrodef name="VFY.remote.both">
+        <attribute name="i"/>
+        <sequential>
+            <echo>Verifying @{i}...</echo>
+            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+            <get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
+            
+            <!--
+                Verify using metadatatool.
+            -->
+            <MDT.VFY.uk i="temp.xml"/>
+
+            <!--
+                Verify using xmlsectool.
+            -->
+            <XMLSECTOOL.VFY.uk i="temp.xml"/>
+            
+            <!--
+                Delete the temporary file.
+            -->
+            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+        </sequential>
+    </macrodef>
+    
 	<!--
 		Verify metadata files held on the master distribution site.
 	-->
 	<target name="verify.remote.metadata" depends="select.remote.host">
 		<echo>Verifying metadata held at ${remote.url}</echo>
-		<VFY.remote i="${md.prod.signed}"/>
-		<VFY.remote i="${md.wayf.signed}"/>
-		<VFY.remote i="${md.cdsall.signed}"/>
+		<VFY.remote.both i="${md.prod.signed}"/>
+		<VFY.remote.both i="${md.wayf.signed}"/>
+		<VFY.remote.both i="${md.cdsall.signed}"/>
 		<VFY.remote i="${md.test.signed}"/>
-		<VFY.remote i="${md.back.signed}"/>
+		<VFY.remote.both i="${md.back.signed}"/>
 		<VFY.remote i="${md.export.signed}"/>
 		<echo>Verification completed.</echo>
 	</target>
@@ -762,9 +792,12 @@
 	</target>
 	
 	<!--
-		Select the tool to verify UK federation metadata with.
+		Verify UK federation metadata with both verification tools.
+		
+		This should be used when the metadata needs to be compatible
+		with the Shibboleth 1.3 IdP.
 	-->
-	<macrodef name="VFY.uk">
+	<macrodef name="VFY.uk.both">
 		<attribute name="i"/>
 		<sequential>
 			<!--
@@ -785,22 +818,22 @@
 	-->
 	<target name="verify">
 		<echo>Verifying signed UK metadata.</echo>
-		<VFY.uk i="${md.prod.signed}"/>
+		<VFY.uk.both i="${md.prod.signed}"/>
 
 		<echo>Verifying signed UK WAYF metadata.</echo>
-		<VFY.uk i="${md.wayf.signed}"/>
+		<VFY.uk.both i="${md.wayf.signed}"/>
 
         <echo>Verifying signed UK CDS full metadata.</echo>
-        <VFY.uk i="${md.cdsall.signed}"/>
+        <VFY.uk.both i="${md.cdsall.signed}"/>
 
 		<echo>Verifying signed UK test metadata.</echo>
-		<VFY.uk i="${md.test.signed}"/>
+		<XMLSECTOOL.VFY.uk i="${md.test.signed}"/>
 
 		<echo>Verifying signed UK export metadata.</echo>
-		<VFY.uk i="${md.export.signed}"/>
+		<XMLSECTOOL.VFY.uk i="${md.export.signed}"/>
 		
 		<echo>Verifying signed UK fallback metadata.</echo>
-		<VFY.uk i="${md.back.signed}"/>
+		<VFY.uk.both i="${md.back.signed}"/>
 
 		<echo>Verification completed.</echo>
 	</target>
