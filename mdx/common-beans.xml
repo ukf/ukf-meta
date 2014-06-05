@@ -221,6 +221,10 @@
     
     <!-- *** Parent beans for Shibboleth spring-extensions factory beans. *** -->
 
+    <!-- anticipates name change in spring-extensions bundled with MDA 0.9 -->
+    <bean id="DOMDocumentFactoryBean" abstract="true"
+        class="net.shibboleth.ext.spring.factory.DomDocumentFactoryBean"/>
+    
     <bean id="PrivateKeyFactoryBean" abstract="true"
         class="net.shibboleth.ext.spring.factory.PrivateKeyFactoryBean"/>
     
