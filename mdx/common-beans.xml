@@ -427,7 +427,7 @@
         Federation registrationAuthority URIs.
     -->
     <bean id="hr_eduhr_registrar" parent="String" c:_0="http://www.srce.hr"/>
-    <bean id="il_iucc_registrar"  parent="String" c:_0="http://iif.iucc.ac.il"/>
+    <bean id="il_iif_registrar"   parent="String" c:_0="http://iif.iucc.ac.il"/>
     
     <!--
         identificationStrategy
@@ -478,7 +478,7 @@
                 <entry key="https://incommon.org"             value="US"/>
                 
                 <!-- eduGAIN candidates -->
-                <entry key-ref="il_iucc_registrar"            value="IL"/>
+                <entry key-ref="il_iif_registrar"             value="IL"/>
             </map>
         </property>
     </bean>
