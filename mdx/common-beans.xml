@@ -427,6 +427,7 @@
         Federation registrationAuthority URIs.
     -->
     <bean id="hr_eduhr_registrar" parent="String" c:_0="http://www.srce.hr"/>
+    <bean id="il_iucc_registrar"  parent="String" c:_0="http://iif.iucc.ac.il"/>
     
     <!--
         identificationStrategy
@@ -465,6 +466,7 @@
                 <entry key="http://www.idem.garr.it/"         value="IT"/>
                 <entry key="http://laife.lanet.lv/"           value="LV"/>
                 <entry key="http://feide.no/"                 value="NO"/>
+                <entry key="http://aai.pionier.net.pl"        value="PL"/>
                 <entry key="http://aai.arnes.si"              value="SI"/>
                 <entry key="http://www.rediris.es/"           value="ES"/>
                 <entry key="http://www.swamid.se/"            value="SE"/>
@@ -473,10 +475,10 @@
                 <entry key="http://ukfederation.org.uk"       value="UK"/>
                 
                 <!-- Joining eduGAIN -->
-                <entry key="http://aai.pionier.net.pl"        value="PL"/>
-                
-                <!-- not yet eduGAIN members -->
                 <entry key="https://incommon.org"             value="US"/>
+                
+                <!-- eduGAIN candidates -->
+                <entry key-ref="il_iucc_registrar"            value="IL"/>
             </map>
         </property>
     </bean>
