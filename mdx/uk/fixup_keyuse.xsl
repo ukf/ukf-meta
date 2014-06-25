@@ -16,7 +16,7 @@
 
 	
 	<!--
-		Patch any @use-less KeyName descriptors in IdP roles
+		Patch any @use-less KeyDescriptor elements in IdP roles
 		for the benefit of Shib SPs pre-1.3.1.
 	-->
 	<xsl:template match="md:IDPSSODescriptor/md:KeyDescriptor[not(@use)] |
