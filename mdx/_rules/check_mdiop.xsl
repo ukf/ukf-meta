@@ -25,15 +25,8 @@
 
 	<!--
 		Section 2.5.1: at least one representation must appear.
-		
-		As well as the variations specified in the IOP, we also allow a KeyName to be
-		used, as the UK federation currently allows a pure PKIX setup as an
-		alternative to embedded keys.
-		
-		Strict IOP conformance would require the removal of the KeyInfo/KeyName clause.
 	-->
 	<xsl:template match="md:KeyDescriptor
-		[not(ds:KeyInfo/ds:KeyName)]
 		[not(ds:KeyInfo/ds:KeyValue)]
 		[not(ds:KeyInfo/ds:X509Data/ds:X509Certificate)]">
 		<xsl:call-template name="error">
