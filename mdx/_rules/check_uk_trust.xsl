@@ -104,4 +104,15 @@
 		</xsl:call-template>
 	</xsl:template>
 
+	<!--
+		FTS 1.5 draft of 2014-06-25, section 3.10, last paragraph.
+		
+		<ds:KeyName> elements SHALL NOT be accepted in locally registered metadata
+	-->
+	<xsl:template match="ds:KeyName">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">entity has legacy KeyName element</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 </xsl:stylesheet>
