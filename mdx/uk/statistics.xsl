@@ -485,26 +485,6 @@
                         </p>
                     </li>
 
-                    <xsl:variable name="exampleEntities" select="$entities[contains(md:Organization/md:OrganizationURL, 'example')]"/>
-                    <xsl:variable name="exampleEntityCount" select="count($exampleEntities)"/>
-                    <xsl:if test="$exampleEntityCount != 0">
-                        <li>
-                            <p>
-                                <xsl:value-of select="$exampleEntityCount"/>
-                                (<xsl:value-of select="format-number($exampleEntityCount div $entityCount, '0.0%')"/>)
-                                <xsl:choose>
-                                    <xsl:when test="$exampleEntityCount = 1">
-                                        has
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        have
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                                legacy "example" <code>OrganizationURL</code> elements.
-                            </p>
-                        </li>
-                    </xsl:if>
-
                     <xsl:variable name="httpEntities" select="$entities[starts-with(@entityID, 'http://')]"/>
                     <xsl:variable name="httpEntityCount" select="count($httpEntities)"/>
                     <xsl:if test="$httpEntityCount != 0">
@@ -571,9 +551,6 @@
                     
                 </ul>
 
-                <xsl:call-template name="entity.breakdown.by.trust">
-                    <xsl:with-param name="entities" select="$entities"/>
-                </xsl:call-template>
                 <xsl:call-template name="entity.breakdown.by.software">
                     <xsl:with-param name="entities" select="$entities"/>
                 </xsl:call-template>
@@ -739,9 +716,6 @@
                     
                 </ul>
 
-                <xsl:call-template name="entity.breakdown.by.trust">
-                    <xsl:with-param name="entities" select="$idps"/>
-                </xsl:call-template>
                 <xsl:call-template name="entity.breakdown.by.software">
                     <xsl:with-param name="entities" select="$idps"/>
                 </xsl:call-template>
@@ -962,9 +936,6 @@
 
                 </ul>
                 
-                <xsl:call-template name="entity.breakdown.by.trust">
-                    <xsl:with-param name="entities" select="$sps"/>
-                </xsl:call-template>
                 <xsl:call-template name="entity.breakdown.by.software">
                     <xsl:with-param name="entities" select="$sps"/>
                 </xsl:call-template>
@@ -986,7 +957,7 @@
                 <p>
                     This section is intended to be largely self-explanatory. 
                     Any items in [...] brackets give additional information about the entity: 
-                    its type, the trust engine, etc. 
+                    its type, the software used, etc. 
                  </p>
                 <ul>
                     <xsl:apply-templates select="$ownerNames" mode="enumerate">
@@ -1368,15 +1339,6 @@
                             <xsl:if test="md:IDPSSODescriptor"> [IdP]</xsl:if>
                             <xsl:if test="md:Extensions/wayf:HideFromWAYF"> [H]</xsl:if>
                             <xsl:if test="md:SPSSODescriptor"> [SP]</xsl:if>
-                            <xsl:choose>
-                                <xsl:when test="descendant::ds:X509Data">
-                                    <xsl:text> [DK</xsl:text>
-                                    <xsl:if test="descendant::ds:KeyName">+PKIX</xsl:if>
-                                    <xsl:text>]</xsl:text>
-                                </xsl:when>
-                                
-                                <xsl:when test="descendant::ds:KeyName"> [PKIX]</xsl:when>
-                            </xsl:choose>
                             <xsl:apply-templates select="md:Extensions/ukfedlabel:Software" mode="short"/>
                             <xsl:text> </xsl:text>
                             <code><xsl:value-of select="@entityID"/></code>
@@ -1627,48 +1589,6 @@
         </xsl:if>
 
     </xsl:template>
-    
-    <!--
-        *******************************************************
-        ***                                                 ***
-        ***   T R U S T   M O D E L S   B R E A K D O W N   ***
-        ***                                                 ***
-        *******************************************************
-        
-        Break down a set of entities by the trust models available.
-    -->
-    <xsl:template name="entity.breakdown.by.trust">
-        <xsl:param name="entities"/>
-        <xsl:variable name="entityCount" select="count($entities)"/>
-        <!--
-            Trust fabric statistics
-        -->
-        <xsl:variable name="pkixCapableEntities" select="$entities[descendant::ds:KeyName]"/>
-        <xsl:variable name="dkeyCapableEntities" select="$entities[descendant::ds:X509Data]"/>
-        <xsl:variable name="dkeyEntities" select="set:difference($dkeyCapableEntities, $pkixCapableEntities)"/>
-        <xsl:variable name="hybridEntities" select="set:intersection($pkixCapableEntities, $dkeyCapableEntities)"/>
-        <xsl:variable name="dkeyEntityCount" select="count($dkeyEntities)"/>
-        <xsl:variable name="hybridEntityCount" select="count($hybridEntities)"/>
-        
-        <p>Trust models:</p>
-        <ul>
-            <li>
-                <p>
-                    Hybrid (PKIX and direct key):
-                    <xsl:value-of select="$hybridEntityCount"/>
-                    (<xsl:value-of select="format-number($hybridEntityCount div $entityCount, '0.0%')"/>)
-                </p>
-            </li>
-            <li>
-                <p>
-                    Direct key only:
-                    <xsl:value-of select="$dkeyEntityCount"/>
-                    (<xsl:value-of select="format-number($dkeyEntityCount div $entityCount, '0.0%')"/>)
-                </p>
-            </li>
-        </ul>
-        
-    </xsl:template>        
 
 
 
@@ -2028,41 +1948,8 @@
         <xsl:variable name="kd.count" select="count($kd)"/>
         <p>
             <code>KeyDescriptor</code> elements: <xsl:value-of select="$kd.count"/>
-            (<xsl:value-of select="format-number($kd.count div count($entities), '0.0')"/> per entity),
-            of which:</p>
-        <ul>
-            <li>
-                With embedded keys:
-                <xsl:call-template name="keydescriptor.line">
-                    <xsl:with-param name="kd.count" select="$kd.count"/>
-                    <xsl:with-param name="sub" select="$kd[descendant::ds:X509Data]"/>
-                </xsl:call-template>
-            </li>
-            <li>
-                With only embedded keys:
-                <xsl:call-template name="keydescriptor.line">
-                    <xsl:with-param name="kd.count" select="$kd.count"/>
-                    <xsl:with-param name="sub" select="$kd[descendant::ds:X509Data][not(descendant::ds:KeyName)]"/>
-                </xsl:call-template>
-            </li>
-            <li>
-                With <code>KeyName</code>:
-                <xsl:call-template name="keydescriptor.line">
-                    <xsl:with-param name="kd.count" select="$kd.count"/>
-                    <xsl:with-param name="sub" select="$kd[descendant::ds:KeyName]"/>
-                </xsl:call-template>
-            </li>
-        </ul>
-    </xsl:template>
-    
-    <xsl:template name="keydescriptor.line">
-        <xsl:param name="kd.count"/>
-        <xsl:param name="sub"/>
-        <xsl:variable name="sub.count" select="count($sub)"/>
-        <xsl:value-of select="$sub.count"/>
-        <xsl:text> (</xsl:text>
-        <xsl:value-of select="format-number($sub.count div $kd.count, '0.0%')"/>
-        <xsl:text>)</xsl:text>
+            (<xsl:value-of select="format-number($kd.count div count($entities), '0.0')"/> per entity).
+        </p>
     </xsl:template>
     
 </xsl:stylesheet>
