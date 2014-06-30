@@ -28,7 +28,7 @@
     -->
     <!-- production aggregate -->
     <bean id="int_edugain_productionAggregate_url" class="java.lang.String">
-        <constructor-arg value="http://mds.edugain.org"/>
+        <constructor-arg value="http://mds.edugain.org/feed-sha256.xml"/>
     </bean>
     <!-- test aggregate -->
     <bean id="int_edugain_testAggregate_url" class="java.lang.String">
@@ -75,7 +75,7 @@
     <!--
         Check a signature against the eduGAIN signing certificate.
     -->
-    <bean id="int_edugain_checkSignature" parent="XMLSignatureValidationStage"
+    <bean id="int_edugain_checkSignature" parent="XMLSignatureValidationStageSHA256"
         p:id="int_edugain_checkSignature">
         <property name="verificationCertificate" ref="int_edugain_signingCertificate"/>
     </bean>
