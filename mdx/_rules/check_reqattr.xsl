@@ -233,14 +233,15 @@
 				">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">
-						<xsl:text>RequestedAttribute uses OID name </xsl:text>
-						<xsl:value-of select="@Name"/>
-						<xsl:text> with SAML 1.x NameFormat: should use urn:mace name or SAML 2.0 NameFormat</xsl:text>
+						<xsl:text>RequestedAttribute</xsl:text>
 						<xsl:if test="@FriendlyName">
 							<xsl:text> (</xsl:text>
 							<xsl:value-of select="@FriendlyName"/>
 							<xsl:text>)</xsl:text>
 						</xsl:if>
+						<xsl:text> uses OID name </xsl:text>
+						<xsl:value-of select="@Name"/>
+						<xsl:text> with SAML 1.x NameFormat: should use urn:mace name or SAML 2.0 NameFormat</xsl:text>
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
@@ -289,14 +290,15 @@
 				">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">
-						<xsl:text>RequestedAttribute uses OID name </xsl:text>
-						<xsl:value-of select="@Name"/>
-						<xsl:text> with SAML 1.x NameFormat: should use urn:mace name or SAML 2.0 NameFormat</xsl:text>
+						<xsl:text>RequestedAttribute</xsl:text>
 						<xsl:if test="@FriendlyName">
 							<xsl:text> (</xsl:text>
 							<xsl:value-of select="@FriendlyName"/>
 							<xsl:text>)</xsl:text>
 						</xsl:if>
+						<xsl:text> uses OID name </xsl:text>
+						<xsl:value-of select="@Name"/>
+						<xsl:text> with SAML 1.x NameFormat: should use urn:mace name or SAML 2.0 NameFormat</xsl:text>
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
