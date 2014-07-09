@@ -312,7 +312,6 @@
                 <ref bean="stripMdattrNamespace"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
-                <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
                 
