@@ -458,8 +458,8 @@
                                 Compromised key blacklists.
                                 
                                 Again, don't need to check for keys below our minimum key size.
-                                This currently means there are no compromised keys to check for.
                             -->
+                            <ref bean="compromised.2048"/>
                         </list>
                     </property>
                 </bean>

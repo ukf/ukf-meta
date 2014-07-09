@@ -1,0 +1,15 @@
+#
+# This is a list of known-compromised 2048-bit keys in OpenSSL format.
+#
+# Derive new values from a private key file as follows:
+#
+#   openssl rsa -noout -modulus -in /tmp/key.pem | sha1sum | \
+#       cut -d ' ' -f 1 | cut -c 21-
+#
+# You can also derive a new blacklist value from an X.509 certificate as follows:
+#
+#   openssl x509 -noout -modulus -in /tmp/cert.pem | sha1sum | \
+#       cut -d ' ' -f 1 | cut -c 21-
+#
+# Shibboleth IdP dummy key, shipped in 3.0.0-alpha1 release
+959a1a153444578d010b

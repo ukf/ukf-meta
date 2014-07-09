@@ -759,6 +759,19 @@
     </bean>
     
     <!--
+        Blacklist of known compromised 2048-bit keys, e.g., "dummy" keys shipped with
+        SAML products that are sometimes deployed by accident.
+    -->
+    <bean id="compromised.2048" parent="X509RSAOpenSSLBlacklistValidator"
+        p:id="compromised.2048" p:keySize="2048">
+        <property name="blacklistResource">
+            <bean parent="ClassPathResource">
+                <constructor-arg value="_openssl_blacklists/compromised-2048.txt"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         *********************************************
         ***                                       ***
         ***   A G G R E G A T E D   C H E C K S   ***
