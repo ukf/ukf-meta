@@ -31,7 +31,7 @@
     <bean id="jp_gakunin_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/jp_gakunin/gakunin-signer-2010.cer"/>
+                <constructor-arg value="${basedir}/mdx/jp_gakunin/gakunin-signer-2010.cer"/>
             </bean>
         </property>
     </bean>

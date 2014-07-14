@@ -38,7 +38,7 @@
     <bean id="nl_surfnet_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/nl_surfnet/metadata-signer.crt"/>
+                <constructor-arg value="${basedir}/mdx/nl_surfnet/metadata-signer.crt"/>
             </bean>
         </property>
     </bean>

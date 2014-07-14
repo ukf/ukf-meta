@@ -54,7 +54,7 @@
     <bean id="fi_haka_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fi_haka/haka-sign.csc.fi.pem"/>
+                <constructor-arg value="${basedir}/mdx/fi_haka/haka-sign.csc.fi.pem"/>
             </bean>
         </property>
     </bean>
@@ -74,7 +74,7 @@
     <bean id="fi_haka_edugainSigningCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fi_haka/edugain.crt"/>
+                <constructor-arg value="${basedir}/mdx/fi_haka/edugain.crt"/>
             </bean>
         </property>
     </bean>

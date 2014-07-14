@@ -54,7 +54,7 @@
     <bean id="be_belnet_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/be_belnet/certificate.federation.belnet.be.pem"/>
+                <constructor-arg value="${basedir}/mdx/be_belnet/certificate.federation.belnet.be.pem"/>
             </bean>
         </property>
     </bean>

@@ -70,7 +70,7 @@
     <bean id="fr_renater_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fr_renater/metadata-federation-renater.crt"/>
+                <constructor-arg value="${basedir}/mdx/fr_renater/metadata-federation-renater.crt"/>
             </bean>
         </property>
     </bean>
@@ -90,7 +90,7 @@
     <bean id="fr_renater_edugainSigningCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/fr_renater/renater-federation-metadata.crt"/>
+                <constructor-arg value="${basedir}/mdx/fr_renater/renater-federation-metadata.crt"/>
             </bean>
         </property>
     </bean>

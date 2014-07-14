@@ -150,7 +150,7 @@
         p:id="check_fixup_encmethod">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_fixup_encmethod.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/check_fixup_encmethod.xsl"/>
             </bean>
         </property>
     </bean>
@@ -162,7 +162,7 @@
         p:id="check_fixup_keyuse">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_fixup_keyuse.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/check_fixup_keyuse.xsl"/>
             </bean>
         </property>
     </bean>
@@ -293,7 +293,7 @@
         p:id="serializeUnsignedProductionAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-metadata-unsigned.xml"/>
+                <constructor-arg value="${basedir}/xml/ukfederation-metadata-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -342,7 +342,7 @@
         p:id="serializeUnsignedWayfAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-wayf-unsigned.xml"/>
+                <constructor-arg value="${basedir}/xml/ukfederation-wayf-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -434,7 +434,7 @@
         p:id="CDSNormaliseNamespaces">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_cds.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/ns_norm_cds.xsl"/>
             </bean>
         </property>
     </bean>
@@ -461,7 +461,7 @@
         p:id="serializeCDSAllAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-cdsall-unsigned.xml"/>
+                <constructor-arg value="${basedir}/xml/ukfederation-cdsall-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -516,7 +516,7 @@
         p:id="uk_normaliseFallback">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_back.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/ns_norm_back.xsl"/>
             </bean>
         </property>
     </bean>
@@ -525,7 +525,7 @@
         p:id="serializeUnsignedFallbackAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-back-unsigned.xml"/>
+                <constructor-arg value="${basedir}/xml/ukfederation-back-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -581,7 +581,7 @@
         p:id="uk_normaliseTest">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_test.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/ns_norm_test.xsl"/>
             </bean>
         </property>
     </bean>
@@ -590,7 +590,7 @@
         p:id="serializeUnsignedTestAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-test-unsigned.xml"/>
+                <constructor-arg value="${basedir}/xml/ukfederation-test-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -641,7 +641,7 @@
         p:id="uk_normaliseExport">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_export.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/ns_norm_export.xsl"/>
             </bean>
         </property>
     </bean>
@@ -655,7 +655,7 @@
         p:id="serializeUnsignedExportAggregate">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-export-unsigned.xml"/>
+                <constructor-arg value="${basedir}/xml/ukfederation-export-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -762,7 +762,7 @@
         p:id="serializeCMSaggregate">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/cms-metadata.xml"/>
+                <constructor-arg value="${basedir}/xml/cms-metadata.xml"/>
             </bean>
         </property>
     </bean>

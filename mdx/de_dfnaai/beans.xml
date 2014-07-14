@@ -54,7 +54,7 @@
     <bean id="de_dfnaai_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/de_dfnaai/dfn-aai.pem"/>
+                <constructor-arg value="${basedir}/mdx/de_dfnaai/dfn-aai.pem"/>
             </bean>
         </property>
     </bean>

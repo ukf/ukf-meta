@@ -71,7 +71,7 @@
                     p:id="serialize">
                     <property name="outputFile">
                         <bean class="java.io.File">
-                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/temp.html"/>
+                            <constructor-arg value="${basedir}/mdx/uk/temp.html"/>
                         </bean>
                     </property>
                 </bean>
@@ -208,7 +208,7 @@
         p:id="fetchImportMetadata">
         <property name="source">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/entities/import.xml"/>
+                <constructor-arg value="${basedir}/entities/import.xml"/>
             </bean>
         </property>
     </bean>
@@ -222,7 +222,7 @@
         p:id="serializeImportedMetadata">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/entities/imported.xml"/>
+                <constructor-arg value="${basedir}/entities/imported.xml"/>
             </bean>
         </property>
     </bean>
@@ -264,7 +264,7 @@
                     p:id="normalizeFragment">
                     <property name="XSLResource">
                         <bean parent="FileSystemResource">
-                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_fragment.xsl"/>
+                            <constructor-arg value="${basedir}/mdx/uk/ns_norm_fragment.xsl"/>
                         </bean>
                     </property>
                 </bean>
@@ -352,7 +352,7 @@
         p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/imported.xml"/>
+                <constructor-arg value="${basedir}/mdx/uk/imported.xml"/>
             </bean>
         </property>
     </bean>

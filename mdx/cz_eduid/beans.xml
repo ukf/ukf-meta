@@ -64,7 +64,7 @@
     <bean id="cz_eduid_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/cz_eduid/metadata.eduid.cz.crt.pem"/>
+                <constructor-arg value="${basedir}/mdx/cz_eduid/metadata.eduid.cz.crt.pem"/>
             </bean>
         </property>
     </bean>

@@ -54,7 +54,7 @@
     <bean id="gr_grnet_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/gr_grnet/wayf.grnet.gr.pem"/>
+                <constructor-arg value="${basedir}/mdx/gr_grnet/wayf.grnet.gr.pem"/>
             </bean>
         </property>
     </bean>

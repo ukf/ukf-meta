@@ -26,7 +26,7 @@
         p:id="serializeCollected">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/collected.xml"/>
+                <constructor-arg value="${basedir}/mdx/uk/collected.xml"/>
             </bean>
         </property>
     </bean>

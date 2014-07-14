@@ -57,7 +57,7 @@
     <bean id="lv_laife_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/lv_laife/metadata-signer.crt"/>
+                <constructor-arg value="${basedir}/mdx/lv_laife/metadata-signer.crt"/>
             </bean>
         </property>
     </bean>

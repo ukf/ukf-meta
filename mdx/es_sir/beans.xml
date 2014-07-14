@@ -54,7 +54,7 @@
     <bean id="es_sir_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/es_sir/metadata-signer.crt"/>
+                <constructor-arg value="${basedir}/mdx/es_sir/metadata-signer.crt"/>
             </bean>
         </property>
     </bean>

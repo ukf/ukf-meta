@@ -56,7 +56,7 @@
     <bean id="pl_pionier_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/pl_pionier/pionier.crt"/>
+                <constructor-arg value="${basedir}/mdx/pl_pionier/pionier.crt"/>
             </bean>
         </property>
     </bean>
@@ -67,7 +67,7 @@
     <bean id="pl_pionier_edugainCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/pl_pionier/edugain.crt"/>
+                <constructor-arg value="${basedir}/mdx/pl_pionier/edugain.crt"/>
             </bean>
         </property>
     </bean>

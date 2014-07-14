@@ -54,7 +54,7 @@
     <bean id="ch_switchaai_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ch_switchaai/metadata.crt"/>
+                <constructor-arg value="${basedir}/mdx/ch_switchaai/metadata.crt"/>
             </bean>
         </property>
     </bean>
@@ -65,7 +65,7 @@
     <bean id="ch_switchaai_interfedSigningCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/ch_switchaai/interfed.crt"/>
+                <constructor-arg value="${basedir}/mdx/ch_switchaai/interfed.crt"/>
             </bean>
         </property>
     </bean>

@@ -27,7 +27,7 @@
         p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_edugain/imported.xml"/>
+                <constructor-arg value="${basedir}/mdx/int_edugain/imported.xml"/>
             </bean>
         </property>
     </bean>
@@ -117,7 +117,7 @@
                     p:id="check_recovered">
                     <property name="XSLResource">
                         <bean parent="FileSystemResource">
-                            <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_edugain/check_recovered.xsl"/>
+                            <constructor-arg value="${basedir}/mdx/int_edugain/check_recovered.xsl"/>
                         </bean>
                     </property>
                 </bean>

@@ -31,7 +31,7 @@
     <bean id="si_arnes_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/si_arnes/aai.arnes.si.crt"/>
+                <constructor-arg value="${basedir}/mdx/si_arnes/aai.arnes.si.crt"/>
             </bean>
         </property>
     </bean>

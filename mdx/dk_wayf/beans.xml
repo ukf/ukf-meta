@@ -114,7 +114,7 @@
     <bean id="dk_wayf_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/dk_wayf/metadata-signer.crt"/>
+                <constructor-arg value="${basedir}/mdx/dk_wayf/metadata-signer.crt"/>
             </bean>
         </property>
     </bean>

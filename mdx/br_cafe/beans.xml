@@ -54,7 +54,7 @@
     <bean id="br_cafe_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/br_cafe/metadata.crt"/>
+                <constructor-arg value="${basedir}/mdx/br_cafe/metadata.crt"/>
             </bean>
         </property>
     </bean>

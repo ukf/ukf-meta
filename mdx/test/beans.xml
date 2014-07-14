@@ -21,7 +21,7 @@
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/test/input.xml"/>
+                <constructor-arg value="${basedir}/mdx/test/input.xml"/>
             </bean>
         </property>
     </bean>

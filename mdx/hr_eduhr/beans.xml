@@ -38,7 +38,7 @@
     <bean id="hr_eduhr_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/hr_eduhr/metadata.crt"/>
+                <constructor-arg value="${basedir}/mdx/hr_eduhr/metadata.crt"/>
             </bean>
         </property>
     </bean>

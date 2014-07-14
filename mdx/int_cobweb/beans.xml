@@ -38,7 +38,7 @@
     <bean id="int_cobweb_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/int_cobweb/cobweb.pem"/>
+                <constructor-arg value="${basedir}/mdx/int_cobweb/cobweb.pem"/>
             </bean>
         </property>
     </bean>

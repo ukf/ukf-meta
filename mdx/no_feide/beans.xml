@@ -68,7 +68,7 @@
     <bean id="no_feide_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/no_feide/metadata.crt"/>
+                <constructor-arg value="${basedir}/mdx/no_feide/metadata.crt"/>
             </bean>
         </property>
     </bean>

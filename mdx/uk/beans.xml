@@ -74,7 +74,7 @@
     <bean id="uk_signingCertificate" parent="X509CertificateFactoryBean">
         <property name="certificateFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/metadata-signer.crt"/>
+                <constructor-arg value="${basedir}/mdx/uk/metadata-signer.crt"/>
             </bean>
         </property>
     </bean>
@@ -124,7 +124,7 @@
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/entities"/>
+                <constructor-arg value="${basedir}/entities"/>
             </bean>
         </property>
         <property name="sourceFileFilter">
@@ -170,7 +170,7 @@
         A Resource referencing the members.xml document.
     -->
     <bean id="uk_membersResource" parent="FileSystemResource">
-        <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
+        <constructor-arg value="${basedir}/xml/members.xml"/>
     </bean>
     
     
@@ -193,7 +193,7 @@
     <bean id="uk_members" class="uk.org.ukfederation.members.Members">
         <constructor-arg>
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/members.xml"/>
+                <constructor-arg value="${basedir}/xml/members.xml"/>
             </bean>
         </constructor-arg>
     </bean>
@@ -241,7 +241,7 @@
         p:id="check_ukreg">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_ukreg.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/check_ukreg.xsl"/>
             </bean>
         </property>
         <property name="transformParameters">
@@ -259,7 +259,7 @@
         p:id="check_uk_keydesc_key">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_keydesc_key.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/check_uk_keydesc_key.xsl"/>
             </bean>
         </property>
     </bean>
@@ -272,7 +272,7 @@
         p:id="check_uk_mdattr">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_mdattr.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/check_uk_mdattr.xsl"/>
             </bean>
         </property>
     </bean>
@@ -285,7 +285,7 @@
         p:id="check_uk_mdrps">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_mdrps.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/check_uk_mdrps.xsl"/>
             </bean>
         </property>
     </bean>
@@ -298,7 +298,7 @@
         p:id="check_uk_urlenc">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/check_uk_urlenc.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/check_uk_urlenc.xsl"/>
             </bean>
         </property>
     </bean>
@@ -313,7 +313,7 @@
         <property name="parserPool" ref="parserPool"/>
         <property name="documentResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/trust-roots.xml"/>
+                <constructor-arg value="${basedir}/mdx/uk/trust-roots.xml"/>
             </bean>
         </property>
     </bean>    
@@ -505,7 +505,7 @@
         p:id="uk_normaliseNamespaces">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/uk/ns_norm_uk.xsl"/>
+                <constructor-arg value="${basedir}/mdx/uk/ns_norm_uk.xsl"/>
             </bean>
         </property>
     </bean>
@@ -566,7 +566,7 @@
         p:id="uk_serializeStatistics">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/xml/ukfederation-stats.html"/>
+                <constructor-arg value="${basedir}/xml/ukfederation-stats.html"/>
             </bean>
         </property>
     </bean>

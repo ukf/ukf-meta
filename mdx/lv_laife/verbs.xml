@@ -26,7 +26,7 @@
         p:id="serializeImported">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="#{ systemProperties['basedir'] }/mdx/lv_laife/imported.xml"/>
+                <constructor-arg value="${basedir}/mdx/lv_laife/imported.xml"/>
             </bean>
         </property>
     </bean>
