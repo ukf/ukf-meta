@@ -443,6 +443,30 @@
 	-->
 	
 	<!--
+	    Property definitions for the mda tool.
+	    
+	    Any Ant property with a name of the form "mda.*" is passed through
+	    as a system property to the mda invocation with the "mda." stripped
+	    off. Thus, a property "mda.foo" will be passed through as a system
+	    property called "foo".
+	    
+	    The individual properties listed here can be augmented or overridden
+	    by properties defined in the external properties files, e.g., build.properties.
+	-->
+    <property name="mda.java.endorsed.dirs" value="${tools.mda}/lib/endorsed"/>
+    <property name="mda.basedir" value="${basedir}"/>
+    <property name="mda.rulesdir" value="${rules.dir}"/>
+
+	<!--
+	    Build a property set of all the properties to be passed through, with
+	    the "mda." prefix stripped off.
+	-->
+	<propertyset id="mda.properties">
+        <propertyref prefix="mda."/>
+	    <mapper type="glob" from="mda.*" to="*"/>
+	</propertyset>
+	
+	<!--
 	    Macro to run the mda (metadata aggregator CLI) tool.
 	-->
     <macrodef name="MDA">
@@ -471,9 +495,9 @@
                         <include name="ukf-members-*.jar"/>
                     </fileset>
                 </classpath>
-                <jvmarg value="-Djava.endorsed.dirs=${tools.mda}/lib/endorsed"/>
-            	<jvmarg value="-Dbasedir=${basedir}"/>
-            	<jvmarg value="-Drulesdir=${rules.dir}"/>
+                <syspropertyset>
+                    <propertyset refid="mda.properties"/>
+                </syspropertyset>
             	<jvmarg value="-enableassertions"/>
             	<arg value="--quiet"/>
             	<arg value="@{config}"/>
@@ -1383,7 +1407,14 @@
         List all the properties ant is using.
     -->
     <target name="echoproperties">
+    	<echo>All properties:</echo>
         <echoproperties/>
+    	<echo>MDA properties:</echo>
+    	<echoproperties>
+    		<propertyset>
+    			<propertyset refid="mda.properties"/>
+    		</propertyset>
+    	</echoproperties>
     </target>
 
 </project>
