@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-	Federation metadata signing process for the UK federation.
-	
-	* "ant process" generates the other files from the master file, and
-	  signs as appropriate.  Requires the keystore password.
-	  
-	* "ant push" sends all files to the remote site, and requires
-	  the remote site password.
+    Federation metadata signing process for the UK federation.
+
+    * "ant process" generates the other files from the master file, and
+      signs as appropriate.  Requires the keystore password.
+
+    * "ant push" sends all files to the remote site, and requires
+      the remote site password.
 -->
 <project default="process">
-    
+
     <!--
         os.family
-        
+
         Set a property representing the general kind of operating system
         we're executing on.  We use this to decide which properties files
         to load.
-        
+
         Values: windows, macosx, other.
     -->
     <condition property="os.family" value="windows">
@@ -27,292 +27,292 @@
         <os family="mac"/>
     </condition>
     <property name="os.family" value="other"/>
-    
+
     <!--
         External property files.
-        
+
         Pull in properties from external files.  Because Ant properties are
         immutable, the first file containing a particular property sets the
         final value, and any of these files can override a property defined in
         this file.
-        
+
         The build.properties file is not source controlled, and should be used
-        to override properties for a particular deployment.   
+        to override properties for a particular deployment.
     -->
     <property file="build.properties"/>
     <property file="${os.family}.properties"/>
     <property file="default.properties"/>
 
     <!--
-		Accessing the remote system.
-		
-		Multiple remote systems are supported, each with its own ssh-accessable
-		location for "push" and its own URL for verification of pushed data.
-	-->
+        Accessing the remote system.
+
+        Multiple remote systems are supported, each with its own ssh-accessable
+        location for "push" and its own URL for verification of pushed data.
+    -->
     <property name="remote.host.1" value="sdssmail.edina.ac.uk"/>
     <property name="remote.url.1" value="http://sdssmail.edina.ac.uk:82"/>
     <property name="remote.host.2" value="sdssmail-at.edina.ac.uk"/>
     <property name="remote.url.2" value="http://sdssmail-at.edina.ac.uk:82"/>
-	
-	<!--
-	    For times when only one remote host is in use, pre-select it
-	    using the following property setting.  Comment this out to allow choice.
-	-->
-	<!--
-	<property name="remote.host" value="${remote.host.1}"/>
-	-->
-	
-	<!--
-	    Common parts of the file layout for the remote systems.
-	-->
-	<property name="remote.user" value="sdssweb"/>
-	<property name="remote.dir.sdss" value="ukfedstats"/>
-	<property name="remote.dir.uk" value="metadata"/>
 
-	<!--
-		Local specialised directories.
-	-->
-	<property name="build.dir" value="${basedir}/build"/>
-	<property name="entities.dir" value="entities"/>
+    <!--
+        For times when only one remote host is in use, pre-select it
+        using the following property setting.  Comment this out to allow choice.
+    -->
+    <!--
+    <property name="remote.host" value="${remote.host.1}"/>
+    -->
+
+    <!--
+        Common parts of the file layout for the remote systems.
+    -->
+    <property name="remote.user" value="sdssweb"/>
+    <property name="remote.dir.sdss" value="ukfedstats"/>
+    <property name="remote.dir.uk" value="metadata"/>
+
+    <!--
+        Local specialised directories.
+    -->
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="entities.dir" value="entities"/>
     <property name="mdx.dir" value="${basedir}/mdx"/>
-	<property name="rules.dir" value="${mdx.dir}/_rules"/>
-	<property name="xml.dir" value="${basedir}/xml"/>
+    <property name="rules.dir" value="${mdx.dir}/_rules"/>
+    <property name="xml.dir" value="${basedir}/xml"/>
 
-	<!--
-		Location of externally supplied tool bundles.
-	-->
-	<property name="tools.dir" value="tools"/>
-	<property name="tools.ant" value="${tools.dir}/ant"/>
-	<property name="tools.mda" value="${tools.dir}/aggregator-cli-0.8.0"/>
+    <!--
+        Location of externally supplied tool bundles.
+    -->
+    <property name="tools.dir" value="tools"/>
+    <property name="tools.ant" value="${tools.dir}/ant"/>
+    <property name="tools.mda" value="${tools.dir}/aggregator-cli-0.8.0"/>
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
-	<property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
-	<property name="tools.xmlsectool" value="${tools.dir}/xmlsectool"/>
-	<property name="tools.xalan" value="${tools.dir}/xalan"/>
-	
-	<!--
-		Additional ANT task definitions.
-	-->
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="${tools.ant}/lib/ant-contrib-1.0b3.jar"/>
-		</classpath>
-	</taskdef>
-	
-	<!--
-		There are many separate processing "streams":  production, test, export,
-		fallback, "wayf", "cdsall" and "cms".
-		
-		Each stream has its own unsigned file, as follows:
-	-->
-	<property name="md.prod.unsigned"   value="ukfederation-metadata-unsigned.xml"/>
-	<property name="md.test.unsigned"   value="ukfederation-test-unsigned.xml"/>
-	<property name="md.export.unsigned" value="ukfederation-export-unsigned.xml"/>
-	<property name="md.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
-	<property name="md.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
-	<property name="md.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
-	<property name="md.cms.unsigned"    value="cms-metadata.xml"/>
-	
-	<!--
-		Each stream except the CMS stream has its own signed file.
-	-->
-	<property name="md.prod.signed"     value="ukfederation-metadata.xml"/>
-	<property name="md.test.signed"     value="ukfederation-test.xml"/>
-	<property name="md.export.signed"   value="ukfederation-export.xml"/>
-	<property name="md.back.signed"     value="ukfederation-back.xml"/>
-	<property name="md.wayf.signed"     value="ukfederation-wayf.xml"/>
-	<property name="md.cdsall.signed"   value="ukfederation-cdsall.xml"/>
-	
-	<!--
-		Null device location.
-	-->
-	<condition property="null.device"
-		value="nul:" else="/dev/null">
-		<os family="windows"/>
-	</condition>
+    <property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
+    <property name="tools.xmlsectool" value="${tools.dir}/xmlsectool"/>
+    <property name="tools.xalan" value="${tools.dir}/xalan"/>
 
-	<!--
-		Signing keystore alias.
-	-->
-	<property name="keystore.uk.sign.alias" value="ukfederation"/>
+    <!--
+        Additional ANT task definitions.
+    -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="${tools.ant}/lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
 
-	<!--
-		Verification keystore.
-	-->
-	<property name="keystore.uk.vfy.alias" value="ukfederation"/>
-	
-	<property name="known.hosts" value="${build.dir}/known_hosts"/>
+    <!--
+        There are many separate processing "streams":  production, test, export,
+        fallback, "wayf", "cdsall" and "cms".
+
+        Each stream has its own unsigned file, as follows:
+    -->
+    <property name="md.prod.unsigned"   value="ukfederation-metadata-unsigned.xml"/>
+    <property name="md.test.unsigned"   value="ukfederation-test-unsigned.xml"/>
+    <property name="md.export.unsigned" value="ukfederation-export-unsigned.xml"/>
+    <property name="md.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
+    <property name="md.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
+    <property name="md.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
+    <property name="md.cms.unsigned"    value="cms-metadata.xml"/>
+
+    <!--
+        Each stream except the CMS stream has its own signed file.
+    -->
+    <property name="md.prod.signed"     value="ukfederation-metadata.xml"/>
+    <property name="md.test.signed"     value="ukfederation-test.xml"/>
+    <property name="md.export.signed"   value="ukfederation-export.xml"/>
+    <property name="md.back.signed"     value="ukfederation-back.xml"/>
+    <property name="md.wayf.signed"     value="ukfederation-wayf.xml"/>
+    <property name="md.cdsall.signed"   value="ukfederation-cdsall.xml"/>
+
+    <!--
+        Null device location.
+    -->
+    <condition property="null.device"
+        value="nul:" else="/dev/null">
+        <os family="windows"/>
+    </condition>
+
+    <!--
+        Signing keystore alias.
+    -->
+    <property name="keystore.uk.sign.alias" value="ukfederation"/>
+
+    <!--
+        Verification keystore.
+    -->
+    <property name="keystore.uk.vfy.alias" value="ukfederation"/>
+
+    <property name="known.hosts" value="${build.dir}/known_hosts"/>
 
     <!--
         Java memory requirements.
-        
+
         This is used as the max heap setting for all Java invocations.  This amount will
         be more than some invocations require, but there's no harm in having a higher
         limit for all of them.
     -->
-	<property name="java.max.memory" value="768m"/>
-	
-	<!--
-	    Full paths to a couple of temporary file locations.
-	-->
+    <property name="java.max.memory" value="768m"/>
+
+    <!--
+        Full paths to a couple of temporary file locations.
+    -->
     <property name="temp.xml" value="${xml.dir}/temp.xml"/>
     <property name="temp2.xml" value="${xml.dir}/temp2.xml"/>
-	
-	
-	<!--
-		*************************************************
-		***                                           ***
-		***   E N T R Y   P O I N T   T A R G E T S   ***
-		***                                           ***
-		*************************************************
-	-->
-	
-	<!--
-		Standard processing: generate, sign, then verify.
-	-->
-	<target name="process" depends="get.keystore.pass, generate, sign, verify">
-		<echo>Processing complete.</echo>
-	</target>
-	
-	<!--
-		After standard processing, push: get password, push files, verify them.
-	-->
-	<target name="push" depends="select.remote.host, get.remote.pass, push.files, verify.remote.metadata">
-		<echo>Data pushed and verified.</echo>
-	</target>
 
-	<!--
-		*************************************
-		***                               ***
-		***   M E T A D A T A   P U S H   ***
-		***                               ***
-		*************************************
-	-->
 
-	<!--
-	    Select the remote host.
-	-->
-	<target name="select.remote.host">
-		<!--
-		    User dialog to select remote host.
-		-->
-		<input addproperty="remote.host" validargs="${remote.host.1},${remote.host.2}">
-			Please select the remote host to use:
-		</input>
-		
-		<!--
-		    Set details for host 1 if selected.
-		-->
-		<condition property="remote.host.1.selected">
-			<equals arg1="${remote.host}" arg2="${remote.host.1}"/>
-		</condition>
-		<condition property="remote.url" value="${remote.url.1}">
-			<isset property="remote.host.1.selected"/>
-		</condition>
+    <!--
+        *************************************************
+        ***                                           ***
+        ***   E N T R Y   P O I N T   T A R G E T S   ***
+        ***                                           ***
+        *************************************************
+    -->
+
+    <!--
+        Standard processing: generate, sign, then verify.
+    -->
+    <target name="process" depends="get.keystore.pass, generate, sign, verify">
+        <echo>Processing complete.</echo>
+    </target>
+
+    <!--
+        After standard processing, push: get password, push files, verify them.
+    -->
+    <target name="push" depends="select.remote.host, get.remote.pass, push.files, verify.remote.metadata">
+        <echo>Data pushed and verified.</echo>
+    </target>
+
+    <!--
+        *************************************
+        ***                               ***
+        ***   M E T A D A T A   P U S H   ***
+        ***                               ***
+        *************************************
+    -->
+
+    <!--
+        Select the remote host.
+    -->
+    <target name="select.remote.host">
+        <!--
+            User dialog to select remote host.
+        -->
+        <input addproperty="remote.host" validargs="${remote.host.1},${remote.host.2}">
+            Please select the remote host to use:
+        </input>
+
+        <!--
+            Set details for host 1 if selected.
+        -->
+        <condition property="remote.host.1.selected">
+            <equals arg1="${remote.host}" arg2="${remote.host.1}"/>
+        </condition>
+        <condition property="remote.url" value="${remote.url.1}">
+            <isset property="remote.host.1.selected"/>
+        </condition>
 
         <!--
             Set details for host 2 if selected.
         -->
-		<condition property="remote.host.2.selected">
+        <condition property="remote.host.2.selected">
             <equals arg1="${remote.host}" arg2="${remote.host.2}"/>
         </condition>
         <condition property="remote.url" value="${remote.url.2}">
             <isset property="remote.host.2.selected"/>
         </condition>
 
-		<!--
-		    Set derived properties.
-		-->
-		<property name="remote.loc.sdss" value="${remote.user}@${remote.host}:${remote.dir.sdss}"/>
-	    <property name="remote.loc.uk" value="${remote.user}@${remote.host}:${remote.dir.uk}"/>
+        <!--
+            Set derived properties.
+        -->
+        <property name="remote.loc.sdss" value="${remote.user}@${remote.host}:${remote.dir.sdss}"/>
+        <property name="remote.loc.uk" value="${remote.user}@${remote.host}:${remote.dir.uk}"/>
 
-		<!--
-		    Display relevant properties.
-		-->
-		<echoproperties>
-			<propertyset>
-				<propertyref name="remote.host"/>
-				<propertyref name="remote.url"/>
-				<propertyref name="remote.loc.sdss"/>
-				<propertyref name="remote.loc.uk"/>
-			</propertyset>
-		</echoproperties>
-	</target>
+        <!--
+            Display relevant properties.
+        -->
+        <echoproperties>
+            <propertyset>
+                <propertyref name="remote.host"/>
+                <propertyref name="remote.url"/>
+                <propertyref name="remote.loc.sdss"/>
+                <propertyref name="remote.loc.uk"/>
+            </propertyset>
+        </echoproperties>
+    </target>
 
-	<!--
-		Acquire the remote password.
-	-->
-	<target name="get.remote.pass" unless="remote.pass">
-		<input addproperty="remote.pass">
-			Please enter the password for ${remote.user} on ${remote.host}:
-		</input>
-	</target>
+    <!--
+        Acquire the remote password.
+    -->
+    <target name="get.remote.pass" unless="remote.pass">
+        <input addproperty="remote.pass">
+            Please enter the password for ${remote.user} on ${remote.host}:
+        </input>
+    </target>
 
-	<!--
-		Push all generated XML files, and entity fragment files, to the remote machine.
-	-->
-	<target name="push.files" depends="select.remote.host, get.remote.pass">
-		<!--
-			Push metadata files to the old SDSS federation location.
-			
-			Nowadays, these are not SDSS federation metadata files but other
-			miscellaneous files such as UK federation statistics.
-		-->
-		<echo>Pushing non-metadata files.</echo>
-		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}"
-				knownhosts="${known.hosts}">
-			<fileset dir="${xml.dir}">
-				<include name="members.xml"/>
-				<include name="ukfederation-members.xsd"/>
-				<include name="ukfederation-stats.html"/>
-				<include name="${md.cms.unsigned}"/>
-			</fileset>
-		</scp>
-		<!--
-			Push metadata files for the UK Federation.
-		-->
-		<echo>Pushing UK Federation metadata files.</echo>
-		<scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.uk}"
-				knownhosts="${known.hosts}">
-			<fileset dir="${xml.dir}">
-				<include name="${md.prod.signed}"/>
-				<include name="${md.wayf.signed}"/>
-				<include name="${md.cdsall.signed}"/>
-				<include name="${md.test.signed}"/>
-				<include name="${md.back.signed}"/>
-				<include name="${md.export.signed}"/>
-			</fileset>
-		</scp>
-	</target>
+    <!--
+        Push all generated XML files, and entity fragment files, to the remote machine.
+    -->
+    <target name="push.files" depends="select.remote.host, get.remote.pass">
+        <!--
+            Push metadata files to the old SDSS federation location.
 
-	<!--
-		Verify a metadata file held on the master distribution site.
-		
-		Verification is performed using only xmlsectool. This should be
-		used when compatibility with the Shibboleth 1.3 IdP is not a
-		concern.
-	-->
-	<macrodef name="VFY.remote">
-		<attribute name="i"/>
-		<sequential>
-			<echo>Verifying @{i}...</echo>
-			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-			<get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
+            Nowadays, these are not SDSS federation metadata files but other
+            miscellaneous files such as UK federation statistics.
+        -->
+        <echo>Pushing non-metadata files.</echo>
+        <scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.sdss}"
+                knownhosts="${known.hosts}">
+            <fileset dir="${xml.dir}">
+                <include name="members.xml"/>
+                <include name="ukfederation-members.xsd"/>
+                <include name="ukfederation-stats.html"/>
+                <include name="${md.cms.unsigned}"/>
+            </fileset>
+        </scp>
+        <!--
+            Push metadata files for the UK Federation.
+        -->
+        <echo>Pushing UK Federation metadata files.</echo>
+        <scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.uk}"
+                knownhosts="${known.hosts}">
+            <fileset dir="${xml.dir}">
+                <include name="${md.prod.signed}"/>
+                <include name="${md.wayf.signed}"/>
+                <include name="${md.cdsall.signed}"/>
+                <include name="${md.test.signed}"/>
+                <include name="${md.back.signed}"/>
+                <include name="${md.export.signed}"/>
+            </fileset>
+        </scp>
+    </target>
 
-			<!--
-				Verify using xmlsectool.
-			-->
-			<XMLSECTOOL.VFY.uk i="temp.xml"/>
-			
-			<!--
-				Delete the temporary file.
-			-->
-			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-		</sequential>
-	</macrodef>
-	
     <!--
         Verify a metadata file held on the master distribution site.
-        
+
+        Verification is performed using only xmlsectool. This should be
+        used when compatibility with the Shibboleth 1.3 IdP is not a
+        concern.
+    -->
+    <macrodef name="VFY.remote">
+        <attribute name="i"/>
+        <sequential>
+            <echo>Verifying @{i}...</echo>
+            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+            <get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
+
+            <!--
+                Verify using xmlsectool.
+            -->
+            <XMLSECTOOL.VFY.uk i="temp.xml"/>
+
+            <!--
+                Delete the temporary file.
+            -->
+            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+        </sequential>
+    </macrodef>
+
+    <!--
+        Verify a metadata file held on the master distribution site.
+
         Verification is performed using both metadatatool and xmlsectool.
         This should be used when the file being verified must be compatible
         with the Shibboleth 1.3 IdP.
@@ -323,7 +323,7 @@
             <echo>Verifying @{i}...</echo>
             <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
             <get src="${remote.url}/@{i}" dest="${xml.dir}/temp.xml"/>
-            
+
             <!--
                 Verify using metadatatool.
             -->
@@ -333,164 +333,164 @@
                 Verify using xmlsectool.
             -->
             <XMLSECTOOL.VFY.uk i="temp.xml"/>
-            
+
             <!--
                 Delete the temporary file.
             -->
             <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
         </sequential>
     </macrodef>
-    
-	<!--
-		Verify metadata files held on the master distribution site.
-	-->
-	<target name="verify.remote.metadata" depends="select.remote.host">
-		<echo>Verifying metadata held at ${remote.url}</echo>
-		<VFY.remote.both i="${md.prod.signed}"/>
-		<VFY.remote.both i="${md.wayf.signed}"/>
-		<VFY.remote.both i="${md.cdsall.signed}"/>
-		<VFY.remote i="${md.test.signed}"/>
-		<VFY.remote.both i="${md.back.signed}"/>
-		<VFY.remote i="${md.export.signed}"/>
-		<echo>Verification completed.</echo>
-	</target>
-	
-	<!--
-		*************************************************
-		***                                           ***
-		***   M E T A D A T A   G E N E R A T I O N   ***
-		***                                           ***
-		*************************************************
-	-->
-	
-	<!--
-		Generate unsigned metadata.
-	-->
-	<target name="generate" depends="gen.uk.unsigned">
-		<echo>Generated unsigned metadata.</echo>
-	</target>
-	
+
+    <!--
+        Verify metadata files held on the master distribution site.
+    -->
+    <target name="verify.remote.metadata" depends="select.remote.host">
+        <echo>Verifying metadata held at ${remote.url}</echo>
+        <VFY.remote.both i="${md.prod.signed}"/>
+        <VFY.remote.both i="${md.wayf.signed}"/>
+        <VFY.remote.both i="${md.cdsall.signed}"/>
+        <VFY.remote i="${md.test.signed}"/>
+        <VFY.remote.both i="${md.back.signed}"/>
+        <VFY.remote i="${md.export.signed}"/>
+        <echo>Verification completed.</echo>
+    </target>
+
+    <!--
+        *************************************************
+        ***                                           ***
+        ***   M E T A D A T A   G E N E R A T I O N   ***
+        ***                                           ***
+        *************************************************
+    -->
+
+    <!--
+        Generate unsigned metadata.
+    -->
+    <target name="generate" depends="gen.uk.unsigned">
+        <echo>Generated unsigned metadata.</echo>
+    </target>
+
     <!--
         uk.collected
-        
+
         This is where the flow.uk.collect places its output.
     -->
     <property name="uk.collected" value="${mdx.dir}/uk/collected.xml"/>
-    
-	<!--
-	    flow.uk.collect
-	    
-	    Runs the mda code to collect all entities registered with the
-	    UK federation registrar.
-	-->
+
+    <!--
+        flow.uk.collect
+
+        Runs the mda code to collect all entities registered with the
+        UK federation registrar.
+    -->
     <target name="flow.uk.collect">
         <CHANNEL.do channel="uk" verb="collect"/>
     </target>
-	
-	<!--
-	    flow.uk.verify
-	    
-	    Runs the MDA on the uk channel's verify verb to verify that the UK-registered
-	    metadata passes all the checks that would be imposed during a signing run.
-	    
-	    No output files are produced by this operation.
-	-->
-	<target name="flow.uk.verify">
+
+    <!--
+        flow.uk.verify
+
+        Runs the MDA on the uk channel's verify verb to verify that the UK-registered
+        metadata passes all the checks that would be imposed during a signing run.
+
+        No output files are produced by this operation.
+    -->
+    <target name="flow.uk.verify">
         <CHANNEL.do channel="uk" verb="verify"/>
-	</target>
-    
+    </target>
+
     <!--
         Unsigned metadata generation for the UK Federation.
     -->
-	<target name="gen.uk.unsigned">
-		<echo>Generating unsigned UK metadata files.</echo>
-		
-		<!--
-		    Call the generate verb in the uk mdx channel
-		    to generate the following:
-		    
-		       production aggregate
-		       WAYF/CDS aggregates
+    <target name="gen.uk.unsigned">
+        <echo>Generating unsigned UK metadata files.</echo>
+
+        <!--
+            Call the generate verb in the uk mdx channel
+            to generate the following:
+
+               production aggregate
+               WAYF/CDS aggregates
                test aggregate
-		       export aggregate
-		       fallback aggregate
-		       statistics
-		-->
+               export aggregate
+               fallback aggregate
+               statistics
+        -->
         <CHANNEL.do channel="uk" verb="generate"/>
-		
-		<!--
-		    Post-process mda-generated output files.
-		-->
+
+        <!--
+            Post-process mda-generated output files.
+        -->
         <MDNORM i="${xml.dir}/${md.prod.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.wayf.unsigned}"/>
-		<MDNORM.noblank i="${xml.dir}/${md.cdsall.unsigned}"/>
-		<MDNORM.noblank i="${xml.dir}/${md.cms.unsigned}"/>
+        <MDNORM.noblank i="${xml.dir}/${md.cdsall.unsigned}"/>
+        <MDNORM.noblank i="${xml.dir}/${md.cms.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.test.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.export.unsigned}"/>
         <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
         <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf" encoding="UTF-8"/>
-		
-        <echo>Generated UK unsigned metadata.</echo>
-	</target>
-	
 
-	<!--
-	    ***************************
-	    ***                     ***
-	    ***   M D A   T O O L   ***
-	    ***                     ***
-	    ***************************
-	-->
-	
-	<!--
-	    Property definitions for the mda tool.
-	    
-	    Any Ant property with a name of the form "mda.*" is passed through
-	    as a system property to the mda invocation with the "mda." stripped
-	    off. Thus, a property "mda.foo" will be passed through as a system
-	    property called "foo".
-	    
-	    The individual properties listed here can be augmented or overridden
-	    by properties defined in the external properties files, e.g., build.properties.
-	-->
+        <echo>Generated UK unsigned metadata.</echo>
+    </target>
+
+
+    <!--
+        ***************************
+        ***                     ***
+        ***   M D A   T O O L   ***
+        ***                     ***
+        ***************************
+    -->
+
+    <!--
+        Property definitions for the mda tool.
+
+        Any Ant property with a name of the form "mda.*" is passed through
+        as a system property to the mda invocation with the "mda." stripped
+        off. Thus, a property "mda.foo" will be passed through as a system
+        property called "foo".
+
+        The individual properties listed here can be augmented or overridden
+        by properties defined in the external properties files, e.g., build.properties.
+    -->
     <property name="mda.java.endorsed.dirs" value="${tools.mda}/lib/endorsed"/>
     <property name="mda.basedir" value="${basedir}"/>
     <property name="mda.rulesdir" value="${rules.dir}"/>
 
-	<!--
-	    Build a property set of all the properties to be passed through, with
-	    the "mda." prefix stripped off.
-	-->
-	<propertyset id="mda.properties">
+    <!--
+        Build a property set of all the properties to be passed through, with
+        the "mda." prefix stripped off.
+    -->
+    <propertyset id="mda.properties">
         <propertyref prefix="mda."/>
-	    <mapper type="glob" from="mda.*" to="*"/>
-	</propertyset>
-	
-	<!--
-	    Macro to run the mda (metadata aggregator CLI) tool.
-	-->
+        <mapper type="glob" from="mda.*" to="*"/>
+    </propertyset>
+
+    <!--
+        Macro to run the mda (metadata aggregator CLI) tool.
+    -->
     <macrodef name="MDA">
-    	<!-- Spring pipeline configuration file -->
-    	<attribute name="config"/>
-    	<!-- pipeline bean ID -->
-    	<attribute name="pipeline"/>
+        <!-- Spring pipeline configuration file -->
+        <attribute name="config"/>
+        <!-- pipeline bean ID -->
+        <attribute name="pipeline"/>
         <sequential>
             <java classname="net.shibboleth.metadata.cli.SimpleCommandLine"
                 fork="true" failonerror="true" maxmemory="${java.max.memory}">
                 <classpath>
-                	<!-- Spring "classpath:" imports can be under the MDX directory --> 
-                	<pathelement path="${mdx.dir}"/>
-                	
-                	<!-- Include all APIs we may want to use. -->
+                    <!-- Spring "classpath:" imports can be under the MDX directory -->
+                    <pathelement path="${mdx.dir}"/>
+
+                    <!-- Include all APIs we may want to use. -->
                     <fileset dir="${tools.mda}/lib">
                         <include name="*.jar"/>
                     </fileset>
-                	<fileset dir="${tools.dir}/ukf-mda">
-                		<include name="*.jar"/>
-                	</fileset>
-                	<fileset dir="${tools.dir}/xalan/lib">
-                		<include name="sdss-xalan-md-*.jar"/>
-                	</fileset>
+                    <fileset dir="${tools.dir}/ukf-mda">
+                        <include name="*.jar"/>
+                    </fileset>
+                    <fileset dir="${tools.dir}/xalan/lib">
+                        <include name="sdss-xalan-md-*.jar"/>
+                    </fileset>
                     <fileset dir="${tools.dir}/xalan/lib">
                         <include name="ukf-members-*.jar"/>
                     </fileset>
@@ -498,14 +498,14 @@
                 <syspropertyset>
                     <propertyset refid="mda.properties"/>
                 </syspropertyset>
-            	<jvmarg value="-enableassertions"/>
-            	<arg value="--quiet"/>
-            	<arg value="@{config}"/>
-            	<arg value="@{pipeline}"/>
+                <jvmarg value="-enableassertions"/>
+                <arg value="--quiet"/>
+                <arg value="@{config}"/>
+                <arg value="@{pipeline}"/>
             </java>
         </sequential>
     </macrodef>
-    
+
     <!--
         *********************************
         ***                           ***
@@ -513,16 +513,16 @@
         ***                           ***
         *********************************
     -->
-    
-	<!--
-	    MDNORM
-	    
-	    Macro to call tool to perform textual normalisation on an XML file
-	    containing a metadata aggregate.
-        
+
+    <!--
+        MDNORM
+
+        Macro to call tool to perform textual normalisation on an XML file
+        containing a metadata aggregate.
+
         Parameter 'i' is the file to be normalised; no assumption is made
         about its location so this must contain a full path.
-	-->
+    -->
     <macrodef name="MDNORM">
         <attribute name="i"/><!-- input file -->
         <element name="args" optional="yes"/>
@@ -541,7 +541,7 @@
 
     <!--
         MDNORM.noblank
-        
+
         Call MDNORM but discard blank lines from the output.
     -->
     <macrodef name="MDNORM.noblank">
@@ -555,141 +555,141 @@
         </sequential>
     </macrodef>
 
-	<!--
-		*********************************************
-		***                                       ***
-		***   M E T A D A T A T O O L   T O O L   ***
-		***                                       ***
-		*********************************************
-	-->
-	
-	<!--
-		Macro to run the metadatatool application with appropriate defaults.
-	-->
-	<macrodef name="MDT">
-		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-		<attribute name="o"/><!-- output file location -->
-		<attribute name="keystore"/><!-- keystore file location -->
-		<attribute name="storetype" default="JKS"/><!-- type of keystore to use -->
-		<attribute name="alias"/><!-- alias of key to use -->
-		<element name="args" optional="yes"/>
-		<sequential>
-			<java classname="edu.internet2.middleware.shibboleth.utils.MetadataTool"
-				fork="true" failonerror="true" maxmemory="${java.max.memory}">
-				<classpath>
-					<fileset dir="${tools.metadatatool}/lib">
-						<include name="*.jar"/>
-					</fileset>
-				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.metadatatool}/endorsed"/>
-				<args/>
-				<arg value="--keystore"/>
-				<arg value="@{keystore}"/>
-				<arg value="--storetype"/>
-				<arg value="@{storetype}"/>
-				<arg value="--alias"/>
-				<arg value="@{alias}"/>
-				<arg value="--in"/>
-				<arg value="file:${xml.dir}/@{i}"/>
-				<arg value="--out"/>
-				<arg value="@{o}"/>
-			</java>
-		</sequential>
-	</macrodef>
-	
-	<macrodef name="MDT.VFY.uk">
-		<attribute name="i"/>
-		<sequential>
+    <!--
+        *********************************************
+        ***                                       ***
+        ***   M E T A D A T A T O O L   T O O L   ***
+        ***                                       ***
+        *********************************************
+    -->
+
+    <!--
+        Macro to run the metadatatool application with appropriate defaults.
+    -->
+    <macrodef name="MDT">
+        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+        <attribute name="o"/><!-- output file location -->
+        <attribute name="keystore"/><!-- keystore file location -->
+        <attribute name="storetype" default="JKS"/><!-- type of keystore to use -->
+        <attribute name="alias"/><!-- alias of key to use -->
+        <element name="args" optional="yes"/>
+        <sequential>
+            <java classname="edu.internet2.middleware.shibboleth.utils.MetadataTool"
+                fork="true" failonerror="true" maxmemory="${java.max.memory}">
+                <classpath>
+                    <fileset dir="${tools.metadatatool}/lib">
+                        <include name="*.jar"/>
+                    </fileset>
+                </classpath>
+                <jvmarg value="-Djava.endorsed.dirs=${tools.metadatatool}/endorsed"/>
+                <args/>
+                <arg value="--keystore"/>
+                <arg value="@{keystore}"/>
+                <arg value="--storetype"/>
+                <arg value="@{storetype}"/>
+                <arg value="--alias"/>
+                <arg value="@{alias}"/>
+                <arg value="--in"/>
+                <arg value="file:${xml.dir}/@{i}"/>
+                <arg value="--out"/>
+                <arg value="@{o}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="MDT.VFY.uk">
+        <attribute name="i"/>
+        <sequential>
             <MDT i="@{i}" o="${null.device}"
                 keystore="${build.dir}/ukfederation-2012.jks"
                 alias="${keystore.uk.vfy.alias}"/>
-		</sequential>
-	</macrodef>
-		
-	<!--
-		*****************************************
-		***                                   ***
-		***   X M L S E C T O O L   T O O L   ***
-		***                                   ***
-		*****************************************
-	-->
-	
-	<macrodef name="XMLSECTOOL">
-		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-		<element name="args" optional="yes"/>
-		<sequential>
-			<java classname="edu.internet2.middleware.security.XmlSecTool"
-				fork="true" failonerror="true" maxmemory="${java.max.memory}">
-				<classpath>
-					<fileset dir="${tools.xmlsectool}/lib">
-						<include name="*.jar"/>
-					</fileset>
-				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.xmlsectool}/lib/endorsed"/>
-				<jvmarg value="-Dedu.internet2.middleware.security.XmlSecTool.home=${tools.xmlsectool}"/>
-				<args/>
-				<arg value="--validateSchema"/>
-				<arg value="--schemaDirectory"/>
-				<arg value="${xml.dir}"/>
-				<arg value="--inFile"/>
-				<arg value="${xml.dir}/@{i}"/>
-			</java>
-		</sequential>
-	</macrodef>
-	
-	<macrodef name="XMLSECTOOL.SIGN.uk">
-		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-		<attribute name="o"/><!-- output file, assumed to be in the XML directory -->
-		<attribute name="digest"/><!-- digest function to use -->
-		<sequential>
-			<!-- delete the temporary file to be sure we don't use old data -->
-			<delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-			
-			<echo>Signing @{i} using digest @{digest}.</echo>
-			
-			<!-- perform signing operation into temporary file -->
-			<XMLSECTOOL i="@{i}">
-				<args>
-					<arg value="--sign"/>
-					
-					<!-- set digest to use -->
-					<arg value="--digest"/>
-					<arg value="@{digest}"/>
-					
-					<!--
-					    Sign using pkcs11Config with keystoreProvider
-					   
-					    This only works with XmlSecTool 1.2.0 and later.
-					    It requires the java.security file to be unmodified.
-					-->
+        </sequential>
+    </macrodef>
+
+    <!--
+        *****************************************
+        ***                                   ***
+        ***   X M L S E C T O O L   T O O L   ***
+        ***                                   ***
+        *****************************************
+    -->
+
+    <macrodef name="XMLSECTOOL">
+        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+        <element name="args" optional="yes"/>
+        <sequential>
+            <java classname="edu.internet2.middleware.security.XmlSecTool"
+                fork="true" failonerror="true" maxmemory="${java.max.memory}">
+                <classpath>
+                    <fileset dir="${tools.xmlsectool}/lib">
+                        <include name="*.jar"/>
+                    </fileset>
+                </classpath>
+                <jvmarg value="-Djava.endorsed.dirs=${tools.xmlsectool}/lib/endorsed"/>
+                <jvmarg value="-Dedu.internet2.middleware.security.XmlSecTool.home=${tools.xmlsectool}"/>
+                <args/>
+                <arg value="--validateSchema"/>
+                <arg value="--schemaDirectory"/>
+                <arg value="${xml.dir}"/>
+                <arg value="--inFile"/>
+                <arg value="${xml.dir}/@{i}"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="XMLSECTOOL.SIGN.uk">
+        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+        <attribute name="o"/><!-- output file, assumed to be in the XML directory -->
+        <attribute name="digest"/><!-- digest function to use -->
+        <sequential>
+            <!-- delete the temporary file to be sure we don't use old data -->
+            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+
+            <echo>Signing @{i} using digest @{digest}.</echo>
+
+            <!-- perform signing operation into temporary file -->
+            <XMLSECTOOL i="@{i}">
+                <args>
+                    <arg value="--sign"/>
+
+                    <!-- set digest to use -->
+                    <arg value="--digest"/>
+                    <arg value="@{digest}"/>
+
+                    <!--
+                        Sign using pkcs11Config with keystoreProvider
+
+                        This only works with XmlSecTool 1.2.0 and later.
+                        It requires the java.security file to be unmodified.
+                    -->
                     <arg value="--pkcs11Config"/>
                     <arg value="${pkcs11.config}"/>
                     <arg value="--keystoreProvider"/>
                     <arg value="sun.security.pkcs11.SunPKCS11"/>
-					
-					<arg value="--key"/>
-					<arg value="${keystore.uk.sign.alias}"/>
-					<arg value="--keyPassword"/>
-					<arg value="${keystore.pass}"/>
-					<arg value="--outFile"/>
-					<arg value="${xml.dir}/@{o}"/>
-					<arg value="--referenceIdAttributeName"/>
-					<arg value="ID"/>
-					<!--
-					<arg value="- -quiet"/>
-					-->
-				</args>
-			</XMLSECTOOL>
-			
-			<!-- Force the output file to use Unix line endings -->
-			<fixcrlf file="${xml.dir}/@{o}" eol="lf" encoding="UTF-8"/>
 
-		</sequential>
-	</macrodef>
-	
-	<macrodef name="XMLSECTOOL.VFY.uk">
-		<attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-		<sequential>
+                    <arg value="--key"/>
+                    <arg value="${keystore.uk.sign.alias}"/>
+                    <arg value="--keyPassword"/>
+                    <arg value="${keystore.pass}"/>
+                    <arg value="--outFile"/>
+                    <arg value="${xml.dir}/@{o}"/>
+                    <arg value="--referenceIdAttributeName"/>
+                    <arg value="ID"/>
+                    <!--
+                    <arg value="- -quiet"/>
+                    -->
+                </args>
+            </XMLSECTOOL>
+
+            <!-- Force the output file to use Unix line endings -->
+            <fixcrlf file="${xml.dir}/@{o}" eol="lf" encoding="UTF-8"/>
+
+        </sequential>
+    </macrodef>
+
+    <macrodef name="XMLSECTOOL.VFY.uk">
+        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+        <sequential>
             <XMLSECTOOL i="@{i}">
                 <args>
                     <arg value="--verifySignature"/>
@@ -700,42 +700,42 @@
                     -->
                 </args>
             </XMLSECTOOL>
-		</sequential>
-	</macrodef>
-	
-	<!--
-		*******************************
-		***                         ***
-		***   X A L A N   T O O L   ***
-		***                         ***
-		*******************************
-	-->
-	
-	<!--
-		Macro to run the Xalan XSLT engine, taking files from arbitrary
-		locations.
-	-->
-	<macrodef name="XALAN">
-		<attribute name="i"/>
-		<attribute name="o"/>
-		<attribute name="x"/>
-		<sequential>
-			<java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="org.apache.xalan.xslt.Process">
-				<classpath>
-					<fileset dir="${tools.xalan}/lib">
-						<include name="*.jar"/>
-					</fileset>
-				</classpath>
-				<jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
-				<arg value="-IN"/>
-				<arg value="@{i}"/>
-				<arg value="-OUT"/>
-				<arg value="@{o}"/>
-				<arg value="-XSL"/>
-				<arg value="@{x}"/>
-			</java>
-		</sequential>
-	</macrodef>
+        </sequential>
+    </macrodef>
+
+    <!--
+        *******************************
+        ***                         ***
+        ***   X A L A N   T O O L   ***
+        ***                         ***
+        *******************************
+    -->
+
+    <!--
+        Macro to run the Xalan XSLT engine, taking files from arbitrary
+        locations.
+    -->
+    <macrodef name="XALAN">
+        <attribute name="i"/>
+        <attribute name="o"/>
+        <attribute name="x"/>
+        <sequential>
+            <java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="org.apache.xalan.xslt.Process">
+                <classpath>
+                    <fileset dir="${tools.xalan}/lib">
+                        <include name="*.jar"/>
+                    </fileset>
+                </classpath>
+                <jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
+                <arg value="-IN"/>
+                <arg value="@{i}"/>
+                <arg value="-OUT"/>
+                <arg value="@{o}"/>
+                <arg value="-XSL"/>
+                <arg value="@{x}"/>
+            </java>
+        </sequential>
+    </macrodef>
 
     <!--
         Macro to run the Xalan XSLT engine, taking files from arbitrary
@@ -761,123 +761,123 @@
         </sequential>
     </macrodef>
 
-	<!--
-		*******************************************
-		***                                     ***
-		***   M E T A D A T A   S I G N I N G   ***
-		***                                     ***
-		*******************************************
-	-->
-	
-	<!--
-		Acquire the keystore password.
-	-->
-	<target name="get.keystore.pass" unless="keystore.pass">
-		<input addproperty="keystore.pass">
-			Please enter the password for the keystores:
-		</input>
-	</target>
+    <!--
+        *******************************************
+        ***                                     ***
+        ***   M E T A D A T A   S I G N I N G   ***
+        ***                                     ***
+        *******************************************
+    -->
 
-	<!--
-		Select tool to sign UK federation metadata with.
-	-->
-	<macrodef name="SIGN.uk">
-		<attribute name="i"/>
-		<attribute name="o"/>
+    <!--
+        Acquire the keystore password.
+    -->
+    <target name="get.keystore.pass" unless="keystore.pass">
+        <input addproperty="keystore.pass">
+            Please enter the password for the keystores:
+        </input>
+    </target>
+
+    <!--
+        Select tool to sign UK federation metadata with.
+    -->
+    <macrodef name="SIGN.uk">
+        <attribute name="i"/>
+        <attribute name="o"/>
         <attribute name="digest"/><!-- digest function to use -->
-		<sequential>
-			<XMLSECTOOL.SIGN.uk i="@{i}" o="@{o}" digest="@{digest}"/>
-		</sequential>
-	</macrodef>
+        <sequential>
+            <XMLSECTOOL.SIGN.uk i="@{i}" o="@{o}" digest="@{digest}"/>
+        </sequential>
+    </macrodef>
 
-	<!--
-		Sign the various metadata files.
-	-->
-	<target name="sign">
-		<echo>Signing UK metadata.</echo>
-		<SIGN.uk i="${md.prod.unsigned}" o="${md.prod.signed}" digest="SHA-256"/>
+    <!--
+        Sign the various metadata files.
+    -->
+    <target name="sign">
+        <echo>Signing UK metadata.</echo>
+        <SIGN.uk i="${md.prod.unsigned}" o="${md.prod.signed}" digest="SHA-256"/>
 
-		<echo>Signing UK WAYF metadata.</echo>
-		<SIGN.uk i="${md.wayf.unsigned}" o="${md.wayf.signed}" digest="SHA-256"/>
+        <echo>Signing UK WAYF metadata.</echo>
+        <SIGN.uk i="${md.wayf.unsigned}" o="${md.wayf.signed}" digest="SHA-256"/>
 
         <echo>Signing UK CDS full metadata.</echo>
         <SIGN.uk i="${md.cdsall.unsigned}" o="${md.cdsall.signed}" digest="SHA-256"/>
 
-		<echo>Signing UK test metadata.</echo>
-		<SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}" digest="SHA-256"/>
+        <echo>Signing UK test metadata.</echo>
+        <SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}" digest="SHA-256"/>
 
-		<echo>Signing UK export metadata.</echo>
-		<SIGN.uk i="${md.export.unsigned}" o="${md.export.signed}" digest="SHA-256"/>
+        <echo>Signing UK export metadata.</echo>
+        <SIGN.uk i="${md.export.unsigned}" o="${md.export.signed}" digest="SHA-256"/>
 
-		<echo>Signing UK fallback metadata.</echo>
-		<SIGN.uk i="${md.back.unsigned}" o="${md.back.signed}" digest="SHA-256"/>
-		
-		<echo>Generated signed UK metadata.</echo>
-	</target>
-	
-	<!--
-		Verify UK federation metadata with both verification tools.
-		
-		This should be used when the metadata needs to be compatible
-		with the Shibboleth 1.3 IdP.
-	-->
-	<macrodef name="VFY.uk.both">
-		<attribute name="i"/>
-		<sequential>
-			<!--
-				Verify using metadatatool.
-			-->
-			<MDT.VFY.uk i="@{i}"/>
+        <echo>Signing UK fallback metadata.</echo>
+        <SIGN.uk i="${md.back.unsigned}" o="${md.back.signed}" digest="SHA-256"/>
 
-			<!--
-				Verify using xmlsectool.
-			-->
-			<XMLSECTOOL.VFY.uk i="@{i}"/>
-			
-		</sequential>
-	</macrodef>
-		
-	<!--
-		Verify the signed metadata files.
-	-->
-	<target name="verify">
-		<echo>Verifying signed UK metadata.</echo>
-		<VFY.uk.both i="${md.prod.signed}"/>
+        <echo>Generated signed UK metadata.</echo>
+    </target>
 
-		<echo>Verifying signed UK WAYF metadata.</echo>
-		<VFY.uk.both i="${md.wayf.signed}"/>
+    <!--
+        Verify UK federation metadata with both verification tools.
+
+        This should be used when the metadata needs to be compatible
+        with the Shibboleth 1.3 IdP.
+    -->
+    <macrodef name="VFY.uk.both">
+        <attribute name="i"/>
+        <sequential>
+            <!--
+                Verify using metadatatool.
+            -->
+            <MDT.VFY.uk i="@{i}"/>
+
+            <!--
+                Verify using xmlsectool.
+            -->
+            <XMLSECTOOL.VFY.uk i="@{i}"/>
+
+        </sequential>
+    </macrodef>
+
+    <!--
+        Verify the signed metadata files.
+    -->
+    <target name="verify">
+        <echo>Verifying signed UK metadata.</echo>
+        <VFY.uk.both i="${md.prod.signed}"/>
+
+        <echo>Verifying signed UK WAYF metadata.</echo>
+        <VFY.uk.both i="${md.wayf.signed}"/>
 
         <echo>Verifying signed UK CDS full metadata.</echo>
         <VFY.uk.both i="${md.cdsall.signed}"/>
 
-		<echo>Verifying signed UK test metadata.</echo>
-		<XMLSECTOOL.VFY.uk i="${md.test.signed}"/>
+        <echo>Verifying signed UK test metadata.</echo>
+        <XMLSECTOOL.VFY.uk i="${md.test.signed}"/>
 
-		<echo>Verifying signed UK export metadata.</echo>
-		<XMLSECTOOL.VFY.uk i="${md.export.signed}"/>
-		
-		<echo>Verifying signed UK fallback metadata.</echo>
-		<VFY.uk.both i="${md.back.signed}"/>
+        <echo>Verifying signed UK export metadata.</echo>
+        <XMLSECTOOL.VFY.uk i="${md.export.signed}"/>
 
-		<echo>Verification completed.</echo>
-	</target>
-	
-	<!--
-		*****************************************
-		***                                   ***
-		***   M E T A D A T A   I M P O R T   ***
-		***                                   ***
-		*****************************************
-	-->
-	
-	<target name="import.metadata">
-		<echo>Importing metadata from ${entities.dir}/import.xml</echo>
+        <echo>Verifying signed UK fallback metadata.</echo>
+        <VFY.uk.both i="${md.back.signed}"/>
+
+        <echo>Verification completed.</echo>
+    </target>
+
+    <!--
+        *****************************************
+        ***                                   ***
+        ***   M E T A D A T A   I M P O R T   ***
+        ***                                   ***
+        *****************************************
+    -->
+
+    <target name="import.metadata">
+        <echo>Importing metadata from ${entities.dir}/import.xml</echo>
         <delete file="${entities.dir}/imported.xml" quiet="true" verbose="false"/>
-		<CHANNEL.do channel="uk" verb="import.metadata"/>
-		<echo>Imported metadata to ${entities.dir}/imported.xml</echo>
+        <CHANNEL.do channel="uk" verb="import.metadata"/>
+        <echo>Imported metadata to ${entities.dir}/imported.xml</echo>
         <fixcrlf file="${entities.dir}/imported.xml" encoding="UTF-8"/>
-	</target>
-	
+    </target>
+
     <!--
         *********************************************
         ***                                       ***
@@ -885,44 +885,44 @@
         ***                                       ***
         *********************************************
     -->
-	
-	<!--
-	    Aggregator based work is divided into channels, each of
-	    which lives in a directory under /mdx/.  Each channel
-	    can have a number of verbs which can be executed.
-	    
-	    Conventions for this system are documented in
-	    /mdx/conventions.md.
-	-->
-	
-	<!--
-	    CHANNEL.do
-	    
-	    Run a particular flow in the named channel.
-	-->
+
+    <!--
+        Aggregator based work is divided into channels, each of
+        which lives in a directory under /mdx/.  Each channel
+        can have a number of verbs which can be executed.
+
+        Conventions for this system are documented in
+        /mdx/conventions.md.
+    -->
+
+    <!--
+        CHANNEL.do
+
+        Run a particular flow in the named channel.
+    -->
     <macrodef name="CHANNEL.do">
         <attribute name="channel"/><!-- channel name -->
-    	<attribute name="verb"/><!-- verb to perform -->
+        <attribute name="verb"/><!-- verb to perform -->
         <sequential>
             <echo>Running @{channel} @{verb} flow.</echo>
-        	<if>
-        		<available file="${mdx.dir}/@{channel}/@{verb}.xml"/>
-            	<then>
-            	    <MDA config="${mdx.dir}/@{channel}/@{verb}.xml"
-            	        pipeline="@{verb}"/>
-            	</then>
-            	<else>
+            <if>
+                <available file="${mdx.dir}/@{channel}/@{verb}.xml"/>
+                <then>
+                    <MDA config="${mdx.dir}/@{channel}/@{verb}.xml"
+                        pipeline="@{verb}"/>
+                </then>
+                <else>
                     <MDA config="${mdx.dir}/@{channel}/verbs.xml"
                         pipeline="@{verb}"/>
-            	</else>
-        	</if>
+                </else>
+            </if>
             <echo>Completed @{channel} @{verb} flow.</echo>
         </sequential>
     </macrodef>
-	
+
     <!--
         flow
-        
+
         Prompt for a channel name and a verb, and run that verb in that channel.
     -->
     <target name="flow">
@@ -934,19 +934,19 @@
         </input>
         <CHANNEL.do channel="${channel}" verb="${verb}"/>
     </target>
-    
-	<!--
-	    CHANNEL.import
-	    
-	    Run the import flow from the named channel.
-	-->
-	<macrodef name="CHANNEL.import">
-		<attribute name="channel"/><!-- channel name -->
-		<sequential>
-			<CHANNEL.do channel="@{channel}" verb="import"/>
-		</sequential>
-	</macrodef>
-	
+
+    <!--
+        CHANNEL.import
+
+        Run the import flow from the named channel.
+    -->
+    <macrodef name="CHANNEL.import">
+        <attribute name="channel"/><!-- channel name -->
+        <sequential>
+            <CHANNEL.do channel="@{channel}" verb="import"/>
+        </sequential>
+    </macrodef>
+
     <!--
         *******************************************************************
         ***                                                             ***
@@ -954,68 +954,68 @@
         ***                                                             ***
         *******************************************************************
     -->
-    
+
     <target name="flow.import">
         <input addproperty="channel">
             Please select the channel to use (e.g., us_incommon):
         </input>
         <CHANNEL.import channel="${channel}"/>
     </target>
-    
+
     <target name="flow.int_edugain.testImport">
         <CHANNEL.do channel="int_edugain" verb="importTest"/>
     </target>
-	
-	<target name="flow.test.all"
-		depends="flow.importEdugain.all, flow.importProduction.all">
+
+    <target name="flow.test.all"
+        depends="flow.importEdugain.all, flow.importProduction.all">
         <CHANNEL.import channel="au_aaf"/>
         <CHANNEL.import channel="eu_clarin"/>
-		<CHANNEL.import channel="nl_surfconext"/>
+        <CHANNEL.import channel="nl_surfconext"/>
         <CHANNEL.import channel="uk_eduserv"/>
-		<CHANNEL.import channel="us_incommon"/>
-	</target>
-	
+        <CHANNEL.import channel="us_incommon"/>
+    </target>
+
     <!--
         flow.importProduction.all
-        
+
         Run the importProduction flow on each channel that has one.
-        
+
         Exception: int_testshib, which is too large and anarchic to be worthwhile.
     -->
     <target name="flow.importProduction.all">
-    	<CHANNEL.do verb="importProduction" channel="at_aconet"/>
+        <CHANNEL.do verb="importProduction" channel="at_aconet"/>
         <CHANNEL.do verb="importProduction" channel="be_belnet"/>
         <CHANNEL.do verb="importProduction" channel="br_cafe"/>
-    	<CHANNEL.do verb="importProduction" channel="ca_caf"/>
-    	<CHANNEL.do verb="importProduction" channel="ch_switchaai"/>
+        <CHANNEL.do verb="importProduction" channel="ca_caf"/>
+        <CHANNEL.do verb="importProduction" channel="ch_switchaai"/>
         <CHANNEL.do verb="importProduction" channel="cz_eduid"/>
-    	<CHANNEL.do verb="importProduction" channel="de_dfnaai"/>
+        <CHANNEL.do verb="importProduction" channel="de_dfnaai"/>
         <CHANNEL.do verb="importProduction" channel="dk_wayf"/>
-    	<CHANNEL.do verb="importProduction" channel="es_sir"/>
-    	<CHANNEL.do verb="importProduction" channel="fi_haka"/>
+        <CHANNEL.do verb="importProduction" channel="es_sir"/>
+        <CHANNEL.do verb="importProduction" channel="fi_haka"/>
         <CHANNEL.do verb="importProduction" channel="fr_renater"/>
-    	<CHANNEL.do verb="importProduction" channel="gr_grnet"/>
-    	<CHANNEL.do verb="importProduction" channel="hu_eduid"/>
-    	<CHANNEL.do verb="importProduction" channel="ie_edugate"/>
-    	<CHANNEL.do verb="importProduction" channel="in_infed"/>
-    	<CHANNEL.do verb="importProduction" channel="int_edugain"/>
-    	<CHANNEL.do verb="importProduction" channel="it_idem"/>
-    	<CHANNEL.do verb="importProduction" channel="jp_gakunin"/>
-    	<CHANNEL.do verb="importProduction" channel="lv_laife"/>
-    	<!--
-    	<CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
-    	-->
-    	<CHANNEL.do verb="importProduction" channel="no_feide"/>
-    	<CHANNEL.do verb="importProduction" channel="nz_tuakiri"/>
+        <CHANNEL.do verb="importProduction" channel="gr_grnet"/>
+        <CHANNEL.do verb="importProduction" channel="hu_eduid"/>
+        <CHANNEL.do verb="importProduction" channel="ie_edugate"/>
+        <CHANNEL.do verb="importProduction" channel="in_infed"/>
+        <CHANNEL.do verb="importProduction" channel="int_edugain"/>
+        <CHANNEL.do verb="importProduction" channel="it_idem"/>
+        <CHANNEL.do verb="importProduction" channel="jp_gakunin"/>
+        <CHANNEL.do verb="importProduction" channel="lv_laife"/>
+        <!--
+        <CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
+        -->
+        <CHANNEL.do verb="importProduction" channel="no_feide"/>
+        <CHANNEL.do verb="importProduction" channel="nz_tuakiri"/>
         <CHANNEL.do verb="importProduction" channel="pl_pionier"/>
-    	<CHANNEL.do verb="importProduction" channel="se_swamid"/>
-    	<CHANNEL.do verb="importProduction" channel="si_arnes"/>
+        <CHANNEL.do verb="importProduction" channel="se_swamid"/>
+        <CHANNEL.do verb="importProduction" channel="si_arnes"/>
         <CHANNEL.do verb="importProduction" channel="us_incommon"/>
     </target>
-    
+
     <!--
         flow.importEdugain.all
-        
+
         Run the importEdugain flow on each channel that has one.
     -->
     <target name="flow.importEdugain.all">
@@ -1024,27 +1024,27 @@
         <CHANNEL.do verb="importEdugain" channel="br_cafe"/>
         <CHANNEL.do verb="importEdugain" channel="ca_caf"/>
         <CHANNEL.do verb="importEdugain" channel="ch_switchaai"/>
-    	<CHANNEL.do verb="importEdugain" channel="cl_cofre"/>
+        <CHANNEL.do verb="importEdugain" channel="cl_cofre"/>
         <CHANNEL.do verb="importEdugain" channel="cz_eduid"/>
         <CHANNEL.do verb="importEdugain" channel="de_dfnaai"/>
         <CHANNEL.do verb="importEdugain" channel="dk_wayf"/>
-    	<CHANNEL.do verb="importEdugain" channel="es_sir"/>
-    	<CHANNEL.do verb="importEdugain" channel="fi_haka"/>
+        <CHANNEL.do verb="importEdugain" channel="es_sir"/>
+        <CHANNEL.do verb="importEdugain" channel="fi_haka"/>
         <CHANNEL.do verb="importEdugain" channel="fr_renater"/>
-    	<CHANNEL.do verb="importEdugain" channel="gr_grnet"/>
-    	<CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
-    	<CHANNEL.do verb="importEdugain" channel="hu_eduid"/>
-    	<CHANNEL.do verb="importEdugain" channel="it_idem"/>
-    	<CHANNEL.do verb="importEdugain" channel="lv_laife"/>
-    	<CHANNEL.do verb="importEdugain" channel="nl_surfnet"/>
-    	<CHANNEL.do verb="importEdugain" channel="no_feide"/>
-    	<CHANNEL.do verb="importEdugain" channel="pl_pionier"/>
-    	<CHANNEL.do verb="importEdugain" channel="se_swamid"/>
+        <CHANNEL.do verb="importEdugain" channel="gr_grnet"/>
+        <CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
+        <CHANNEL.do verb="importEdugain" channel="hu_eduid"/>
+        <CHANNEL.do verb="importEdugain" channel="it_idem"/>
+        <CHANNEL.do verb="importEdugain" channel="lv_laife"/>
+        <CHANNEL.do verb="importEdugain" channel="nl_surfnet"/>
+        <CHANNEL.do verb="importEdugain" channel="no_feide"/>
+        <CHANNEL.do verb="importEdugain" channel="pl_pionier"/>
+        <CHANNEL.do verb="importEdugain" channel="se_swamid"/>
     </target>
 
     <!--
         flow.importEdugainRaw.all
-        
+
         Run the importEdugainRaw flow on each channel that has one.
     -->
     <target name="flow.importEdugainRaw.all">
@@ -1053,7 +1053,7 @@
         <CHANNEL.do verb="importEdugainRaw" channel="br_cafe"/>
         <CHANNEL.do verb="importEdugainRaw" channel="ca_caf"/>
         <CHANNEL.do verb="importEdugainRaw" channel="ch_switchaai"/>
-    	<CHANNEL.do verb="importEdugainRaw" channel="cl_cofre"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="cl_cofre"/>
         <CHANNEL.do verb="importEdugainRaw" channel="cz_eduid"/>
         <CHANNEL.do verb="importEdugainRaw" channel="de_dfnaai"/>
         <CHANNEL.do verb="importEdugainRaw" channel="dk_wayf"/>
@@ -1064,54 +1064,54 @@
         <CHANNEL.do verb="importEdugainRaw" channel="hr_eduhr"/>
         <CHANNEL.do verb="importEdugainRaw" channel="hu_eduid"/>
         <CHANNEL.do verb="importEdugainRaw" channel="it_idem"/>
-    	<CHANNEL.do verb="importEdugainRaw" channel="lv_laife"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="lv_laife"/>
         <CHANNEL.do verb="importEdugainRaw" channel="nl_surfnet"/>
         <CHANNEL.do verb="importEdugainRaw" channel="no_feide"/>
-    	<CHANNEL.do verb="importEdugainRaw" channel="pl_pionier"/>
+        <CHANNEL.do verb="importEdugainRaw" channel="pl_pionier"/>
         <CHANNEL.do verb="importEdugainRaw" channel="se_swamid"/>
     </target>
-    
+
     <!--
         flow.verify.cobweb
-        
+
         Verify the COBWEB metadata. Callable from Jenkins.
     -->
-	<target name="flow.verify.cobweb">
-		   <CHANNEL.do verb="verifyProduction" channel="int_cobweb"/>
-	</target>
+    <target name="flow.verify.cobweb">
+           <CHANNEL.do verb="verifyProduction" channel="int_cobweb"/>
+    </target>
 
-	<!--
+    <!--
         flow.verifyEdugain.input
-        
+
         Verify the eduGAIN entities from a particular channel.
-        
+
         The intention is that this be called within Jenkins
         with the channel name passed as a property, e.g.:
-        
+
             ant flow.verifyEdugain.input -Dchannel=se_swamid
-            
+
     -->
     <target name="flow.verifyEdugain.input">
         <CHANNEL.do verb="verifyEdugain" channel="${channel}"/>
     </target>
-    
+
     <!--
         flow.verifyEdugain.inputs
-        
+
         Verify the eduGAIN entities from all channels with this ability.
     -->
     <target name="flow.verifyEdugain.inputs">
         <CHANNEL.do verb="verifyEdugain" channel="at_aconet"/>
-    	<CHANNEL.do verb="verifyEdugain" channel="cl_cofre"/>
-    	<CHANNEL.do verb="verifyEdugain" channel="pl_pionier"/>
+        <CHANNEL.do verb="verifyEdugain" channel="cl_cofre"/>
+        <CHANNEL.do verb="verifyEdugain" channel="pl_pionier"/>
         <CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
     </target>
-    
+
     <!--
         flow.verifyEdugain.output
-        
+
         Verify the eduGAIN production aggregate.
-        
+
         The intention is that these targets be called from Jenkins.
     -->
     <target name="flow.verifyEdugain.output">
@@ -1123,16 +1123,16 @@
     <target name="flow.verifyEdugain.output.recovered">
         <CHANNEL.do verb="verify.recovered" channel="int_edugain"/>
     </target>
-    
-	<!--
-	    flow.importRaw.all
-	    
-	    Run the importRaw command for each channel in turn.
-	-->
-	<target name="flow.importRaw.all">
-		<CHANNEL.do verb="importRaw" channel="at_aconet"/>
+
+    <!--
+        flow.importRaw.all
+
+        Run the importRaw command for each channel in turn.
+    -->
+    <target name="flow.importRaw.all">
+        <CHANNEL.do verb="importRaw" channel="at_aconet"/>
         <CHANNEL.do verb="importRaw" channel="au_aaf"/>
-		<CHANNEL.do verb="importRaw" channel="be_belnet"/>
+        <CHANNEL.do verb="importRaw" channel="be_belnet"/>
         <CHANNEL.do verb="importRaw" channel="br_cafe"/>
         <CHANNEL.do verb="importRaw" channel="ca_caf"/>
         <CHANNEL.do verb="importRaw" channel="ch_switchaai"/>
@@ -1146,22 +1146,22 @@
         <CHANNEL.do verb="importRaw" channel="gr_grnet"/>
         <CHANNEL.do verb="importRaw" channel="hr_eduhr"/>
         <CHANNEL.do verb="importRaw" channel="hu_eduid"/>
-		<CHANNEL.do verb="importRaw" channel="in_infed"/>
+        <CHANNEL.do verb="importRaw" channel="in_infed"/>
         <CHANNEL.do verb="importRaw" channel="int_edugain"/>
-		<CHANNEL.do verb="importRaw" channel="int_testshib"/>
+        <CHANNEL.do verb="importRaw" channel="int_testshib"/>
         <CHANNEL.do verb="importRaw" channel="it_idem"/>
         <CHANNEL.do verb="importRaw" channel="jp_gakunin"/>
         <CHANNEL.do verb="importRaw" channel="lv_laife"/>
         <CHANNEL.do verb="importRaw" channel="nl_surfnet"/>
         <CHANNEL.do verb="importRaw" channel="no_feide"/>
         <CHANNEL.do verb="importRaw" channel="nz_tuakiri"/>
-		<CHANNEL.do verb="importRaw" channel="pl_pionier"/>
+        <CHANNEL.do verb="importRaw" channel="pl_pionier"/>
         <CHANNEL.do verb="importRaw" channel="se_swamid"/>
         <CHANNEL.do verb="importRaw" channel="si_arnes"/>
-		<CHANNEL.do verb="collect"   channel="uk"/>
+        <CHANNEL.do verb="collect"   channel="uk"/>
         <CHANNEL.do verb="importRaw" channel="us_incommon"/>
-	</target>
-    
+    </target>
+
     <!--
         *********************************
         ***                           ***
@@ -1169,13 +1169,13 @@
         ***                           ***
         *********************************
     -->
-    
+
     <target name="uiinfo.list">
-    	<CHANNEL.do channel="uk" verb="collect"/>
+        <CHANNEL.do channel="uk" verb="collect"/>
         <XALAN.noout i="${mdx.dir}/uk/collected.xml"
                x="${build.dir}/list_uiinfo.xsl"/>
     </target>
-    
+
     <!--
         *******************************
         ***                         ***
@@ -1183,169 +1183,169 @@
         ***                         ***
         *******************************
     -->
-	
-	<target name="mdui.stats">
+
+    <target name="mdui.stats">
         <input addproperty="channel">
             Please select the channel to use (e.g., us_incommon):
         </input>
-		<if>
-			<equals arg1="${channel}" arg2="uk"/>
-			<then>
-				<CHANNEL.do verb="collect" channel="uk"/>
+        <if>
+            <equals arg1="${channel}" arg2="uk"/>
+            <then>
+                <CHANNEL.do verb="collect" channel="uk"/>
                 <XALAN.noout i="${mdx.dir}/uk/collected.xml"
                        x="${build.dir}/statistics_mdui.xsl"/>
-			</then>
-			<else>
-			    <CHANNEL.do verb="importRaw" channel="${channel}"/>
+            </then>
+            <else>
+                <CHANNEL.do verb="importRaw" channel="${channel}"/>
                 <XALAN.noout i="${mdx.dir}/${channel}/imported.xml"
                        x="${build.dir}/statistics_mdui.xsl"/>
-			</else>
-		</if>
-	</target>
-    
-	<!--
-		*******************************
-		***                         ***
-		***   M I S C E L L A N Y   ***
-		***                         ***
-		*******************************
-	-->
-	
-	<!--
-		Statistics generation
-		
-		Note that statistics are generated from the full registered fragment
-		data, so that the statistics process has access to information that will not
-		be included in published metadata.
-		
-		This target does stand-alone statistics generation; in normal use, the
-		statistics are generated as a side-effect of the generate target.
-	-->
-	<target name="stats">
-		<CHANNEL.do channel="uk" verb="statistics"/>
-		<fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf" encoding="UTF-8"/>
-	</target>
-	
-	<!--
-		Check mailing list against current metadata
-	-->
-	<target name="check.mailing.list" depends="flow.uk.collect">
-		<echo>Checking mailing list entries.</echo>
-		<exec executable="perl" dir="${build.dir}">
-			<arg value="${build.dir}/addresses.pl"/>
-		</exec>
-	</target>
-	
-	<!--
-		Extract TLS locations from the UK federation metadata.
-	-->
-	<target name="extract.locs" depends="flow.uk.collect">
-		<echo>Extracting TLS locations</echo>
-		<exec executable="perl" dir="${build.dir}"
-			output="${build.dir}/locations.txt">
-			<arg value="${build.dir}/extract_locs.pl"/>
-		</exec>
-	</target>
-	
-	<!--
-		Extract authorities
-	-->
-	<target name="extract.authorities">
-		<echo>Extracting key authorities</echo>
-		<XALAN
-			i="${mdx.dir}/uk/trust-roots.xml"
-			o="${mdx.dir}/uk/authorities.pem"
-			x="${mdx.dir}/uk/extract_authorities.xsl"/>
-	</target>
-	
-	<!--
-		Check authorities
-	-->
-	<target name="check.authorities">
-		<echo>Checking authority certificates</echo>
-		<exec executable="perl" dir="${mdx.dir}/uk"
-			input="${mdx.dir}/uk/authorities.pem">
-			<arg value="${mdx.dir}/uk/check_authorities.pl"/>
-		</exec>
-	</target>
+            </else>
+        </if>
+    </target>
 
-	<!--
-		Utility to fold overlong embedded certificates.
-	-->
-	<target name="fold.embedded.certs">
-		<echo>Folding embedded certificates</echo>
-		<for param="file">
-			<path>
-				<fileset dir="${entities.dir}" includes="uk*.xml"/>
-			</path>
-			<sequential>
-				<exec executable="perl" dir="${entities.dir}">
-					<arg value="-i"/>
-					<arg value="${build.dir}/fold_cert.pl"/>
-					<arg value="@{file}"/>
-				</exec>
-			</sequential>
-		</for>
-	</target>
-	
-	<!--
-		Utility to remove the old Eduserv gateway certificate.
-	-->
-	<!--
-	<target name="remove.old.eduserv.cert">
-		<echo>Removing old Eduserv gateway certificate</echo>
-		<for param="file">
-			<path>
-				<fileset dir="${entities.dir}" includes="uk*.xml"/>
-			</path>
-			<sequential>
-				<exec executable="perl" dir="${entities.dir}">
-					<arg value="-i"/>
-					<arg value="${build.dir}/remove_old_eduserv_cert.pl"/>
-					<arg value="@{file}"/>
-				</exec>
-			</sequential>
-		</for>
-	</target>
-	-->
-	
-	<!--
-		Utility to add the second Eduserv gateway certificate.
-	-->
     <!--
-	<target name="add.second.eduserv.cert">
-		<echo>Adding second Eduserv gateway certificate</echo>
-		<for param="file">
-			<path>
-				<fileset dir="${entities.dir}" includes="uk*.xml"/>
-			</path>
-			<sequential>
-				<exec executable="perl" dir="${entities.dir}">
-					<arg value="-i"/>
-					<arg value="${build.dir}/add_second_eduserv_cert.pl"/>
-					<arg value="@{file}"/>
-				</exec>
-			</sequential>
-		</for>
-	</target>
+        *******************************
+        ***                         ***
+        ***   M I S C E L L A N Y   ***
+        ***                         ***
+        *******************************
     -->
-	
-	<!--
-	    Utility to apply a one-off change to every fragment file.
-	    
-	    The perl script is applied in "-i" mode to perform in-place
-	    editing; this only works well on Unix-like systems.
-	    
-	    Comment this out when not in use to avoid accidents.
-	-->
-	<!--
-	<target name="fix.fragments">
+
+    <!--
+        Statistics generation
+
+        Note that statistics are generated from the full registered fragment
+        data, so that the statistics process has access to information that will not
+        be included in published metadata.
+
+        This target does stand-alone statistics generation; in normal use, the
+        statistics are generated as a side-effect of the generate target.
+    -->
+    <target name="stats">
+        <CHANNEL.do channel="uk" verb="statistics"/>
+        <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf" encoding="UTF-8"/>
+    </target>
+
+    <!--
+        Check mailing list against current metadata
+    -->
+    <target name="check.mailing.list" depends="flow.uk.collect">
+        <echo>Checking mailing list entries.</echo>
+        <exec executable="perl" dir="${build.dir}">
+            <arg value="${build.dir}/addresses.pl"/>
+        </exec>
+    </target>
+
+    <!--
+        Extract TLS locations from the UK federation metadata.
+    -->
+    <target name="extract.locs" depends="flow.uk.collect">
+        <echo>Extracting TLS locations</echo>
+        <exec executable="perl" dir="${build.dir}"
+            output="${build.dir}/locations.txt">
+            <arg value="${build.dir}/extract_locs.pl"/>
+        </exec>
+    </target>
+
+    <!--
+        Extract authorities
+    -->
+    <target name="extract.authorities">
+        <echo>Extracting key authorities</echo>
+        <XALAN
+            i="${mdx.dir}/uk/trust-roots.xml"
+            o="${mdx.dir}/uk/authorities.pem"
+            x="${mdx.dir}/uk/extract_authorities.xsl"/>
+    </target>
+
+    <!--
+        Check authorities
+    -->
+    <target name="check.authorities">
+        <echo>Checking authority certificates</echo>
+        <exec executable="perl" dir="${mdx.dir}/uk"
+            input="${mdx.dir}/uk/authorities.pem">
+            <arg value="${mdx.dir}/uk/check_authorities.pl"/>
+        </exec>
+    </target>
+
+    <!--
+        Utility to fold overlong embedded certificates.
+    -->
+    <target name="fold.embedded.certs">
+        <echo>Folding embedded certificates</echo>
         <for param="file">
             <path>
                 <fileset dir="${entities.dir}" includes="uk*.xml"/>
             </path>
             <sequential>
-            	<echo>processing @{file}</echo>
+                <exec executable="perl" dir="${entities.dir}">
+                    <arg value="-i"/>
+                    <arg value="${build.dir}/fold_cert.pl"/>
+                    <arg value="@{file}"/>
+                </exec>
+            </sequential>
+        </for>
+    </target>
+
+    <!--
+        Utility to remove the old Eduserv gateway certificate.
+    -->
+    <!--
+    <target name="remove.old.eduserv.cert">
+        <echo>Removing old Eduserv gateway certificate</echo>
+        <for param="file">
+            <path>
+                <fileset dir="${entities.dir}" includes="uk*.xml"/>
+            </path>
+            <sequential>
+                <exec executable="perl" dir="${entities.dir}">
+                    <arg value="-i"/>
+                    <arg value="${build.dir}/remove_old_eduserv_cert.pl"/>
+                    <arg value="@{file}"/>
+                </exec>
+            </sequential>
+        </for>
+    </target>
+    -->
+
+    <!--
+        Utility to add the second Eduserv gateway certificate.
+    -->
+    <!--
+    <target name="add.second.eduserv.cert">
+        <echo>Adding second Eduserv gateway certificate</echo>
+        <for param="file">
+            <path>
+                <fileset dir="${entities.dir}" includes="uk*.xml"/>
+            </path>
+            <sequential>
+                <exec executable="perl" dir="${entities.dir}">
+                    <arg value="-i"/>
+                    <arg value="${build.dir}/add_second_eduserv_cert.pl"/>
+                    <arg value="@{file}"/>
+                </exec>
+            </sequential>
+        </for>
+    </target>
+    -->
+
+    <!--
+        Utility to apply a one-off change to every fragment file.
+
+        The perl script is applied in "-i" mode to perform in-place
+        editing; this only works well on Unix-like systems.
+
+        Comment this out when not in use to avoid accidents.
+    -->
+    <!--
+    <target name="fix.fragments">
+        <for param="file">
+            <path>
+                <fileset dir="${entities.dir}" includes="uk*.xml"/>
+            </path>
+            <sequential>
+                <echo>processing @{file}</echo>
                 <exec executable="perl" dir="${entities.dir}">
                     <arg value="-i"/>
                     <arg value="${build.dir}/fix_fragment.pl"/>
@@ -1356,65 +1356,65 @@
     </target>
     -->
 
-	<!--
-		Extract embedded certificates
-	-->
-	<target name="extract.embedded" depends="flow.uk.collect">
-		<echo>Extracting embedded certificates</echo>
-		<XALAN
-			i="${uk.collected}"
-			o="${xml.dir}/embedded.pem"
-			x="${build.dir}/extract_embedded.xsl"/>
-	</target>
-	
-	<!--
-		Check embedded certificates.
-	-->
-	<target name="check.embedded" depends="extract.embedded">
-		<echo>Checking embedded certificates</echo>
-		<exec executable="perl" dir="${xml.dir}"
-			input="${xml.dir}/embedded.pem">
-			<arg value="${build.dir}/check_embedded.pl"/>
-			<arg value="-q"/>
-		</exec>
+    <!--
+        Extract embedded certificates
+    -->
+    <target name="extract.embedded" depends="flow.uk.collect">
+        <echo>Extracting embedded certificates</echo>
+        <XALAN
+            i="${uk.collected}"
+            o="${xml.dir}/embedded.pem"
+            x="${build.dir}/extract_embedded.xsl"/>
+    </target>
+
+    <!--
+        Check embedded certificates.
+    -->
+    <target name="check.embedded" depends="extract.embedded">
+        <echo>Checking embedded certificates</echo>
+        <exec executable="perl" dir="${xml.dir}"
+            input="${xml.dir}/embedded.pem">
+            <arg value="${build.dir}/check_embedded.pl"/>
+            <arg value="-q"/>
+        </exec>
         <delete file="${xml.dir}/embedded.pem" quiet="true" verbose="false"/>
-	</target>
-	
-	<!--
-	   Check for IdPs using the single-port configuration.
-	-->
-	<target name="check.ports">
-		<echo>Checking vhost use</echo>
+    </target>
+
+    <!--
+       Check for IdPs using the single-port configuration.
+    -->
+    <target name="check.ports">
+        <echo>Checking vhost use</echo>
         <CHANNEL.do verb="checkPorts" channel="uk"/>
         <echo>Checked.</echo>
-	</target>
+    </target>
 
     <!--
         check.uk.future
-        
+
         Run a set of possible future rulesets against the existing collection
         of UK-federation registered metadata.
     -->
     <target name="check.uk.future">
         <echo>Checking against future rulesets.</echo>
-    	<CHANNEL.do verb="checkFuture" channel="uk"/>
-    	<echo>Check complete.</echo>
+        <CHANNEL.do verb="checkFuture" channel="uk"/>
+        <echo>Check complete.</echo>
     </target>
-    
+
     <!--
         echoproperties
-        
+
         List all the properties ant is using.
     -->
     <target name="echoproperties">
-    	<echo>All properties:</echo>
+        <echo>All properties:</echo>
         <echoproperties/>
-    	<echo>MDA properties:</echo>
-    	<echoproperties>
-    		<propertyset>
-    			<propertyset refid="mda.properties"/>
-    		</propertyset>
-    	</echoproperties>
+        <echo>MDA properties:</echo>
+        <echoproperties>
+            <propertyset>
+                <propertyset refid="mda.properties"/>
+            </propertyset>
+        </echoproperties>
     </target>
 
 </project>
