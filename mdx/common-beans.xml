@@ -86,6 +86,9 @@
     <bean id="CompositeStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.CompositeStage"/>
 
+    <bean id="XMLSignatureSigningStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XMLSignatureSigningStage"/>
+
     <!--
         XMLSignatureValidationStage
         
@@ -136,6 +139,10 @@
             </list>
         </property>
     </bean>
+
+    <bean id="XPathFilteringStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.XPathFilteringStage"
+        p:namespaceContext-ref="commonNamespaces"/>
 
     <!--
         XSLTransformationStage
