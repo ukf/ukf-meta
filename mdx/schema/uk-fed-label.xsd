@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     targetNamespace="http://ukfederation.org.uk/2006/11/label"
-    version="2008-06-24"
+    version="2014-07-22"
     elementFormDefault="qualified">
     
     <annotation>
@@ -119,6 +119,15 @@
         <annotation>
             <documentation>
                 Indicates that the entity has been opted-in to inclusion in
+                the UK federation export aggregate.
+            </documentation>
+        </annotation>
+    </element>
+    
+    <element name="ExportOptOut" type="ukfedlabel:datedLabel">
+        <annotation>
+            <documentation>
+                Indicates that the entity has been opted-out from inclusion in
                 the UK federation export aggregate.
             </documentation>
         </annotation>
