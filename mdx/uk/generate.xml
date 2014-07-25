@@ -255,6 +255,29 @@
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
+                
+                <!--
+                    Entity Attribute policy for entities from eduGAIN participants.
+                -->
+                <bean parent="EntityAttributeFilteringStage" p:id="entityAttributes">
+                    <property name="rules">
+                        <list>
+                            <!-- Permit REFEDS R&S category from any eduGAIN participant. -->
+                            <bean parent="EntityCategoryMatcher">
+                                <constructor-arg value="http://refeds.org/category/research-and-scholarship"/>
+                            </bean>
+                            <!-- Permit REFEDS R&S category *support* from any eduGAIN participant. -->
+                            <bean parent="EntityCategorySupportMatcher">
+                                <constructor-arg value="http://refeds.org/category/research-and-scholarship"/>
+                            </bean>
+                            <!-- Permit GÉANT CoC category from any eduGAIN participant. -->
+                            <bean parent="EntityCategoryMatcher">
+                                <constructor-arg value="http://www.geant.net/uri/dataprotection-code-of-conduct/v1"/>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+
                 <ref bean="importCommonTail"/>
             </list>
         </property>
@@ -265,6 +288,12 @@
         <property name="stages">
             <list>
                 <ref bean="us_incommon_exportedEntities"/>
+
+                <!--
+                    Entity Attribute policy for entities from the InCommon pilot.
+                -->
+                <ref bean="stripMdattrNamespace"/>
+
                 <ref bean="importCommonTail"/>
                 <ref bean="uk_hide_idps"/>
             </list>
