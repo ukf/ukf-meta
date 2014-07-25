@@ -269,6 +269,21 @@
     
     <bean id="X509ValidationStage" abstract="true" parent="stage_parent"
         class="uk.org.ukfederation.mda.validate.X509ValidationStage"/>
+
+    <bean id="EntityAttributeFilteringStage" abstract="true" parent="stage_parent"
+        class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityAttributeFilteringStage"/>
+
+    <bean id="EntityCategoryMatcher" abstract="true"
+        class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityCategoryMatcher"/>
+
+    <bean id="EntityCategorySupportMatcher" abstract="true"
+        class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityCategorySupportMatcher"/>
+
+    <bean id="MultiPredicateMatcher" abstract="true"
+        class="uk.org.ukfederation.mda.dom.saml.mdattr.MultiPredicateMatcher"/>
+
+    <bean id="RegistrationAuthorityMatcher" abstract="true"
+        class="uk.org.ukfederation.mda.dom.saml.mdattr.RegistrationAuthorityMatcher"/>
     
     <bean id="validator_parent" abstract="true" parent="component_parent"/>
 
@@ -1034,9 +1049,6 @@
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="stripWayfNamespace"/>
                 
-                <!-- Strip all entity attributes from this source. -->
-                <ref bean="stripMdattrNamespace"/>
-
                 <ref bean="cleanImport"/>
                 <ref bean="stripAAMDUI"/>
                 <ref bean="trimImportElementWhitespace"/>
