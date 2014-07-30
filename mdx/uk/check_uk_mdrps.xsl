@@ -38,22 +38,6 @@
 	
 	
 	<!--
-        If a UK-registered entity is opted in to the export aggregate, it MUST
-        have a RegistrationPolicy.
-    -->
-	<xsl:template match="md:EntityDescriptor
-		[descendant::mdrpi:RegistrationInfo[@registrationAuthority='http://ukfederation.org.uk']]
-		[md:Extensions/ukfedlabel:ExportOptIn]
-		[not(descendant::mdrpi:RegistrationInfo/mdrpi:RegistrationPolicy)]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">
-				<xsl:text>exported entity lacks a RegistrationPolicy</xsl:text>
-			</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	
-	
-	<!--
 		Restrict registrationAuthority values for UK federation entities, if present,
 		to previously used MDRPS document URLs.
 	-->
