@@ -736,6 +736,8 @@
         ***********************************************
     -->
     
+    <bean id="mdui-InformationURL" parent="QName" c:_0-ref="mdui_namespace" c:_1="InformationURL"/>
+
     <bean id="stripMDUIDiscoHints" parent="ElementStrippingStage"
         p:id="stripMDUIDiscoHints"
         p:elementName="DiscoHints"
@@ -1010,8 +1012,9 @@
         trimImportElementWhitespace
         
         Trim whitespace from the specified elements in imported
-        entities.  These would often be errors in UK-registered
-        metadata.
+        entities.  These would be errors in UK-registered metadata,
+        but repairing the metadata on the fly is often easier than
+        asking for it to be corrected at source.
     -->
     <bean id="trimImportElementWhitespace" parent="ElementWhitespaceTrimmingStage"
         p:id="trimImportElementWhitespace">
@@ -1019,6 +1022,7 @@
             <set>
                 <ref bean="md-NameIDFormat"/>
                 <ref bean="md-OrganizationDisplayName"/>
+                <ref bean="mdui-InformationURL"/>
             </set>
         </property>
     </bean>
@@ -1031,7 +1035,7 @@
         individual entities.
         
         The result is a collection of entities, some of which may be labelled with
-        errors.  No announcement of removal of those entities is performed here;
+        errors.  No announcement or removal of those entities is performed here;
         that is left to the caller.
     -->
     <bean id="standardImportActions" parent="CompositeStage"
