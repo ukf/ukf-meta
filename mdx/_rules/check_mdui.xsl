@@ -192,15 +192,56 @@
 	</xsl:template>
 	
 	<!--
+        Check for <mdui:Logo> elements that aren't valid URLs.
+        
+        Again, explicitly permit anything starting with 'data:'.
+    -->
+	<xsl:template match="mdui:Logo[mdxURL:invalidURL(.)]">
+		<xsl:if test="not(starts-with(., 'data:'))">
+			<xsl:call-template name="error">
+				<xsl:with-param name="m">
+					<xsl:text>mdui:</xsl:text>
+					<xsl:value-of select='local-name()'/>
+					<xsl:text> '</xsl:text>
+					<xsl:value-of select="."/>
+					<xsl:text>' is not a valid URL: </xsl:text>
+					<xsl:value-of select="mdxURL:whyInvalid(.)"/>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+	
+	<!--
 		Section 2.1.6 Element <mdui:InformationURL>
 		
 		Require that the URL is valid.
 	-->
-	<xsl:template match="md:InformationURL[mdxURL:invalidURL(.)]">
+	<xsl:template match="mdui:InformationURL[mdxURL:invalidURL(.)]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
+				<xsl:text>mdui:</xsl:text>
 				<xsl:value-of select='local-name()'/>
-				<xsl:text> is not a valid URL: </xsl:text>
+				<xsl:text> '</xsl:text>
+				<xsl:value-of select="."/>
+				<xsl:text>' is not a valid URL: </xsl:text>
+				<xsl:value-of select="mdxURL:whyInvalid(.)"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<!--
+        Section 2.1.7 Element <mdui:PrivacyStatementURL>
+        
+        Require that the URL is valid.
+    -->
+	<xsl:template match="mdui:PrivacyStatementURL[mdxURL:invalidURL(.)]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>mdui:</xsl:text>
+				<xsl:value-of select='local-name()'/>
+				<xsl:text> '</xsl:text>
+				<xsl:value-of select="."/>
+				<xsl:text>' is not a valid URL: </xsl:text>
 				<xsl:value-of select="mdxURL:whyInvalid(.)"/>
 			</xsl:with-param>
 		</xsl:call-template>
