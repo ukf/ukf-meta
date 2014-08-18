@@ -738,6 +738,7 @@
     -->
     
     <bean id="mdui-InformationURL" parent="QName" c:_0-ref="mdui_namespace" c:_1="InformationURL"/>
+    <bean id="mdui-Logo"           parent="QName" c:_0-ref="mdui_namespace" c:_1="Logo"/>
 
     <bean id="stripMDUIDiscoHints" parent="ElementStrippingStage"
         p:id="stripMDUIDiscoHints"
@@ -1025,6 +1026,7 @@
                 <ref bean="md-OrganizationDisplayName"/>
                 <ref bean="md-OrganizationURL"/>
                 <ref bean="mdui-InformationURL"/>
+                <ref bean="mdui-Logo"/>
             </set>
         </property>
     </bean>
