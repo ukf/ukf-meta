@@ -609,6 +609,7 @@
     -->
     <bean id="md-NameIDFormat"            parent="QName" c:_0-ref="md_namespace" c:_1="NameIDFormat"/>
     <bean id="md-OrganizationDisplayName" parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationDisplayName"/>
+    <bean id="md-OrganizationURL"         parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationURL"/>
 
     <!--
         Basic EntitiesDescriptor disassembler pipeline stage.
@@ -1022,6 +1023,7 @@
             <set>
                 <ref bean="md-NameIDFormat"/>
                 <ref bean="md-OrganizationDisplayName"/>
+                <ref bean="md-OrganizationURL"/>
                 <ref bean="mdui-InformationURL"/>
             </set>
         </property>
