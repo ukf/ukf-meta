@@ -725,6 +725,56 @@
     </bean>
     
     <!--
+        ***********************************************************
+        ***                                                     ***
+        ***   E X P O R T   P R E V I E W   A G G R E G A T E   ***
+        ***                                                     ***
+        ***********************************************************
+    -->
+    
+    <bean id="uk_exportPreviewPipeline" parent="SimplePipeline"
+        p:id="uk_exportPreviewPipeline">
+        <property name="stages">
+            <list>
+                <!--
+                    Enforce IdP display name uniqueness before assembling aggregate
+                -->
+                <ref bean="check_dup_display"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <ref bean="stripUkfedlabelNamespace"/>
+                <ref bean="stripWayfNamespace"/>
+                <ref bean="stripKeyNames"/>
+                <ref bean="uk_assemble"/>
+                <ref bean="stripEntityScopes"/>
+                <ref bean="removeEmptyExtensions"/>
+                <ref bean="uk_finaliseExport"/>
+                <ref bean="uk_normaliseExport"/>
+                
+                <!--
+                    Schema validity and other checks MUST pass.
+                    
+                    These are a subset of the publishability tests applied to
+                    aggregates published to federation members.
+                -->
+                <ref bean="checkSchemas"/>
+                <ref bean="check_aggregate"/>
+                <ref bean="check_namespaces"/>
+                <ref bean="errorTerminatingFilter"/>
+                
+                <bean parent="SerializationStage" p:id="serializeUnsignedExportPreviewAggregate">
+                    <property name="outputFile">
+                        <bean class="java.io.File">
+                            <constructor-arg value="${basedir}/xml/ukfederation-export-preview-unsigned.xml"/>
+                        </bean>
+                    </property>
+                </bean>
+                
+            </list>
+        </property>
+    </bean>
+    
+    <!--
         *************************************
         ***                               ***
         ***   C M S   A G G R E G A T E   ***
@@ -884,12 +934,12 @@
                 -->
                 
                 <!--
-                    Fork a new output pipeline for the export aggregate.
+                    Fork a new output pipeline for the export and export preview aggregates.
                     
-                    The export aggregate only includes UK-registered entities,
+                    These aggregates only include UK-registered entities,
                     so the fork needs to occur before any others are introduced.
                     
-                    The export aggregate is also intended to reflect the registered
+                    The export aggregates are also intended to reflect the registered
                     metadata as closely as possible, so the fork must happen before
                     too many UK-specific transformations are performed.
                 -->
@@ -899,6 +949,10 @@
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="uk_exportPipeline"/>
+                                <constructor-arg ref="uk_exportSelector"/>
+                            </bean>
+                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
+                                <constructor-arg ref="uk_exportPreviewPipeline"/>
                                 <constructor-arg ref="uk_exportSelector"/>
                             </bean>
                         </list>
