@@ -732,6 +732,11 @@
         ***********************************************************
     -->
     
+    <bean id="uk_exportPreviewSelector" class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy">
+        <constructor-arg value="/md:EntityDescriptor[not(md:Extensions/ukfedlabel:ExportOptOut)]"/>
+        <constructor-arg ref="commonNamespaces"/>
+    </bean>
+    
     <bean id="uk_exportPreviewPipeline" parent="SimplePipeline"
         p:id="uk_exportPreviewPipeline">
         <property name="stages">
@@ -953,7 +958,7 @@
                             </bean>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="uk_exportPreviewPipeline"/>
-                                <constructor-arg ref="uk_exportSelector"/>
+                                <constructor-arg ref="uk_exportPreviewSelector"/>
                             </bean>
                         </list>
                     </property>
