@@ -354,10 +354,10 @@
         <VFY.remote.both i="${md.prod.signed}"/>
         <VFY.remote.both i="${md.wayf.signed}"/>
         <VFY.remote.both i="${md.cdsall.signed}"/>
-        <VFY.remote i="${md.test.signed}"/>
+        <VFY.remote.both i="${md.test.signed}"/>
         <VFY.remote.both i="${md.back.signed}"/>
-        <VFY.remote i="${md.export.signed}"/>
-        <VFY.remote i="${md.export.preview.signed}"/>
+        <VFY.remote.both i="${md.export.signed}"/>
+        <VFY.remote.both i="${md.export.preview.signed}"/>
         <echo>Verification completed.</echo>
     </target>
 
@@ -862,13 +862,13 @@
         <VFY.uk.both i="${md.cdsall.signed}"/>
 
         <echo>Verifying signed UK test metadata.</echo>
-        <XMLSECTOOL.VFY.uk i="${md.test.signed}"/>
+        <VFY.uk.both i="${md.test.signed}"/>
 
         <echo>Verifying signed UK export metadata.</echo>
-        <XMLSECTOOL.VFY.uk i="${md.export.signed}"/>
+        <VFY.uk.both i="${md.export.signed}"/>
 
         <echo>Verifying signed UK export preview metadata.</echo>
-        <XMLSECTOOL.VFY.uk i="${md.export.preview.signed}"/>
+        <VFY.uk.both i="${md.export.preview.signed}"/>
 
         <echo>Verifying signed UK fallback metadata.</echo>
         <VFY.uk.both i="${md.back.signed}"/>
