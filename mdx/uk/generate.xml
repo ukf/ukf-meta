@@ -338,7 +338,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="stripMdattrNamespace"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_finaliseProduction"/>
