@@ -261,6 +261,12 @@
 
     <bean id="PipelineMergeStage.deduplicate" abstract="true" parent="PipelineMergeStage"
         p:collectionMergeStrategy-ref="deduplicateMergeStrategy"/>
+
+    <bean id="SplitMergeStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.SplitMergeStage"/>
+
+    <bean id="XPathItemSelectionStrategy" abstract="true"
+        class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy"/>
     
     <!-- *** Parent beans for ukf-mda. *** -->
     
