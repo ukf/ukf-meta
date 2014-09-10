@@ -138,7 +138,8 @@
                     <li><p><a href="#undeployedMembers">Members Lacking Deployment</a></p></li>
                     <li><p><a href="#shib13">Shibboleth 1.3 Remnants</a></p></li>
                     <li><p><a href="#mdui">Entities with mdui:UIInfo support</a></p></li>
-                    <li><p><a href="#export">Entities in Export Aggregate</a></p></li>
+                    <li><p><a href="#exportOptIn">Export Aggregate: Entities Opted In</a></p></li>
+                    <li><p><a href="#exportOptOut">Export Preview Aggregate: Entities Opted Out</a></p></li>
                     <li><p><a href="#nosaml2">Entities Without SAML 2.0 Support</a></p></li>
                 </ul>
                 
@@ -1117,19 +1118,73 @@
                 
                 
                 <!--
-                    *******************************************
-                    ***                                     ***
-                    ***   E X P O R T   A G G R E G A T E   ***
-                    ***                                     ***
-                    *******************************************
+                    *************************************
+                    ***                               ***
+                    ***   E X P O R T   O P T   I N   ***
+                    ***                               ***
+                    *************************************
                 -->
                 
-                <h2><a name="export">Entities in Export Aggregate</a></h2>
+                <h2><a name="exportOptIn">Export Aggregate: Entities Opted In</a></h2>
                 <xsl:variable name="entities.export" select="$entities[descendant::ukfedlabel:ExportOptIn]"/>
                 <xsl:variable name="entities.export.count" select="count($entities.export)"/>
                 <xsl:if test="$entities.export.count != 0">
                     <ul>
                         <xsl:for-each select="$entities.export">
+                            <li>
+                                <xsl:value-of select="@ID"/>
+                                <xsl:text>: </xsl:text>
+                                <xsl:if test="md:IDPSSODescriptor">
+                                    <xsl:text>[IdP] </xsl:text>
+                                </xsl:if>
+                                <xsl:if test="md:SPSSODescriptor">
+                                    <xsl:text>[SP] </xsl:text>
+                                    <xsl:choose>
+                                        <xsl:when test="descendant::md:RequestedAttribute">
+                                            <xsl:text>[RqA] </xsl:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:text>[!RqA] </xsl:text> 
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:if>
+                                <xsl:choose>
+                                    <xsl:when test="descendant::mdui:DisplayName">
+                                        <xsl:value-of select="descendant::mdui:DisplayName"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:text>(</xsl:text>
+                                        <xsl:value-of select="descendant::md:OrganizationDisplayName"/>
+                                        <xsl:text>)</xsl:text>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:if test="not(descendant::*[contains(@protocolSupportEnumeration,
+                                    'urn:oasis:names:tc:SAML:2.0:protocol')])">
+                                    <ul>
+                                        <li>
+                                            No SAML 2.0 support
+                                        </li>
+                                    </ul>                                    
+                                </xsl:if>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
+                
+                <!--
+                    ***************************************
+                    ***                                 ***
+                    ***   E X P O R T   O P T   O U T   ***
+                    ***                                 ***
+                    ***************************************
+                -->
+                
+                <h2><a name="exportOptOut">Export Preview Aggregate: Entities Opted Out</a></h2>
+                <xsl:variable name="entities.export.opt.out" select="$entities[descendant::ukfedlabel:ExportOptOut]"/>
+                <xsl:variable name="entities.export.opt.out.count" select="count($entities.export.opt.out)"/>
+                <xsl:if test="$entities.export.opt.out.count != 0">
+                    <ul>
+                        <xsl:for-each select="$entities.export.opt.out">
                             <li>
                                 <xsl:value-of select="@ID"/>
                                 <xsl:text>: </xsl:text>
