@@ -463,6 +463,7 @@
     -->
     <bean id="hr_eduhr_registrar" parent="String" c:_0="http://www.srce.hr"/>
     <bean id="il_iif_registrar"   parent="String" c:_0="http://iif.iucc.ac.il"/>
+    <bean id="jp_gakunin_registrar" parent="String" c:_0="https://www.gakunin.jp"/>
     
     <!--
         identificationStrategy
@@ -499,6 +500,7 @@
                 <entry key="http://eduid.hu"                  value="HU"/>
                 <entry key="http://www.heanet.ie"             value="IE"/>
                 <entry key="http://www.idem.garr.it/"         value="IT"/>
+                <entry key-ref="jp_gakunin_registrar"         value="JP"/>
                 <entry key="http://laife.lanet.lv/"           value="LV"/>
                 <entry key="http://feide.no/"                 value="NO"/>
                 <entry key="http://aai.pionier.net.pl"        value="PL"/>
