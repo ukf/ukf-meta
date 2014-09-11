@@ -340,6 +340,41 @@
     
 
     <!--
+        uk_dummyTrustRootsDocument
+        
+        This bean contains the contents of the dummy trust roots file as a DOM Document.
+    -->
+    <bean id="uk_dummyTrustRootsDocument" parent="DOMDocumentFactoryBean">
+        <property name="parserPool" ref="parserPool"/>
+        <property name="documentResource">
+            <bean parent="FileSystemResource">
+                <constructor-arg value="${basedir}/mdx/uk/trust-dummy.xml"/>
+            </bean>
+        </property>
+    </bean>    
+    
+    
+    <!--
+        uk_addDummyTrustRoots
+        
+        This stage adds the dummy UK federation trust roots to an EntitiesDescriptor.
+    -->
+    <bean id="uk_addDummyTrustRoots" parent="XSLTransformationStage"
+        p:id="uk_addDummyTrustRoots">
+        <property name="XSLResource">
+            <bean parent="ClassPathResource">
+                <constructor-arg value="uk/trust-roots.xsl"/>
+            </bean>
+        </property>
+        <property name="transformParameters">
+            <map>
+                <entry key="trustRootsDocument" value-ref="uk_dummyTrustRootsDocument"/>
+            </map>
+        </property>
+    </bean>
+    
+    
+    <!--
         uk_processFragment
         
         This stage performs any standard cleanup required for UK federation fragment files.
