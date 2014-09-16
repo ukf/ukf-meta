@@ -615,6 +615,7 @@
     <!--
         QNames for SAML metadata elements.
     -->
+    <bean id="md-EmailAddress"            parent="QName" c:_0-ref="md_namespace" c:_1="EmailAddress"/>
     <bean id="md-NameIDFormat"            parent="QName" c:_0-ref="md_namespace" c:_1="NameIDFormat"/>
     <bean id="md-OrganizationDisplayName" parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationDisplayName"/>
     <bean id="md-OrganizationURL"         parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationURL"/>
@@ -1030,6 +1031,7 @@
         p:id="trimImportElementWhitespace">
         <property name="elementNames">
             <set>
+                <ref bean="md-EmailAddress"/>
                 <ref bean="md-NameIDFormat"/>
                 <ref bean="md-OrganizationDisplayName"/>
                 <ref bean="md-OrganizationURL"/>
