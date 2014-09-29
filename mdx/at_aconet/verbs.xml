@@ -92,6 +92,21 @@
                         </list>
                     </property>
                 </bean>
+                
+                <!--
+                    Remove a specific entity we know has a problem that it will take
+                    a while to resolve.
+                -->
+                <bean parent="stage_parent"
+                    class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
+                    p:id="filterEntities"
+                    p:whitelistingEntities="false">
+                    <property name="designatedEntities">
+                        <set>
+                            <value>https://zididp.uni-graz.at/idp/shibboleth</value>
+                        </set>
+                    </property>
+                </bean>
 
                 <ref bean="errorTerminatingFilter"/>
             </list>
