@@ -143,6 +143,13 @@ while (<>) {
 		@args = split;
 		$entity = $args[1];
 		$keyname = $args[3];
+
+		#
+		# Tidy entity ID if it includes a UK ID as well.
+		#
+		if ($entity =~ /^\[(.+)\](.+)$/) {
+			$entity = $2 . ' (' . $1 . ')';
+		}
 		
 		#
 		# Output header line.
@@ -438,6 +445,14 @@ while (<>) {
 		# it to be deleted.
 		#
 		close $fh;
+
+		#if ($issuer eq $subject) {
+		#	# self-signed
+		#} elsif ($issuerCN eq 'TERENA SSL CA') {
+		#	# this one we know about
+		#} else {
+		#	warning("issuer is '$issuerCN'");
+		#}
 
 		#
 		# Add a warning for certain issuers.
