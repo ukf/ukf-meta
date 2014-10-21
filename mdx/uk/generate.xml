@@ -634,7 +634,6 @@
                 
                 <ref bean="uk_assemble"/>
                 <ref bean="performOtherFixups"/>
-                <ref bean="uk_addDummyTrustRoots"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
                 
