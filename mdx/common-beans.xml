@@ -461,9 +461,15 @@
     <!--
         Federation registrationAuthority URIs.
     -->
-    <bean id="hr_eduhr_registrar" parent="String" c:_0="http://www.srce.hr"/>
-    <bean id="il_iif_registrar"   parent="String" c:_0="http://iif.iucc.ac.il"/>
+    <bean id="ar_mate_registrar"    parent="String" c:_0="http://www.federacionmate.gob.ar"/>
+    <bean id="am_afire_registrar"   parent="String" c:_0="http://afire.asnet.am"/>
+    <bean id="au_aaf_registrar"     parent="String" c:_0="http://aaf.edu.au/"/>
+    <bean id="co_colfire_registrar" parent="String" c:_0="http://colfire.co"/>
+    <bean id="ec_minga_registrar"   parent="String" c:_0="https://minga.cedia.org.ec"/>
+    <bean id="hr_eduhr_registrar"   parent="String" c:_0="http://www.srce.hr"/>
+    <bean id="il_iif_registrar"     parent="String" c:_0="http://iif.iucc.ac.il"/>
     <bean id="jp_gakunin_registrar" parent="String" c:_0="https://www.gakunin.jp"/>
+    <bean id="lt_litnet_registrar"  parent="String" c:_0="https://fedi.litnet.lt"/>
     
     <!--
         identificationStrategy
@@ -493,6 +499,7 @@
                 <entry key-ref="hr_eduhr_registrar"           value="HR"/>
                 <entry key="http://www.eduid.cz/"             value="CZ"/>
                 <entry key="https://www.wayf.dk"              value="DK"/>
+                <entry key-ref="ec_minga_registrar"           value="EC"/>
                 <entry key="http://www.csc.fi/haka"           value="FI"/>
                 <entry key="https://federation.renater.fr/"   value="FR"/>
                 <entry key="https://www.aai.dfn.de"           value="DE"/>
@@ -502,6 +509,7 @@
                 <entry key="http://www.idem.garr.it/"         value="IT"/>
                 <entry key-ref="jp_gakunin_registrar"         value="JP"/>
                 <entry key="http://laife.lanet.lv/"           value="LV"/>
+                <entry key-ref="lt_litnet_registrar"          value="LT"/>
                 <entry key="http://feide.no/"                 value="NO"/>
                 <entry key="http://aai.pionier.net.pl"        value="PL"/>
                 <entry key="http://aai.arnes.si"              value="SI"/>
@@ -509,13 +517,17 @@
                 <entry key="http://www.swamid.se/"            value="SE"/>
                 <entry key="http://rr.aai.switch.ch/"         value="CH"/>
                 <entry key="http://www.surfconext.nl/"        value="NL"/>
+                <entry key="https://incommon.org"             value="US"/>
                 <entry key="http://ukfederation.org.uk"       value="UK"/>
                 
                 <!-- Joining eduGAIN -->
-                <entry key="https://incommon.org"             value="US"/>
-                
-                <!-- eduGAIN candidates -->
+                <entry key-ref="ar_mate_registrar"            value="AR"/>
+                <entry key-ref="au_aaf_registrar"             value="AU"/>
+                <entry key-ref="co_colfire_registrar"         value="CO"/>
                 <entry key-ref="il_iif_registrar"             value="IL"/>
+                
+                <!-- Candidates -->
+                <entry key-ref="am_afire_registrar"           value="AM"/>
             </map>
         </property>
     </bean>
