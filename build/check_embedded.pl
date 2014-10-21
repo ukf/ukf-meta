@@ -147,14 +147,12 @@ while (<>) {
 		#
 		# Output header line.
 		#
-		$oline = "Entity $entity ";
+		$oline = "Entity $entity";
 		$hasKeyName = !($keyname eq '(none)');
-		if ($hasKeyName) {
-			$oline .= "has KeyName $keyname";
-		} else {
-			$oline .= "has no KeyName";
-		}
 		push(@olines, $oline);
+		if ($hasKeyName) {
+			error("descriptor has unexpected KeyName $keyname");
+		}
 
 		#
 		# Start building a new blob.
@@ -280,7 +278,6 @@ while (<>) {
 				#
 				if ($notAfter =~ /(\d\d\d\d)/) {
 					my $year = $1;
-					$expiryYear = $year;
 					if ($year > $maxYear) {
 						$maxYear = $year;
 					}
@@ -363,14 +360,6 @@ while (<>) {
 
 
 		#
-		# Check KeyName if one has been supplied.
-		#
-		if ($hasKeyName && !defined($names{lc $keyname})) {
-			my $nameList = join ", ", sort keys %names;
-			error("KeyName mismatch: $keyname not in {$nameList}");
-		}
-		
-		#
 		# Use openssl to ask whether this matches our trust fabric or not.
 		#
 		my $error = '';
@@ -427,25 +416,6 @@ while (<>) {
 			} elsif ($clientOK) {
 				# $error = "certificate matches trust fabric; add KeyName?";
 			}
-		} else {
-			#
-			# If a KeyName is present, we must match the trust fabric.
-			#
-			if ($error eq 'self signed certificate') {
-				$error = 'self signed certificate: remove KeyName?';
-			} elsif ($error eq 'unable to get local issuer certificate') {
-				$error = "non trust fabric issuer: $issuerCN: remove KeyName?";
-			}
-
-			#
-			# KeyName with an expired certificate indicates some kind of misconfiguration.
-			# Either the KeyDescriptor isn't working, or the expired certificate is still
-			# in use (in which case the KeyName is superfluous) or a different certificate
-			# is in use via PKIX (which means we have the wrong one).
-			#
-			if ($days < 0) {
-				error("expired certificate has KeyName; acquire/ensure correct certificate and remove KeyName");
-			}
 		}
 
 		if ($error eq 'certificate has expired' && $days < 0) {
@@ -478,13 +448,6 @@ while (<>) {
 				warning("issuer '$issuerCN' suspect; verify");
 			}
 		}
-		if ($hasKeyName && ($issuerCN =~ /(Global|Veri)Sign/)) {
-			warning("issuer \"$issuerCN\" to be retired; certificate expires $notAfter; remove KeyName?");
-			$issuerMark{$issuerCN} = '*';
-		}
-		if ($hasKeyName && ($expiryYear > 2014)) {
-			warning("expires $notAfter, which is later than 2014");
-		}
 
 		#
 		# Count issuers.
@@ -496,9 +459,6 @@ while (<>) {
 				$issuers{$issuer}++;
 			} else {
 				$issuers{$issuerCN}++;
-			}
-			if ($hasKeyName) {
-				$knIssuers{$issuerCN}++;
 			}
 		}
 
@@ -539,14 +499,6 @@ if ($distinct_certs > 1) {
 	print "Certificate issuers:\n";
 	foreach $issuer (sort keys %issuers) {
 		my $count = $issuers{$issuer};
-		my $mark = $issuerMark{$issuer} ? $issuerMark{$issuer}: ' ';
-		print " $mark $issuer: $count\n";
-	}
-	print "\n";
-
-	print "KeyName certificate issuers:\n";
-	foreach $issuer (sort keys %knIssuers) {
-		my $count = $knIssuers{$issuer};
 		my $mark = $issuerMark{$issuer} ? $issuerMark{$issuer}: ' ';
 		print " $mark $issuer: $count\n";
 	}
