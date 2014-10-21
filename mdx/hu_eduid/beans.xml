@@ -75,15 +75,6 @@
         p:namespace="urn:geant:niif.hu:eduid.hu:entity-attributes:processing-info"/>
 
     <!--
-        hu_eduid_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="hu_eduid_registrar" class="java.lang.String">
-        <constructor-arg value="http://eduid.hu"/>
-    </bean>
-    
-    <!--
         hu_eduid_check_regauth
         
         Any registrationAuthority already present on an entity in this

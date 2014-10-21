@@ -85,15 +85,6 @@
     </bean>
     
     <!--
-        pl_pionier_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="pl_pionier_registrar" class="java.lang.String">
-        <constructor-arg value="https://aai.pionier.net.pl"/>
-    </bean>
-    
-    <!--
         pl_pionier_check_regauth
         
         Any registrationAuthority already present on an entity in this

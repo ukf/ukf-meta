@@ -75,15 +75,6 @@
     </bean>
     
     <!--
-        se_swamid_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="se_swamid_registrar" class="java.lang.String">
-        <constructor-arg value="http://www.swamid.se/"/>
-    </bean>
-    
-    <!--
         se_swamid_check_regauth
         
         Any registrationAuthority already present on an entity in this

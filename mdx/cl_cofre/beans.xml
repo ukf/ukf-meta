@@ -53,15 +53,6 @@
     </bean>
     
     <!--
-        cl_cofre_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="cl_cofre_registrar" class="java.lang.String">
-        <constructor-arg value="http://cofre.reuna.cl"/>
-    </bean>
-    
-    <!--
         cl_cofre_check_regauth
         
         Any registrationAuthority already present on an entity in this

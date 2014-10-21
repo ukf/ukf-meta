@@ -105,15 +105,6 @@
     </bean>
     
     <!--
-        fr_renater_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="fr_renater_registrar" class="java.lang.String">
-        <constructor-arg value="https://federation.renater.fr/"/>
-    </bean>
-    
-    <!--
         fr_renater_check_regauth
         
         Any registrationAuthority already present on an entity in this

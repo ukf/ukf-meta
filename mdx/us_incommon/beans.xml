@@ -61,18 +61,6 @@
     </bean>
 
     <!--
-        us_incommon_registrar
-        
-        Unique ID for the registrar associated with this channel.
-        
-        This isn't a formalised value, but a placeholder Tom Scavo thinks
-        might be what they will end up using.
-    -->
-    <bean id="us_incommon_registrar" class="java.lang.String">
-        <constructor-arg value="https://incommon.org"/>
-    </bean>
-    
-    <!--
         us_incommon_check_regauth
         
         Any registrationAuthority already present on an entity in this

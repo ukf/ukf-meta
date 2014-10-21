@@ -79,15 +79,6 @@
     </bean>
     
     <!--
-        ie_edugate_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="ie_edugate_registrar" class="java.lang.String">
-        <constructor-arg value="http://edugate.heanet.ie"/>
-    </bean>
-    
-    <!--
         ie_edugate_check_regauth
         
         Any registrationAuthority already present on an entity in this

@@ -74,15 +74,6 @@
     </bean>
     
     <!--
-        at_aconet_registrar
-        
-        Unique ID for the registrar associated with this channel.
-    -->
-    <bean id="at_aconet_registrar" class="java.lang.String">
-        <constructor-arg value="http://eduid.at"/>
-    </bean>
-    
-    <!--
         at_aconet_check_regauth
         
         Any registrationAuthority already present on an entity in this
