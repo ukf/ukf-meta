@@ -172,6 +172,16 @@
 		Section 2.1.5 Element <mdui:Logo>
 	-->
 	<xsl:template match="mdui:Logo">
+        <!--
+            Logos must never include un-encoded line breaks. This makes them invalid
+            URLs, but also causes problems with the Shibboleth CDS.
+        -->
+        <xsl:if test="contains(., '&#10;')">
+            <xsl:call-template name="error">
+                <xsl:with-param name="m">mdui:Logo contains line break</xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
+
 		<!--
 			Require that the URL starts with https://
 			
@@ -189,28 +199,29 @@
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:if>
-	</xsl:template>
-	
-	<!--
-        Check for <mdui:Logo> elements that aren't valid URLs.
         
-        Again, explicitly permit anything starting with 'data:'.
-    -->
-	<xsl:template match="mdui:Logo[mdxURL:invalidURL(.)]">
-		<xsl:if test="not(starts-with(., 'data:'))">
-			<xsl:call-template name="error">
-				<xsl:with-param name="m">
-					<xsl:text>mdui:</xsl:text>
-					<xsl:value-of select='local-name()'/>
-					<xsl:text> '</xsl:text>
-					<xsl:value-of select="."/>
-					<xsl:text>' is not a valid URL: </xsl:text>
-					<xsl:value-of select="mdxURL:whyInvalid(.)"/>
-				</xsl:with-param>
-			</xsl:call-template>
-		</xsl:if>
+        <!--
+            Check for <mdui:Logo> elements that aren't valid URLs.
+            
+            Again, explicitly permit anything starting with 'data:', so that the
+            only validity test we're performing on data: URLs is the "no newline" rule.
+        -->
+        <xsl:if test="mdxURL:invalidURL(.)">
+            <xsl:if test="not(starts-with(., 'data:'))">
+                <xsl:call-template name="error">
+                    <xsl:with-param name="m">
+                        <xsl:text>mdui:</xsl:text>
+                        <xsl:value-of select='local-name()'/>
+                        <xsl:text> '</xsl:text>
+                        <xsl:value-of select="."/>
+                        <xsl:text>' is not a valid URL: </xsl:text>
+                        <xsl:value-of select="mdxURL:whyInvalid(.)"/>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:if>
+        </xsl:if>
 	</xsl:template>
-	
+
 	<!--
 		Section 2.1.6 Element <mdui:InformationURL>
 		
