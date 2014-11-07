@@ -262,18 +262,21 @@
                 <bean parent="EntityAttributeFilteringStage" p:id="entityAttributes">
                     <property name="rules">
                         <list>
-                            <!-- Permit REFEDS R&S category from any eduGAIN participant. -->
-                            <bean parent="EntityCategoryMatcher">
-                                <constructor-arg value="http://refeds.org/category/research-and-scholarship"/>
-                            </bean>
-                            <!-- Permit REFEDS R&S category *support* from any eduGAIN participant. -->
-                            <bean parent="EntityCategorySupportMatcher">
-                                <constructor-arg value="http://refeds.org/category/research-and-scholarship"/>
-                            </bean>
                             <!-- Permit GÉANT CoC category from any eduGAIN participant. -->
-                            <bean parent="EntityCategoryMatcher">
-                                <constructor-arg value="http://www.geant.net/uri/dataprotection-code-of-conduct/v1"/>
-                            </bean>
+                            <bean parent="EntityCategoryMatcher"
+                                c:category="http://www.geant.net/uri/dataprotection-code-of-conduct/v1"/>
+
+                            <!-- Permit REFEDS Hide From Discovery category from any eduGAIN participant. -->
+                            <bean parent="EntityCategoryMatcher"
+                                c:category="http://refeds.org/category/hide-from-discovery"/>
+
+                            <!-- Permit REFEDS R&S category from any eduGAIN participant. -->
+                            <bean parent="EntityCategoryMatcher"
+                            	c:category="http://refeds.org/category/research-and-scholarship"/>
+
+                            <!-- Permit REFEDS R&S category *support* from any eduGAIN participant. -->
+                            <bean parent="EntityCategorySupportMatcher"
+                                c:category="http://refeds.org/category/research-and-scholarship"/>
                         </list>
                     </property>
                 </bean>
