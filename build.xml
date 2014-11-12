@@ -609,7 +609,7 @@
         <attribute name="i"/>
         <sequential>
             <MDT i="@{i}" o="${null.device}"
-                keystore="${mdx.dir}/uk/ukfederation-2012.jks"
+                keystore="${mdx.dir}/uk/ukfederation-2014.jks"
                 alias="${keystore.uk.vfy.alias}"/>
         </sequential>
     </macrodef>
@@ -702,7 +702,7 @@
                 <args>
                     <arg value="--verifySignature"/>
                     <arg value="--certificate"/>
-                    <arg value="${mdx.dir}/uk/ukfederation-2012.pem"/>
+                    <arg value="${mdx.dir}/uk/ukfederation-2014.pem"/>
                     <!--
                     <arg value="- -quiet"/>
                     -->
