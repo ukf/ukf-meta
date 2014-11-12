@@ -458,6 +458,18 @@
                 <ref bean="uk_default_regauth"/>
                 <ref bean="populateRegistrationAuthorities"/>
                 
+                <!--
+                    Add REFEDS Hide from Discovery category as a standardised
+                    equivalent to our HideFromWAYF element.
+                -->
+                <bean p:id="uk_addHideFromDiscovery" parent="XSLTransformationStage">
+                    <property name="XSLResource">
+                        <bean parent="ClassPathResource">
+                            <constructor-arg value="uk/add_hide_category.xsl"/>
+                        </bean>
+                    </property>                    
+                </bean>
+                
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_ukreg"/>
