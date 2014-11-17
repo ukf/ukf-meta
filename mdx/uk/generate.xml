@@ -689,7 +689,7 @@
     </bean>
     
     <bean id="uk_exportSelector" parent="XPathItemSelectionStrategy">
-        <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:ExportOptIn]"/>
+        <constructor-arg value="/md:EntityDescriptor[not(md:Extensions/ukfedlabel:ExportOptOut)]"/>
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
@@ -706,6 +706,83 @@
         p:id="uk_exportPipeline">
         <property name="stages">
             <list>
+                <!--
+                    Additional rules excluding entities from the aggregate.
+                    
+                    The basic rule (expressed in uk_exportPreviewSelector) is that
+                    entities are excluded if they do not have the ExportOptOut label.
+                    Additional rules below are applied to entities which do not
+                    have the ExportOptIn label: in other words, a rule in this section
+                    can always be overridden by an explicit ExportOptIn.
+                -->
+                <bean p:id="exclusion" parent="SplitMergeStage">
+                    
+                    <!-- select entities with ExportOptIn label -->
+                    <property name="selectionStrategy">
+                        <bean parent="XPathItemSelectionStrategy">
+                            <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:ExportOptIn]"/>
+                            <constructor-arg ref="commonNamespaces"/>
+                        </bean>
+                    </property>
+                    
+                    <!--
+                        Pipeline for selected (explicitly opted in) items.
+                    -->
+                    <property name="selectedItemPipeline">
+                        <bean p:id="selectedItemPipeline" parent="SimplePipeline">
+                            <property name="stages">
+                                <list>
+                                    <!-- nothing required -->
+                                </list>
+                            </property>
+                        </bean>
+                    </property>
+                    
+                    <!--
+                        The pipeline for unselected (not explicitly opted in) items removes entities
+                        matching specific rules.
+                    -->
+                    <property name="nonselectedItemPipeline">
+                        <bean p:id="nonSelectedItemPipeline" parent="SimplePipeline">
+                            <property name="stages">
+                                <list>
+                                    
+                                    <!-- Identity providers lacking support for SAML 2.0 -->
+                                    <bean p:id="SAML1onlyIdPs" parent="XPathFilteringStage"
+                                        p:XPathExpression="md:IDPSSODescriptor
+                                        [not(contains(@protocolSupportEnumeration,'urn:oasis:names:tc:SAML:2.0:protocol'))]">
+                                    </bean>
+                                    
+                                    <!-- Aggregated schools sector identity providers -->
+                                    <!--
+                                        Preferred implementation:
+                                        
+                                        <bean p:id="syntheticScopes" parent="XPathFilteringStage"
+                                            p:XPathExpression="shibmd:Scope[ends-with(., '.eng.ukfederation.org.uk']"/>
+                                        
+                                        Unfortunately, the "ends-with" function is an XPath 2 feature, so we settle for
+                                        using "contains" instead; in our case it is equivalent.
+                                    -->
+                                    <bean p:id="syntheticScopes" parent="XPathFilteringStage"
+                                        p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
+                                    <!-- Specific providers not caught by the previous condition -->
+                                    <bean p:id="GlowScotland" parent="EntityFilterStage">
+                                        <property name="designatedEntities">
+                                            <set>
+                                                <value>https://idp.glowscotland.org.uk/shibboleth</value>
+                                            </set>
+                                        </property>
+                                    </bean>
+                                    
+                                    <!-- Identity providers with regular expression scopes -->
+                                    <bean p:id="regexScopes" parent="XPathFilteringStage"
+                                        p:XPathExpression="//shibmd:Scope[@regexp='true']"/>
+                                </list>
+                            </property>
+                        </bean>
+                    </property>
+                </bean>
+
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
