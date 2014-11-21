@@ -42,20 +42,12 @@
         <xsl:variable name="now" select="date:date-time()"/>
 
         <!--
-            Break down the "members" document, which despite its name
-            describes all known entity owners, whether members or non-members.
+            Break down the "members" document.
         -->
         <!-- federation members -->
         <xsl:variable name="members" select="$memberDocument//members:Member"/>
         <xsl:variable name="memberCount" select="count($members)"/>
         <xsl:variable name="memberNames" select="$members/members:Name"/>
-        <!-- federation non-member owners -->
-        <xsl:variable name="nonMembers" select="$memberDocument//members:NonMember"/>
-        <xsl:variable name="nonMemberCount" select="count($nonMembers)"/>
-        <xsl:variable name="nonMemberNames" select="$nonMembers/members:Name"/>
-        <!-- owners are the union of the above -->
-        <xsl:variable name="owners" select="$members | $nonMembers"/>
-        <xsl:variable name="ownerNames" select="$memberDocument//members:Name"/>
         
         <xsl:variable name="entities" select="//md:EntityDescriptor"/>
         <xsl:variable name="entityCount" select="count($entities)"/>
@@ -404,28 +396,6 @@
                     </li>
                 </ul>
 
-                <h3>Additional Non-member Entity Owners</h3>
-                <p>
-                    In addition, the UK federation operator maintains agreements with certain
-                    other organisations so that metadata for entities belonging to those
-                    organisations can be published within the UK federation metadata for the
-                    benefit of UK federation members.
-                </p>
-                <p>Number of non-member relationships: <xsl:value-of select="$nonMemberCount"/></p>
-                <table border="1" cellspacing="2" cellpadding="4">
-                    <tr>
-                        <th align="left">Non-member agreement</th>
-                        <th>Entities</th>
-                        <th>IdPs</th>
-                        <th>SPs</th>
-                        <th>OSrc</th>
-                        <th align="left">Scope</th>
-                    </tr>
-                    <xsl:apply-templates select="$nonMembers" mode="count">
-                        <xsl:with-param name="entities" select="$entities"/>
-                    </xsl:apply-templates>
-                </table>
-                
 
                 <!--
                     *********************************************
@@ -960,7 +930,7 @@
                     its type, the software used, etc. 
                  </p>
                 <ul>
-                    <xsl:apply-templates select="$ownerNames" mode="enumerate">
+                    <xsl:apply-templates select="$memberNames" mode="enumerate">
                         <xsl:with-param name="entities" select="$entities"/>
                     </xsl:apply-templates>
                 </ul>
