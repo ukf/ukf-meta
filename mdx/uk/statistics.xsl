@@ -129,8 +129,8 @@
                     <li><p><a href="#membersByScope">Members by Primary Scope</a></p></li>
                     <li><p><a href="#undeployedMembers">Members Lacking Deployment</a></p></li>
                     <li><p><a href="#shib13">Shibboleth 1.3 Remnants</a></p></li>
-                    <li><p><a href="#exportOptIn">Export Aggregate: Entities Opted In</a></p></li>
-                    <li><p><a href="#exportOptOut">Export Preview Aggregate: Entities Opted Out</a></p></li>
+                    <li><p><a href="#exportOptOut">Export Aggregate: Entities Opted Out</a></p></li>
+                    <li><p><a href="#exportOptIn">Export Aggregate: Entities Explicitly Opted In</a></p></li>
                     <li><p><a href="#nosaml2">Entities Without SAML 2.0 Support</a></p></li>
                 </ul>
                 
@@ -1048,19 +1048,19 @@
  
  
                 <!--
-                    *************************************
-                    ***                               ***
-                    ***   E X P O R T   O P T   I N   ***
-                    ***                               ***
-                    *************************************
+                    ***************************************
+                    ***                                 ***
+                    ***   E X P O R T   O P T   O U T   ***
+                    ***                                 ***
+                    ***************************************
                 -->
                 
-                <h2><a name="exportOptIn">Export Aggregate: Entities Opted In</a></h2>
-                <xsl:variable name="entities.export" select="$entities[descendant::ukfedlabel:ExportOptIn]"/>
-                <xsl:variable name="entities.export.count" select="count($entities.export)"/>
-                <xsl:if test="$entities.export.count != 0">
+                <h2><a name="exportOptOut">Export Aggregate: Entities Opted Out</a></h2>
+                <xsl:variable name="entities.export.opt.out" select="$entities[descendant::ukfedlabel:ExportOptOut]"/>
+                <xsl:variable name="entities.export.opt.out.count" select="count($entities.export.opt.out)"/>
+                <xsl:if test="$entities.export.opt.out.count != 0">
                     <ul>
-                        <xsl:for-each select="$entities.export">
+                        <xsl:for-each select="$entities.export.opt.out">
                             <li>
                                 <xsl:value-of select="@ID"/>
                                 <xsl:text>: </xsl:text>
@@ -1102,19 +1102,19 @@
                 </xsl:if>
                 
                 <!--
-                    ***************************************
-                    ***                                 ***
-                    ***   E X P O R T   O P T   O U T   ***
-                    ***                                 ***
-                    ***************************************
+                    *************************************
+                    ***                               ***
+                    ***   E X P O R T   O P T   I N   ***
+                    ***                               ***
+                    *************************************
                 -->
                 
-                <h2><a name="exportOptOut">Export Preview Aggregate: Entities Opted Out</a></h2>
-                <xsl:variable name="entities.export.opt.out" select="$entities[descendant::ukfedlabel:ExportOptOut]"/>
-                <xsl:variable name="entities.export.opt.out.count" select="count($entities.export.opt.out)"/>
-                <xsl:if test="$entities.export.opt.out.count != 0">
+                <h2><a name="exportOptIn">Export Aggregate: Entities Explicitly Opted In</a></h2>
+                <xsl:variable name="entities.export" select="$entities[descendant::ukfedlabel:ExportOptIn]"/>
+                <xsl:variable name="entities.export.count" select="count($entities.export)"/>
+                <xsl:if test="$entities.export.count != 0">
                     <ul>
-                        <xsl:for-each select="$entities.export.opt.out">
+                        <xsl:for-each select="$entities.export">
                             <li>
                                 <xsl:value-of select="@ID"/>
                                 <xsl:text>: </xsl:text>
