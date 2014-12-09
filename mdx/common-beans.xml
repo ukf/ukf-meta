@@ -836,10 +836,22 @@
         httpClientBuilder
         
         Factory for the httpClient bean below.
+        
+        Sets the option to ignore validation of a server's TLS credentials.
+        
+        Sets socket and connection timeouts explicitly (to 100s) to
+        override the tight defaults in java-support, see:
+        
+            https://github.com/ukf/ukf-meta/issues/1
+            https://issues.shibboleth.net/jira/browse/JSPT-48
+            
+        These options can be removed once the underlying issue has been resolved.
     -->
     <bean id="httpClientBuilder"
         class="net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder"
         p:connectionDisregardSslCertificate="true"
+        p:socketTimeout="100000"
+        p:connectionTimeout="100000"
     />
 
     <!--
