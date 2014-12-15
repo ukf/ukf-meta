@@ -39,7 +39,7 @@
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
 	
-	exclude-result-prefixes="alg md mdattr saml wayf xenc"
+	exclude-result-prefixes="alg md wayf xenc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
