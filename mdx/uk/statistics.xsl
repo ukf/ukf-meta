@@ -15,17 +15,18 @@
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
     xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:members="http://ukfederation.org.uk/2007/01/members"
-    xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     xmlns:math="http://exslt.org/math"
     xmlns:date="http://exslt.org/dates-and-times"
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    exclude-result-prefixes="xsl alg ds init md mdui xsi members wayf ukfedlabel math date dyn set idpdisc"
+    exclude-result-prefixes="xsl alg ds init md mdattr mdui saml xsi members ukfedlabel math date dyn set idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
@@ -72,9 +73,6 @@
         <xsl:variable name="dualEntities" select="$entities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
         <xsl:variable name="dualEntityCount" select="count($dualEntities)"/>
         
-        <xsl:variable name="concealedCount" select="count($idps[md:Extensions/wayf:HideFromWAYF])"/>
-        <xsl:variable name="accountableCount"
-            select="count($idps[md:Extensions/ukfedlabel:AccountableUsers])"/>
         <xsl:variable name="federationMemberEntityCount"
             select="count($entities[md:Extensions/ukfedlabel:UKFederationMember])"/>
         
@@ -547,10 +545,18 @@
                 <p>Of these:</p>
                 <ul>
                     <li>
-                        <p>Hidden from main WAYF: <xsl:value-of select="$concealedCount"/>
+                        <xsl:variable name="concealedCount"
+                            select="count($idps[md:Extensions/mdattr:EntityAttributes/saml:Attribute
+                                [@Name = 'http://macedir.org/entity-category']
+                                [@NameFormat = 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri']
+                                [saml:AttributeValue[.='http://refeds.org/category/hide-from-discovery']]
+                            ])"/>
+                        <p>Hidden from main CDS: <xsl:value-of select="$concealedCount"/>
                         (<xsl:value-of select="format-number($concealedCount div $idpCount, '0.0%')"/>).</p>
                     </li>
                     <li>
+                        <xsl:variable name="accountableCount"
+                            select="count($idps[md:Extensions/ukfedlabel:AccountableUsers])"/>
                         <p>Asserting user accountability: <xsl:value-of select="$accountableCount"/>
                         (<xsl:value-of select="format-number($accountableCount div $idpCount, '0.0%')"/>).</p>
                     </li>
@@ -614,7 +620,10 @@
                                         <li>
                                             <xsl:value-of select="@ID"/>
                                             <xsl:text>: </xsl:text>
-                                            <xsl:if test="md:Extensions/wayf:HideFromWAYF"> [H]</xsl:if>
+                                            <xsl:if test="md:Extensions/mdattr:EntityAttributes/saml:Attribute
+                                                [@Name = 'http://macedir.org/entity-category']
+                                                [@NameFormat = 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri']
+                                                [saml:AttributeValue[.='http://refeds.org/category/hide-from-discovery']]"> [H]</xsl:if>
                                             <xsl:value-of select="@entityID"/>
                                         </li>
                                     </xsl:for-each>
@@ -952,7 +961,10 @@
                 </p>
                 <ul>
                     <xsl:for-each select="$idps[not(md:Extensions/ukfedlabel:AccountableUsers)]
-                            [not(md:Extensions/wayf:HideFromWAYF)]">
+                        [not(md:Extensions/mdattr:EntityAttributes/saml:Attribute
+                            [@Name = 'http://macedir.org/entity-category']
+                            [@NameFormat = 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri']
+                            [saml:AttributeValue[.='http://refeds.org/category/hide-from-discovery']])]">
                         <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
                         <li>
                             <xsl:value-of select="@ID"/>:
@@ -1322,7 +1334,10 @@
                             <xsl:text>:</xsl:text>
                             <xsl:if test="not(md:Extensions/ukfedlabel:UKFederationMember)"> [not-M]</xsl:if>
                             <xsl:if test="md:IDPSSODescriptor"> [IdP]</xsl:if>
-                            <xsl:if test="md:Extensions/wayf:HideFromWAYF"> [H]</xsl:if>
+                            <xsl:if test="md:Extensions/mdattr:EntityAttributes/saml:Attribute
+                                [@Name = 'http://macedir.org/entity-category']
+                                [@NameFormat = 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri']
+                                [saml:AttributeValue[.='http://refeds.org/category/hide-from-discovery']]"> [H]</xsl:if>
                             <xsl:if test="md:SPSSODescriptor"> [SP]</xsl:if>
                             <xsl:if test="descendant::mdui:UIInfo"> [UIInfo]</xsl:if>
                             <xsl:apply-templates select="md:Extensions/ukfedlabel:Software" mode="short"/>

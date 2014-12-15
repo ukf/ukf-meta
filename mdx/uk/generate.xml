@@ -358,8 +358,19 @@
         ***************************************
     -->
     
+    <!--
+    	Select all entities which are not both:
+    	
+    	   * identity providers, and
+    	   * members of the "hide from discovery" entity category.
+    -->
     <bean id="uk_wayfSelector" parent="XPathItemSelectionStrategy">
-        <constructor-arg value="/md:EntityDescriptor[not(md:Extensions/wayf:HideFromWAYF)]"/>
+        <constructor-arg value="/md:EntityDescriptor[not(md:IDPSSODescriptor and
+            md:Extensions[mdattr:EntityAttributes/saml:Attribute
+                [@Name = 'http://macedir.org/entity-category']
+                [@NameFormat = 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri']
+                [saml:AttributeValue[.='http://refeds.org/category/hide-from-discovery']]
+            ])]"/>
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
