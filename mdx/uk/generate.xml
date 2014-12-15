@@ -784,7 +784,6 @@
                 
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="removeEmptyExtensions"/>
@@ -910,7 +909,6 @@
                 
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="stripKeyNames"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="removeEmptyExtensions"/>
