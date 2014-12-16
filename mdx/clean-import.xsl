@@ -22,6 +22,9 @@
 	<xsl:template match="md:EntityDescriptor/@cacheDuration"/>
 	<xsl:template match="md:EntityDescriptor/@validUntil"/>
 	
+	<!-- Remove md:RoleDescriptor elements, which require additional schemas to be available. -->
+	<xsl:template match="md:RoleDescriptor"/>
+	
 	<!-- strip xml:base entirely -->
 	<xsl:template match="@xml:base"/>
 	
