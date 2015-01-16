@@ -93,6 +93,7 @@
     -->
 	<xsl:template match="mdattr:EntityAttributes/saml:Attribute[@Name='http://macedir.org/entity-category-support']
 		/saml:AttributeValue
+		[. != 'http://refeds.org/category/research-and-scholarship']
 		">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
