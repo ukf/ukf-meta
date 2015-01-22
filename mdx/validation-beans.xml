@@ -653,6 +653,18 @@
     -->
     
     <!--
+        check_uk_algorithms
+    -->
+    <bean id="check_uk_algorithms" parent="XSLValidationStage"
+        p:id="check_uk_algorithms">
+        <property name="XSLResource">
+            <bean parent="FileSystemResource">
+                <constructor-arg value="${rulesdir}/check_uk_algorithms.xsl"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!--
         check_uk_trust
     -->
     <bean id="check_uk_trust" parent="XSLValidationStage"
@@ -804,6 +816,7 @@
                 <ref bean="check_saml2int"/>
                 <ref bean="check_saml2meta"/>
                 <ref bean="check_shibboleth"/>
+                <ref bean="check_uk_algorithms"/>
                 <ref bean="check_uk_trust"/>
             </list>
         </property>
