@@ -278,6 +278,9 @@
 
     <bean id="EntityAttributeFilteringStage" abstract="true" parent="stage_parent"
         class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityAttributeFilteringStage"/>
+        
+    <bean id="EntityAttributeAddingStage" abstract="true" parent="stage_parent"
+        class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityAttributeAddingStage"/>
 
     <bean id="EntityCategoryMatcher" abstract="true"
         class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityCategoryMatcher"/>
