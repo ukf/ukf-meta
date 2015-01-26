@@ -444,12 +444,44 @@
                     Add REFEDS Hide from Discovery category as a standardised
                     equivalent to our HideFromWAYF element.
                 -->
-                <bean p:id="uk_addHideFromDiscovery" parent="XSLTransformationStage">
-                    <property name="XSLResource">
-                        <bean parent="ClassPathResource">
-                            <constructor-arg value="uk/add_hide_category.xsl"/>
+                <bean p:id="uk_addHideFromDiscovery" parent="SplitMergeStage">
+                    <!-- select entities with HideFromWayf label -->
+                    <property name="selectionStrategy">
+                        <bean parent="XPathItemSelectionStrategy">
+                            <constructor-arg value="/md:EntityDescriptor[md:Extensions/wayf:HideFromWAYF]"/>
+                            <constructor-arg ref="commonNamespaces"/>
                         </bean>
-                    </property>                    
+                    </property>
+                    
+                    <!--
+                        Pipeline for selected items.
+                    -->
+                    <property name="selectedItemPipeline">
+                        <bean p:id="selectedItemPipeline" parent="SimplePipeline">
+                            <property name="stages">
+                                <bean p:id="addHideFromDiscovery" parent="EntityAttributeAddingStage"
+                                    p:attributeValue="http://refeds.org/category/hide-from-discovery"
+                                    p:addingFirstChild="true"/>
+                            </property>
+                        </bean>
+                    </property>
+                    
+                    <!--
+                        Pipeline for unselected items.
+                        
+                        This is only required because of MDA-140, and can be removed when
+                        we move to MDA 0.9.0.
+                    -->
+                    <property name="nonselectedItemPipeline">
+                        <bean p:id="nonselectedItemPipeline" parent="SimplePipeline">
+                            <property name="stages">
+                                <list>
+                                    <!-- nothing required -->
+                                </list>
+                            </property>
+                        </bean>
+                    </property>
+
                 </bean>
                 
                 <ref bean="checkSchemas"/>
