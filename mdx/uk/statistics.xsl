@@ -1735,9 +1735,20 @@
                 select="set:difference($entities.openathens.in, $entities.openathens)"/>
             
             <!--
+                Classify Shibboleth 3 IdPs entities.
+            -->
+            <xsl:variable name="entities.shib.3.in" select="$entities.openathens.out"/>
+            <xsl:variable name="entities.shib.3"
+                select="$entities.shib.3.in[
+                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '3']
+                ]"/>
+            <xsl:variable name="entities.shib.3.out"
+                select="set:difference($entities.shib.3.in, $entities.shib.3)"/>
+            
+            <!--
                 Classify Shibboleth 2.0 IdPs and SPs.
             -->
-            <xsl:variable name="entities.shib.2.in" select="$entities.openathens.out"/>
+            <xsl:variable name="entities.shib.2.in" select="$entities.shib.3.out"/>
             <xsl:variable name="entities.shib.2"
                 select="$entities.shib.2.in[
                     md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')] |
@@ -1816,19 +1827,25 @@
             -->
             
             <xsl:call-template name="entity.breakdown.by.software.line">
-                <xsl:with-param name="entities" select="$entities.shib.13"/>
-                <xsl:with-param name="name">Shibboleth 1.3</xsl:with-param>
+                <xsl:with-param name="entities" select="$entities.shib.3"/>
+                <xsl:with-param name="name">Shibboleth 3.x</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
-                <xsl:with-param name="show.max" select="10"/>
             </xsl:call-template>
-
+            
             <xsl:call-template name="entity.breakdown.by.software.line">
                 <xsl:with-param name="entities" select="$entities.shib.2"/>
                 <xsl:with-param name="name">Shibboleth 2.x</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
             </xsl:call-template>
             
-            <xsl:variable name="entities.shib" select="$entities.shib.13 | $entities.shib.2"/>
+            <xsl:call-template name="entity.breakdown.by.software.line">
+                <xsl:with-param name="entities" select="$entities.shib.13"/>
+                <xsl:with-param name="name">Shibboleth 1.3</xsl:with-param>
+                <xsl:with-param name="total" select="$entityCount"/>
+                <xsl:with-param name="show.max" select="10"/>
+            </xsl:call-template>
+
+            <xsl:variable name="entities.shib" select="$entities.shib.13 | $entities.shib.2 | $entities.shib.3"/>
             <xsl:call-template name="entity.breakdown.by.software.line">
                 <xsl:with-param name="entities" select="$entities.shib"/>
                 <xsl:with-param name="name">Shibboleth combined</xsl:with-param>
