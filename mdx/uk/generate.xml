@@ -335,14 +335,12 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
                 
                 <!-- production aggregate MUST pass publishability test -->
                 <ref bean="checkPublishable"/>
-                <ref bean="check_fixup_encmethod"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedProductionAggregate"/>
