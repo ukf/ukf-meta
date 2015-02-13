@@ -14,7 +14,7 @@ $DEBUG = 0;
 sub help {
 	print<<'EOF';
 
-usage: query-entities.pl [--help] [--head] [--idonly] [--idp] [--sp] [--reg <registrationAuthority>] [--notreg <registrationAuthority>] <file>
+usage: query-entities.pl [--help] [--head] [--idonly] [--idp] [--sp] [--reg <registrationAuthority>] [--notreg <registrationAuthority>] [--org <OrganizationName>] <file>
 
 Outputs the entityID, display name(s) and other information about entities in the given SAML metadata aggregate file.
 
@@ -32,6 +32,8 @@ Outputs the entityID, display name(s) and other information about entities in th
 --notreg <registrationAuthority>	- outputs those entities NOT registered by registrationAuthority
 	(By default the script outputs all entities; can only have one of --reg or --notreg)
 	
+--org <OrganizationName>    - outputs entities with this OrganizationName (xml:lang="en" only in this version))
+	
 Example 1:
 To output all SPs in the UK federation metadata which have been imported (i.e. are not registered by the UKAMF registrationAuthority http://ukfederation.org.uk), and to include a header on the CSV file:
 
@@ -41,6 +43,11 @@ Example 2:
 To output all IdPs exported by the UK federation, and include a header
 
 query-entities.pl --head --idp -reg http://ukfederation.org.uk ukfederation-export.xml
+
+Example 3:
+To output all entities with OrganizationName 'University of Edinburgh'
+
+query-entities.pl --org 'University of Edinburgh' ukfederation-metadata.xml
 
 EOF
 }
@@ -52,6 +59,7 @@ my $notreg;
 my $help;
 my $head;
 my $idonly;
+my $org;
 
 my $result = GetOptions(
 		"idp" => \$idp,
@@ -60,7 +68,8 @@ my $result = GetOptions(
 		"notreg=s" => \$notreg,
 		"help" => \$help,
 		"head" => \$head,
-		"idonly" => \$idonly
+		"idonly" => \$idonly,
+		"org=s" => \$org
 		);
 
 if ($help) {
@@ -111,6 +120,7 @@ if ($DEBUG) {
 	if ($sp) { print "sp: $sp\n"; }
 	if ($reg) { print "reg: $reg\n"; }
 	if ($notreg) { print "notreg: $notreg\n"; }
+	if ($org) { print "org: $org\n"; }
 }
 
 #
@@ -129,7 +139,7 @@ if (!length $xml) {
 #
 # print header
 #
-if ($head) { print "# type, entityID, registrationAuthority, OrganizationDisplayName, OrganizationURL\n"; }
+if ($head) { print "# type, entityID, registrationAuthority, OrganizationName, OrganizationDisplayName, OrganizationURL\n"; }
 
 #
 # Workhorse
@@ -145,11 +155,12 @@ $twig->parse($xml);
 
 sub is_entity () {
 	my ($t, $section)= @_;
-	my ($entityID, $ODN, $URL, $registrationAuthority, $type, $temp);
+	my ($entityID, $OrganizationName, $ODN, $URL, $registrationAuthority, $type, $temp);
 
 	$entityID = "No entityID found";
 	$entityID = $section->{'att'}->{'entityID'};
 
+    $OrganizationName = "No OrganizationName found";
 	$ODN = "No OrganizationDisplayName found";
 	$URL = "No URL found";	
 	# Turns out the Organization element is optional
@@ -159,12 +170,18 @@ sub is_entity () {
 				$ODN = $temp;
 			}
 		}
+		if ( $section->first_child('Organization')->first_child('OrganizationName[@xml:lang="en"]') ) {
+			if ( $temp = $section->first_child('Organization')->first_child('OrganizationName[@xml:lang="en"]')->text) {
+				$OrganizationName = $temp;
+			}
+		}
 		if ( $section->first_child('Organization')->first_child('OrganizationURL') ) {
 			if ( $temp = $section->first_child('Organization')->first_child('OrganizationURL')->text) {
 				$URL = $temp;
 			}
 		}	
 	}
+	if ( $org && $org ne $OrganizationName ) { return; }
 	
 	$registrationAuthority = "No registrationAuthority found";
 	# Even though eduGAIN Metadata profile says entities MUST have MDRPI, turns out the eduGAIN aggregate does not enforce this rule. However, the eduGAIN site allows people to validate federations' incoming aggregates. See http://www.edugain.org/technical/status.php and go to countries' entry 'validate this metadata set'
@@ -176,8 +193,7 @@ sub is_entity () {
 				}
 			}
 		}
-	}
-	
+	}	
 	if ( $notreg && $notreg eq $registrationAuthority ) { return; }
 	if ( $reg && $reg ne $registrationAuthority ) { return; }
 
@@ -189,7 +205,7 @@ sub is_entity () {
 		if ($idonly) {
 			print "$entityID\n";
 		} else {	
-			print "$type, $entityID, $registrationAuthority, \"$ODN\", $URL\n"
+			print "$type, $entityID, $registrationAuthority, \"$OrganizationName\", \"$ODN\", $URL\n"
 		}
 	}
 }
