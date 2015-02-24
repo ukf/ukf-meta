@@ -578,7 +578,6 @@
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="removeEmptyExtensions"/>
-                <ref bean="uk_addTrustRoots"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
                 
