@@ -1273,17 +1273,6 @@
     </target>
 
     <!--
-        Check authorities
-    -->
-    <target name="check.authorities">
-        <echo>Checking authority certificates</echo>
-        <exec executable="perl" dir="${mdx.dir}/uk"
-            input="${mdx.dir}/uk/authorities.pem">
-            <arg value="${mdx.dir}/uk/check_authorities.pl"/>
-        </exec>
-    </target>
-
-    <!--
         Utility to fold overlong embedded certificates.
     -->
     <target name="fold.embedded.certs">
