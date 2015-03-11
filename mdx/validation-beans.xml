@@ -581,6 +581,32 @@
     </bean>
     
     <!--
+        check_saml_strings
+    -->
+    <bean id="check_saml_strings" parent="SAMLStringElementCheckingStage"
+        p:id="check_saml_strings">
+        <property name="elementNames">
+            <set>
+                <ref bean="md-Company"/>
+                <ref bean="md-GivenName"/>
+                <ref bean="md-OrganizationDisplayName"/>
+                <ref bean="md-OrganizationName"/>
+                <ref bean="md-ServiceDescription"/>
+                <ref bean="md-ServiceName"/>
+                <ref bean="md-SurName"/>
+                <ref bean="md-TelephoneNumber"/>
+
+                <ref bean="mdui-Description"/>
+                <ref bean="mdui-DisplayName"/>
+                <ref bean="mdui-DomainHint"/>
+                <ref bean="mdui-GeolocationHint"/>
+                <ref bean="mdui-IPHint"/>
+                <ref bean="mdui-Keywords"/>
+            </set>
+        </property>
+    </bean>
+
+    <!--
         check_shibboleth
     -->
     <bean id="check_shibboleth" parent="XSLValidationStage"
@@ -815,6 +841,7 @@
                 <ref bean="check_saml2"/>
                 <ref bean="check_saml2int"/>
                 <ref bean="check_saml2meta"/>
+                <ref bean="check_saml_strings"/>
                 <ref bean="check_shibboleth"/>
                 <ref bean="check_uk_algorithms"/>
                 <ref bean="check_uk_trust"/>

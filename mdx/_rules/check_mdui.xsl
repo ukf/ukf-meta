@@ -29,42 +29,6 @@
 	<xsl:import href="check_framework.xsl"/>
 	
 	<!--
-		General SAML constraint that xs:string elements must contain at least one
-		non-whitespace character.  That's actually too hard to do in XSLT so we'll
-		restrict ourselves to a check for empty elements for now.
-	-->
-	<xsl:template match="mdui:DisplayName[. = '']">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">mdui:DisplayName must not be empty</xsl:with-param>
-		</xsl:call-template>        
-	</xsl:template>
-	<xsl:template match="mdui:Description[. = '']">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">mdui:Description must not be empty</xsl:with-param>
-		</xsl:call-template>        
-	</xsl:template>
-	<xsl:template match="mdui:Keywords[. = '']">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">mdui:Keywords must not be empty</xsl:with-param>
-		</xsl:call-template>        
-	</xsl:template>
-	<xsl:template match="mdui:IPHint[. = '']">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">mdui:IPHint must not be empty</xsl:with-param>
-		</xsl:call-template>        
-	</xsl:template>
-	<xsl:template match="mdui:DomainHint[. = '']">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">mdui:DomainHint must not be empty</xsl:with-param>
-		</xsl:call-template>        
-	</xsl:template>
-	<xsl:template match="mdui:GeolocationHint[. = '']">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">mdui:GeolocationHint must not be empty</xsl:with-param>
-		</xsl:call-template>        
-	</xsl:template>
-	
-	<!--
 		Section 2.1
 		
 		<mdui:UIInfo> MUST NOT appear more than once within a given <md:Extensions> element.
