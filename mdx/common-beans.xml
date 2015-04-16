@@ -979,6 +979,10 @@
             <constructor-arg value="schema/uk-fed-label.xsd"/>
         </bean>
         <bean parent="ClassPathResource">
+            <!-- no imports -->
+            <constructor-arg value="schema/uk-wayf.xsd"/>
+        </bean>
+        <bean parent="ClassPathResource">
             <!-- imports xenc-schema.xsd -->
             <constructor-arg value="schema/ws-authorization.xsd"/>
         </bean>
