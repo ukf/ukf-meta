@@ -703,6 +703,18 @@
     </bean>
     
     <!--
+        check_uk_wayf
+    -->
+    <bean id="check_uk_wayf" parent="XSLValidationStage"
+        p:id="check_uk_wayf">
+        <property name="XSLResource">
+            <bean parent="FileSystemResource">
+                <constructor-arg value="${rulesdir}/check_uk_wayf.xsl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!--
         *******************************************************
         ***                                                 ***
         ***   C O L L E C T I O N   C O N S I S T E N C Y   ***
@@ -845,6 +857,7 @@
                 <ref bean="check_shibboleth"/>
                 <ref bean="check_uk_algorithms"/>
                 <ref bean="check_uk_trust"/>
+                <ref bean="check_uk_wayf"/>
             </list>
         </property>
     </bean>
