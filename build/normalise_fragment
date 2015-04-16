@@ -11,7 +11,7 @@ file:
 
    * arranges for all appropriate namespaces to appear on the EntityDescriptor
 
-   * arranges for an appropriate collection on schemaLocation values
+   * arranges for an appropriate collection of schemaLocation values
 
    * puts any ID and entityID attributes in the right place
 
@@ -66,6 +66,7 @@ ED_TEMPLATE = Template('''<?xml version="1.0" encoding="UTF-8"?>
         urn:oasis:names:tc:SAML:2.0:assertion ../xml/saml-schema-assertion-2.0.xsd
         urn:mace:shibboleth:metadata:1.0 ../xml/shibboleth-metadata-1.0.xsd
         http://ukfederation.org.uk/2006/11/label ../xml/uk-fed-label.xsd
+        http://sdss.ac.uk/2006/06/WAYF ../xml/uk-wayf.xsd
         http://www.w3.org/2001/04/xmlenc# ../xml/xenc-schema.xsd
         http://www.w3.org/2009/xmlenc11# ../xml/xenc-schema-11.xsd
         http://www.w3.org/2000/09/xmldsig# ../xml/xmldsig-core-schema.xsd"
