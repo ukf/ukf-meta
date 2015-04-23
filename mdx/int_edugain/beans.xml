@@ -28,7 +28,7 @@
     -->
     <!-- production aggregate -->
     <bean id="int_edugain_productionAggregate_url" class="java.lang.String">
-        <constructor-arg value="http://mds.edugain.org/feed-sha256.xml"/>
+        <constructor-arg value="http://mds.edugain.org/"/>
     </bean>
     <!-- test aggregate -->
     <bean id="int_edugain_testAggregate_url" class="java.lang.String">
