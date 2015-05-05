@@ -41,12 +41,10 @@ my $verboseIssuers = 0;
 #
 my %issuerMark;
 
-# From the UK federation trust roots document.
-$issuerMark{'AddTrust External CA Root'} = 'R';
-$issuerMark{'UTN-USERFirst-Hardware'} = 'i';
-$issuerMark{'TERENA SSL CA'} = 'i';
-
 # ex-roots
+$issuerMark{'AddTrust External CA Root'} = 'X';
+$issuerMark{'UTN-USERFirst-Hardware'} = 'x';
+$issuerMark{'TERENA SSL CA'} = 'x';
 $issuerMark{'GlobalSign Root CA'} = 'X';
 $issuerMark{'GlobalSign Organization Validation CA'} = 'x';
 $issuerMark{'GlobalSign Primary Secure Server CA'} = 'x';
@@ -367,74 +365,6 @@ while (<>) {
 
 
 		#
-		# Use openssl to ask whether this matches our trust fabric or not.
-		#
-		my $error = '';
-		$serverOK = 1;
-		$cmd = "openssl verify -CAfile ../mdx/uk/authorities.pem -purpose sslserver $filename |";
-		open(SSL, $cmd) || die "could not open openssl subcommand 2";
-		while (<SSL>) {
-			chomp;
-			if (/error/) {
-				$error = $_;
-				$serverOK = 0;
-			}
-		}
-		close SSL;
-		$clientOK = 1;
-		$cmd = "openssl verify -CAfile ../mdx/uk/authorities.pem -purpose sslclient $filename |";
-		open(SSL, $cmd) || die "could not open openssl subcommand 3";
-		while (<SSL>) {
-			chomp;
-			if (/error/) {
-				$error = $_;
-				$clientOK = 0;
-			}
-		}
-		close SSL;
-		
-		#
-		# Irrespective of what went wrong, client and server results should match.
-		#
-		if ($clientOK != $serverOK) {
-			error("client/server purpose result mismatch: $clientOK != $serverOK");
-		}
-		
-		#
-		# Reduce error if possible.
-		#
-		if ($error =~ m/^error \d+ at \d+ depth lookup:\s*(.*)$/) {
-			$error = $1;
-		}
-		
-		#
-		# Now, adjust for our expectations.
-		#
-		if (!$hasKeyName) {
-			#
-			# Pretty much any certificate is fine if we don't have a KeyName.
-			#
-			if ($error eq 'self signed certificate') {
-				$error = '';
-				comment("self signed certificate");
-			} elsif ($error eq 'unable to get local issuer certificate') {
-				$error = '';
-				comment("unknown issuer: $issuerCN");
-			} elsif ($clientOK) {
-				# $error = "certificate matches trust fabric; add KeyName?";
-			}
-		}
-
-		if ($error eq 'certificate has expired' && $days < 0) {
-			# an equivalent message has already been issued
-			$error = '';
-		}
-
-		if ($error ne '') {
-			error($error);
-		}
-		
-		#
 		# Handle public key size.
 		#
 		$pubSizeCount{$pubSize}++;
@@ -445,14 +375,6 @@ while (<>) {
 		# it to be deleted.
 		#
 		close $fh;
-
-		#if ($issuer eq $subject) {
-		#	# self-signed
-		#} elsif ($issuerCN eq 'TERENA SSL CA') {
-		#	# this one we know about
-		#} else {
-		#	warning("issuer is '$issuerCN'");
-		#}
 
 		#
 		# Add a warning for certain issuers.

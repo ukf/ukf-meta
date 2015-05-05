@@ -37,7 +37,6 @@
             <list>
                 <ref bean="uk_registeredEntities"/>
                 <ref bean="uk_assemble"/>
-                <ref bean="uk_addTrustRoots"/>
                 <ref bean="normaliseNamespaces"/>
                 <ref bean="errorTerminatingFilter"/>
                 <ref bean="serializeCollected"/>

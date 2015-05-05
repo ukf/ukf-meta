@@ -1262,17 +1262,6 @@
     </target>
 
     <!--
-        Extract authorities
-    -->
-    <target name="extract.authorities">
-        <echo>Extracting key authorities</echo>
-        <XALAN
-            i="${mdx.dir}/uk/trust-roots.xml"
-            o="${mdx.dir}/uk/authorities.pem"
-            x="${mdx.dir}/uk/extract_authorities.xsl"/>
-    </target>
-
-    <!--
         Utility to fold overlong embedded certificates.
     -->
     <target name="fold.embedded.certs">
