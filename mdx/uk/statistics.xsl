@@ -1043,8 +1043,9 @@
                 <h2><a name="shib13">Shibboleth 1.3 Remnants</a></h2>
                 <p>
                     The following lists show entities that are believed to be running the
-                    Shibboleth 1.3 software, which is now beyond its official end of life
-                    date.  As heuristics have been used to create these lists, they may
+                    Shibboleth 1.3 software, which reached its official end of life
+                    date on 30-June-2010.
+                    As heuristics have been used to create these lists, they may
                     not be completely accurate.
                 </p>
 
