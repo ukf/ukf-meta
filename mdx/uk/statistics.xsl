@@ -1216,7 +1216,12 @@
                         'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
                 </xsl:call-template>
 
-
+                <h3>Identity Providers Without SAML 2.0 Support</h3>
+                <xsl:call-template name="entity.breakdown.by.software">
+                    <xsl:with-param name="entities" select="$idps[md:IDPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                        'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
+                </xsl:call-template>
+                
             </body>
         </html>
     </xsl:template>
