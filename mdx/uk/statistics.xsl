@@ -1211,6 +1211,10 @@
                         </li>
                     </xsl:for-each>
                 </ul>
+                <xsl:call-template name="entity.breakdown.by.software">
+                    <xsl:with-param name="entities" select="$sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                        'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
+                </xsl:call-template>
 
 
             </body>
