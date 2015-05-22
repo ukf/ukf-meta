@@ -30,21 +30,4 @@
 	-->
 	<xsl:import href="check_framework.xsl"/>
 
-    <!--
-        Section 6.1.
-        
-        "The <saml2p:AuthnRequest> message issued by a Service Provider MUST be
-        communicated to the Identity Provider using the HTTP-REDIRECT binding
-        [SAML2Bind]."
-        
-        Therefore, metadata for this binding MUST be present.
-    -->
-    <xsl:template match="md:IDPSSODescriptor
-        [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-        [not(md:SingleSignOnService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'])]">
-        <xsl:call-template name="error">
-            <xsl:with-param name="m">SAML 2.0 IDPSSODescriptor does not support HTTP-Redirect SSO binding</xsl:with-param>
-        </xsl:call-template>
-    </xsl:template>
-
 </xsl:stylesheet>
