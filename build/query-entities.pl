@@ -7,6 +7,7 @@ use strict;
 use Getopt::Long;
 use XML::Twig;
 $| = 1;
+binmode(STDOUT, ":encoding(UTF-8)");
 
 my $DEBUG;
 $DEBUG = 0;
