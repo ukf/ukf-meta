@@ -6,48 +6,48 @@
 # required, or just re-export the file unchanged.
 #
 
+
 # This line indicates that the old certificate is present
-$old_cert_line = 'MIIEiTCCA3GgAwIBAgIRAPzB04tYcniZc/0mSMRCfXgwDQYJKoZIhvcNAQEFBQAw';
+#
+# Ensure that all Base64-encoded characters which affect perl pattern matching are escaped.
+# For example, '+' in the variable indicates 'one or more of the preceding character', 
+# whilst \+ indicates a literal + in the input string.
+$old_cert_line = 'MIIEiDCCA3CgAwIBAgIQOBNA\+hb81eyfqXol6z3klDANBgkqhkiG9w0BAQUFADA2';
 
 # This line indicates that the new certificate is present
-$new_cert_line = 'MIIEiDCCA3CgAwIBAgIQOBNA+hb81eyfqXol6z3klDANBgkqhkiG9w0BAQUFADA2';
+$new_cert_line = 'MIIDvjCCAqagAwIBAgIEVOxCIjANBgkqhkiG9w0BAQsFADCBoDEoMCYGCSqGSIb3';
 
 # The new certificate data
 $new_cert = <<EOF;
-        <KeyDescriptor use="signing">
             <ds:KeyInfo>
-                <ds:KeyName>gateway.athensams.net</ds:KeyName>
                 <ds:X509Data>
                     <ds:X509Certificate>
-                        MIIEiDCCA3CgAwIBAgIQOBNA+hb81eyfqXol6z3klDANBgkqhkiG9w0BAQUFADA2
-                        MQswCQYDVQQGEwJOTDEPMA0GA1UEChMGVEVSRU5BMRYwFAYDVQQDEw1URVJFTkEg
-                        U1NMIENBMB4XDTEyMDcwNjAwMDAwMFoXDTE1MDcwNjIzNTk1OVowXjELMAkGA1UE
-                        BhMCR0IxDjAMBgNVBAgTBUJBTkVTMQ0wCwYDVQQHEwRCYXRoMRAwDgYDVQQKEwdF
-                        ZHVzZXJ2MR4wHAYDVQQDExVnYXRld2F5LmF0aGVuc2Ftcy5uZXQwggEiMA0GCSqG
-                        SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDbB17KWAYcAxwqBJLKiCNrX18NQpeYoJBv
-                        6/ilSgtEYJxmcvS+dDFWoFoLCKJt+nfuoegPOZHTeNxyxmg4fMXw0PulVWgQxW0s
-                        0zggonUc7VQ98Ny4rkBY0IpOcMzJv1leKk7w0mXfCGZwMacZ9uy5BpM84raTyOTz
-                        P0MI28PjWTVAohhVK34CeUm0vUwVzemN0INctgyIdzEHlb6nteKCYKCnjsi2KTO8
-                        spumdA3rcU/u+0rUR5auJ0ZsDtUMg7BQw0W6MAkcXEHuC5uGJuLSyhO3h1G1D5L4
-                        5Xq5rKvV5FqyRP++hrEoiA2z3lMXtjxEaT4CELiiHbxdukaqw2aZAgMBAAGjggFo
-                        MIIBZDAfBgNVHSMEGDAWgBQMvZNoDPPeq6NJays3V0fqkOO57TAdBgNVHQ4EFgQU
-                        f4VPXF2nfnxOVFGmLcxxPaq5y+wwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQC
-                        MAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBgGA1UdIAQRMA8wDQYL
-                        KwYBBAGyMQECAh0wOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybC50Y3MudGVy
-                        ZW5hLm9yZy9URVJFTkFTU0xDQS5jcmwwbQYIKwYBBQUHAQEEYTBfMDUGCCsGAQUF
-                        BzAChilodHRwOi8vY3J0LnRjcy50ZXJlbmEub3JnL1RFUkVOQVNTTENBLmNydDAm
-                        BggrBgEFBQcwAYYaaHR0cDovL29jc3AudGNzLnRlcmVuYS5vcmcwIAYDVR0RBBkw
-                        F4IVZ2F0ZXdheS5hdGhlbnNhbXMubmV0MA0GCSqGSIb3DQEBBQUAA4IBAQBDDpET
-                        eseuUBypZlPJMfm2eg3jFIgJOTdxvMNU88EuLXTiSSgRWQAjy7QPHprkFiXUyOu5
-                        EdBbXhuTcecRESOqM5pHxZulnWtrggXc9IGy7TzjxsrxFXb881qiVwGu7kiYPv1F
-                        IwK6IQfbdbUXiTLNxrLogMYI4T7YwYkkKdA4nCy3aUuucz5uuIovLvLVrtZ9YN66
-                        XWcW/d0prifYI70Cwo4ydOJgm0WbqllJRVnP5jI9+pDa1cX6tku8raFkDUZxJfU9
-                        IlvryvkiiZTpoo7QOu6aJVAwU33BXcTQyEeCyp5PAvaeNJWCFpQ85gNSxJdVPIqm
-                        6pd2Nd0SphPSYavr
+                        MIIDvjCCAqagAwIBAgIEVOxCIjANBgkqhkiG9w0BAQsFADCBoDEoMCYGCSqGSIb3
+                        DQEJARYZYXRoZW5zaGVscEBlZHVzZXJ2Lm9yZy51azELMAkGA1UEBhMCR0IxETAP
+                        BgNVBAgMCFNvbWVyc2V0MQ0wCwYDVQQHDARCYXRoMRAwDgYDVQQKDAdFZHVzZXJ2
+                        MRMwEQYDVQQLDApPcGVuQXRoZW5zMR4wHAYDVQQDDBVnYXRld2F5LmF0aGVuc2Ft
+                        cy5uZXQwHhcNMTUwMjI0MDkyMDA2WhcNMjUwMjI0MDkyMDA2WjCBoDEoMCYGCSqG
+                        SIb3DQEJARYZYXRoZW5zaGVscEBlZHVzZXJ2Lm9yZy51azELMAkGA1UEBhMCR0Ix
+                        ETAPBgNVBAgMCFNvbWVyc2V0MQ0wCwYDVQQHDARCYXRoMRAwDgYDVQQKDAdFZHVz
+                        ZXJ2MRMwEQYDVQQLDApPcGVuQXRoZW5zMR4wHAYDVQQDDBVnYXRld2F5LmF0aGVu
+                        c2Ftcy5uZXQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCandpa4o0N
+                        jtw1DqbrrNTfOVe1PqyXIIVmDrJ6VUR/mokXXu+m5Gm+1f+3lyN5IA2YMn9Z8Yo3
+                        7JQjIHs+xVS3q4nT1ewS7S3en1pdXKsH1WnUnVWUmpl9WJZrUwi5i8X80LNyr7Pm
+                        udhuKNEATGUXkA/xWCkk2d8jf91hy7Qu+HA8LOKtdbbNigErh2IY/YuNWUVUqgGb
+                        MH5BGr7ZEhPrz+Vwcf9lhPW+tKpKpZEzJfQiq8EoPaeMXEpKWBEErm67gkWFCA5V
+                        hfcJLqFjQEC3pWOxt5rZVS8gl/Z33VSJZVzY5jWcQzmGaLXPHXyiKPmixl6+DjGl
+                        UM0ylNF7GvtDAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAFhmhujLZueiJ6F7mQCp
+                        fB0Hj4Y8FyFUUc8NMAt5Set7H4DKSSl4shcqisZBa5yTdyenYwkmBszvCWs6Yeep
+                        +zJmCR62cb/f1M32oMzLm02OlznWMkE8/IajGmdxTnB6Z/XcdMMIiCeok4kqe5KM
+                        d5oRAyNskHYZ+8kzhs2zTveR+rqCtYxa/AYpwf7n0VQR9clBSNCIT4BCRi10aPE5
+                        31VIxl4ljY3CwNoZ4lQTU/0aj8O4j68V2neiQb8lewAii0b2xoyOGYP4okd7T2tl
+                        4gl2noVbCvYNjd6GYze/w4lgwiemkby7wu5sN1lEudgKDV+H54wU29ZIyDEFM6DD
+                        NE4=
                     </ds:X509Certificate>
                 </ds:X509Data>
             </ds:KeyInfo>
         </KeyDescriptor>
+        <KeyDescriptor use="signing">
 EOF
 
 while (<>) {
@@ -68,7 +68,7 @@ while (<>) {
 		# re-export the old file, adding the new certificate
 		while ($line = shift @lines) {
 			print $line;
-			if ($have_old_cert && !$have_new_cert && $line =~ /<\/KeyDescriptor>/) {
+			if ($have_old_cert && !$have_new_cert && $line =~ /<KeyDescriptor/) {
 				print $new_cert;
 			}
 		}
