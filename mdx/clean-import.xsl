@@ -10,6 +10,8 @@
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
+	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 	extension-element-prefixes="mdxTextUtils">
@@ -40,6 +42,9 @@
 	<!-- Remove any embedded signatures -->
 	<xsl:template match="ds:Signature"/>
 	
+	<!-- Remove xsi:type from any entity attribute values. -->
+	<xsl:template match="saml:AttributeValue/@xsi:type"/>
+
 	<!--
 		Normalise whitespace in X509Certificate elements.
 	-->
