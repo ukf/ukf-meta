@@ -516,6 +516,12 @@
                 <!-- remove many things that the CDS doesn't look at -->
                 <ref bean="CDSStripUnwanted"/>
                 
+                <!--
+                    Remove embedded images used in mdui:Logo elements.
+                -->
+                <ref bean="stripMDUILogoData"/>
+                <ref bean="stripEmptyMDUIUIInfo"/>
+
                 <ref bean="CDSFinalise"/>
                 <ref bean="CDSNormaliseNamespaces"/>
                 

@@ -807,6 +807,28 @@
         </property>
     </bean>
     
+    <!--
+        stripMDUILogoData
+        
+        Remove all mdui:Logo elements containing data: URLs.
+    -->
+    <bean id="stripMDUILogoData" parent="XSLTransformationStage"
+        p:id="stripMDUILogoData">
+        <property name="XSLResource">
+            <bean parent="ClassPathResource" c:_="strip-mdui-logo-data.xsl"/>
+        </property>
+    </bean>
+
+    <!--
+        stripEmptyMDUIUIInfo
+        
+        Remove any empty mdui:UIInfo container elements.
+    -->
+    <bean id="stripEmptyMDUIUIInfo" parent="EmptyContainerStrippingStage"
+        p:id="stripEmptyMDUIUIInfo">
+        <property name="elementNamespace" ref="mdui_namespace"/>
+        <property name="elementName" value="UIInfo"/>
+    </bean>
     
     <!--
         *****************************************************
