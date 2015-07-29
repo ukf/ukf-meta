@@ -448,7 +448,7 @@
                 <ref bean="stripShibScope"/>
                 
                 <!-- remove any now-empty Extensions elements -->
-                <ref bean="removeEmptyExtensions"/>
+                <ref bean="stripEmptyExtensions"/>
             </list>
         </property>
     </bean>
@@ -583,7 +583,7 @@
                 <ref bean="uk_assemble"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
-                <ref bean="removeEmptyExtensions"/>
+                <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
                 
@@ -790,7 +790,7 @@
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripEntityScopes"/>
-                <ref bean="removeEmptyExtensions"/>
+                <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
                 <ref bean="uk_normaliseExport"/>
                 
@@ -915,7 +915,7 @@
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripEntityScopes"/>
-                <ref bean="removeEmptyExtensions"/>
+                <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
                 <ref bean="uk_normaliseExport"/>
                 
@@ -989,7 +989,7 @@
                 <ref bean="stripEntityScopes"/>
                 
                 <!-- remove any now-empty Extensions elements -->
-                <ref bean="removeEmptyExtensions"/>
+                <ref bean="stripEmptyExtensions"/>
             </list>
         </property>
     </bean>
@@ -1088,7 +1088,7 @@
                     external registry clients.
                 -->
                 <ref bean="uk_stripAdminContacts"/>
-                <ref bean="removeEmptyExtensions"/>
+                <ref bean="stripEmptyExtensions"/>
                 
                 <!--
                     ***********************************************
@@ -1137,7 +1137,7 @@
                     an item metadata object, and move this section before the export fork.
                 -->
                 <ref bean="uk_stripExtensions"/>
-                <ref bean="removeEmptyExtensions"/>
+                <ref bean="stripEmptyExtensions"/>
                 
                 <!--
                     ***************************************************

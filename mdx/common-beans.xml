@@ -677,8 +677,8 @@
     <!--
         Remove any empty Extensions elements.
     -->
-    <bean id="removeEmptyExtensions" parent="EmptyContainerStrippingStage"
-        p:id="removeEmptyExtensions"
+    <bean id="stripEmptyExtensions" parent="EmptyContainerStrippingStage"
+        p:id="stripEmptyExtensions"
         p:elementName="Extensions"
         p:elementNamespace-ref="md_namespace"/>
     
@@ -1147,7 +1147,7 @@
                 <ref bean="cleanImport"/>
                 <ref bean="stripAAMDUI"/>
                 <ref bean="trimImportElementWhitespace"/>
-                <ref bean="removeEmptyExtensions"/>
+                <ref bean="stripEmptyExtensions"/>
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_imported"/>
 
