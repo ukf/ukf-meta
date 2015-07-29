@@ -1261,6 +1261,15 @@
         </exec>
     </target>
 
+    <target name="extract.locs.noports" depends="flow.uk.collect">
+        <echo>Extracting TLS locations</echo>
+        <exec executable="perl" dir="${build.dir}"
+            output="${build.dir}/locations_noports.txt">
+            <arg value="${build.dir}/extract_locs_noports.pl"/>
+        </exec>
+    </target>
+    
+
     <!--
         Utility to fold overlong embedded certificates.
     -->
