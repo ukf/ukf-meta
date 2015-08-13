@@ -602,6 +602,8 @@
                 <ref bean="mdui-GeolocationHint"/>
                 <ref bean="mdui-IPHint"/>
                 <ref bean="mdui-Keywords"/>
+
+                <ref bean="shibmd-Scope"/>
             </set>
         </property>
     </bean>

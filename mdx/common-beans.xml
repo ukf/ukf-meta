@@ -838,6 +838,8 @@
         *****************************************************
     -->
     
+    <bean id="shibmd-Scope" parent="QName" c:_0-ref="shibmd_namespace" c:_1="Scope"/>
+
     <bean id="stripShibScope" parent="ElementStrippingStage"
         p:id="stripShibScope"
         p:elementName="Scope"
