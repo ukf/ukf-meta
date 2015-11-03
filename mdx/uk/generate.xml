@@ -984,6 +984,7 @@
                 <ref bean="stripIdpdiscNamespace"/>
                 <ref bean="stripInitNamespace"/>
                 <ref bean="stripMdattrNamespace"/>
+                <ref bean="stripWayfNamespace"/>
                 
                 <ref bean="stripArtifactResolutionService"/>
                 <ref bean="stripAssertionConsumerService"/>
