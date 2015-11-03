@@ -980,111 +980,6 @@
         <CHANNEL.do channel="int_edugain" verb="importTest"/>
     </target>
 
-    <target name="flow.test.all"
-        depends="flow.importEdugain.all, flow.importProduction.all">
-        <CHANNEL.import channel="au_aaf"/>
-        <CHANNEL.import channel="eu_clarin"/>
-        <CHANNEL.import channel="nl_surfconext"/>
-        <CHANNEL.import channel="uk_eduserv"/>
-        <CHANNEL.import channel="us_incommon"/>
-    </target>
-
-    <!--
-        flow.importProduction.all
-
-        Run the importProduction flow on each channel that has one.
-
-        Exception: int_testshib, which is too large and anarchic to be worthwhile.
-    -->
-    <target name="flow.importProduction.all">
-        <CHANNEL.do verb="importProduction" channel="at_aconet"/>
-        <CHANNEL.do verb="importProduction" channel="be_belnet"/>
-        <CHANNEL.do verb="importProduction" channel="br_cafe"/>
-        <CHANNEL.do verb="importProduction" channel="ca_caf"/>
-        <CHANNEL.do verb="importProduction" channel="ch_switchaai"/>
-        <CHANNEL.do verb="importProduction" channel="cz_eduid"/>
-        <CHANNEL.do verb="importProduction" channel="de_dfnaai"/>
-        <CHANNEL.do verb="importProduction" channel="dk_wayf"/>
-        <CHANNEL.do verb="importProduction" channel="es_sir"/>
-        <CHANNEL.do verb="importProduction" channel="fi_haka"/>
-        <CHANNEL.do verb="importProduction" channel="fr_renater"/>
-        <CHANNEL.do verb="importProduction" channel="gr_grnet"/>
-        <CHANNEL.do verb="importProduction" channel="hu_eduid"/>
-        <CHANNEL.do verb="importProduction" channel="ie_edugate"/>
-        <CHANNEL.do verb="importProduction" channel="in_infed"/>
-        <CHANNEL.do verb="importProduction" channel="int_edugain"/>
-        <CHANNEL.do verb="importProduction" channel="it_idem"/>
-        <CHANNEL.do verb="importProduction" channel="jp_gakunin"/>
-        <CHANNEL.do verb="importProduction" channel="lv_laife"/>
-        <!--
-        <CHANNEL.do verb="importProduction" channel="nl_surfnet"/>
-        -->
-        <CHANNEL.do verb="importProduction" channel="no_feide"/>
-        <CHANNEL.do verb="importProduction" channel="nz_tuakiri"/>
-        <CHANNEL.do verb="importProduction" channel="pl_pionier"/>
-        <CHANNEL.do verb="importProduction" channel="se_swamid"/>
-        <CHANNEL.do verb="importProduction" channel="si_arnes"/>
-        <CHANNEL.do verb="importProduction" channel="us_incommon"/>
-    </target>
-
-    <!--
-        flow.importEdugain.all
-
-        Run the importEdugain flow on each channel that has one.
-    -->
-    <target name="flow.importEdugain.all">
-        <CHANNEL.do verb="importEdugain" channel="at_aconet"/>
-        <CHANNEL.do verb="importEdugain" channel="be_belnet"/>
-        <CHANNEL.do verb="importEdugain" channel="br_cafe"/>
-        <CHANNEL.do verb="importEdugain" channel="ca_caf"/>
-        <CHANNEL.do verb="importEdugain" channel="ch_switchaai"/>
-        <CHANNEL.do verb="importEdugain" channel="cl_cofre"/>
-        <CHANNEL.do verb="importEdugain" channel="cz_eduid"/>
-        <CHANNEL.do verb="importEdugain" channel="de_dfnaai"/>
-        <CHANNEL.do verb="importEdugain" channel="dk_wayf"/>
-        <CHANNEL.do verb="importEdugain" channel="es_sir"/>
-        <CHANNEL.do verb="importEdugain" channel="fi_haka"/>
-        <CHANNEL.do verb="importEdugain" channel="fr_renater"/>
-        <CHANNEL.do verb="importEdugain" channel="gr_grnet"/>
-        <CHANNEL.do verb="importEdugain" channel="hr_eduhr"/>
-        <CHANNEL.do verb="importEdugain" channel="hu_eduid"/>
-        <CHANNEL.do verb="importEdugain" channel="it_idem"/>
-        <CHANNEL.do verb="importEdugain" channel="lv_laife"/>
-        <CHANNEL.do verb="importEdugain" channel="nl_surfnet"/>
-        <CHANNEL.do verb="importEdugain" channel="no_feide"/>
-        <CHANNEL.do verb="importEdugain" channel="pl_pionier"/>
-        <CHANNEL.do verb="importEdugain" channel="se_swamid"/>
-    </target>
-
-    <!--
-        flow.importEdugainRaw.all
-
-        Run the importEdugainRaw flow on each channel that has one.
-    -->
-    <target name="flow.importEdugainRaw.all">
-        <CHANNEL.do verb="importEdugainRaw" channel="at_aconet"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="be_belnet"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="br_cafe"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="ca_caf"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="ch_switchaai"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="cl_cofre"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="cz_eduid"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="de_dfnaai"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="dk_wayf"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="es_sir"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="fi_haka"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="fr_renater"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="gr_grnet"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="hr_eduhr"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="hu_eduid"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="it_idem"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="lv_laife"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="nl_surfnet"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="no_feide"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="pl_pionier"/>
-        <CHANNEL.do verb="importEdugainRaw" channel="se_swamid"/>
-    </target>
-
     <!--
         flow.verify.cobweb
 
@@ -1110,18 +1005,6 @@
     </target>
 
     <!--
-        flow.verifyEdugain.inputs
-
-        Verify the eduGAIN entities from all channels with this ability.
-    -->
-    <target name="flow.verifyEdugain.inputs">
-        <CHANNEL.do verb="verifyEdugain" channel="at_aconet"/>
-        <CHANNEL.do verb="verifyEdugain" channel="cl_cofre"/>
-        <CHANNEL.do verb="verifyEdugain" channel="pl_pionier"/>
-        <CHANNEL.do verb="verifyEdugain" channel="se_swamid"/>
-    </target>
-
-    <!--
         flow.verifyEdugain.output
 
         Verify the eduGAIN production aggregate.
@@ -1136,44 +1019,6 @@
     </target>
     <target name="flow.verifyEdugain.output.recovered">
         <CHANNEL.do verb="verify.recovered" channel="int_edugain"/>
-    </target>
-
-    <!--
-        flow.importRaw.all
-
-        Run the importRaw command for each channel in turn.
-    -->
-    <target name="flow.importRaw.all">
-        <CHANNEL.do verb="importRaw" channel="at_aconet"/>
-        <CHANNEL.do verb="importRaw" channel="au_aaf"/>
-        <CHANNEL.do verb="importRaw" channel="be_belnet"/>
-        <CHANNEL.do verb="importRaw" channel="br_cafe"/>
-        <CHANNEL.do verb="importRaw" channel="ca_caf"/>
-        <CHANNEL.do verb="importRaw" channel="ch_switchaai"/>
-        <CHANNEL.do verb="importRaw" channel="cz_eduid"/>
-        <CHANNEL.do verb="importRaw" channel="de_dfnaai"/>
-        <CHANNEL.do verb="importRaw" channel="dk_wayf"/>
-        <CHANNEL.do verb="importRaw" channel="es_sir"/>
-        <CHANNEL.do verb="importRaw" channel="eu_clarin"/>
-        <CHANNEL.do verb="importRaw" channel="fi_haka"/>
-        <CHANNEL.do verb="importRaw" channel="fr_renater"/>
-        <CHANNEL.do verb="importRaw" channel="gr_grnet"/>
-        <CHANNEL.do verb="importRaw" channel="hr_eduhr"/>
-        <CHANNEL.do verb="importRaw" channel="hu_eduid"/>
-        <CHANNEL.do verb="importRaw" channel="in_infed"/>
-        <CHANNEL.do verb="importRaw" channel="int_edugain"/>
-        <CHANNEL.do verb="importRaw" channel="int_testshib"/>
-        <CHANNEL.do verb="importRaw" channel="it_idem"/>
-        <CHANNEL.do verb="importRaw" channel="jp_gakunin"/>
-        <CHANNEL.do verb="importRaw" channel="lv_laife"/>
-        <CHANNEL.do verb="importRaw" channel="nl_surfnet"/>
-        <CHANNEL.do verb="importRaw" channel="no_feide"/>
-        <CHANNEL.do verb="importRaw" channel="nz_tuakiri"/>
-        <CHANNEL.do verb="importRaw" channel="pl_pionier"/>
-        <CHANNEL.do verb="importRaw" channel="se_swamid"/>
-        <CHANNEL.do verb="importRaw" channel="si_arnes"/>
-        <CHANNEL.do verb="collect"   channel="uk"/>
-        <CHANNEL.do verb="importRaw" channel="us_incommon"/>
     </target>
 
     <!--
