@@ -335,6 +335,7 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
+                <ref bean="stripWayfNamespace"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
