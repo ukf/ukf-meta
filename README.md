@@ -20,7 +20,7 @@ The failure to separate the tooling from the data is, in retrospect, a failing o
 
 ## Licensing
 
-Everything in the public repository is Copyright (C) 2004&ndash;2013, University of Edinburgh. Each file is made available to you under the following terms:
+Everything in the public repository is Copyright (C) 2004&ndash;2015, University of Edinburgh. Each file is made available to you under the following terms:
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
