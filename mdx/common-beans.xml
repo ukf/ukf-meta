@@ -467,23 +467,43 @@
     <!--
         Federation registrationAuthority URIs.
     -->
-    <bean id="ar_mate_registrar"     parent="String" c:_0="http://www.federacionmate.gob.ar"/>
-    <bean id="am_afire_registrar"    parent="String" c:_0="http://afire.asnet.am"/>
-    <bean id="at_aconet_registrar"   parent="String" c:_0="http://eduid.at"/>
-    <bean id="au_aaf_registrar"      parent="String" c:_0="http://aaf.edu.au/"/>
-    <bean id="cl_cofre_registrar"    parent="String" c:_0="http://cofre.reuna.cl"/>
-    <bean id="co_colfire_registrar"  parent="String" c:_0="http://colfire.co"/>
-    <bean id="ec_minga_registrar"    parent="String" c:_0="https://minga.cedia.org.ec"/>
-    <bean id="fr_renater_registrar"  parent="String" c:_0="https://federation.renater.fr/"/>
-    <bean id="hr_eduhr_registrar"    parent="String" c:_0="http://www.srce.hr"/>
-    <bean id="hu_eduid_registrar"    parent="String" c:_0="http://eduid.hu"/>
-    <bean id="ie_edugate_registrar"  parent="String" c:_0="http://www.heanet.ie"/>
-    <bean id="il_iif_registrar"      parent="String" c:_0="http://iif.iucc.ac.il"/>
-    <bean id="jp_gakunin_registrar"  parent="String" c:_0="https://www.gakunin.jp"/>
-    <bean id="lt_litnet_registrar"   parent="String" c:_0="https://fedi.litnet.lt"/>
-    <bean id="pl_pionier_registrar"  parent="String" c:_0="http://aai.pionier.net.pl"/>
-    <bean id="se_swamid_registrar"   parent="String" c:_0="http://www.swamid.se/"/>
-    <bean id="us_incommon_registrar" parent="String" c:_0="https://incommon.org"/>
+    <bean id="ar_mate_registrar"         parent="String" c:_0="http://www.federacionmate.gob.ar"/>
+    <bean id="am_afire_registrar"        parent="String" c:_0="http://afire.asnet.am"/>
+    <bean id="at_aconet_registrar"       parent="String" c:_0="http://eduid.at"/>
+    <bean id="au_aaf_registrar"          parent="String" c:_0="http://aaf.edu.au/"/>
+    <bean id="be_belnet_registrar"       parent="String" c:_0="http://federation.belnet.be/"/>
+    <bean id="br_cafe_registrar"         parent="String" c:_0="http://cafe.rnp.br"/>
+    <bean id="ca_caf_registrar"          parent="String" c:_0="http://www.canarie.ca"/>
+    <bean id="ch_switchaai_registrar"    parent="String" c:_0="http://rr.aai.switch.ch/"/>
+    <bean id="cl_cofre_registrar"        parent="String" c:_0="http://cofre.reuna.cl"/>
+    <bean id="co_colfire_registrar"      parent="String" c:_0="http://colfire.co"/>
+    <bean id="cz_eduid_registrar"        parent="String" c:_0="http://www.eduid.cz/"/>
+    <bean id="de_dfnaai_registrar"       parent="String" c:_0="https://www.aai.dfn.de"/>    
+    <bean id="dk_wayf_registrar"         parent="String" c:_0="https://www.wayf.dk"/>    
+    <bean id="ec_minga_registrar"        parent="String" c:_0="https://minga.cedia.org.ec"/>
+    <bean id="es_sir_registrar"          parent="String" c:_0="http://www.rediris.es/"/>
+    <bean id="fi_haka_registrar"         parent="String" c:_0="http://www.csc.fi/haka"/>
+    <bean id="fr_renater_registrar"      parent="String" c:_0="https://federation.renater.fr/"/>
+    <bean id="ge_gif_registrar"          parent="String" c:_0="https://mtd.gif.grena.ge"/>
+    <bean id="gr_grnet_registrar"        parent="String" c:_0="http://aai.grnet.gr/"/>
+    <bean id="hr_eduhr_registrar"        parent="String" c:_0="http://www.srce.hr"/>
+    <bean id="hu_eduid_registrar"        parent="String" c:_0="http://eduid.hu"/>
+    <bean id="ie_edugate_registrar"      parent="String" c:_0="http://www.heanet.ie"/>
+    <bean id="il_iif_registrar"          parent="String" c:_0="http://iif.iucc.ac.il"/>
+    <bean id="it_idem_registrar"         parent="String" c:_0="http://www.idem.garr.it/"/>
+    <bean id="jp_gakunin_registrar"      parent="String" c:_0="https://www.gakunin.jp"/>
+    <bean id="lt_litnet_registrar"       parent="String" c:_0="https://fedi.litnet.lt"/>
+    <bean id="lu_eduid_registrar"        parent="String" c:_0="http://eduid.lu"/>
+    <bean id="lv_laife_registrar"        parent="String" c:_0="http://laife.lanet.lv/"/>
+    <bean id="nl_surfconext_registrar"   parent="String" c:_0="http://www.surfconext.nl/"/>
+    <bean id="no_feide_registrar"        parent="String" c:_0="http://feide.no/"/>
+    <bean id="pl_pionier_registrar"      parent="String" c:_0="http://aai.pionier.net.pl"/>
+    <bean id="pt_rctsaai_registrar"      parent="String" c:_0="https://www.fccn.pt"/>
+    <bean id="se_swamid_registrar"       parent="String" c:_0="http://www.swamid.se/"/>
+    <bean id="si_arnes_registrar"        parent="String" c:_0="http://aai.arnes.si"/>
+    <bean id="us_incommon_registrar"     parent="String" c:_0="https://incommon.org"/>
+
+    
     
     <!--
         identificationStrategy
@@ -506,31 +526,34 @@
                     http://www.edugain.org/technical/status.php
                 -->
                 <entry key-ref="at_aconet_registrar"          value="AT"/>
-                <entry key="http://federation.belnet.be/"     value="BE"/>
-                <entry key="http://cafe.rnp.br"               value="BR"/>
-                <entry key="http://www.canarie.ca"            value="CA"/>
+                <entry key-ref="be_belnet_registrar"          value="BE"/>
+                <entry key-ref="br_cafe_registrar"            value="BR"/>
+                <entry key-ref="ca_caf_registrar"             value="CA"/>
                 <entry key-ref="cl_cofre_registrar"           value="CL"/>
                 <entry key-ref="hr_eduhr_registrar"           value="HR"/>
-                <entry key="http://www.eduid.cz/"             value="CZ"/>
-                <entry key="https://www.wayf.dk"              value="DK"/>
+                <entry key-ref="cz_eduid_registrar"           value="CZ"/>
+                <entry key-ref="dk_wayf_registrar"            value="DK"/>
                 <entry key-ref="ec_minga_registrar"           value="EC"/>
-                <entry key="http://www.csc.fi/haka"           value="FI"/>
+                <entry key-ref="fi_haka_registrar"            value="FI"/>
                 <entry key-ref="fr_renater_registrar"         value="FR"/>
-                <entry key="https://www.aai.dfn.de"           value="DE"/>
-                <entry key="http://aai.grnet.gr/"             value="GR"/>
+                <entry key-ref="ge_gif_registrar"             value="GE"/>
+                <entry key-ref="de_dfnaai_registrar"          value="DE"/>
+                <entry key-ref="gr_grnet_registrar"           value="GR"/>
                 <entry key-ref="hu_eduid_registrar"           value="HU"/>
                 <entry key-ref="ie_edugate_registrar"         value="IE"/>
-                <entry key="http://www.idem.garr.it/"         value="IT"/>
+                <entry key-ref="it_idem_registrar"            value="IT"/>
                 <entry key-ref="jp_gakunin_registrar"         value="JP"/>
-                <entry key="http://laife.lanet.lv/"           value="LV"/>
+                <entry key-ref="lv_laife_registrar"           value="LV"/>
                 <entry key-ref="lt_litnet_registrar"          value="LT"/>
-                <entry key="http://feide.no/"                 value="NO"/>
+                <entry key-ref="lu_eduid_registrar"           value="LU"/>
+                <entry key-ref="no_feide_registrar"           value="NO"/>
                 <entry key-ref="pl_pionier_registrar"         value="PL"/>
-                <entry key="http://aai.arnes.si"              value="SI"/>
-                <entry key="http://www.rediris.es/"           value="ES"/>
+                <entry key-ref="pt_rctsaai_registrar"         value="PT"/>
+                <entry key-ref="si_arnes_registrar"           value="SI"/>
+                <entry key-ref="es_sir_registrar"             value="ES"/>
                 <entry key-ref="se_swamid_registrar"          value="SE"/>
-                <entry key="http://rr.aai.switch.ch/"         value="CH"/>
-                <entry key="http://www.surfconext.nl/"        value="NL"/>
+                <entry key-ref="ch_switchaai_registrar"       value="CH"/>
+                <entry key-ref="nl_surfconext_registrar"      value="NL"/>
                 <entry key-ref="us_incommon_registrar"        value="US"/>
                 <entry key="http://ukfederation.org.uk"       value="UK"/>
                 
