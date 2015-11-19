@@ -497,7 +497,7 @@
     <bean id="lv_laife_registrar"        parent="String" c:_0="http://laife.lanet.lv/"/>
     <bean id="nl_surfconext_registrar"   parent="String" c:_0="http://www.surfconext.nl/"/>
     <bean id="no_feide_registrar"        parent="String" c:_0="http://feide.no/"/>
-    <bean id="pl_pionier_registrar"      parent="String" c:_0="http://aai.pionier.net.pl"/>
+    <bean id="pl_pionier_registrar"      parent="String" c:_0="https://aai.pionier.net.pl"/>
     <bean id="pt_rctsaai_registrar"      parent="String" c:_0="https://www.fccn.pt"/>
     <bean id="se_swamid_registrar"       parent="String" c:_0="http://www.swamid.se/"/>
     <bean id="si_arnes_registrar"        parent="String" c:_0="http://aai.arnes.si"/>
