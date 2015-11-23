@@ -324,27 +324,27 @@
         
         One String bean for each of the common namespaces, named by its prefix.
     -->
-    <bean id="alg_namespace"        parent="String" c:_0="urn:oasis:names:tc:SAML:metadata:algsupport"/>
-    <bean id="ds_namespace"         parent="String" c:_0="http://www.w3.org/2000/09/xmldsig#"/>
-    <bean id="dsig11_namespace"     parent="String" c:_0="http://www.w3.org/2009/xmldsig11#"/>
-    <bean id="hoksso_namespace"     parent="String" c:_0="urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser"/>
-    <bean id="icmd_namespace"       parent="String" c:_0="http://id.incommon.org/metadata"/>
-    <bean id="idpdisc_namespace"    parent="String" c:_0="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"/>
-    <bean id="init_namespace"       parent="String" c:_0="urn:oasis:names:tc:SAML:profiles:SSO:request-init"/>
-    <bean id="md_namespace"         parent="String" c:_0="urn:oasis:names:tc:SAML:2.0:metadata"/>
-    <bean id="mdattr_namespace"     parent="String" c:_0="urn:oasis:names:tc:SAML:metadata:attribute"/>
-    <bean id="mdrpi_namespace"      parent="String" c:_0="urn:oasis:names:tc:SAML:metadata:rpi"/>
-    <bean id="mdui_namespace"       parent="String" c:_0="urn:oasis:names:tc:SAML:metadata:ui"/>
-    <bean id="saml_namespace"       parent="String" c:_0="urn:oasis:names:tc:SAML:2.0:assertion"/>
-    <bean id="samlp_namespace"      parent="String" c:_0="urn:oasis:names:tc:SAML:2.0:protocol"/>
-    <bean id="shibmd_namespace"     parent="String" c:_0="urn:mace:shibboleth:metadata:1.0"/>
-    <bean id="ukfedlabel_namespace" parent="String" c:_0="http://ukfederation.org.uk/2006/11/label"/>
-    <bean id="wayf_namespace"       parent="String" c:_0="http://sdss.ac.uk/2006/06/WAYF"/>
-    <bean id="xenc_namespace"       parent="String" c:_0="http://www.w3.org/2001/04/xmlenc#"/>
-    <bean id="xenc11_namespace"     parent="String" c:_0="http://www.w3.org/2009/xmlenc11#"/>
-    <bean id="xs_namespace"         parent="String" c:_0="http://www.w3.org/2001/XMLSchema"/>
-    <bean id="xsi_namespace"        parent="String" c:_0="http://www.w3.org/2001/XMLSchema-instance"/>
-    <bean id="xsl_namespace"        parent="String" c:_0="http://www.w3.org/1999/XSL/Transform"/>
+    <bean id="alg_namespace"        parent="String" c:_="urn:oasis:names:tc:SAML:metadata:algsupport"/>
+    <bean id="ds_namespace"         parent="String" c:_="http://www.w3.org/2000/09/xmldsig#"/>
+    <bean id="dsig11_namespace"     parent="String" c:_="http://www.w3.org/2009/xmldsig11#"/>
+    <bean id="hoksso_namespace"     parent="String" c:_="urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser"/>
+    <bean id="icmd_namespace"       parent="String" c:_="http://id.incommon.org/metadata"/>
+    <bean id="idpdisc_namespace"    parent="String" c:_="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"/>
+    <bean id="init_namespace"       parent="String" c:_="urn:oasis:names:tc:SAML:profiles:SSO:request-init"/>
+    <bean id="md_namespace"         parent="String" c:_="urn:oasis:names:tc:SAML:2.0:metadata"/>
+    <bean id="mdattr_namespace"     parent="String" c:_="urn:oasis:names:tc:SAML:metadata:attribute"/>
+    <bean id="mdrpi_namespace"      parent="String" c:_="urn:oasis:names:tc:SAML:metadata:rpi"/>
+    <bean id="mdui_namespace"       parent="String" c:_="urn:oasis:names:tc:SAML:metadata:ui"/>
+    <bean id="saml_namespace"       parent="String" c:_="urn:oasis:names:tc:SAML:2.0:assertion"/>
+    <bean id="samlp_namespace"      parent="String" c:_="urn:oasis:names:tc:SAML:2.0:protocol"/>
+    <bean id="shibmd_namespace"     parent="String" c:_="urn:mace:shibboleth:metadata:1.0"/>
+    <bean id="ukfedlabel_namespace" parent="String" c:_="http://ukfederation.org.uk/2006/11/label"/>
+    <bean id="wayf_namespace"       parent="String" c:_="http://sdss.ac.uk/2006/06/WAYF"/>
+    <bean id="xenc_namespace"       parent="String" c:_="http://www.w3.org/2001/04/xmlenc#"/>
+    <bean id="xenc11_namespace"     parent="String" c:_="http://www.w3.org/2009/xmlenc11#"/>
+    <bean id="xs_namespace"         parent="String" c:_="http://www.w3.org/2001/XMLSchema"/>
+    <bean id="xsi_namespace"        parent="String" c:_="http://www.w3.org/2001/XMLSchema-instance"/>
+    <bean id="xsl_namespace"        parent="String" c:_="http://www.w3.org/1999/XSL/Transform"/>
     
     <!--
         commonNamespaces
@@ -467,42 +467,42 @@
     <!--
         Federation registrationAuthority URIs.
     -->
-    <bean id="ar_mate_registrar"         parent="String" c:_0="http://www.federacionmate.gob.ar"/>
-    <bean id="am_afire_registrar"        parent="String" c:_0="http://afire.asnet.am"/>
-    <bean id="at_aconet_registrar"       parent="String" c:_0="http://eduid.at"/>
-    <bean id="au_aaf_registrar"          parent="String" c:_0="http://aaf.edu.au/"/>
-    <bean id="be_belnet_registrar"       parent="String" c:_0="http://federation.belnet.be/"/>
-    <bean id="br_cafe_registrar"         parent="String" c:_0="http://cafe.rnp.br"/>
-    <bean id="ca_caf_registrar"          parent="String" c:_0="http://www.canarie.ca"/>
-    <bean id="ch_switchaai_registrar"    parent="String" c:_0="http://rr.aai.switch.ch/"/>
-    <bean id="cl_cofre_registrar"        parent="String" c:_0="http://cofre.reuna.cl"/>
-    <bean id="co_colfire_registrar"      parent="String" c:_0="http://colfire.co"/>
-    <bean id="cz_eduid_registrar"        parent="String" c:_0="http://www.eduid.cz/"/>
-    <bean id="de_dfnaai_registrar"       parent="String" c:_0="https://www.aai.dfn.de"/>    
-    <bean id="dk_wayf_registrar"         parent="String" c:_0="https://www.wayf.dk"/>    
-    <bean id="ec_minga_registrar"        parent="String" c:_0="https://minga.cedia.org.ec"/>
-    <bean id="es_sir_registrar"          parent="String" c:_0="http://www.rediris.es/"/>
-    <bean id="fi_haka_registrar"         parent="String" c:_0="http://www.csc.fi/haka"/>
-    <bean id="fr_renater_registrar"      parent="String" c:_0="https://federation.renater.fr/"/>
-    <bean id="ge_gif_registrar"          parent="String" c:_0="https://mtd.gif.grena.ge"/>
-    <bean id="gr_grnet_registrar"        parent="String" c:_0="http://aai.grnet.gr/"/>
-    <bean id="hr_eduhr_registrar"        parent="String" c:_0="http://www.srce.hr"/>
-    <bean id="hu_eduid_registrar"        parent="String" c:_0="http://eduid.hu"/>
-    <bean id="ie_edugate_registrar"      parent="String" c:_0="http://www.heanet.ie"/>
-    <bean id="il_iif_registrar"          parent="String" c:_0="http://iif.iucc.ac.il"/>
-    <bean id="it_idem_registrar"         parent="String" c:_0="http://www.idem.garr.it/"/>
-    <bean id="jp_gakunin_registrar"      parent="String" c:_0="https://www.gakunin.jp"/>
-    <bean id="lt_litnet_registrar"       parent="String" c:_0="https://fedi.litnet.lt"/>
-    <bean id="lu_eduid_registrar"        parent="String" c:_0="http://eduid.lu"/>
-    <bean id="lv_laife_registrar"        parent="String" c:_0="http://laife.lanet.lv/"/>
-    <bean id="nl_surfconext_registrar"   parent="String" c:_0="http://www.surfconext.nl/"/>
-    <bean id="no_feide_registrar"        parent="String" c:_0="http://feide.no/"/>
-    <bean id="pl_pionier_registrar"      parent="String" c:_0="https://aai.pionier.net.pl"/>
-    <bean id="pt_rctsaai_registrar"      parent="String" c:_0="https://www.fccn.pt"/>
-    <bean id="se_swamid_registrar"       parent="String" c:_0="http://www.swamid.se/"/>
-    <bean id="si_arnes_registrar"        parent="String" c:_0="http://aai.arnes.si"/>
-    <bean id="uk_ukf_registrar"          parent="String" c:_0="http://ukfederation.org.uk"/>
-    <bean id="us_incommon_registrar"     parent="String" c:_0="https://incommon.org"/>
+    <bean id="ar_mate_registrar"         parent="String" c:_="http://www.federacionmate.gob.ar"/>
+    <bean id="am_afire_registrar"        parent="String" c:_="http://afire.asnet.am"/>
+    <bean id="at_aconet_registrar"       parent="String" c:_="http://eduid.at"/>
+    <bean id="au_aaf_registrar"          parent="String" c:_="http://aaf.edu.au/"/>
+    <bean id="be_belnet_registrar"       parent="String" c:_="http://federation.belnet.be/"/>
+    <bean id="br_cafe_registrar"         parent="String" c:_="http://cafe.rnp.br"/>
+    <bean id="ca_caf_registrar"          parent="String" c:_="http://www.canarie.ca"/>
+    <bean id="ch_switchaai_registrar"    parent="String" c:_="http://rr.aai.switch.ch/"/>
+    <bean id="cl_cofre_registrar"        parent="String" c:_="http://cofre.reuna.cl"/>
+    <bean id="co_colfire_registrar"      parent="String" c:_="http://colfire.co"/>
+    <bean id="cz_eduid_registrar"        parent="String" c:_="http://www.eduid.cz/"/>
+    <bean id="de_dfnaai_registrar"       parent="String" c:_="https://www.aai.dfn.de"/>    
+    <bean id="dk_wayf_registrar"         parent="String" c:_="https://www.wayf.dk"/>    
+    <bean id="ec_minga_registrar"        parent="String" c:_="https://minga.cedia.org.ec"/>
+    <bean id="es_sir_registrar"          parent="String" c:_="http://www.rediris.es/"/>
+    <bean id="fi_haka_registrar"         parent="String" c:_="http://www.csc.fi/haka"/>
+    <bean id="fr_renater_registrar"      parent="String" c:_="https://federation.renater.fr/"/>
+    <bean id="ge_gif_registrar"          parent="String" c:_="https://mtd.gif.grena.ge"/>
+    <bean id="gr_grnet_registrar"        parent="String" c:_="http://aai.grnet.gr/"/>
+    <bean id="hr_eduhr_registrar"        parent="String" c:_="http://www.srce.hr"/>
+    <bean id="hu_eduid_registrar"        parent="String" c:_="http://eduid.hu"/>
+    <bean id="ie_edugate_registrar"      parent="String" c:_="http://www.heanet.ie"/>
+    <bean id="il_iif_registrar"          parent="String" c:_="http://iif.iucc.ac.il"/>
+    <bean id="it_idem_registrar"         parent="String" c:_="http://www.idem.garr.it/"/>
+    <bean id="jp_gakunin_registrar"      parent="String" c:_="https://www.gakunin.jp"/>
+    <bean id="lt_litnet_registrar"       parent="String" c:_="https://fedi.litnet.lt"/>
+    <bean id="lu_eduid_registrar"        parent="String" c:_="http://eduid.lu"/>
+    <bean id="lv_laife_registrar"        parent="String" c:_="http://laife.lanet.lv/"/>
+    <bean id="nl_surfconext_registrar"   parent="String" c:_="http://www.surfconext.nl/"/>
+    <bean id="no_feide_registrar"        parent="String" c:_="http://feide.no/"/>
+    <bean id="pl_pionier_registrar"      parent="String" c:_="https://aai.pionier.net.pl"/>
+    <bean id="pt_rctsaai_registrar"      parent="String" c:_="https://www.fccn.pt"/>
+    <bean id="se_swamid_registrar"       parent="String" c:_="http://www.swamid.se/"/>
+    <bean id="si_arnes_registrar"        parent="String" c:_="http://aai.arnes.si"/>
+    <bean id="uk_ukf_registrar"          parent="String" c:_="http://ukfederation.org.uk"/>
+    <bean id="us_incommon_registrar"     parent="String" c:_="https://incommon.org"/>
 
     
     
