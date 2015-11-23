@@ -31,13 +31,12 @@
         * as the Name attribute for the main EntitiesDescriptor in UK federation metadata
           (not always the document element)
           
-        * in mdrpi:RegistrationInfo, as the unique identifier for the UK federation registrar
-        
         * in mdrpi:PublicationInfo, as the unique identifier for the UK federation publisher
+        
+        It is the same as the URI used to indicate the UK federation as a registrar, so is made
+        an alias of that bean.
     -->
-    <bean id="uk_federation_uri" class="java.lang.String">
-        <constructor-arg value="http://ukfederation.org.uk"/>
-    </bean>
+    <alias name="uk_ukf_registrar" alias="uk_federation_uri"/>
 
 
     <!--
@@ -519,7 +518,7 @@
         p:id="uk_check_regauth">
         <property name="transformParameters">
             <map>
-                <entry key="expectedAuthority" value-ref="uk_federation_uri"/>
+                <entry key="expectedAuthority" value-ref="uk_ukf_registrar"/>
             </map>
         </property>
     </bean>
@@ -534,7 +533,7 @@
         p:id="uk_default_regauth">
         <property name="transformParameters">
             <map>
-                <entry key="defaultAuthority" value-ref="uk_federation_uri"/>
+                <entry key="defaultAuthority" value-ref="uk_ukf_registrar"/>
             </map>
         </property>
     </bean>

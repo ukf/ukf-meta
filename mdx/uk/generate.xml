@@ -207,7 +207,7 @@
         p:id="removeUKEntities">
         <property name="designatedRegistrationAuthorities">
             <list>
-                <ref bean="uk_federation_uri"/>
+                <ref bean="uk_ukf_registrar"/>
             </list>
         </property>
         <property name="requiringRegistrationInformation" value="true"/>

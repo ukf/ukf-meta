@@ -501,6 +501,7 @@
     <bean id="pt_rctsaai_registrar"      parent="String" c:_0="https://www.fccn.pt"/>
     <bean id="se_swamid_registrar"       parent="String" c:_0="http://www.swamid.se/"/>
     <bean id="si_arnes_registrar"        parent="String" c:_0="http://aai.arnes.si"/>
+    <bean id="uk_ukf_registrar"          parent="String" c:_0="http://ukfederation.org.uk"/>
     <bean id="us_incommon_registrar"     parent="String" c:_0="https://incommon.org"/>
 
     
@@ -513,7 +514,7 @@
     <bean id="identificationStrategy" class="uk.org.ukfederation.mda.UKItemIdentificationStrategy">
         <property name="ignoredAuthorities">
             <set>
-                <value>http://ukfederation.org.uk</value>
+                <ref bean="uk_ukf_registrar"/>
             </set>
         </property>
         <property name="displayNames">
@@ -554,8 +555,8 @@
                 <entry key-ref="se_swamid_registrar"          value="SE"/>
                 <entry key-ref="ch_switchaai_registrar"       value="CH"/>
                 <entry key-ref="nl_surfconext_registrar"      value="NL"/>
+                <entry key-ref="uk_ukf_registrar"             value="UK"/>
                 <entry key-ref="us_incommon_registrar"        value="US"/>
-                <entry key="http://ukfederation.org.uk"       value="UK"/>
                 
                 <!-- Joining eduGAIN -->
                 <entry key-ref="ar_mate_registrar"            value="AR"/>
