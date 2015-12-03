@@ -499,6 +499,7 @@
     <bean id="lt_litnet_registrar"       parent="String" c:_="https://fedi.litnet.lt"/>
     <bean id="lu_eduid_registrar"        parent="String" c:_="http://eduid.lu"/>
     <bean id="lv_laife_registrar"        parent="String" c:_="http://laife.lanet.lv/"/>
+    <bean id="md_leaf_registrar"         parent="String" c:_="http://federations.renam.md/"/>
     <bean id="nl_surfconext_registrar"   parent="String" c:_="http://www.surfconext.nl/"/>
     <bean id="no_feide_registrar"        parent="String" c:_="http://feide.no/"/>
     <bean id="pl_pionier_registrar"      parent="String" c:_="https://aai.pionier.net.pl"/>
@@ -551,6 +552,7 @@
                 <entry key-ref="lv_laife_registrar"           value="LV"/>
                 <entry key-ref="lt_litnet_registrar"          value="LT"/>
                 <entry key-ref="lu_eduid_registrar"           value="LU"/>
+                <entry key-ref="md_leaf_registrar"            value="MD"/>
                 <entry key-ref="no_feide_registrar"           value="NO"/>
                 <entry key-ref="pl_pionier_registrar"         value="PL"/>
                 <entry key-ref="pt_rctsaai_registrar"         value="PT"/>
