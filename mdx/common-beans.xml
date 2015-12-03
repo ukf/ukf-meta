@@ -291,6 +291,9 @@
     <bean id="MultiPredicateMatcher" abstract="true"
         class="uk.org.ukfederation.mda.dom.saml.mdattr.MultiPredicateMatcher"/>
 
+    <bean id="NamespacesStrippingStage" abstract="true" parent="stage_parent"
+        class="uk.org.ukfederation.mda.dom.NamespacesStrippingStage"/>
+
     <bean id="RegistrationAuthorityMatcher" abstract="true"
         class="uk.org.ukfederation.mda.dom.saml.mdattr.RegistrationAuthorityMatcher"/>
     
@@ -342,6 +345,7 @@
     <bean id="wayf_namespace"       parent="String" c:_="http://sdss.ac.uk/2006/06/WAYF"/>
     <bean id="xenc_namespace"       parent="String" c:_="http://www.w3.org/2001/04/xmlenc#"/>
     <bean id="xenc11_namespace"     parent="String" c:_="http://www.w3.org/2009/xmlenc11#"/>
+    <bean id="xml_namespace"        parent="String" c:_="http://www.w3.org/XML/1998/namespace"/>
     <bean id="xs_namespace"         parent="String" c:_="http://www.w3.org/2001/XMLSchema"/>
     <bean id="xsi_namespace"        parent="String" c:_="http://www.w3.org/2001/XMLSchema-instance"/>
     <bean id="xsl_namespace"        parent="String" c:_="http://www.w3.org/1999/XSL/Transform"/>
@@ -1163,13 +1167,31 @@
                 <ref bean="populateRegistrationAuthorities"/>
 
                 <!--
-                    The following two namespaces are always stripped because they are
-                    specific to the UK registrar and can't be valid when imported from
-                    some other source.
+                    Strip all elements and attributes that are in namespaces
+                    other than the ones we accept from partners.
                 -->
-                <ref bean="stripUkfedlabelNamespace"/>
-                <ref bean="stripWayfNamespace"/>
-                
+                <bean id="whitelistImportedNamespaces" parent="NamespacesStrippingStage"
+                    p:id="whitelistImportedNamespaces" p:whitelisting="true">
+                    <property name="namespaces">
+                        <set>
+                            <ref bean="alg_namespace"/>
+                            <ref bean="ds_namespace"/>
+                            <ref bean="hoksso_namespace"/>
+                            <ref bean="icmd_namespace"/>
+                            <ref bean="idpdisc_namespace"/>
+                            <ref bean="init_namespace"/>
+                            <ref bean="md_namespace"/>
+                            <ref bean="mdattr_namespace"/>
+                            <ref bean="mdrpi_namespace"/>
+                            <ref bean="mdui_namespace"/>
+                            <ref bean="saml_namespace"/>
+                            <ref bean="shibmd_namespace"/>
+                            <ref bean="xenc_namespace"/>
+                            <ref bean="xml_namespace"/>
+                        </set>
+                    </property>
+                </bean>
+
                 <ref bean="cleanImport"/>
                 <ref bean="stripAAMDUI"/>
                 <ref bean="trimImportElementWhitespace"/>
