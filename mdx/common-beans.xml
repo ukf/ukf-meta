@@ -485,6 +485,7 @@
     <bean id="de_dfnaai_registrar"       parent="String" c:_="https://www.aai.dfn.de"/>    
     <bean id="dk_wayf_registrar"         parent="String" c:_="https://www.wayf.dk"/>    
     <bean id="ec_minga_registrar"        parent="String" c:_="https://minga.cedia.org.ec"/>
+    <bean id="ee_taat_registrar"         parent="String" c:_="http://taat.edu.ee"/>
     <bean id="es_sir_registrar"          parent="String" c:_="http://www.rediris.es/"/>
     <bean id="fi_haka_registrar"         parent="String" c:_="http://www.csc.fi/haka"/>
     <bean id="fr_renater_registrar"      parent="String" c:_="https://federation.renater.fr/"/>
@@ -506,6 +507,7 @@
     <bean id="pt_rctsaai_registrar"      parent="String" c:_="https://www.fccn.pt"/>
     <bean id="se_swamid_registrar"       parent="String" c:_="http://www.swamid.se/"/>
     <bean id="si_arnes_registrar"        parent="String" c:_="http://aai.arnes.si"/>
+    <bean id="ua_peano_registrar"        parent="String" c:_="https://peano.uran.ua"/>
     <bean id="uk_ukf_registrar"          parent="String" c:_="http://ukfederation.org.uk"/>
     <bean id="us_incommon_registrar"     parent="String" c:_="https://incommon.org"/>
 
@@ -536,10 +538,12 @@
                 <entry key-ref="br_cafe_registrar"            value="BR"/>
                 <entry key-ref="ca_caf_registrar"             value="CA"/>
                 <entry key-ref="cl_cofre_registrar"           value="CL"/>
+                <entry key-ref="co_colfire_registrar"         value="CO"/>
                 <entry key-ref="hr_eduhr_registrar"           value="HR"/>
                 <entry key-ref="cz_eduid_registrar"           value="CZ"/>
                 <entry key-ref="dk_wayf_registrar"            value="DK"/>
                 <entry key-ref="ec_minga_registrar"           value="EC"/>
+                <entry key-ref="ee_taat_registrar"            value="EE"/>
                 <entry key-ref="fi_haka_registrar"            value="FI"/>
                 <entry key-ref="fr_renater_registrar"         value="FR"/>
                 <entry key-ref="ge_gif_registrar"             value="GE"/>
@@ -547,6 +551,7 @@
                 <entry key-ref="gr_grnet_registrar"           value="GR"/>
                 <entry key-ref="hu_eduid_registrar"           value="HU"/>
                 <entry key-ref="ie_edugate_registrar"         value="IE"/>
+                <entry key-ref="il_iif_registrar"             value="IL"/>
                 <entry key-ref="it_idem_registrar"            value="IT"/>
                 <entry key-ref="jp_gakunin_registrar"         value="JP"/>
                 <entry key-ref="lv_laife_registrar"           value="LV"/>
@@ -561,17 +566,16 @@
                 <entry key-ref="se_swamid_registrar"          value="SE"/>
                 <entry key-ref="ch_switchaai_registrar"       value="CH"/>
                 <entry key-ref="nl_surfconext_registrar"      value="NL"/>
-                <entry key-ref="uk_ukf_registrar"             value="UK"/>
                 <entry key-ref="us_incommon_registrar"        value="US"/>
+                <entry key-ref="ua_peano_registrar"           value="UA"/>
+                <entry key-ref="uk_ukf_registrar"             value="UK"/>
                 
-                <!-- Joining eduGAIN -->
+                <!-- eduGAIN voting-only members -->
                 <entry key-ref="ar_mate_registrar"            value="AR"/>
-                <entry key-ref="au_aaf_registrar"             value="AU"/>
-                <entry key-ref="co_colfire_registrar"         value="CO"/>
-                <entry key-ref="il_iif_registrar"             value="IL"/>
-                
-                <!-- Candidates -->
                 <entry key-ref="am_afire_registrar"           value="AM"/>
+                <entry key-ref="au_aaf_registrar"             value="AU"/>
+                
+                <!-- eduGAIN candidates -->
             </map>
         </property>
     </bean>
