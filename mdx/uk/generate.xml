@@ -599,12 +599,10 @@
                 
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="fixup_keyuse"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
                 
                 <!-- test aggregate MUST pass publishability test -->
-                <ref bean="check_fixup_keyuse"/>
                 <ref bean="checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
