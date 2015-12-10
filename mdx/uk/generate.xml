@@ -112,23 +112,6 @@
     </bean>
     
     <!--
-        performOtherFixups
-        
-        Perform all fixup actions which are required for *every* output document.
-        
-        Fixup actions which are only required in specific output pipelines need to
-        appear there individually.
-    -->
-    <bean id="performOtherFixups" parent="CompositeStage"
-        p:id="performOtherFixups">
-        <property name="composedStages">
-            <list>
-                <ref bean="fixup_keyuse"/>
-            </list>
-        </property>
-    </bean>
-    
-    <!--
         check_fixup_keyuse
     -->
     <bean id="check_fixup_keyuse" parent="XSLValidationStage"
@@ -155,7 +138,6 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="check_aggregate"/>
                 <ref bean="check_filtered"/>
-                <ref bean="check_fixup_keyuse"/>
                 <ref bean="check_namespaces"/>
             </list>
         </property>
@@ -298,11 +280,12 @@
                 
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="performOtherFixups"/>
+                <ref bean="fixup_keyuse"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
                 
                 <!-- production aggregate MUST pass publishability test -->
+                <ref bean="check_fixup_keyuse"/>
                 <ref bean="checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
@@ -364,11 +347,12 @@
                 <ref bean="stripEmptyExtensions"/>
                 
                 <ref bean="stripMdattrNamespace"/>
-                <ref bean="performOtherFixups"/>
+                <ref bean="fixup_keyuse"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- WAYF aggregate MUST pass publishability test -->
+                <ref bean="check_fixup_keyuse"/>
                 <ref bean="checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
 
@@ -552,12 +536,13 @@
                 
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="performOtherFixups"/>
+                <ref bean="fixup_keyuse"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
                 
                 <!-- fallback aggregate MUST pass publishability test -->
+                <ref bean="check_fixup_keyuse"/>
                 <ref bean="checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
@@ -614,11 +599,12 @@
                 
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="performOtherFixups"/>
+                <ref bean="fixup_keyuse"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
                 
                 <!-- test aggregate MUST pass publishability test -->
+                <ref bean="check_fixup_keyuse"/>
                 <ref bean="checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
