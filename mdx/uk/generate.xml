@@ -239,18 +239,6 @@
                 <ref bean="standardImportActions"/>
                 
                 <!--
-                    Add UK federation HideFromWAYF element as an equivalent to membership in
-                    the REFEDS Hide from Discovery category.
-                -->
-                <bean p:id="uk_addHideFromWAYF" parent="XSLTransformationStage">
-                    <property name="XSLResource">
-                        <bean parent="ClassPathResource">
-                            <constructor-arg value="uk/add_hide_element.xsl"/>
-                        </bean>
-                    </property>                    
-                </bean>
-                
-                <!--
                     Silently remove entities which are marked as
                     having errors.
                 -->
@@ -591,6 +579,7 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
+                <ref bean="stripWayfNamespace"/>
                 <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="stripEmptyExtensions"/>
@@ -1036,6 +1025,12 @@
                 <ref bean="CMSStripUnwanted"/>
                 
                 <ref bean="CMSFinalise"/>
+
+                <!--
+                    Normalise namespaces in the most general way. This will leave in a number
+                    of unwanted namespace prefix declarations (e.g., xmlns:wayf) but that's
+                    not really important for an aggregate we don't publish.
+                -->
                 <ref bean="normaliseNamespaces"/>
                 
                 <ref bean="serializeCMSAggregate"/>
