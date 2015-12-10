@@ -97,20 +97,6 @@
     -->
     
     <!--
-        fixup_EncryptionMethod
-        
-        Remove all md:EncryptionMethod elements.
-        
-        This is normally done to avoid triggering a problem in OpenSAML-C 2.0.
-        
-        See https://wiki.shibboleth.net/confluence/display/SHIB2/MetadataCorrectness#MetadataCorrectness-Version20
-    -->
-    <bean id="fixup_EncryptionMethod" parent="ElementStrippingStage"
-        p:id="fixup_EncryptionMethod"
-        p:elementName="EncryptionMethod"
-        p:elementNamespace="urn:oasis:names:tc:SAML:2.0:metadata"/>
-    
-    <!--
         fixup_keyuse
         
         Patch any @use-less KeyName descriptors in IdP roles
@@ -139,18 +125,6 @@
             <list>
                 <ref bean="fixup_keyuse"/>
             </list>
-        </property>
-    </bean>
-    
-    <!--
-        check_fixup_encmethod
-    -->
-    <bean id="check_fixup_encmethod" parent="XSLValidationStage"
-        p:id="check_fixup_encmethod">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/check_fixup_encmethod.xsl"/>
-            </bean>
         </property>
     </bean>
     
@@ -390,14 +364,12 @@
                 <ref bean="stripEmptyExtensions"/>
                 
                 <ref bean="stripMdattrNamespace"/>
-                <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- WAYF aggregate MUST pass publishability test -->
                 <ref bean="checkPublishable"/>
-                <ref bean="check_fixup_encmethod"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="serializeUnsignedWayfAggregate"/>
@@ -580,7 +552,6 @@
                 
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="fixup_EncryptionMethod"/>
                 <ref bean="performOtherFixups"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
@@ -588,7 +559,6 @@
                 
                 <!-- fallback aggregate MUST pass publishability test -->
                 <ref bean="checkPublishable"/>
-                <ref bean="check_fixup_encmethod"/>
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="serializeUnsignedFallbackAggregate"/>
