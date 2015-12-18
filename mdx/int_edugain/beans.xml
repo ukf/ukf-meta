@@ -58,13 +58,8 @@
     <!--
         eduGAIN signing certificate.
     -->
-    <bean id="int_edugain_signingCertificate" parent="X509CertificateFactoryBean">
-        <property name="certificateFile">
-            <bean class="java.io.File">
-                <constructor-arg value="${basedir}/mdx/int_edugain/mds-2014.cer"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="int_edugain_signingCertificate" parent="X509CertificateFactoryBean"
+        p:resource="classpath:int_edugain/mds-2014.cer"/>
     
     <!--
         Check a signature against the eduGAIN signing certificate.
