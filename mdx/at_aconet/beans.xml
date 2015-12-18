@@ -53,13 +53,8 @@
     <!--
         Signing certificate.
     -->
-    <bean id="at_aconet_signingCertificate" parent="X509CertificateFactoryBean">
-        <property name="certificateFile">
-            <bean class="java.io.File">
-                <constructor-arg value="${basedir}/mdx/at_aconet/aconet-aai-metadata-signing.crt"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="at_aconet_signingCertificate" parent="X509CertificateFactoryBean"
+        p:resource="classpath:at_aconet/aconet-aai-metadata-signing.crt"/>
     
     <!--
         Check signing signature.
