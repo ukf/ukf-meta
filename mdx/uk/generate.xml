@@ -644,20 +644,7 @@
                             <constructor-arg ref="commonNamespaces"/>
                         </bean>
                     </property>
-                    
-                    <!--
-                        Pipeline for selected (explicitly opted in) items.
-                    -->
-                    <property name="selectedItemPipeline">
-                        <bean id="selectedItemPipeline" parent="SimplePipeline">
-                            <property name="stages">
-                                <list>
-                                    <!-- nothing required -->
-                                </list>
-                            </property>
-                        </bean>
-                    </property>
-                    
+
                     <!--
                         The pipeline for unselected (not explicitly opted in) items removes entities
                         matching specific rules.
@@ -766,19 +753,6 @@
                         <bean parent="XPathItemSelectionStrategy">
                             <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:ExportOptIn]"/>
                             <constructor-arg ref="commonNamespaces"/>
-                        </bean>
-                    </property>
-
-                    <!--
-                        Pipeline for selected (explicitly opted in) items.
-                    -->
-                    <property name="selectedItemPipeline">
-                        <bean id="selectedItemPipeline" parent="SimplePipeline">
-                            <property name="stages">
-                                <list>
-                                    <!-- nothing required -->
-                                </list>
-                            </property>
                         </bean>
                     </property>
 

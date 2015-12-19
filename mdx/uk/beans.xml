@@ -364,31 +364,12 @@
                         </bean>
                     </property>
                     
-                    <!--
-                        Pipeline for selected items.
-                    -->
                     <property name="selectedItemPipeline">
                         <bean id="selectedItemPipeline" parent="SimplePipeline">
                             <property name="stages">
                                 <bean id="addHideFromDiscovery" parent="EntityAttributeAddingStage"
                                     p:attributeValue="http://refeds.org/category/hide-from-discovery"
                                     p:addingFirstChild="true"/>
-                            </property>
-                        </bean>
-                    </property>
-                    
-                    <!--
-                        Pipeline for unselected items.
-                        
-                        This is only required because of MDA-140, and can be removed when
-                        we move to MDA 0.9.0.
-                    -->
-                    <property name="nonselectedItemPipeline">
-                        <bean id="nonselectedItemPipeline" parent="SimplePipeline">
-                            <property name="stages">
-                                <list>
-                                    <!-- nothing required -->
-                                </list>
                             </property>
                         </bean>
                     </property>
