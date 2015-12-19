@@ -31,8 +31,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="us_incommon_productionAggregate" parent="DOMResourceSourceStage"
-        p:id="us_incommon_productionAggregate">
+    <bean id="us_incommon_productionAggregate" parent="DOMResourceSourceStage">
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -50,8 +49,7 @@
     <!--
         Check InCommon signing signature.
     -->
-    <bean id="us_incommon_checkSignature" parent="XMLSignatureValidationStageSHA256"
-        p:id="us_incommon_checkSignature">
+    <bean id="us_incommon_checkSignature" parent="XMLSignatureValidationStageSHA256">
         <property name="verificationCertificate" ref="us_incommon_signingCertificate"/>
     </bean>
 
@@ -61,8 +59,7 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="us_incommon_check_regauth" parent="check_regauth_parent"
-        p:id="us_incommon_check_regauth">
+    <bean id="us_incommon_check_regauth" parent="check_regauth_parent">
         <property name="transformParameters">
             <map>
                 <entry key="expectedAuthority" value-ref="us_incommon_registrar"/>
@@ -76,8 +73,7 @@
         Provide a default registrationAuthority appropriate to
         this channel.
     -->
-    <bean id="us_incommon_default_regauth" parent="default_regauth_parent"
-        p:id="us_incommon_default_regauth">
+    <bean id="us_incommon_default_regauth" parent="default_regauth_parent">
         <property name="transformParameters">
             <map>
                 <entry key="defaultAuthority" value-ref="us_incommon_registrar"/>
@@ -88,8 +84,7 @@
     <!--
         Fetch the production entities as a collection.
     -->
-    <bean id="us_incommon_productionEntities" parent="CompositeStage"
-        p:id="us_incommon_productionEntities">
+    <bean id="us_incommon_productionEntities" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
@@ -111,8 +106,7 @@
     <!--
         Synthesise an export collection by filtering the production entities.
     -->
-    <bean id="us_incommon_exportedEntities" parent="CompositeStage"
-        p:id="us_incommon_exportedEntities">
+    <bean id="us_incommon_exportedEntities" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
@@ -139,9 +133,8 @@
                 <!--
                     Filter out all entities not involved in the pilot.
                 -->
-                <bean parent="stage_parent"
+                <bean id="us_incommon_pilot_filterEntities" parent="stage_parent"
                     class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
-                    p:id="us_incommon_pilot_filterEntities"
                     p:whitelistingEntities="true">
                     <property name="designatedEntities">
                         <set>
@@ -154,9 +147,8 @@
                 <!--
                     Remove all contact information.
                 -->
-                <bean parent="stage_parent"
+                <bean id="us_incommon_remove_contacts" parent="stage_parent"
                     class="net.shibboleth.metadata.dom.saml.ContactPersonFilterStage"
-                    p:id="us_incommon_remove_contacts"
                     p:whitelistingTypes="true">
                     <property name="designatedTypes">
                         <set>
@@ -183,8 +175,7 @@
     <!--
         Fake an export aggregate by aggregating the exported entities.
     -->
-    <bean id="us_incommon_exportedAggregate" parent="CompositeStage"
-        p:id="us_incommon_exportedAggregate">
+    <bean id="us_incommon_exportedAggregate" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="us_incommon_exportedEntities"/>

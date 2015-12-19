@@ -22,8 +22,7 @@
     -->
     <import resource="classpath:at_aconet/beans.xml"/>
     
-    <bean id="serializeImported" parent="SerializationStage"
-        p:id="serializeImported">
+    <bean id="serializeImported" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/mdx/at_aconet/imported.xml"/>
@@ -31,8 +30,7 @@
         </property>
     </bean>
     
-    <bean id="importProduction" parent="SimplePipeline"
-        p:id="importProduction">
+    <bean id="importProduction" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_productionEntities"/>
@@ -43,8 +41,7 @@
         </property>
     </bean>
 
-    <bean id="importProductionRaw" parent="SimplePipeline"
-        p:id="importProductionRaw">
+    <bean id="importProductionRaw" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_productionAggregate"/>
@@ -53,8 +50,7 @@
         </property>
     </bean>
     
-    <bean id="importEdugain" parent="SimplePipeline"
-        p:id="importEdugain">
+    <bean id="importEdugain" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_edugainEntities"/>
@@ -65,8 +61,7 @@
         </property>
     </bean>
     
-    <bean id="importEdugainRaw" parent="SimplePipeline"
-        p:id="importEdugainRaw">
+    <bean id="importEdugainRaw" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_edugainAggregate"/>
@@ -75,15 +70,13 @@
         </property>
     </bean>
     
-    <bean id="verifyEdugain" parent="SimplePipeline"
-        p:id="verifyEdugain">
+    <bean id="verifyEdugain" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_edugainEntities"/>
                 <ref bean="standardImportActions"/>
 
-                <bean parent="X509ValidationStage"
-                    p:id="checkCertificates">
+                <bean id="checkCertificates" parent="X509ValidationStage">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
@@ -97,9 +90,8 @@
                     Remove a specific entity we know has a problem that it will take
                     a while to resolve.
                 -->
-                <bean parent="stage_parent"
+                <bean id="filterEntities" parent="stage_parent"
                     class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
-                    p:id="filterEntities"
                     p:whitelistingEntities="false">
                     <property name="designatedEntities">
                         <set>

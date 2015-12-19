@@ -35,8 +35,7 @@
         
         Stand-alone statistics generation.
     -->
-    <bean id="statistics" parent="SimplePipeline"
-        p:id="statistics">
+    <bean id="statistics" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -53,22 +52,19 @@
         Generates a page of links to discovery services, for each SP that
         has mdui:uiinfo metadata.
     -->
-    <bean id="sp_mdui_test" parent="SimplePipeline"
-        p:id="sp_mdui_test">
+    <bean id="sp_mdui_test" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
                 <ref bean="assemble"/>
-                <bean id="process" parent="XSLTransformationStage"
-                    p:id="process">
+                <bean id="process" parent="XSLTransformationStage">
                     <property name="xslResource">
                         <bean parent="ClassPathResource">
                             <constructor-arg value="uk/sp_mdui_test.xsl"/>
                         </bean>
                     </property>
                 </bean>
-                <bean id="serialize" parent="SerializationStage"
-                    p:id="serialize">
+                <bean id="serialize" parent="SerializationStage">
                     <property name="outputFile">
                         <bean class="java.io.File">
                             <constructor-arg value="${basedir}/mdx/uk/temp.html"/>
@@ -87,8 +83,7 @@
         ***********************
     -->
     
-    <bean id="verify" parent="SimplePipeline"
-        p:id="verify">
+    <bean id="verify" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -119,8 +114,7 @@
         *********************************
     -->
     
-    <bean id="checkPorts" parent="SimplePipeline"
-        p:id="checkPorts">
+    <bean id="checkPorts" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -152,8 +146,7 @@
         ***********************************
     -->
     
-    <bean id="checkFuture" parent="SimplePipeline"
-        p:id="checkFuture">
+    <bean id="checkFuture" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -175,8 +168,7 @@
                     Additional X.509 certificate checks, over and above those
                     performed in uk_registeredEntities.
                 -->
-                <bean parent="X509ValidationStage"
-                    p:id="checkCertificates">
+                <bean id="checkCertificates" parent="X509ValidationStage">
                     <property name="validators">
                         <list>
                             <!-- none at present -->
@@ -204,8 +196,7 @@
         Fetches the contents of the file used to hold metadata to be imported
         into a UK federation fragment file.
     -->
-    <bean id="fetchImportMetadata" parent="DOMFilesystemSourceStage"
-        p:id="fetchImportMetadata">
+    <bean id="fetchImportMetadata" parent="DOMFilesystemSourceStage">
         <property name="source">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/entities/import.xml"/>
@@ -218,8 +209,7 @@
         
         Serialise the fragment file just imported.
     -->
-    <bean id="serializeImportedMetadata" parent="SerializationStage"
-        p:id="serializeImportedMetadata">
+    <bean id="serializeImportedMetadata" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/entities/imported.xml"/>
@@ -234,8 +224,7 @@
         
         For now, just the head of that pipeline.
     -->
-    <bean id="import.metadata" parent="SimplePipeline"
-        p:id="import.metadata">
+    <bean id="import.metadata" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!-- fetch the input file -->
@@ -250,8 +239,7 @@
                 <ref bean="uk_fix_mailto"/>
                 
                 <!-- transform into a fragment using our local conventions -->
-                <bean id="importTransform" parent="XSLTransformationStage"
-                    p:id="importTransform">
+                <bean id="importTransform" parent="XSLTransformationStage">
                     <property name="XSLResource">
                         <bean parent="ClassPathResource">
                             <constructor-arg value="uk/import.xsl"/>
@@ -260,8 +248,7 @@
                 </bean>
                 
                 <!-- normalise namespaces in a specific way -->
-                <bean id="normalizeFragment" parent="XSLTransformationStage"
-                    p:id="normalizeFragment">
+                <bean id="normalizeFragment" parent="XSLTransformationStage">
                     <property name="XSLResource">
                         <bean parent="FileSystemResource">
                             <constructor-arg value="${basedir}/mdx/uk/ns_norm_fragment.xsl"/>
@@ -297,8 +284,7 @@
                 <ref bean="check_shibboleth"/>
                 <ref bean="check_uk_trust"/>
                 
-                <bean parent="X509ValidationStage"
-                    p:id="checkCertificates">
+                <bean id="checkCertificates" parent="X509ValidationStage">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
@@ -348,8 +334,7 @@
         #################################################
     -->
     
-    <bean id="serializeImported" parent="SerializationStage"
-        p:id="serializeImported">
+    <bean id="serializeImported" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/mdx/uk/imported.xml"/>
@@ -357,8 +342,7 @@
         </property>
     </bean>
     
-    <bean id="importExported" parent="SimplePipeline"
-        p:id="importExported">
+    <bean id="importExported" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_exportedEntities"/>
@@ -369,8 +353,7 @@
         </property>
     </bean>
     
-    <bean id="importExportedRaw" parent="SimplePipeline"
-        p:id="importExportedRaw">
+    <bean id="importExportedRaw" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_exportAggregate"/>

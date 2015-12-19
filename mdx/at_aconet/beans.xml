@@ -27,8 +27,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="at_aconet_productionAggregate" parent="DOMResourceSourceStage"
-        p:id="at_aconet_productionAggregate">
+    <bean id="at_aconet_productionAggregate" parent="DOMResourceSourceStage">
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -40,8 +39,7 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="at_aconet_edugainAggregate" parent="DOMResourceSourceStage"
-        p:id="at_aconet_edugainAggregate">
+    <bean id="at_aconet_edugainAggregate" parent="DOMResourceSourceStage">
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -59,12 +57,10 @@
     <!--
         Check signing signature.
     -->
-    <bean id="at_aconet_checkProductionSignature" parent="XMLSignatureValidationStage"
-        p:id="at_aconet_checkProductionSignature">
+    <bean id="at_aconet_checkProductionSignature" parent="XMLSignatureValidationStage">
         <property name="verificationCertificate" ref="at_aconet_signingCertificate"/>
     </bean>
-    <bean id="at_aconet_checkEdugainSignature" parent="XMLSignatureValidationStageSHA256"
-        p:id="at_aconet_checkEdugainSignature">
+    <bean id="at_aconet_checkEdugainSignature" parent="XMLSignatureValidationStageSHA256">
         <property name="verificationCertificate" ref="at_aconet_signingCertificate"/>
     </bean>
     
@@ -74,8 +70,7 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="at_aconet_check_regauth" parent="check_regauth_parent"
-        p:id="at_aconet_check_regauth">
+    <bean id="at_aconet_check_regauth" parent="check_regauth_parent">
         <property name="transformParameters">
             <map>
                 <entry key="expectedAuthority" value-ref="at_aconet_registrar"/>
@@ -89,8 +84,7 @@
         Provide a default registrationAuthority appropriate to
         this channel.
     -->
-    <bean id="at_aconet_default_regauth" parent="default_regauth_parent"
-        p:id="at_aconet_default_regauth">
+    <bean id="at_aconet_default_regauth" parent="default_regauth_parent">
         <property name="transformParameters">
             <map>
                 <entry key="defaultAuthority" value-ref="at_aconet_registrar"/>
@@ -101,8 +95,7 @@
     <!--
         Fetch the production entities as a collection.
     -->
-    <bean id="at_aconet_productionEntities" parent="CompositeStage"
-        p:id="at_aconet_productionEntities">
+    <bean id="at_aconet_productionEntities" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="at_aconet_productionAggregate"/>
@@ -124,8 +117,7 @@
     <!--
         Fetch the eduGAIN export entities as a collection.
     -->
-    <bean id="at_aconet_edugainEntities" parent="CompositeStage"
-        p:id="at_aconet_edugainEntities">
+    <bean id="at_aconet_edugainEntities" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="at_aconet_edugainAggregate"/>

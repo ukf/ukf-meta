@@ -22,8 +22,7 @@
     -->
     <import resource="classpath:uk/beans.xml"/>
 
-    <bean id="serializeCollected" parent="SerializationStage"
-        p:id="serializeCollected">
+    <bean id="serializeCollected" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/mdx/uk/collected.xml"/>
@@ -31,8 +30,7 @@
         </property>
     </bean>
 
-    <bean id="collect" parent="SimplePipeline"
-        p:id="collect">
+    <bean id="collect" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>

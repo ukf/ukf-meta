@@ -22,8 +22,7 @@
     -->
     <import resource="classpath:int_cobweb/beans.xml"/>
     
-    <bean id="serializeImported" parent="SerializationStage"
-        p:id="serializeImported">
+    <bean id="serializeImported" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/mdx/int_cobweb/imported.xml"/>
@@ -31,8 +30,7 @@
         </property>
     </bean>
     
-    <bean id="importProduction" parent="SimplePipeline"
-        p:id="importProduction">
+    <bean id="importProduction" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_cobweb_productionEntities"/>
@@ -43,8 +41,7 @@
         </property>
     </bean>
     
-    <bean id="verifyProduction" parent="SimplePipeline"
-        p:id="verifyProduction">
+    <bean id="verifyProduction" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_cobweb_productionEntities"/>
@@ -54,8 +51,7 @@
         </property>
     </bean>
     
-    <bean id="importProductionRaw" parent="SimplePipeline"
-        p:id="importProductionRaw">
+    <bean id="importProductionRaw" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_cobweb_productionAggregate"/>

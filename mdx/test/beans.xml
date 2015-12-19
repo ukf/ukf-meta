@@ -16,8 +16,7 @@
         Fetch the aggregate aggregate.
     -->
     <bean id="test_aggregate" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.DomFilesystemSourceStage"
-        p:id="test_aggregate">
+        class="net.shibboleth.metadata.dom.DomFilesystemSourceStage">
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
@@ -29,8 +28,7 @@
     <!--
         Fetch and process the entities as a collection.
     -->
-    <bean id="test_entities" parent="CompositeStage"
-        p:id="test_entities">
+    <bean id="test_entities" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="test_aggregate"/>

@@ -22,8 +22,7 @@
     -->
     <import resource="classpath:test/beans.xml"/>
     
-    <bean id="serializeImported" parent="SerializationStage"
-        p:id="serializeImported">
+    <bean id="serializeImported" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/mdx/test/imported.xml"/>
@@ -31,8 +30,7 @@
         </property>
     </bean>
     
-    <bean id="import" parent="SimplePipeline"
-        p:id="import">
+    <bean id="import" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="test_entities"/>
@@ -43,8 +41,7 @@
         </property>
     </bean>
 
-    <bean id="importRaw" parent="SimplePipeline"
-        p:id="importRaw">
+    <bean id="importRaw" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="test_aggregate"/>

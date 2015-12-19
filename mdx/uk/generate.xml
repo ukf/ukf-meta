@@ -43,8 +43,7 @@
         Remove entity-level Scope elements, leaving only the ones associated
         with role descriptors.    
     -->
-    <bean id="stripEntityScopes" parent="XSLTransformationStage"
-        p:id="stripEntityScopes">
+    <bean id="stripEntityScopes" parent="XSLTransformationStage">
         <property name="XSLResource">
             <bean parent="ClassPathResource">
                 <constructor-arg value="uk/entity_scopes.xsl"/>
@@ -102,8 +101,7 @@
         Patch any @use-less KeyName descriptors in IdP roles
         for the benefit of Shib SPs pre-1.3.1.
     -->
-    <bean id="fixup_keyuse" parent="XSLTransformationStage"
-        p:id="fixup_keyuse">
+    <bean id="fixup_keyuse" parent="XSLTransformationStage">
         <property name="XSLResource">
             <bean parent="ClassPathResource">
                 <constructor-arg value="uk/fixup_keyuse.xsl"/>
@@ -114,8 +112,7 @@
     <!--
         check_fixup_keyuse
     -->
-    <bean id="check_fixup_keyuse" parent="XSLValidationStage"
-        p:id="check_fixup_keyuse">
+    <bean id="check_fixup_keyuse" parent="XSLValidationStage">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
                 <constructor-arg value="${basedir}/mdx/uk/check_fixup_keyuse.xsl"/>
@@ -131,8 +128,7 @@
         export flows, for which we desire the closest possible correspondence to
         the registered metadata.
     -->
-    <bean id="checkPublishable" parent="CompositeStage"
-        p:id="checkPublishable">
+    <bean id="checkPublishable" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="checkSchemas"/>
@@ -159,8 +155,7 @@
         from another registrar or metadata exchange as they may be
         old versions of entities we have deregistered, or spoofed.
     -->
-    <bean id="removeUKEntities" parent="EntityRegistrationAuthorityFilterStage"
-        p:id="removeUKEntities">
+    <bean id="removeUKEntities" parent="EntityRegistrationAuthorityFilterStage">
         <property name="designatedRegistrationAuthorities">
             <list>
                 <ref bean="uk_ukf_registrar"/>
@@ -177,7 +172,6 @@
     -->
     <bean id="removeBlacklistedEntities" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
-        p:id="removeBlacklistedEntities"
         p:whitelistingEntities="false"
         p:designatedEntities-ref="importEntityBlacklist"/>
 
@@ -186,8 +180,7 @@
         
         Common actions to be performed on each import pipeline.
     -->
-    <bean id="importCommonTail" parent="CompositeStage"
-        p:id="importCommonTail">
+    <bean id="importCommonTail" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="removeUKEntities"/>
@@ -205,8 +198,7 @@
         </property>
     </bean>
 
-    <bean id="uk_int_edugain_importPipeline" parent="SimplePipeline"
-        p:id="uk_int_edugain_importPipeline">
+    <bean id="uk_int_edugain_importPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
@@ -214,7 +206,7 @@
                 <!--
                     Entity Attribute policy for entities from eduGAIN participants.
                 -->
-                <bean parent="EntityAttributeFilteringStage" p:id="entityAttributes">
+                <bean id="entityAttributes" parent="EntityAttributeFilteringStage">
                     <property name="rules">
                         <list>
                             <!-- Permit GÉANT CoC category from any eduGAIN participant. -->
@@ -250,8 +242,7 @@
         ***************************************************
     -->
     
-    <bean id="uk_finaliseProduction" parent="finalise_parent"
-        p:id="uk_finaliseProduction">
+    <bean id="uk_finaliseProduction" parent="finalise_parent">
         <property name="transformParameters">
             <map>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
@@ -259,8 +250,7 @@
         </property>
     </bean>
 
-    <bean id="serializeUnsignedProductionAggregate" parent="SerializationStage"
-        p:id="serializeUnsignedProductionAggregate">
+    <bean id="serializeUnsignedProductionAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/xml/ukfederation-metadata-unsigned.xml"/>
@@ -268,8 +258,7 @@
         </property>
     </bean>
 
-    <bean id="uk_productionPipeline" parent="SimplePipeline"
-        p:id="uk_productionPipeline">
+    <bean id="uk_productionPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -318,8 +307,7 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeUnsignedWayfAggregate" parent="SerializationStage"
-        p:id="serializeUnsignedWayfAggregate">
+    <bean id="serializeUnsignedWayfAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/xml/ukfederation-wayf-unsigned.xml"/>
@@ -327,8 +315,7 @@
         </property>
     </bean>
     
-    <bean id="uk_wayfPipeline" parent="SimplePipeline"
-        p:id="uk_wayfPipeline">
+    <bean id="uk_wayfPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -376,8 +363,7 @@
         normal metadata in order to do its job.  This stage
         removes everything it does not need.
     -->
-    <bean id="CDSStripUnwanted" parent="CompositeStage"
-        p:id="CDSStripUnwanted">
+    <bean id="CDSStripUnwanted" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="stripComments"/>
@@ -406,8 +392,7 @@
         </property>
     </bean>
     
-    <bean id="CDSFinalise" parent="finalise_parent"
-        p:id="CDSFinalise">
+    <bean id="CDSFinalise" parent="finalise_parent">
         <property name="transformParameters">
             <map>
                 <entry key="extraText"
@@ -417,8 +402,7 @@
         </property>
     </bean>
     
-    <bean id="CDSNormaliseNamespaces" parent="XSLTransformationStage"
-        p:id="CDSNormaliseNamespaces">
+    <bean id="CDSNormaliseNamespaces" parent="XSLTransformationStage">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
                 <constructor-arg value="${basedir}/mdx/uk/ns_norm_cds.xsl"/>
@@ -444,8 +428,7 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeCDSAllAggregate" parent="SerializationStage"
-        p:id="serializeCDSAllAggregate">
+    <bean id="serializeCDSAllAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/xml/ukfederation-cdsall-unsigned.xml"/>
@@ -453,8 +436,7 @@
         </property>
     </bean>
     
-    <bean id="CDSAllPipeline" parent="SimplePipeline"
-        p:id="CDSAllPipeline">
+    <bean id="CDSAllPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -496,8 +478,7 @@
         ***********************************************
     -->
     
-    <bean id="uk_finaliseFallback" parent="finalise_parent"
-        p:id="uk_finaliseFallback">
+    <bean id="uk_finaliseFallback" parent="finalise_parent">
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Feature fallback metadata; not for production use"/>
@@ -506,8 +487,7 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseFallback" parent="XSLTransformationStage"
-        p:id="uk_normaliseFallback">
+    <bean id="uk_normaliseFallback" parent="XSLTransformationStage">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
                 <constructor-arg value="${basedir}/mdx/uk/ns_norm_back.xsl"/>
@@ -515,8 +495,7 @@
         </property>
     </bean>
     
-    <bean id="serializeUnsignedFallbackAggregate" parent="SerializationStage"
-        p:id="serializeUnsignedFallbackAggregate">
+    <bean id="serializeUnsignedFallbackAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/xml/ukfederation-back-unsigned.xml"/>
@@ -524,8 +503,7 @@
         </property>
     </bean>
     
-    <bean id="uk_fallbackPipeline" parent="SimplePipeline"
-        p:id="uk_fallbackPipeline">
+    <bean id="uk_fallbackPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -559,8 +537,7 @@
         ***************************************
     -->
     
-    <bean id="uk_finaliseTest" parent="finalise_parent"
-        p:id="uk_finaliseTest">
+    <bean id="uk_finaliseTest" parent="finalise_parent">
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Feature test metadata; not for production use"/>
@@ -569,8 +546,7 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseTest" parent="XSLTransformationStage"
-        p:id="uk_normaliseTest">
+    <bean id="uk_normaliseTest" parent="XSLTransformationStage">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
                 <constructor-arg value="${basedir}/mdx/uk/ns_norm_test.xsl"/>
@@ -578,8 +554,7 @@
         </property>
     </bean>
     
-    <bean id="serializeUnsignedTestAggregate" parent="SerializationStage"
-        p:id="serializeUnsignedTestAggregate">
+    <bean id="serializeUnsignedTestAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/xml/ukfederation-test-unsigned.xml"/>
@@ -587,8 +562,7 @@
         </property>
     </bean>
     
-    <bean id="uk_testPipeline" parent="CompositeStage"
-        p:id="uk_testPipeline">
+    <bean id="uk_testPipeline" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <!--
@@ -619,8 +593,7 @@
         *******************************************
     -->
     
-    <bean id="uk_finaliseExport" parent="finalise_parent"
-        p:id="uk_finaliseExport">
+    <bean id="uk_finaliseExport" parent="finalise_parent">
         <property name="transformParameters">
             <map>
                 <entry key="extraText" value="Export metadata for use by partner federations"/>
@@ -629,8 +602,7 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseExport" parent="XSLTransformationStage"
-        p:id="uk_normaliseExport">
+    <bean id="uk_normaliseExport" parent="XSLTransformationStage">
         <property name="XSLResource">
             <bean parent="FileSystemResource">
                 <constructor-arg value="${basedir}/mdx/uk/ns_norm_export.xsl"/>
@@ -643,8 +615,7 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeUnsignedExportAggregate" parent="SerializationStage"
-        p:id="serializeUnsignedExportAggregate">
+    <bean id="serializeUnsignedExportAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/xml/ukfederation-export-unsigned.xml"/>
@@ -652,8 +623,7 @@
         </property>
     </bean>
     
-    <bean id="uk_exportPipeline" parent="SimplePipeline"
-        p:id="uk_exportPipeline">
+    <bean id="uk_exportPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -665,7 +635,7 @@
                     have the ExportOptIn label: in other words, a rule in this section
                     can always be overridden by an explicit ExportOptIn.
                 -->
-                <bean p:id="exclusion" parent="SplitMergeStage">
+                <bean id="exclusion" parent="SplitMergeStage">
                     
                     <!-- select entities with ExportOptIn label -->
                     <property name="selectionStrategy">
@@ -679,7 +649,7 @@
                         Pipeline for selected (explicitly opted in) items.
                     -->
                     <property name="selectedItemPipeline">
-                        <bean p:id="selectedItemPipeline" parent="SimplePipeline">
+                        <bean id="selectedItemPipeline" parent="SimplePipeline">
                             <property name="stages">
                                 <list>
                                     <!-- nothing required -->
@@ -693,12 +663,12 @@
                         matching specific rules.
                     -->
                     <property name="nonselectedItemPipeline">
-                        <bean p:id="nonSelectedItemPipeline" parent="SimplePipeline">
+                        <bean id="nonSelectedItemPipeline" parent="SimplePipeline">
                             <property name="stages">
                                 <list>
                                     
                                     <!-- Identity providers lacking support for SAML 2.0 -->
-                                    <bean p:id="SAML1onlyIdPs" parent="XPathFilteringStage"
+                                    <bean id="SAML1onlyIdPs" parent="XPathFilteringStage"
                                         p:XPathExpression="md:IDPSSODescriptor
                                         [not(contains(@protocolSupportEnumeration,'urn:oasis:names:tc:SAML:2.0:protocol'))]">
                                     </bean>
@@ -707,16 +677,16 @@
                                     <!--
                                         Preferred implementation:
                                         
-                                        <bean p:id="syntheticScopes" parent="XPathFilteringStage"
+                                        <bean id="syntheticScopes" parent="XPathFilteringStage"
                                             p:XPathExpression="shibmd:Scope[ends-with(., '.eng.ukfederation.org.uk']"/>
                                         
                                         Unfortunately, the "ends-with" function is an XPath 2 feature, so we settle for
                                         using "contains" instead; in our case it is equivalent.
                                     -->
-                                    <bean p:id="syntheticScopes" parent="XPathFilteringStage"
+                                    <bean id="syntheticScopes" parent="XPathFilteringStage"
                                         p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
                                     <!-- Specific providers not caught by the previous condition -->
-                                    <bean p:id="GlowScotland" parent="EntityFilterStage">
+                                    <bean id="GlowScotland" parent="EntityFilterStage">
                                         <property name="designatedEntities">
                                             <set>
                                                 <value>https://idp.glowscotland.org.uk/shibboleth</value>
@@ -725,7 +695,7 @@
                                     </bean>
                                     
                                     <!-- Identity providers with regular expression scopes -->
-                                    <bean p:id="regexScopes" parent="XPathFilteringStage"
+                                    <bean id="regexScopes" parent="XPathFilteringStage"
                                         p:XPathExpression="//shibmd:Scope[@regexp='true']"/>
                                 </list>
                             </property>
@@ -776,8 +746,7 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="uk_exportPreviewPipeline" parent="SimplePipeline"
-        p:id="uk_exportPreviewPipeline">
+    <bean id="uk_exportPreviewPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
 
@@ -790,7 +759,7 @@
                     have the ExportOptIn label: in other words, a rule in this section
                     can always be overridden by an explicit ExportOptIn.
                 -->
-                <bean p:id="exclusion" parent="SplitMergeStage">
+                <bean id="exclusion" parent="SplitMergeStage">
 
                     <!-- select entities with ExportOptIn label -->
                     <property name="selectionStrategy">
@@ -804,7 +773,7 @@
                         Pipeline for selected (explicitly opted in) items.
                     -->
                     <property name="selectedItemPipeline">
-                        <bean p:id="selectedItemPipeline" parent="SimplePipeline">
+                        <bean id="selectedItemPipeline" parent="SimplePipeline">
                             <property name="stages">
                                 <list>
                                     <!-- nothing required -->
@@ -818,12 +787,12 @@
                         matching specific rules.
                     -->
                     <property name="nonselectedItemPipeline">
-                        <bean p:id="nonSelectedItemPipeline" parent="SimplePipeline">
+                        <bean id="nonSelectedItemPipeline" parent="SimplePipeline">
                             <property name="stages">
                                 <list>
 
                                     <!-- Identity providers lacking support for SAML 2.0 -->
-                                    <bean p:id="SAML1onlyIdPs" parent="XPathFilteringStage"
+                                    <bean id="SAML1onlyIdPs" parent="XPathFilteringStage"
                                         p:XPathExpression="md:IDPSSODescriptor
                                             [not(contains(@protocolSupportEnumeration,'urn:oasis:names:tc:SAML:2.0:protocol'))]">
                                     </bean>
@@ -832,16 +801,16 @@
                                     <!--
                                         Preferred implementation:
                                         
-                                        <bean p:id="syntheticScopes" parent="XPathFilteringStage"
+                                        <bean id="syntheticScopes" parent="XPathFilteringStage"
                                             p:XPathExpression="shibmd:Scope[ends-with(., '.eng.ukfederation.org.uk']"/>
                                         
                                         Unfortunately, the "ends-with" function is an XPath 2 feature, so we settle for
                                         using "contains" instead; in our case it is equivalent.
                                     -->
-                                    <bean p:id="syntheticScopes" parent="XPathFilteringStage"
+                                    <bean id="syntheticScopes" parent="XPathFilteringStage"
                                         p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
                                     <!-- Specific providers not caught by the previous condition -->
-                                    <bean p:id="GlowScotland" parent="EntityFilterStage">
+                                    <bean id="GlowScotland" parent="EntityFilterStage">
                                         <property name="designatedEntities">
                                             <set>
                                                 <value>https://idp.glowscotland.org.uk/shibboleth</value>
@@ -850,7 +819,7 @@
                                     </bean>
 
                                     <!-- Identity providers with regular expression scopes -->
-                                    <bean p:id="regexScopes" parent="XPathFilteringStage"
+                                    <bean id="regexScopes" parent="XPathFilteringStage"
                                         p:XPathExpression="//shibmd:Scope[@regexp='true']"/>
                                 </list>
                             </property>
@@ -883,7 +852,7 @@
                 <ref bean="check_namespaces"/>
                 <ref bean="errorTerminatingFilter"/>
                 
-                <bean parent="SerializationStage" p:id="serializeUnsignedExportPreviewAggregate">
+                <bean id="serializeUnsignedExportPreviewAggregate" parent="SerializationStage">
                     <property name="outputFile">
                         <bean class="java.io.File">
                             <constructor-arg value="${basedir}/xml/ukfederation-export-preview-unsigned.xml"/>
@@ -917,8 +886,7 @@
         normal metadata in order to do its job.  This stage
         removes everything it does not need.
     -->
-    <bean id="CMSStripUnwanted" parent="CompositeStage"
-        p:id="CMSStripUnwanted">
+    <bean id="CMSStripUnwanted" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="stripComments"/>
@@ -948,8 +916,7 @@
         </property>
     </bean>
     
-    <bean id="CMSFinalise" parent="finalise_parent"
-        p:id="CMSFinalise">
+    <bean id="CMSFinalise" parent="finalise_parent">
         <property name="transformParameters">
             <map>
                 <entry key="extraText"
@@ -959,8 +926,7 @@
         </property>
     </bean>
     
-    <bean id="serializeCMSAggregate" parent="SerializationStage"
-        p:id="serializeCMSaggregate">
+    <bean id="serializeCMSAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/xml/cms-metadata.xml"/>
@@ -968,8 +934,7 @@
         </property>
     </bean>
     
-    <bean id="CMSPipeline" parent="SimplePipeline"
-        p:id="CMSPipeline">
+    <bean id="CMSPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!-- make an aggregate first so that we're only traversing one item -->
@@ -1000,8 +965,7 @@
         *************************************
     -->
     
-    <bean id="generate" parent="SimplePipeline"
-        p:id="generate">
+    <bean id="generate" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -1026,8 +990,7 @@
                     Fork new output pipelines for the registrar statistics and for
                     the CMS aggregate.
                 -->
-                <bean id="rawRegistrarDemux" parent="PipelineDemultiplexerStage"
-                    p:id="rawRegistrarDemux">
+                <bean id="rawRegistrarDemux" parent="PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
@@ -1071,8 +1034,7 @@
                     metadata as closely as possible, so the fork must happen before
                     too many UK-specific transformations are performed.
                 -->
-                <bean id="registrarDemux" parent="PipelineDemultiplexerStage"
-                    p:id="registrarDemux">
+                <bean id="registrarDemux" parent="PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
@@ -1109,8 +1071,7 @@
                     Merge in entities from production metadata exchange sources.
                 -->
                 
-                <bean id="mergeProductionMDXEntities" parent="PipelineMergeStage.deduplicate"
-                    p:id="mergeProductionMDXortedEntities">
+                <bean id="mergeProductionMDXEntities" parent="PipelineMergeStage.deduplicate">
                     <property name="mergedPipelines">
                         <list>
                             <!-- entries earlier in the list have higher precedence -->
@@ -1135,8 +1096,7 @@
                 <!--
                     Fork into new pipelines for the production, fallback and WAYF aggregates.
                 -->
-                <bean id="productionDemux" parent="PipelineDemultiplexerStage"
-                    p:id="productionDemux">
+                <bean id="productionDemux" parent="PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
@@ -1166,8 +1126,7 @@
                     Merge in entities from pre-production metadata exchange sources.
                 -->
 
-                <bean id="mergePreproductionMDXEntities" parent="PipelineMergeStage.deduplicate"
-                    p:id="mergePreproductionMDXEntities">
+                <bean id="mergePreproductionMDXEntities" parent="PipelineMergeStage.deduplicate">
                     <property name="mergedPipelines">
                         <list>
                             <!-- entries earlier in the list have higher precedence -->
@@ -1192,8 +1151,7 @@
                 <!--
                     Fork into new pipelines for additional aggregates.
                 -->
-                <bean id="preProductionDemux" parent="PipelineDemultiplexerStage"
-                    p:id="preProductionDemux">
+                <bean id="preProductionDemux" parent="PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">

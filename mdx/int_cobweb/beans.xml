@@ -22,8 +22,7 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="int_cobweb_productionAggregate" parent="DOMResourceSourceStage"
-        p:id="int_cobweb_productionAggregate">
+    <bean id="int_cobweb_productionAggregate" parent="DOMResourceSourceStage">
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -46,16 +45,14 @@
     <!--
         Check signing signature.
     -->
-    <bean id="int_cobweb_checkSignature" parent="XMLSignatureValidationStage"
-        p:id="int_cobweb_checkSignature">
+    <bean id="int_cobweb_checkSignature" parent="XMLSignatureValidationStage">
         <property name="verificationCertificate" ref="int_cobweb_signingCertificate"/>
     </bean>
 
     <!--
         Fetch the production entities as a collection.
     -->
-    <bean id="int_cobweb_productionEntities" parent="CompositeStage"
-        p:id="int_cobweb_productionEntities">
+    <bean id="int_cobweb_productionEntities" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="int_cobweb_productionAggregate"/>

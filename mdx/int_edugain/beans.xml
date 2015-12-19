@@ -32,8 +32,7 @@
     <!--
         Fetches the eduGAIN production aggregate.
     -->
-    <bean id="int_edugain_productionAggregate" parent="DOMResourceSourceStage"
-        p:id="int_edugain_productionAggregate">
+    <bean id="int_edugain_productionAggregate" parent="DOMResourceSourceStage">
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -45,8 +44,7 @@
     <!--
         Fetch the eduGAIN test aggregate.
     -->
-    <bean id="int_edugain_testAggregate" parent="DOMResourceSourceStage"
-        p:id="int_edugain_testAggregate">
+    <bean id="int_edugain_testAggregate" parent="DOMResourceSourceStage">
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -64,8 +62,7 @@
     <!--
         Check a signature against the eduGAIN signing certificate.
     -->
-    <bean id="int_edugain_checkSignature" parent="XMLSignatureValidationStageSHA256"
-        p:id="int_edugain_checkSignature">
+    <bean id="int_edugain_checkSignature" parent="XMLSignatureValidationStageSHA256">
         <property name="verificationCertificate" ref="int_edugain_signingCertificate"/>
     </bean>
 
@@ -73,15 +70,13 @@
         Remove blacklisted entities.
     -->
     <bean id="int_edugain_removeBlacklistedEntities" parent="EntityFilterStage"
-        p:id="int_edugain_removeBlacklistedEntities"
         p:whitelistingEntities="false"
         p:designatedEntities-ref="int_edugain_entity_blacklist"/>
 
     <!--
         Fetch the production entities as a collection.
     -->
-    <bean id="int_edugain_productionEntities" parent="CompositeStage"
-        p:id="int_edugain_productionEntities">
+    <bean id="int_edugain_productionEntities" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="int_edugain_productionAggregate"/>
@@ -111,8 +106,7 @@
     <!--
         Fetch the test entities as a collection.
     -->
-    <bean id="int_edugain_testEntities" parent="CompositeStage"
-        p:id="int_edugain_testEntities">
+    <bean id="int_edugain_testEntities" parent="CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="int_edugain_testAggregate"/>

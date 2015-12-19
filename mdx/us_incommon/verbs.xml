@@ -25,8 +25,7 @@
     <!--
         Serialise into this channel's "imported" aggregate file.
     -->
-    <bean id="serializeImported" parent="SerializationStage"
-        p:id="serializeImported">
+    <bean id="serializeImported" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${basedir}/mdx/us_incommon/imported.xml"/>
@@ -34,8 +33,7 @@
         </property>
     </bean>
     
-    <bean id="importProduction" parent="SimplePipeline"
-        p:id="importProduction">
+    <bean id="importProduction" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_productionEntities"/>
@@ -46,8 +44,7 @@
         </property>
     </bean>
 
-    <bean id="importProductionRaw" parent="SimplePipeline"
-        p:id="importProductionRaw">
+    <bean id="importProductionRaw" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
@@ -56,8 +53,7 @@
         </property>
     </bean>
     
-    <bean id="importExported" parent="SimplePipeline"
-        p:id="importExported">
+    <bean id="importExported" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_exportedEntities"/>
@@ -68,8 +64,7 @@
         </property>
     </bean>
     
-    <bean id="importExportedRaw" parent="SimplePipeline"
-        p:id="importExportedRaw">
+    <bean id="importExportedRaw" parent="SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_exportedAggregate"/>
