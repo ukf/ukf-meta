@@ -15,15 +15,8 @@
     <!--
         Fetch the aggregate aggregate.
     -->
-    <bean id="test_aggregate" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.DomFilesystemSourceStage">
-        <property name="parserPool" ref="parserPool"/>
-        <property name="source">
-            <bean class="java.io.File">
-                <constructor-arg value="${basedir}/mdx/test/input.xml"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="test_aggregate" parent="DOMResourceSourceStage"
+        p:DOMResource="classpath:test/input.xml"/>
     
     <!--
         Fetch and process the entities as a collection.

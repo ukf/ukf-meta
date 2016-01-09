@@ -68,13 +68,8 @@
     <!--
         Metadata signing certificate.
     -->
-    <bean id="uk_signingCertificate" parent="X509CertificateFactoryBean">
-        <property name="certificateFile">
-            <bean class="java.io.File">
-                <constructor-arg value="${basedir}/mdx/uk/ukfederation-2014.pem"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="uk_signingCertificate" parent="X509CertificateFactoryBean"
+        p:resource="classpath:uk/ukfederation-2014.pem"/>
     
     
     <!--

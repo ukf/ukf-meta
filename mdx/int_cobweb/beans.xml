@@ -34,13 +34,8 @@
     <!--
         Signing certificate.
     -->
-    <bean id="int_cobweb_signingCertificate" parent="X509CertificateFactoryBean">
-        <property name="certificateFile">
-            <bean class="java.io.File">
-                <constructor-arg value="${basedir}/mdx/int_cobweb/cobweb.pem"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="int_cobweb_signingCertificate" parent="X509CertificateFactoryBean"
+        p:resource="classpath:int_cobweb/cobweb.pem"/>
     
     <!--
         Check signing signature.
