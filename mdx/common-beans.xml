@@ -1032,13 +1032,8 @@
         A pipeline stage that removes all XML comments from items.
     -->
     
-    <bean id="stripComments" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="strip-comments.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="stripComments" parent="XSLTransformationStage"
+        p:XSLResource="classpath:strip-comments.xsl"/>
     
     <!--
         everythingSelector
@@ -1075,13 +1070,8 @@
         presented, for example by removing redundant attributes or elements which only have
         meaning when added by the UK federation registrar.
     -->
-    <bean id="cleanImport" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="clean-import.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="cleanImport" parent="XSLTransformationStage"
+        p:XSLResource="classpath:clean-import.xsl"/>
     
     <!--
         trimImportElementWhitespace

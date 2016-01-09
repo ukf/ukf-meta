@@ -143,12 +143,8 @@
         This transform can be run on individual EntityDescriptors or on an
         aggregate EntitiesDescriptor.
     -->
-    <bean id="uk_processScopes" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="uk/scopes.xsl"/>
-            </bean>
-        </property>
+    <bean id="uk_processScopes" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/scopes.xsl">
         <property name="transformParameters">
             <map>
                 <entry key="members" value-ref="uk_members"/>
@@ -197,13 +193,8 @@
         
         Adds "mailto:" to md:EmailAddress elements which don't already have it.
     -->
-    <bean id="uk_fix_mailto" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="uk/fix_mailto.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="uk_fix_mailto" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/fix_mailto.xsl"/>
     
     
     <!--
@@ -278,13 +269,8 @@
         
         This stage performs any standard cleanup required for UK federation fragment files.
     -->
-    <bean id="uk_processFragment" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="uk/fragment.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="uk_processFragment" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/fragment.xsl"/>
     
     
     <!--
@@ -428,13 +414,8 @@
         
         Strip those UK federation extensions which we never publish.
     -->
-    <bean id="uk_stripExtensions" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="uk/strip_extensions.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="uk_stripExtensions" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/strip_extensions.xsl"/>
     
 
     <!--
@@ -523,12 +504,8 @@
         
         Input is an aggregate of all registered entities, output is the HTML statistics.
     -->
-    <bean id="uk_generateStatistics" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="uk/statistics.xsl"/>
-            </bean>
-        </property>
+    <bean id="uk_generateStatistics" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/statistics.xsl">
         <property name="transformParameters">
             <map>
                 <entry key="memberDocument" value-ref="uk_membersDocument"/>

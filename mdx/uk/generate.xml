@@ -43,13 +43,8 @@
         Remove entity-level Scope elements, leaving only the ones associated
         with role descriptors.    
     -->
-    <bean id="stripEntityScopes" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="uk/entity_scopes.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="stripEntityScopes" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/entity_scopes.xsl"/>
     
     <!--
         finalise_parent
@@ -57,12 +52,8 @@
         Template for a stage used in each output pipeline which performs
         final tweaks on the document.
     -->
-    <bean id="finalise_parent" abstract="true" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="uk/final_tweak.xsl"/>
-            </bean>
-        </property>
+    <bean id="finalise_parent" abstract="true" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/final_tweak.xsl">
         <property name="transformParameters">
             <map>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
@@ -101,13 +92,8 @@
         Patch any @use-less KeyName descriptors in IdP roles
         for the benefit of Shib SPs pre-1.3.1.
     -->
-    <bean id="fixup_keyuse" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="ClassPathResource">
-                <constructor-arg value="uk/fixup_keyuse.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="fixup_keyuse" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/fixup_keyuse.xsl"/>
     
     <!--
         check_fixup_keyuse

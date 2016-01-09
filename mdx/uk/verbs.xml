@@ -57,13 +57,8 @@
             <list>
                 <ref bean="uk_registeredEntities"/>
                 <ref bean="assemble"/>
-                <bean id="process" parent="XSLTransformationStage">
-                    <property name="xslResource">
-                        <bean parent="ClassPathResource">
-                            <constructor-arg value="uk/sp_mdui_test.xsl"/>
-                        </bean>
-                    </property>
-                </bean>
+                <bean id="process" parent="XSLTransformationStage"
+                    p:XSLResource="classpath:uk/sp_mdui_test.xsl"/>
                 <bean id="serialize" parent="SerializationStage">
                     <property name="outputFile">
                         <bean class="java.io.File">
@@ -239,13 +234,8 @@
                 <ref bean="uk_fix_mailto"/>
                 
                 <!-- transform into a fragment using our local conventions -->
-                <bean id="importTransform" parent="XSLTransformationStage">
-                    <property name="XSLResource">
-                        <bean parent="ClassPathResource">
-                            <constructor-arg value="uk/import.xsl"/>
-                        </bean>
-                    </property>
-                </bean>
+                <bean id="importTransform" parent="XSLTransformationStage"
+                    p:XSLResource="classpath:uk/import.xsl"/>
                 
                 <!-- normalise namespaces in a specific way -->
                 <bean id="normalizeFragment" parent="XSLTransformationStage">
