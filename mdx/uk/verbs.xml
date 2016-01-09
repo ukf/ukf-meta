@@ -238,13 +238,8 @@
                     p:XSLResource="classpath:uk/import.xsl"/>
                 
                 <!-- normalise namespaces in a specific way -->
-                <bean id="normalizeFragment" parent="XSLTransformationStage">
-                    <property name="XSLResource">
-                        <bean parent="FileSystemResource">
-                            <constructor-arg value="${basedir}/mdx/uk/ns_norm_fragment.xsl"/>
-                        </bean>
-                    </property>
-                </bean>
+                <bean id="normalizeFragment" parent="XSLTransformationStage"
+                    p:XSLResource="classpath:uk/ns_norm_fragment.xsl"/>
                 
                 <!-- check the transformed input -->
                 <ref bean="checkSchemas"/>

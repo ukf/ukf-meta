@@ -98,13 +98,8 @@
     <!--
         check_fixup_keyuse
     -->
-    <bean id="check_fixup_keyuse" parent="XSLValidationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/check_fixup_keyuse.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="check_fixup_keyuse" parent="XSLValidationStage"
+        p:XSLResource="classpath:uk/check_fixup_keyuse.xsl"/>
     
     <!--
         checkPublishable
@@ -388,13 +383,8 @@
         </property>
     </bean>
     
-    <bean id="CDSNormaliseNamespaces" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/ns_norm_cds.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="CDSNormaliseNamespaces" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/ns_norm_cds.xsl"/>
 
     <!--
         *******************************************
@@ -473,13 +463,8 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseFallback" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/ns_norm_back.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="uk_normaliseFallback" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/ns_norm_back.xsl"/>
     
     <bean id="serializeUnsignedFallbackAggregate" parent="SerializationStage">
         <property name="outputFile">
@@ -532,13 +517,8 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseTest" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/ns_norm_test.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="uk_normaliseTest" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/ns_norm_test.xsl"/>
     
     <bean id="serializeUnsignedTestAggregate" parent="SerializationStage">
         <property name="outputFile">
@@ -588,13 +568,8 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseExport" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/ns_norm_export.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="uk_normaliseExport" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/ns_norm_export.xsl"/>
     
     <bean id="uk_exportSelector" parent="XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[not(md:Extensions/ukfedlabel:ExportOptOut)]"/>

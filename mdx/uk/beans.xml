@@ -202,12 +202,8 @@
         
         Checks specific to the UK registrar function.
     -->
-    <bean id="check_ukreg" parent="XSLValidationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/check_ukreg.xsl"/>
-            </bean>
-        </property>
+    <bean id="check_ukreg" parent="XSLValidationStage"
+        p:XSLResource="classpath:uk/check_ukreg.xsl">
         <property name="transformParameters">
             <map>
                 <entry key="members" value-ref="uk_members"/>
@@ -219,49 +215,29 @@
     <!--
         check_uk_keydesc_key
     -->
-    <bean id="check_uk_keydesc_key" parent="XSLValidationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/check_uk_keydesc_key.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="check_uk_keydesc_key" parent="XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_keydesc_key.xsl"/>
 
 
     <!--
         check_uk_mdattr
     -->
-    <bean id="check_uk_mdattr" parent="XSLValidationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/check_uk_mdattr.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="check_uk_mdattr" parent="XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_mdattr.xsl"/>
     
     
     <!--
         check_uk_mdrps
     -->
-    <bean id="check_uk_mdrps" parent="XSLValidationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/check_uk_mdrps.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="check_uk_mdrps" parent="XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_mdrps.xsl"/>
     
     
     <!--
         check_uk_urlenc
     -->
-    <bean id="check_uk_urlenc" parent="XSLValidationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/check_uk_urlenc.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="check_uk_urlenc" parent="XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_urlenc.xsl"/>
     
 
     <!--
@@ -433,13 +409,8 @@
         used in an XML document.  This one is UK-specific, as it makes specific choices
         in order to limit the number of prefixes used.
     -->
-    <bean id="uk_normaliseNamespaces" parent="XSLTransformationStage">
-        <property name="XSLResource">
-            <bean parent="FileSystemResource">
-                <constructor-arg value="${basedir}/mdx/uk/ns_norm_uk.xsl"/>
-            </bean>
-        </property>
-    </bean>
+    <bean id="uk_normaliseNamespaces" parent="XSLTransformationStage"
+        p:XSLResource="classpath:uk/ns_norm_uk.xsl"/>
     
     <!--
         *************************************************

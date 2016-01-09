@@ -105,13 +105,9 @@
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
                 
                 <!-- flag up any remaining entities -->
-                <bean id="check_recovered" parent="XSLValidationStage">
-                    <property name="XSLResource">
-                        <bean parent="FileSystemResource">
-                            <constructor-arg value="${basedir}/mdx/int_edugain/check_recovered.xsl"/>
-                        </bean>
-                    </property>
-                </bean>
+                <bean id="check_recovered" parent="XSLValidationStage"
+                    p:XSLResource="classpath:int_edugain/check_recovered.xsl"/>
+
                 <ref bean="errorTerminatingFilter"/>
             </list>
         </property>
