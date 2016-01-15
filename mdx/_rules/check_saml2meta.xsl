@@ -28,6 +28,15 @@
 	-->
 	
 	<xsl:template match="md:SPSSODescriptor">
+
+        <xsl:variable name="indices" select="md:ArtifactResolutionService/@index"/>
+        <xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
+        <xsl:if test="count($indices) != count($distinct.indices)">
+            <xsl:call-template name="error">
+                <xsl:with-param name="m">ArtifactResolutionService index values not all different</xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
+
 		<xsl:variable name="indices" select="md:AssertionConsumerService/@index"/>
 		<xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
 		<xsl:if test="count($indices) != count($distinct.indices)">
