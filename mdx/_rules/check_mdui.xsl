@@ -146,6 +146,12 @@
             </xsl:call-template>
         </xsl:if>
 
+        <xsl:if test="contains(., '&#xA0;')">
+            <xsl:call-template name="error">
+                <xsl:with-param name="m">mdui:Logo contains non-breaking space</xsl:with-param>
+            </xsl:call-template>
+        </xsl:if>
+		
 		<!--
 			Require that the URL starts with https://
 			
