@@ -1799,7 +1799,10 @@
             <xsl:variable name="entities.openathens.virtual"
                 select="$entities.openathens.virtual.in[
                     descendant::md:AttributeService/@Location=
-                        'https://gateway.athensams.net:5057/services/SAML11AttributeAuthority']"/>
+                        'https://gateway.athensams.net:5057/services/SAML11AttributeAuthority' or
+                    descendant::md:SingleSignOnService[starts-with(@Location,
+                        'https://login.openathens.net/saml/')]
+                    ]"/>
             <xsl:variable name="entities.openathens.virtual.out"
                 select="set:difference($entities.openathens.virtual.in, $entities.openathens.virtual)"/>
             
