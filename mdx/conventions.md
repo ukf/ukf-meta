@@ -10,10 +10,6 @@ An underscore ('`_`') at the start of a directory name indicates that the direct
 
 Note that the `schema` directory is functional but does not follow this convention, instead following the convention established for classpath schema resources used by the Shibboleth project.
 
-### OpenSSL Blacklists Directory
-
-The `_openssl_blacklists` directory holds a copy of the Debian weak key blacklists, extracted from Debian 7.2 "Wheezy". These blacklists are in OpenSSL format.
-
 ### Ruleset Directory
 
 The `_rules` subdirectory of `/mdx/` holds checking rulesets.
