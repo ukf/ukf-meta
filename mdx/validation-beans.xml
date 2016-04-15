@@ -324,6 +324,14 @@
     -->
     
     <!--
+        check_cr
+        
+        Check for the presence of CR characters in text content or attribute values.
+        This protects against SSPCPP-684 in the Shibboleth SP.
+    -->
+    <bean id="check_cr" parent="CRDetectionStage"/>
+
+    <!--
         check_misc
     -->
     <bean id="check_misc" parent="XSLValidationStage"
@@ -563,6 +571,7 @@
                 <ref bean="check_adfs"/>
                 <ref bean="check_algsupport"/>
                 <ref bean="check_bindings"/>
+                <ref bean="check_cr"/>
                 <ref bean="check_hoksso"/>
                 <ref bean="check_idpdisc"/>
                 <ref bean="check_incmd"/>

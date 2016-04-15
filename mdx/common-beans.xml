@@ -301,6 +301,9 @@
 
     <!-- *** Parent beans for ukf-mda. *** -->
 
+    <bean id="CRDetectionStage" abstract="true" parent="stage_parent"
+        class="uk.org.ukfederation.mda.dom.CRDetectionStage"/>
+
     <bean id="EntityAttributeAddingStage" abstract="true" parent="stage_parent"
         class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityAttributeAddingStage"/>
 
