@@ -245,6 +245,9 @@
 
     <!-- *** Parent beans for Shibboleth MDA components. *** -->
 
+    <bean id="CRDetectionStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.CRDetectionStage"/>
+    
     <bean id="ElementWhitespaceTrimmingStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.ElementWhitespaceTrimmingStage"/>
     
@@ -300,9 +303,6 @@
         class="net.shibboleth.metadata.validate.x509.X509RSAOpenSSLBlacklistValidator"/>
 
     <!-- *** Parent beans for ukf-mda. *** -->
-
-    <bean id="CRDetectionStage" abstract="true" parent="stage_parent"
-        class="uk.org.ukfederation.mda.dom.CRDetectionStage"/>
 
     <bean id="EntityAttributeAddingStage" abstract="true" parent="stage_parent"
         class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityAttributeAddingStage"/>
