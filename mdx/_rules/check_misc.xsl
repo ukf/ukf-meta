@@ -56,22 +56,6 @@
 	
 	
 	<!--
-		Check for Locations that don't start with https://
-		
-		This may be a little strict, and might be better confined to md:* elements.
-		In addition, we might at some point require more complex rules: whitelisting certain
-		entities, or permitting http:// to Locations associated with certain bindngs.
-		
-		At present, however, this simpler rule produces no false positives.
-	-->
-	<xsl:template match="*[@Location and not(starts-with(@Location,'https://'))]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location does not start with https://</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-	
-	
-	<!--
 		@Binding attributes should not contain space characters.
 		
 		This may be a little strict, and might be better confined to md:* elements.
