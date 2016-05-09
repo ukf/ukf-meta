@@ -577,12 +577,12 @@
     </bean>
     
     <!--
-        errorAnnouncer
+        warningAndErrorAnnouncer
         
         A pipeline stage that logs any errors and warnings present,
         but takes no action on them.
     -->
-    <bean id="errorAnnouncer" parent="stage_parent"
+    <bean id="warningAndErrorAnnouncer" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.StatusMetadataLoggingStage">
         <property name="identificationStrategy" ref="identificationStrategy"/>
         <property name="selectionRequirements">
@@ -632,7 +632,7 @@
     <bean id="errorAnnouncingFilter" parent="CompositeStage">
         <property name="composedStages">
             <list>
-                <ref bean="errorAnnouncer"/>
+                <ref bean="warningAndErrorAnnouncer"/>
                 <ref bean="errorRemover"/>
             </list>
         </property>
@@ -647,7 +647,7 @@
     <bean id="errorTerminatingFilter" parent="CompositeStage">
         <property name="composedStages">
             <list>
-                <ref bean="errorAnnouncer"/>
+                <ref bean="warningAndErrorAnnouncer"/>
                 <ref bean="errorTerminator"/>
             </list>
         </property>
