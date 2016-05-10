@@ -118,6 +118,9 @@
         
         Same as verify, but not making use of the validation
         blacklist. Can be used to check up on blacklisted entities.
+        
+        Output also includes any warnings attached to entities, although
+        these do not result in an error termination.
     -->
     <bean id="verify.all" parent="SimplePipeline">
         <property name="stages">
@@ -125,7 +128,8 @@
                 <ref bean="int_edugain_productionEntities"/>
                 
                 <ref bean="standardImportActions"/>
-                <ref bean="errorTerminatingFilter"/>
+                <ref bean="warningAndErrorAnnouncer"/>
+                <ref bean="errorTerminator"/>
             </list>
         </property>
     </bean>

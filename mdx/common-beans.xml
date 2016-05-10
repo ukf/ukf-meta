@@ -577,6 +577,22 @@
     </bean>
     
     <!--
+        errorAnnouncer
+        
+        A pipeline stage that logs any errors present,
+        but takes no action on them.
+    -->
+    <bean id="errorAnnouncer" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.StatusMetadataLoggingStage">
+        <property name="identificationStrategy" ref="identificationStrategy"/>
+        <property name="selectionRequirements">
+            <list>
+                <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--
         warningAndErrorAnnouncer
         
         A pipeline stage that logs any errors and warnings present,
@@ -627,7 +643,7 @@
         errorAnnouncingFilter
         
         Announce any errors or warnings encountered, then remove
-        any items that had errors.  Items with warnings are retained.
+        any items that had errors.  Items with just warnings are retained.
     -->
     <bean id="errorAnnouncingFilter" parent="CompositeStage">
         <property name="composedStages">
@@ -641,13 +657,14 @@
     <!--
         errorTerminatingFilter
         
-        A pipeline stage that checks for any errors, and then announces
-        and filters any encountered.
+        Announces any errors encountered, and then terminates if any are present.
+        
+        Warnings are not announced, and do not cause termination.
     -->
     <bean id="errorTerminatingFilter" parent="CompositeStage">
         <property name="composedStages">
             <list>
-                <ref bean="warningAndErrorAnnouncer"/>
+                <ref bean="errorAnnouncer"/>
                 <ref bean="errorTerminator"/>
             </list>
         </property>
@@ -813,6 +830,14 @@
     <bean id="stripMDUILogoData" parent="XSLTransformationStage"
         p:XSLResource="classpath:strip-mdui-logo-data.xsl"/>
 
+    <!--
+        stripMDUILogoHttp
+        
+        Remove any mdui:Logo elements containing http:// URLs.
+    -->
+    <bean id="stripMDUILogoHttp" parent="XSLTransformationStage"
+        p:XSLResource="classpath:strip-mdui-logo-http.xsl"/>
+    
     <!--
         stripEmptyMDUIUIInfo
         
@@ -1142,6 +1167,7 @@
 
                 <ref bean="cleanImport"/>
                 <ref bean="stripAAMDUI"/>
+                <ref bean="stripMDUILogoHttp"/>
                 <ref bean="trimImportElementWhitespace"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="checkSchemas"/>
