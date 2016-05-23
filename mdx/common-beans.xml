@@ -1171,7 +1171,10 @@
                 <ref bean="trimImportElementWhitespace"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="checkSchemas"/>
-                <ref bean="CHECK_imported"/>
+                <ref bean="CHECK_std"/>
+                <ref bean="check_dup_display"/>
+                <ref bean="check_regscope"/>
+                <ref bean="check_namespaces"/>
 
                 <bean id="checkCertificates" parent="X509ValidationStage">
                     <property name="validators">

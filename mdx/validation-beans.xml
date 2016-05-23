@@ -616,18 +616,4 @@
         </property>
     </bean>
     
-    <!--
-        CHECK_imported
-    -->
-    <bean id="CHECK_imported" parent="CompositeStage">
-        <property name="composedStages">
-            <list>
-                <ref bean="CHECK_std"/>
-                <ref bean="check_dup_display"/>
-                <ref bean="check_regscope"/>
-                <ref bean="check_namespaces"/>
-            </list>
-        </property>
-    </bean>
-    
 </beans>
