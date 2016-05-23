@@ -18,7 +18,9 @@
         ***   F U T U R E   T E S T S   ***
         ***                             ***
         ***********************************
-        
+    -->
+
+    <!--        
         The tests in this section are not applied to the UK federation metadata at the moment,
         but will be in the future.  Usually, the delay is due to the presence of the specific
         case in the current metadata, and the test will be moved into production once that
@@ -122,7 +124,6 @@
         ***                                                     ***
         ***********************************************************
     -->
-        
 
     <!--
         check_algsupport
@@ -131,63 +132,6 @@
         p:XSLResource="classpath:_rules/check_algsupport.xsl"/>
 
 
-    <!--
-        *********************
-        ***               ***
-        ***   ( E N D )   ***
-        ***               ***
-        *********************
-    -->
-    
-
-    <!--
-        check_adfs
-    -->
-    <bean id="check_adfs" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_adfs.xsl"/>
-    
-    <!--
-        check_bindings
-    -->
-    <bean id="check_bindings" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_bindings.xsl"/>
-    
-    <!--
-        check_filtered
-    -->
-    <bean id="check_filtered" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_filtered.xsl"/>
-    
-    <!--
-        check_hoksso
-    -->
-    <bean id="check_hoksso" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_hoksso.xsl"/>
-        
-    <!--
-        check_idpdisc
-    -->
-    <bean id="check_idpdisc" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_idpdisc.xsl"/>
-    
-    <!--
-        check_imported
-    -->
-    <bean id="check_imported" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_imported.xsl"/>
-    
-    <!--
-        check_init
-    -->
-    <bean id="check_init" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_init.xsl"/>
-    
-    <!--
-        check_mdiop
-    -->
-    <bean id="check_mdiop" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_mdiop.xsl"/>
-    
     <!--
         ***************************************************
         ***                                             ***
@@ -201,6 +145,7 @@
     -->
     <bean id="check_mdattr" parent="XSLValidationStage"
         p:XSLResource="classpath:_rules/check_mdattr.xsl"/>
+
     
     <!--
         *************************************************
@@ -249,6 +194,7 @@
     -->
     <bean id="check_hasreginfo" parent="XSLValidationStage"
         p:XSLResource="classpath:_rules/check_hasreginfo.xsl"/>
+
     
     <!--
         ***********************************************
@@ -314,15 +260,200 @@
             </list>
         </property>
     </bean>
+
+
+    <!--
+        *******************************************************************
+        ***                                                             ***
+        ***   I N C O M M O N   F E D E R A T I O N   M E T A D A T A   ***
+        ***                                                             ***
+        *******************************************************************
+    -->
+
+    <!--
+        check_incmd
+    -->
+    <bean id="check_incmd" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_incmd.xsl"/>
+
     
     <!--
-        *********************
-        ***               ***
-        ***   ( E N D )   ***
-        ***               ***
-        *********************
+        ***********************************************************
+        ***                                                     ***
+        ***   S H I B B O L E T H   S P E C I F I C A T I O N   ***
+        ***                                                     ***
+        ***********************************************************
+    -->
+
+    <!--
+        check_regscope
+        
+        Check for regular expressions in Shibboleth Scope elements.  Applied very selectively.
+    -->
+    <bean id="check_regscope" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_regscope.xsl"/>
+
+
+    <!--
+        *******************************************************************
+        ***                                                             ***
+        ***   U K   F E D E R A T I O N   S P E C I F I C A T I O N S   ***
+        ***                                                             ***
+        *******************************************************************
     -->
     
+    <!--
+        check_uk_algorithms
+    -->
+    <bean id="check_uk_algorithms" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_uk_algorithms.xsl"/>
+    
+    <!--
+        check_uk_trust
+    -->
+    <bean id="check_uk_trust" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_uk_trust.xsl"/>
+    
+    <!--
+        check_uk_wayf
+    -->
+    <bean id="check_uk_wayf" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_uk_wayf.xsl"/>
+
+
+    <!--
+        *******************************************************
+        ***                                                 ***
+        ***   C O L L E C T I O N   C O N S I S T E N C Y   ***
+        ***                                                 ***
+        *******************************************************
+    -->
+    
+    <!--
+        These checks are for consistency across a collection of entities
+        rather than on each entity independently.
+    -->
+
+    <!--
+        check_aggregate
+        
+        Checks for duplicate entityID values across a set of entities.
+        
+        It is assumed that the entities are wrapped in a single EntitiesDescriptor.
+    -->
+    <bean id="check_aggregate" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_aggregate.xsl"/>
+    
+    <!--
+        check_dup_display
+        
+        Checks for duplicate identity provider display names across a set of entities.
+        
+        It is assumed that the entities are independently represented as EntityDescriptor
+        items in the item collection.
+    -->
+    <bean id="check_dup_display" parent="stage_parent"
+        p:identificationStrategy-ref="identificationStrategy"
+        class="uk.org.ukfederation.mda.IdPDisplayNameDuplicateDetectingStage"/>
+
+
+    <!--
+        ***********************************************
+        ***                                         ***
+        ***   X . 5 0 9   C E R T I F I C A T E S   ***
+        ***                                         ***
+        ***********************************************
+    -->
+    
+    <!--
+        Debian weak key blacklists.
+    -->
+
+    <bean id="debian.1024" parent="X509RSAOpenSSLBlacklistValidator"
+        p:keySize="1024"
+        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-1024.txt"/>
+
+    <bean id="debian.2048" parent="X509RSAOpenSSLBlacklistValidator"
+        p:keySize="2048"
+        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-2048.txt"/>
+
+    <bean id="debian.4096" parent="X509RSAOpenSSLBlacklistValidator"
+        p:keySize="4096"
+        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-4096.txt"/>
+
+    <!--
+        Blacklist of known compromised 1024-bit keys, e.g., "dummy" keys shipped with
+        SAML products that are sometimes deployed by accident.
+    -->
+    <bean id="compromised.1024" parent="X509RSAOpenSSLBlacklistValidator"
+        p:keySize="1024"
+        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/compromised-1024.txt"/>
+
+    <!--
+        Blacklist of known compromised 2048-bit keys, e.g., "dummy" keys shipped with
+        SAML products that are sometimes deployed by accident.
+    -->
+    <bean id="compromised.2048" parent="X509RSAOpenSSLBlacklistValidator"
+        p:keySize="2048"
+        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/compromised-2048.txt"/>
+
+
+    <!--
+        ***************************************************
+        ***                                             ***
+        ***   M I S C E L L A N E O U S   C H E C K S   ***
+        ***                                             ***
+        ***************************************************
+    -->
+
+    <!--
+        check_adfs
+    -->
+    <bean id="check_adfs" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_adfs.xsl"/>
+    
+    <!--
+        check_bindings
+    -->
+    <bean id="check_bindings" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_bindings.xsl"/>
+    
+    <!--
+        check_filtered
+    -->
+    <bean id="check_filtered" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_filtered.xsl"/>
+    
+    <!--
+        check_hoksso
+    -->
+    <bean id="check_hoksso" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_hoksso.xsl"/>
+        
+    <!--
+        check_idpdisc
+    -->
+    <bean id="check_idpdisc" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_idpdisc.xsl"/>
+    
+    <!--
+        check_imported
+    -->
+    <bean id="check_imported" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_imported.xsl"/>
+    
+    <!--
+        check_init
+    -->
+    <bean id="check_init" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_init.xsl"/>
+    
+    <!--
+        check_mdiop
+    -->
+    <bean id="check_mdiop" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_mdiop.xsl"/>
+
     <!--
         check_cr
         
@@ -360,14 +491,6 @@
     -->
     <bean id="check_namespaces" parent="XSLValidationStage"
         p:XSLResource="classpath:_rules/check_namespaces.xsl"/>
-    
-    <!--
-        check_regscope
-        
-        Check for regular expressions in Shibboleth Scope elements.  Applied very selectively.
-    -->
-    <bean id="check_regscope" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_regscope.xsl"/>
     
     <!--
         check_reqattr
@@ -456,121 +579,7 @@
     -->
     <bean id="check_vhosts" parent="XSLValidationStage"
         p:XSLResource="classpath:_rules/check_vhosts.xsl"/>
-    
-    <!--
-        *******************************************************************
-        ***                                                             ***
-        ***   I N C O M M O N   F E D E R A T I O N   M E T A D A T A   ***
-        ***                                                             ***
-        *******************************************************************
-    -->
-    
-    <!--
-        check_incmd
-    -->
-    <bean id="check_incmd" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_incmd.xsl"/>
-    
-    <!--
-        *******************************************************************
-        ***                                                             ***
-        ***   U K   F E D E R A T I O N   S P E C I F I C A T I O N S   ***
-        ***                                                             ***
-        *******************************************************************
-    -->
-    
-    <!--
-        check_uk_algorithms
-    -->
-    <bean id="check_uk_algorithms" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_uk_algorithms.xsl"/>
-    
-    <!--
-        check_uk_trust
-    -->
-    <bean id="check_uk_trust" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_uk_trust.xsl"/>
-    
-    <!--
-        check_uk_wayf
-    -->
-    <bean id="check_uk_wayf" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_uk_wayf.xsl"/>
 
-    <!--
-        *******************************************************
-        ***                                                 ***
-        ***   C O L L E C T I O N   C O N S I S T E N C Y   ***
-        ***                                                 ***
-        *******************************************************
-    -->
-    
-    <!--
-        These checks are for consistency across a collection of entities
-        rather than on each entity independently.
-    -->
-    
-    <!--
-        check_aggregate
-        
-        Checks for duplicate entityID values across a set of entities.
-        
-        It is assumed that the entities are wrapped in a single EntitiesDescriptor.
-    -->
-    <bean id="check_aggregate" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_aggregate.xsl"/>
-    
-    <!--
-        check_dup_display
-        
-        Checks for duplicate identity provider display names across a set of entities.
-        
-        It is assumed that the entities are independently represented as EntityDescriptor
-        items in the item collection.
-    -->
-    <bean id="check_dup_display" parent="stage_parent"
-        p:identificationStrategy-ref="identificationStrategy"
-        class="uk.org.ukfederation.mda.IdPDisplayNameDuplicateDetectingStage"/>
-    
-    <!--
-        ***********************************************
-        ***                                         ***
-        ***   X . 5 0 9   C E R T I F I C A T E S   ***
-        ***                                         ***
-        ***********************************************
-    -->
-    
-    <!--
-        Debian weak key blacklists.
-    -->
-
-    <bean id="debian.1024" parent="X509RSAOpenSSLBlacklistValidator"
-        p:keySize="1024"
-        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-1024.txt"/>
-
-    <bean id="debian.2048" parent="X509RSAOpenSSLBlacklistValidator"
-        p:keySize="2048"
-        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-2048.txt"/>
-
-    <bean id="debian.4096" parent="X509RSAOpenSSLBlacklistValidator"
-        p:keySize="4096"
-        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-4096.txt"/>
-
-    <!--
-        Blacklist of known compromised 1024-bit keys, e.g., "dummy" keys shipped with
-        SAML products that are sometimes deployed by accident.
-    -->
-    <bean id="compromised.1024" parent="X509RSAOpenSSLBlacklistValidator"
-        p:keySize="1024"
-        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/compromised-1024.txt"/>
-
-    <!--
-        Blacklist of known compromised 2048-bit keys, e.g., "dummy" keys shipped with
-        SAML products that are sometimes deployed by accident.
-    -->
-    <bean id="compromised.2048" parent="X509RSAOpenSSLBlacklistValidator"
-        p:keySize="2048"
-        p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/compromised-2048.txt"/>
 
     <!--
         *********************************************
