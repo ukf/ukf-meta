@@ -268,6 +268,7 @@
                 <ref bean="check_saml2"/>
                 <ref bean="check_saml2int"/>
                 <!-- <ref bean="check_saml2meta"/> -->
+                <ref bean="check_shib_noregscope"/>
                 <ref bean="check_shibboleth"/>
                 <ref bean="check_sp_tls"/>
                 <ref bean="check_uk_trust"/>

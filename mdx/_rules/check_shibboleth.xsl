@@ -148,18 +148,6 @@
 			<xsl:with-param name="m">SIDPO-34: Attribute lacking NameFormat in IDPSSODescriptor</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
-	<!--
-		Check for Shibboleth Scope elements that don't include a regexp attribute.
-		This has a default in the schema so omitting it can cause signing brittleness.
-	-->
-	<xsl:template match="shibmd:Scope[not(@regexp)]">
-		<xsl:call-template name="error">
-			<xsl:with-param name="m">Scope <xsl:value-of select="."/> lacks @regexp</xsl:with-param>
-		</xsl:call-template>
-	</xsl:template>
-
 
 	<!--
 		Scope elements should not contain space characters.

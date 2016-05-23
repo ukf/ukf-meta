@@ -294,6 +294,22 @@
     <bean id="check_shib_regscope" parent="XSLValidationStage"
         p:XSLResource="classpath:_rules/check_shib_regscope.xsl"/>
 
+    <!--
+        check_shib_noregscope
+        
+        Check for Shibboleth Scope elements lacking a regexp attribute, which can cause
+        problems with signature generation and validation because the schema includes
+        a default value.
+    -->
+    <bean id="check_shib_noregscope" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_shib_noregscope.xsl"/>
+
+    <!--
+        check_shibboleth
+    -->
+    <bean id="check_shibboleth" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_shibboleth.xsl"/>
+
 
     <!--
         *******************************************************************
@@ -551,12 +567,6 @@
     </bean>
 
     <!--
-        check_shibboleth
-    -->
-    <bean id="check_shibboleth" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_shibboleth.xsl"/>
-
-    <!--
         check_validUntil
         
         Check that an aggregate has a validUntil instant specified, and that it has not
@@ -617,6 +627,7 @@
                 <ref bean="check_saml2int"/>
                 <ref bean="check_saml2meta"/>
                 <ref bean="check_saml_strings"/>
+                <ref bean="check_shib_noregscope"/>
                 <ref bean="check_shibboleth"/>
                 <ref bean="check_sp_tls"/>
                 <ref bean="check_uk_algorithms"/>
