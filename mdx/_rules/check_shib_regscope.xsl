@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	check_regscope.xsl
+	check_shib_regscope.xsl
 
 	Check for the presence of Shibboleth Scope elements containing regular expressions.
 	

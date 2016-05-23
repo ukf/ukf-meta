@@ -1173,7 +1173,7 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_dup_display"/>
-                <ref bean="check_regscope"/>
+                <ref bean="check_shib_regscope"/>
                 <ref bean="check_namespaces"/>
 
                 <bean id="checkCertificates" parent="X509ValidationStage">

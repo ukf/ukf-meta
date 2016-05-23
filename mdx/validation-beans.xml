@@ -286,12 +286,13 @@
     -->
 
     <!--
-        check_regscope
+        check_shib_regscope
         
-        Check for regular expressions in Shibboleth Scope elements.  Applied very selectively.
+        Check for regular expressions in Shibboleth Scope elements.  Applied very selectively,
+        because we do permit this in certain circumstances.
     -->
-    <bean id="check_regscope" parent="XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_regscope.xsl"/>
+    <bean id="check_shib_regscope" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_shib_regscope.xsl"/>
 
 
     <!--
