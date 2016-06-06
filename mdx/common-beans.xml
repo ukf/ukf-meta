@@ -468,9 +468,9 @@
         Federation registrationAuthority URIs.
     -->
     <bean id="ar_mate_registrar"         parent="String" c:_="http://www.federacionmate.gob.ar"/>
-    <bean id="am_afire_registrar"        parent="String" c:_="http://afire.asnet.am"/>
+    <bean id="am_afire_registrar"        parent="String" c:_="https://aai.asnet.am"/>
     <bean id="at_aconet_registrar"       parent="String" c:_="http://eduid.at"/>
-    <bean id="au_aaf_registrar"          parent="String" c:_="http://aaf.edu.au/"/>
+    <bean id="au_aaf_registrar"          parent="String" c:_="https://aaf.edu.au/"/>
     <bean id="be_belnet_registrar"       parent="String" c:_="http://federation.belnet.be/"/>
     <bean id="br_cafe_registrar"         parent="String" c:_="http://cafe.rnp.br"/>
     <bean id="ca_caf_registrar"          parent="String" c:_="http://www.canarie.ca"/>
@@ -529,7 +529,9 @@
                     
                     http://www.edugain.org/technical/status.php
                 -->
+                <entry key-ref="am_afire_registrar"           value="AM"/>
                 <entry key-ref="at_aconet_registrar"          value="AT"/>
+                <entry key-ref="au_aaf_registrar"             value="AU"/>
                 <entry key-ref="be_belnet_registrar"          value="BE"/>
                 <entry key-ref="br_cafe_registrar"            value="BR"/>
                 <entry key-ref="ca_caf_registrar"             value="CA"/>
@@ -568,8 +570,6 @@
                 
                 <!-- eduGAIN voting-only members -->
                 <entry key-ref="ar_mate_registrar"            value="AR"/>
-                <entry key-ref="am_afire_registrar"           value="AM"/>
-                <entry key-ref="au_aaf_registrar"             value="AU"/>
                 
                 <!-- eduGAIN candidates -->
             </map>
