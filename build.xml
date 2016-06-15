@@ -87,7 +87,7 @@
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
     <property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
     <property name="tools.xmlsectool" value="${tools.dir}/xmlsectool"/>
-    <property name="tools.xmlsectool.new" value="${tools.dir}/xmlsectool-2.0.0-beta-1/"/>
+    <property name="tools.xmlsectool.new" value="${tools.dir}/xmlsectool-2.0.0-beta-2/"/>
     <property name="tools.xalan" value="${tools.dir}/xalan"/>
 
     <!--
