@@ -198,14 +198,16 @@
         Checks specific to the UK registrar function.
     -->
     <bean id="check_ukreg" parent="XSLValidationStage"
-        p:XSLResource="classpath:uk/check_ukreg.xsl">
-        <property name="transformParameters">
-            <map>
-                <entry key="members" value-ref="uk_members"/>
-            </map>
-        </property>
-    </bean>
+        p:XSLResource="classpath:uk/check_ukreg.xsl"/>
     
+    <!--
+        check_owner
+        
+        Checks that entities are owned by UK federation members.
+    -->
+    <bean id="check_owner" parent="stage_parent"
+        class="uk.org.ukfederation.mda.dom.saml.EntityOwnerCheckingStage"
+        p:members-ref="uk_members"/>
     
     <!--
         check_uk_keydesc_key
@@ -336,6 +338,7 @@
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_ukreg"/>
+                <ref bean="check_owner"/>
                 <ref bean="check_uk_keydesc_key"/>
                 <ref bean="check_uk_mdattr"/>
                 <ref bean="check_uk_mdrps"/>

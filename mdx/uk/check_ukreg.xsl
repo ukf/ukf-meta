@@ -15,8 +15,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 
 	xmlns:mdxMail="xalan://uk.ac.sdss.xalan.md.Mail"
-	xmlns:ukfxMembers="xalan://uk.org.ukfederation.members.Members"
-	extension-element-prefixes="mdxMail ukfxMembers"
+	extension-element-prefixes="mdxMail"
 
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -26,48 +25,6 @@
 	<xsl:import href="../_rules/check_framework.xsl"/>
 
 	
-	<!--
-		Parameters.
-	-->
-	<xsl:param name="members"/>
-	
-	
-	<!--
-		Check EntityDescriptor elements.
-	-->
-	<xsl:template match="md:EntityDescriptor">
-		
-		<!-- tests on OrganizationName -->
-		<xsl:choose>
-
-			<!--
-				Check for entities which do not have an OrganizationName at all.
-			-->
-			<xsl:when test="not(md:Organization/md:OrganizationName)">
-				<xsl:call-template name="error">
-					<xsl:with-param name="m">entity lacks OrganizationName</xsl:with-param>
-				</xsl:call-template>
-			</xsl:when>
-
-			<xsl:otherwise>
-				<!--
-					Check for entities with OrganizationName elements which don't correspond to
-					a canonical owner name.
-				-->
-				<xsl:if test="not(ukfxMembers:isOwnerName($members, md:Organization/md:OrganizationName))">
-					<xsl:call-template name="error">
-						<xsl:with-param name="m">unknown owner name: <xsl:value-of select="md:Organization/md:OrganizationName"/></xsl:with-param>
-					</xsl:call-template>
-				</xsl:if>
-			</xsl:otherwise>
-
-		</xsl:choose>
-
-		<!-- apply tests to child elements -->
-		<xsl:apply-templates/>
-	</xsl:template>
-
-
 	<!--
 		Check for badly formatted e-mail addresses.
 	-->
