@@ -86,7 +86,6 @@
     <property name="tools.mda" value="${tools.dir}/aggregator-cli-0.9.1"/>
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
     <property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
-    <property name="tools.xmlsectool.old" value="${tools.dir}/xmlsectool"/>
     <property name="tools.xmlsectool" value="${tools.dir}/xmlsectool-2.0.0/"/>
     <property name="tools.xalan" value="${tools.dir}/xalan"/>
 
@@ -615,103 +614,6 @@
     </macrodef>
 
     <!--
-        *****************************************************
-        ***                                               ***
-        ***   X M L S E C T O O L   T O O L   ( O L D )   ***
-        ***                                               ***
-        *****************************************************
-    -->
-
-    <macrodef name="XMLSECTOOL.old">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-        <element name="args" optional="yes"/>
-        <sequential>
-            <java classname="edu.internet2.middleware.security.XmlSecTool"
-                fork="true" failonerror="true" maxmemory="${java.max.memory}">
-                <classpath>
-                    <fileset dir="${tools.xmlsectool.old}/lib">
-                        <include name="*.jar"/>
-                    </fileset>
-                </classpath>
-                <jvmarg value="-Djava.endorsed.dirs=${tools.xmlsectool.old}/lib/endorsed"/>
-                <jvmarg value="-Dedu.internet2.middleware.security.XmlSecTool.home=${tools.xmlsectool.old}"/>
-                <args/>
-                <arg value="--validateSchema"/>
-                <arg value="--schemaDirectory"/>
-                <arg value="${xml.dir}"/>
-                <arg value="--inFile"/>
-                <arg value="${xml.dir}/@{i}"/>
-            </java>
-        </sequential>
-    </macrodef>
-
-    <macrodef name="XMLSECTOOL.old.SIGN.uk">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-        <attribute name="o"/><!-- output file, assumed to be in the XML directory -->
-        <attribute name="digest"/><!-- digest function to use -->
-        <sequential>
-            <!-- delete the temporary file to be sure we don't use old data -->
-            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-
-            <echo>Signing @{i} using digest @{digest}.</echo>
-
-            <!-- perform signing operation into temporary file -->
-            <XMLSECTOOL.old i="@{i}">
-                <args>
-                    <arg value="--sign"/>
-
-                    <!-- set digest to use -->
-                    <arg value="--digest"/>
-                    <arg value="@{digest}"/>
-
-                    <!--
-                        Sign using pkcs11Config with keystoreProvider
-
-                        This only works with XmlSecTool 1.2.0 and later.
-                        It requires the java.security file to be unmodified.
-                    -->
-                    <arg value="--pkcs11Config"/>
-                    <arg value="${pkcs11.config}"/>
-                    <arg value="--keystoreProvider"/>
-                    <arg value="sun.security.pkcs11.SunPKCS11"/>
-
-                    <arg value="--key"/>
-                    <arg value="${keystore.uk.sign.alias}"/>
-                    <arg value="--keyPassword"/>
-                    <arg value="${keystore.pass}"/>
-                    <arg value="--outFile"/>
-                    <arg value="${xml.dir}/@{o}"/>
-                    <arg value="--referenceIdAttributeName"/>
-                    <arg value="ID"/>
-                    <!--
-                    <arg value="- -quiet"/>
-                    -->
-                </args>
-            </XMLSECTOOL.old>
-
-            <!-- Force the output file to use Unix line endings -->
-            <fixcrlf file="${xml.dir}/@{o}" eol="lf" encoding="UTF-8"/>
-
-        </sequential>
-    </macrodef>
-
-    <macrodef name="XMLSECTOOL.old.VFY.uk">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-        <sequential>
-            <XMLSECTOOL.old i="@{i}">
-                <args>
-                    <arg value="--verifySignature"/>
-                    <arg value="--certificate"/>
-                    <arg value="${mdx.dir}/uk/ukfederation-2014.pem"/>
-                    <!--
-                    <arg value="- -quiet"/>
-                    -->
-                </args>
-            </XMLSECTOOL.old>
-        </sequential>
-    </macrodef>
-
-    <!--
         *****************************************
         ***                                   ***
         ***   X M L S E C T O O L   T O O L   ***
@@ -939,11 +841,6 @@
                 Verify using xmlsectool.
             -->
             <XMLSECTOOL.VFY.uk i="@{i}"/>
-
-            <!--
-                Verify using old version of xmlsectool.
-            -->
-            <XMLSECTOOL.old.VFY.uk i="@{i}"/>
 
         </sequential>
     </macrodef>
