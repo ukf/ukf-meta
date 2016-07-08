@@ -125,30 +125,6 @@
     
     
     <!--
-        uk_processScopes
-        
-        This stage normalises scope handling in two ways particular to the UK
-        federation:
-        
-        * we make all three potential scope lists equivalent (on the entity, on
-        the IDPSSODescriptor and on the AttributeAuthority)
-        
-        * we inject scopes "pushed" to entities from the members.xml file
-        
-        This transform can be run on individual EntityDescriptors or on an
-        aggregate EntitiesDescriptor.
-    -->
-    <bean id="uk_processScopes" parent="XSLTransformationStage"
-        p:XSLResource="classpath:uk/scopes.xsl">
-        <property name="transformParameters">
-            <map>
-                <entry key="members" value-ref="uk_members"/>
-            </map>
-        </property>
-    </bean>
-    
-    
-    <!--
         uk_membersResource
         
         A Resource referencing the members.xml document.
@@ -304,7 +280,26 @@
             <list>
                 <ref bean="uk_fetchFragmentFiles"/>
                 <ref bean="uk_processFragment"/>
-                <ref bean="uk_processScopes"/>
+
+                <!--
+                    Make all three potential scope lists equivalent (on the entity, on
+                    the IDPSSODescriptor and on the AttributeAuthority).
+                -->
+                <bean id="scopes_copy" parent="XSLTransformationStage"
+                    p:XSLResource="classpath:uk/scopes_copy.xsl"/>
+
+                <!--
+                    Inject scopes "pushed" to entities from the members.xml file.
+                -->
+                <bean id="scopes_inject" parent="XSLTransformationStage"
+                    p:XSLResource="classpath:uk/scopes_inject.xsl">
+                    <property name="transformParameters">
+                        <map>
+                            <entry key="members" value-ref="uk_members"/>
+                        </map>
+                    </property>
+                </bean>
+
                 <ref bean="populateItemIds"/>
                 <ref bean="uk_populateIds"/>
                 <ref bean="uk_default_regauth"/>
