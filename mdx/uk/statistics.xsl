@@ -1234,7 +1234,7 @@
         *****************************************
     -->
     
-    <xsl:template match="members:Member|members:NonMember" mode="count">
+    <xsl:template match="members:Member" mode="count">
         <xsl:param name="entities"/>
         <xsl:variable name="myName" select="string(members:Name)"/>
         <xsl:variable name="matched" select="$entities[md:Organization/md:OrganizationName = $myName]"/>
