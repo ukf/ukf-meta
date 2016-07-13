@@ -498,9 +498,6 @@
                     <fileset dir="${tools.dir}/xalan/lib">
                         <include name="sdss-xalan-md-*.jar"/>
                     </fileset>
-                    <fileset dir="${tools.dir}/xalan/lib">
-                        <include name="ukf-members-*.jar"/>
-                    </fileset>
                 </classpath>
                 <syspropertyset>
                     <propertyset refid="mda.properties"/>

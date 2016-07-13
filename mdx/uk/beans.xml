@@ -291,14 +291,9 @@
                 <!--
                     Inject scopes "pushed" to entities from the members.xml file.
                 -->
-                <bean id="scopes_inject" parent="XSLTransformationStage"
-                    p:XSLResource="classpath:uk/scopes_inject.xsl">
-                    <property name="transformParameters">
-                        <map>
-                            <entry key="members" value-ref="uk_members"/>
-                        </map>
-                    </property>
-                </bean>
+                <bean id="scopes_inject" parent="stage_parent"
+                    class="uk.org.ukfederation.mda.dom.saml.ScopeInjectionStage"
+                    p:members-ref="uk_members"/>
 
                 <ref bean="populateItemIds"/>
                 <ref bean="uk_populateIds"/>
