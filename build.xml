@@ -173,7 +173,7 @@
     <!--
         Standard processing: generate, sign, then verify.
     -->
-    <target name="process" depends="get.keystore.pass, generate, sign, verify">
+    <target name="process" depends="get.keystore.pass, generate, sign, verify, generate.members.cms">
         <echo>Processing complete.</echo>
     </target>
 
@@ -266,6 +266,7 @@
                 knownhosts="${known.hosts}">
             <fileset dir="${xml.dir}">
                 <include name="members.xml"/>
+                <include name="members-cms.xml"/>
                 <include name="ukfederation-members.xsd"/>
                 <include name="ukfederation-stats.html"/>
                 <include name="${md.cms.unsigned}"/>
@@ -359,6 +360,29 @@
         <VFY.remote.both i="${md.export.signed}"/>
         <VFY.remote.both i="${md.export.preview.signed}"/>
         <echo>Verification completed.</echo>
+    </target>
+
+    <!--
+        *************************
+        ***                   ***
+        ***   M E M B E R S   ***
+        ***                   ***
+        *************************
+    -->
+
+    <!--
+        generate.members.cms
+        
+        Produce a variant of the members.xml file suitable for
+        consumption by the legacy CMS.
+    -->
+    <target name="generate.members.cms">
+        <echo>Generating CMS version of members.xml</echo>
+        <XALAN
+            i="${xml.dir}/members.xml"
+            o="${xml.dir}/members-cms.xml"
+            x="${mdx.dir}/uk/members-cms.xsl"/>
+        <echo>Generated CMS version of members.xml</echo>
     </target>
 
     <!--
