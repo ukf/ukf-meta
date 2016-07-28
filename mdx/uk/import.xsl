@@ -63,20 +63,20 @@
 	<xsl:template match="md:EntityDescriptor">
 		<xsl:text>&#10;</xsl:text>
 		<EntityDescriptor ID="uk000000_CHANGE_THIS"
-			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata ../xml/saml-schema-metadata-2.0.xsd
-			urn:oasis:names:tc:SAML:metadata:algsupport ../xml/sstc-saml-metadata-algsupport-v1.0.xsd
-			urn:oasis:names:tc:SAML:metadata:attribute ../xml/sstc-metadata-attr.xsd
-			urn:oasis:names:tc:SAML:metadata:rpi ../xml/saml-metadata-rpi-v1.0.xsd
-			urn:oasis:names:tc:SAML:metadata:ui ../xml/sstc-saml-metadata-ui-v1.0.xsd
-			urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol ../xml/sstc-saml-idp-discovery.xsd
-			urn:oasis:names:tc:SAML:profiles:SSO:request-init ../xml/sstc-request-initiation.xsd
-			urn:oasis:names:tc:SAML:2.0:assertion ../xml/saml-schema-assertion-2.0.xsd
-			urn:mace:shibboleth:metadata:1.0 ../xml/shibboleth-metadata-1.0.xsd
-			http://ukfederation.org.uk/2006/11/label ../xml/uk-fed-label.xsd
-			http://sdss.ac.uk/2006/06/WAYF ../xml/uk-wayf.xsd
-			http://www.w3.org/2001/04/xmlenc# ../xml/xenc-schema.xsd
-			http://www.w3.org/2009/xmlenc11# ../xml/xenc-schema-11.xsd
-			http://www.w3.org/2000/09/xmldsig# ../xml/xmldsig-core-schema.xsd">
+			xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata saml-schema-metadata-2.0.xsd
+			urn:oasis:names:tc:SAML:metadata:algsupport sstc-saml-metadata-algsupport-v1.0.xsd
+			urn:oasis:names:tc:SAML:metadata:attribute sstc-metadata-attr.xsd
+			urn:oasis:names:tc:SAML:metadata:rpi saml-metadata-rpi-v1.0.xsd
+			urn:oasis:names:tc:SAML:metadata:ui sstc-saml-metadata-ui-v1.0.xsd
+			urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol sstc-saml-idp-discovery.xsd
+			urn:oasis:names:tc:SAML:profiles:SSO:request-init sstc-request-initiation.xsd
+			urn:oasis:names:tc:SAML:2.0:assertion saml-schema-assertion-2.0.xsd
+			urn:mace:shibboleth:metadata:1.0 shibboleth-metadata-1.0.xsd
+			http://ukfederation.org.uk/2006/11/label uk-fed-label.xsd
+			http://sdss.ac.uk/2006/06/WAYF uk-wayf.xsd
+			http://www.w3.org/2001/04/xmlenc# xenc-schema.xsd
+			http://www.w3.org/2009/xmlenc11# xenc-schema-11.xsd
+			http://www.w3.org/2000/09/xmldsig# xmldsig-core-schema.xsd">
 			
 			<!--
 				Copy across the @entityID attribute.  Other attributes from the input document
