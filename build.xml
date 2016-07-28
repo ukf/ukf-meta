@@ -18,13 +18,16 @@
         we're executing on.  We use this to decide which properties files
         to load.
 
-        Values: windows, macosx, other.
+        Values: windows, macosx, linux, other.
     -->
     <condition property="os.family" value="windows">
         <os family="windows"/>
     </condition>
     <condition property="os.family" value="macosx">
         <os family="mac"/>
+    </condition>
+    <condition property="os.family" value="linux">
+        <os family="unix" name="Linux"/>
     </condition>
     <property name="os.family" value="other"/>
 
