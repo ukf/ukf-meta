@@ -6,17 +6,17 @@ This is the metadata repository and main toolset for the [UK Access Management F
 
 There are two variants of the repository:
 
-* The private variant of the repository is used as part of UK federation operations. This is where we maintain federation membership details and the individual metadata documents for each entity registered with the UK federation.
+* The private variant of the repository is used as part of UK federation operations.
 
 * The public, read-only variant of the repository is made available on [GitHub](https://github.com/ukf/ukf-meta). If you're reading this, you're probably accessing this more restricted version. We provide it for the benefit of other federation operators who may be wondering how the UK federation systems operate, perhaps with a view to implementing something similar.
 
 The public repository is kept roughly in synchronisation with the private one using [our `ukf-meta-meta` tools](https://github.com/ukf/ukf-meta-meta). We do this when we have made significant changes to the toolset and we think other federation operators may find the changes of interest.
 
-We exclude a significant amount of material from the public repository. One reason for this is to save space: for example, the private repository retains a copy of every signed metadata aggregate we have ever produced, going back to 2005.
+We exclude a significant amount of material from the public repository. One reason for this is to save space: for example, the private repository retains a copy of every signed metadata aggregate we produced between 2005 and 2016.
 
-The second main category excluded from the public repository is the actual registration database: version-controlled XML documents describing registered entities and the federation membership. We don't include this material because it may include personal information.
+The second main category excluded from the public repository is the historic registration database: version-controlled XML documents describing registered entities and the federation membership. We don't include this material because it may include personal information.
 
-The failure to separate the tooling from the data is, in retrospect, a failing of our current systems and we are working to separate them more cleanly in the future.
+Since 2016, we have separated the entity database and aggregate record from the main toolchain repository, but the nature of Git is to never discard anything. We will therefore continue to make this repository publicly available only in redacted form.
 
 ## Licensing
 
