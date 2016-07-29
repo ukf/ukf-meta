@@ -9,7 +9,7 @@
     * "ant push" sends all files to the remote site, and requires
       the remote site password.
 -->
-<project default="process">
+<project default="echoproperties">
 
     <!--
         os.family
