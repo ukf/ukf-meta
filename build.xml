@@ -163,7 +163,6 @@
         Full paths to a couple of temporary file locations.
     -->
     <property name="temp.xml" value="${xml.dir}/temp.xml"/>
-    <property name="temp2.xml" value="${xml.dir}/temp2.xml"/>
 
 
     <!--
