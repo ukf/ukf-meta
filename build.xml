@@ -136,27 +136,27 @@
 
         Each stream has its own unsigned file, as follows:
     -->
-    <property name="md.prod.unsigned"   value="ukfederation-metadata-unsigned.xml"/>
-    <property name="md.test.unsigned"   value="ukfederation-test-unsigned.xml"/>
-    <property name="md.export.unsigned" value="ukfederation-export-unsigned.xml"/>
-    <property name="md.export.preview.unsigned"
-                                        value="ukfederation-export-preview-unsigned.xml"/>
-    <property name="md.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
-    <property name="md.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
-    <property name="md.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
-    <property name="md.cms.unsigned"    value="cms-metadata.xml"/>
+    <property name="mdaggr.prod.unsigned"   value="ukfederation-metadata-unsigned.xml"/>
+    <property name="mdaggr.test.unsigned"   value="ukfederation-test-unsigned.xml"/>
+    <property name="mdaggr.export.unsigned" value="ukfederation-export-unsigned.xml"/>
+    <property name="mdaggr.export.preview.unsigned"
+                                            value="ukfederation-export-preview-unsigned.xml"/>
+    <property name="mdaggr.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
+    <property name="mdaggr.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
+    <property name="mdaggr.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
+    <property name="mdaggr.cms.unsigned"    value="cms-metadata.xml"/>
 
     <!--
         Each stream except the CMS stream has its own signed file.
     -->
-    <property name="md.prod.signed"     value="ukfederation-metadata.xml"/>
-    <property name="md.test.signed"     value="ukfederation-test.xml"/>
-    <property name="md.export.signed"   value="ukfederation-export.xml"/>
-    <property name="md.export.preview.signed"
-                                        value="ukfederation-export-preview.xml"/>
-    <property name="md.back.signed"     value="ukfederation-back.xml"/>
-    <property name="md.wayf.signed"     value="ukfederation-wayf.xml"/>
-    <property name="md.cdsall.signed"   value="ukfederation-cdsall.xml"/>
+    <property name="mdaggr.prod.signed"     value="ukfederation-metadata.xml"/>
+    <property name="mdaggr.test.signed"     value="ukfederation-test.xml"/>
+    <property name="mdaggr.export.signed"   value="ukfederation-export.xml"/>
+    <property name="mdaggr.export.preview.signed"
+                                            value="ukfederation-export-preview.xml"/>
+    <property name="mdaggr.back.signed"     value="ukfederation-back.xml"/>
+    <property name="mdaggr.wayf.signed"     value="ukfederation-wayf.xml"/>
+    <property name="mdaggr.cdsall.signed"   value="ukfederation-cdsall.xml"/>
 
     <!--
         Signing keystore alias.
@@ -292,7 +292,7 @@
                 <include name="members-cms.xml"/>
                 <include name="ukfederation-members.xsd"/>
                 <include name="ukfederation-stats.html"/>
-                <include name="${md.cms.unsigned}"/>
+                <include name="${mdaggr.cms.unsigned}"/>
             </fileset>
         </scp>
         <!--
@@ -302,13 +302,13 @@
         <scp failonerror="true" password="${remote.pass}" remoteTodir="${remote.loc.uk}"
                 knownhosts="${known.hosts}">
             <fileset dir="${xml.dir}">
-                <include name="${md.prod.signed}"/>
-                <include name="${md.wayf.signed}"/>
-                <include name="${md.cdsall.signed}"/>
-                <include name="${md.test.signed}"/>
-                <include name="${md.back.signed}"/>
-                <include name="${md.export.signed}"/>
-                <include name="${md.export.preview.signed}"/>
+                <include name="${mdaggr.prod.signed}"/>
+                <include name="${mdaggr.wayf.signed}"/>
+                <include name="${mdaggr.cdsall.signed}"/>
+                <include name="${mdaggr.test.signed}"/>
+                <include name="${mdaggr.back.signed}"/>
+                <include name="${mdaggr.export.signed}"/>
+                <include name="${mdaggr.export.preview.signed}"/>
             </fileset>
         </scp>
     </target>
@@ -383,13 +383,13 @@
     -->
     <target name="verify.remote.metadata" depends="select.remote.host">
         <echo>Verifying metadata held at ${remote.url}</echo>
-        <VFY.remote.both i="${md.prod.signed}"/>
-        <VFY.remote.both i="${md.wayf.signed}"/>
-        <VFY.remote.both i="${md.cdsall.signed}"/>
-        <VFY.remote.both i="${md.test.signed}"/>
-        <VFY.remote.both i="${md.back.signed}"/>
-        <VFY.remote.both i="${md.export.signed}"/>
-        <VFY.remote.both i="${md.export.preview.signed}"/>
+        <VFY.remote.both i="${mdaggr.prod.signed}"/>
+        <VFY.remote.both i="${mdaggr.wayf.signed}"/>
+        <VFY.remote.both i="${mdaggr.cdsall.signed}"/>
+        <VFY.remote.both i="${mdaggr.test.signed}"/>
+        <VFY.remote.both i="${mdaggr.back.signed}"/>
+        <VFY.remote.both i="${mdaggr.export.signed}"/>
+        <VFY.remote.both i="${mdaggr.export.preview.signed}"/>
         <echo>Verification completed.</echo>
     </target>
 
@@ -483,14 +483,14 @@
         <!--
             Post-process mda-generated output files.
         -->
-        <MDNORM i="${xml.dir}/${md.prod.unsigned}"/>
-        <MDNORM i="${xml.dir}/${md.wayf.unsigned}"/>
-        <MDNORM.noblank i="${xml.dir}/${md.cdsall.unsigned}"/>
-        <MDNORM.noblank i="${xml.dir}/${md.cms.unsigned}"/>
-        <MDNORM i="${xml.dir}/${md.test.unsigned}"/>
-        <MDNORM i="${xml.dir}/${md.export.unsigned}"/>
-        <MDNORM i="${xml.dir}/${md.export.preview.unsigned}"/>
-        <MDNORM i="${xml.dir}/${md.back.unsigned}"/>
+        <MDNORM i="${xml.dir}/${mdaggr.prod.unsigned}"/>
+        <MDNORM i="${xml.dir}/${mdaggr.wayf.unsigned}"/>
+        <MDNORM.noblank i="${xml.dir}/${mdaggr.cdsall.unsigned}"/>
+        <MDNORM.noblank i="${xml.dir}/${mdaggr.cms.unsigned}"/>
+        <MDNORM i="${xml.dir}/${mdaggr.test.unsigned}"/>
+        <MDNORM i="${xml.dir}/${mdaggr.export.unsigned}"/>
+        <MDNORM i="${xml.dir}/${mdaggr.export.preview.unsigned}"/>
+        <MDNORM i="${xml.dir}/${mdaggr.back.unsigned}"/>
         <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf" encoding="UTF-8"/>
 
         <echo>Generated UK unsigned metadata.</echo>
@@ -885,25 +885,25 @@
     -->
     <target name="sign">
         <echo>Signing UK metadata.</echo>
-        <SIGN.uk i="${md.prod.unsigned}" o="${md.prod.signed}" digest="SHA-256"/>
+        <SIGN.uk i="${mdaggr.prod.unsigned}" o="${mdaggr.prod.signed}" digest="SHA-256"/>
 
         <echo>Signing UK WAYF metadata.</echo>
-        <SIGN.uk i="${md.wayf.unsigned}" o="${md.wayf.signed}" digest="SHA-256"/>
+        <SIGN.uk i="${mdaggr.wayf.unsigned}" o="${mdaggr.wayf.signed}" digest="SHA-256"/>
 
         <echo>Signing UK CDS full metadata.</echo>
-        <SIGN.uk i="${md.cdsall.unsigned}" o="${md.cdsall.signed}" digest="SHA-256"/>
+        <SIGN.uk i="${mdaggr.cdsall.unsigned}" o="${mdaggr.cdsall.signed}" digest="SHA-256"/>
 
         <echo>Signing UK test metadata.</echo>
-        <SIGN.uk i="${md.test.unsigned}" o="${md.test.signed}" digest="SHA-256"/>
+        <SIGN.uk i="${mdaggr.test.unsigned}" o="${mdaggr.test.signed}" digest="SHA-256"/>
 
         <echo>Signing UK export metadata.</echo>
-        <SIGN.uk i="${md.export.unsigned}" o="${md.export.signed}" digest="SHA-256"/>
+        <SIGN.uk i="${mdaggr.export.unsigned}" o="${mdaggr.export.signed}" digest="SHA-256"/>
 
         <echo>Signing UK export preview metadata.</echo>
-        <SIGN.uk i="${md.export.preview.unsigned}" o="${md.export.preview.signed}" digest="SHA-256"/>
+        <SIGN.uk i="${mdaggr.export.preview.unsigned}" o="${mdaggr.export.preview.signed}" digest="SHA-256"/>
 
         <echo>Signing UK fallback metadata.</echo>
-        <SIGN.uk i="${md.back.unsigned}" o="${md.back.signed}" digest="SHA-256"/>
+        <SIGN.uk i="${mdaggr.back.unsigned}" o="${mdaggr.back.signed}" digest="SHA-256"/>
 
         <echo>Generated signed UK metadata.</echo>
     </target>
@@ -935,25 +935,25 @@
     -->
     <target name="verify">
         <echo>Verifying signed UK metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${md.prod.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${mdaggr.prod.signed}"/>
 
         <echo>Verifying signed UK WAYF metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${md.wayf.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${mdaggr.wayf.signed}"/>
 
         <echo>Verifying signed UK CDS full metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${md.cdsall.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${mdaggr.cdsall.signed}"/>
 
         <echo>Verifying signed UK test metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${md.test.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${mdaggr.test.signed}"/>
 
         <echo>Verifying signed UK export metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${md.export.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${mdaggr.export.signed}"/>
 
         <echo>Verifying signed UK export preview metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${md.export.preview.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${mdaggr.export.preview.signed}"/>
 
         <echo>Verifying signed UK fallback metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${md.back.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${mdaggr.back.signed}"/>
 
         <echo>Verification completed.</echo>
     </target>
