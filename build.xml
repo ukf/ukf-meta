@@ -148,6 +148,11 @@
     <property name="mdaggr.cdsall.signed"   value="ukfederation-cdsall.xml"/>
 
     <!--
+        Other files
+    -->
+    <property name="mdaggr.stats" value="ukfederation-stats.html"/>
+
+    <!--
         Signing keystore alias.
     -->
     <property name="keystore.uk.sign.alias" value="ukfederation"/>
@@ -380,7 +385,7 @@
         <MDNORM i="${xml.dir}/${mdaggr.export.unsigned}"/>
         <MDNORM i="${xml.dir}/${mdaggr.export.preview.unsigned}"/>
         <MDNORM i="${xml.dir}/${mdaggr.back.unsigned}"/>
-        <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf" encoding="UTF-8"/>
+        <fixcrlf file="${xml.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
 
         <echo>Generated UK unsigned metadata.</echo>
     </target>
@@ -1053,7 +1058,7 @@
     -->
     <target name="stats">
         <CHANNEL.do channel="uk" verb="statistics"/>
-        <fixcrlf file="${xml.dir}/ukfederation-stats.html" eol="lf" encoding="UTF-8"/>
+        <fixcrlf file="${xml.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
     </target>
 
     <!--
