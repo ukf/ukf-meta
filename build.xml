@@ -159,14 +159,6 @@
     <property name="md.cdsall.signed"   value="ukfederation-cdsall.xml"/>
 
     <!--
-        Null device location.
-    -->
-    <condition property="null.device"
-        value="nul:" else="/dev/null">
-        <os family="windows"/>
-    </condition>
-
-    <!--
         Signing keystore alias.
     -->
     <property name="keystore.uk.sign.alias" value="ukfederation"/>
