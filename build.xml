@@ -411,7 +411,7 @@
 
     <!--
         generate.members.cms
-        
+
         Produce a variant of the members.xml file suitable for
         consumption by the legacy CMS.
     -->
@@ -1077,7 +1077,7 @@
         Verify the COBWEB metadata. Callable from Jenkins.
     -->
     <target name="flow.verify.cobweb">
-           <CHANNEL.do verb="verifyProduction" channel="int_cobweb"/>
+        <CHANNEL.do verb="verifyProduction" channel="int_cobweb"/>
     </target>
 
     <!--
@@ -1204,7 +1204,6 @@
             <arg value="${build.dir}/extract_locs_noports.pl"/>
         </exec>
     </target>
-    
 
     <!--
         Utility to fold overlong embedded certificates.
