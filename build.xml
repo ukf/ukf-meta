@@ -90,13 +90,48 @@
     <property name="md.dist.host3.name" value="md3.infr.ukfederation.org.uk"/>
 
     <!--
+        *******************************************************
+        ***                                                 ***
+        ***   F I L E   S Y S T E M   P R O P E R T I E S   ***
+        ***                                                 ***
+        *******************************************************
+    -->
+
+    <!--
+        Shared workspace location.
+
+        The property shared.ws.dir must be defined in order to locate the shared
+        workspace used for inputs to and outputs from the tooling. In production,
+        this location is passed through from the Jenkins job. In the dev environment,
+        it is assumed (by dev.properties) to be in this repository's parent directory.
+    -->
+    <fail unless="shared.ws.dir" message="shared.ws.dir was not defined"/>
+
+    <!--
+        There must be a build directory in the shared workspace.
+    -->
+    <fail message="shared workspace ${shared.ws.dir} doesn't contain a build directory">
+        <condition>
+            <not>
+                <available file="${shared.ws.dir}/build" type="dir"/>
+            </not>
+        </condition>
+    </fail>
+
+    <!--
+        External specialised directories.
+    -->
+    <property name="entities.dir" value="${shared.ws.dir}/ukf-data/entities"/>
+    <property name="members.dir" value="${shared.ws.dir}/ukf-data/members"/>
+    <property name="output.dir" value="${shared.ws.dir}/build"/>
+    <property name="temp.dir" value="${shared.ws.dir}/build"/>
+
+    <!--
         Local specialised directories.
     -->
     <property name="build.dir" value="${basedir}/build"/>
-    <property name="entities.dir" value="entities"/>
     <property name="mdx.dir" value="${basedir}/mdx"/>
     <property name="rules.dir" value="${mdx.dir}/_rules"/>
-    <property name="xml.dir" value="${basedir}/xml"/>
 
     <!--
         Location of externally supplied tool bundles.
@@ -176,7 +211,7 @@
     <!--
         Full paths to a couple of temporary file locations.
     -->
-    <property name="temp.xml" value="${xml.dir}/temp.xml"/>
+    <property name="temp.xml" value="${temp.dir}/temp.xml"/>
 
 
     <!--
@@ -207,18 +242,18 @@
         <attribute name="i"/>
         <sequential>
             <echo>Verifying @{i}...</echo>
-            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-            <get src="@{i}" dest="${xml.dir}/temp.xml"/>
+            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
+            <get src="@{i}" dest="${temp.dir}/temp.xml"/>
 
             <!--
                 Verify using xmlsectool.
             -->
-            <XMLSECTOOL.VFY.uk i="${xml.dir}/temp.xml"/>
+            <XMLSECTOOL.VFY.uk i="${temp.dir}/temp.xml"/>
 
             <!--
                 Delete the temporary file.
             -->
-            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
         </sequential>
     </macrodef>
 
@@ -233,23 +268,23 @@
         <attribute name="i"/>
         <sequential>
             <echo>Verifying @{i}...</echo>
-            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
-            <get src="@{i}" dest="${xml.dir}/temp.xml"/>
+            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
+            <get src="@{i}" dest="${temp.dir}/temp.xml"/>
 
             <!--
                 Verify using metadatatool.
             -->
-            <MDT.VFY.uk i="${xml.dir}/temp.xml"/>
+            <MDT.VFY.uk i="${temp.dir}/temp.xml"/>
 
             <!--
                 Verify using xmlsectool.
             -->
-            <XMLSECTOOL.VFY.uk i="${xml.dir}/temp.xml"/>
+            <XMLSECTOOL.VFY.uk i="${temp.dir}/temp.xml"/>
 
             <!--
                 Delete the temporary file.
             -->
-            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
         </sequential>
     </macrodef>
 
@@ -304,8 +339,8 @@
     <target name="generate.members.cms">
         <echo>Generating CMS version of members.xml</echo>
         <XALAN
-            i="${xml.dir}/members.xml"
-            o="${xml.dir}/members-cms.xml"
+            i="${members.dir}/members.xml"
+            o="${output.dir}/members-cms.xml"
             x="${mdx.dir}/uk/members-cms.xsl"/>
         <echo>Generated CMS version of members.xml</echo>
     </target>
@@ -377,15 +412,15 @@
         <!--
             Post-process mda-generated output files.
         -->
-        <MDNORM i="${xml.dir}/${mdaggr.prod.unsigned}"/>
-        <MDNORM i="${xml.dir}/${mdaggr.wayf.unsigned}"/>
-        <MDNORM.noblank i="${xml.dir}/${mdaggr.cdsall.unsigned}"/>
-        <MDNORM.noblank i="${xml.dir}/${mdaggr.cms.unsigned}"/>
-        <MDNORM i="${xml.dir}/${mdaggr.test.unsigned}"/>
-        <MDNORM i="${xml.dir}/${mdaggr.export.unsigned}"/>
-        <MDNORM i="${xml.dir}/${mdaggr.export.preview.unsigned}"/>
-        <MDNORM i="${xml.dir}/${mdaggr.back.unsigned}"/>
-        <fixcrlf file="${xml.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
+        <MDNORM i="${output.dir}/${mdaggr.prod.unsigned}"/>
+        <MDNORM i="${output.dir}/${mdaggr.wayf.unsigned}"/>
+        <MDNORM.noblank i="${output.dir}/${mdaggr.cdsall.unsigned}"/>
+        <MDNORM.noblank i="${output.dir}/${mdaggr.cms.unsigned}"/>
+        <MDNORM i="${output.dir}/${mdaggr.test.unsigned}"/>
+        <MDNORM i="${output.dir}/${mdaggr.export.unsigned}"/>
+        <MDNORM i="${output.dir}/${mdaggr.export.preview.unsigned}"/>
+        <MDNORM i="${output.dir}/${mdaggr.back.unsigned}"/>
+        <fixcrlf file="${output.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
 
         <echo>Generated UK unsigned metadata.</echo>
     </target>
@@ -411,8 +446,10 @@
         by properties defined in the external properties files, e.g., build.properties.
     -->
     <property name="mda.java.endorsed.dirs" value="${tools.dir}/endorsed"/>
-    <property name="mda.basedir" value="${basedir}"/>
+    <property name="mda.entities.dir" value="${entities.dir}"/>
     <property name="mda.mdx.dir" value="${mdx.dir}"/>
+    <property name="mda.members.dir" value="${members.dir}"/>
+    <property name="mda.output.dir" value="${output.dir}"/>
 
     <!--
         Build a property set of all the properties to be passed through, with
@@ -628,7 +665,7 @@
         <attribute name="digest"/><!-- digest function to use -->
         <sequential>
             <!-- delete the temporary file to be sure we don't use old data -->
-            <delete file="${xml.dir}/temp.xml" quiet="true" verbose="false"/>
+            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
 
             <echo>Signing @{i} using digest @{digest}.</echo>
 
@@ -830,25 +867,25 @@
     -->
     <target name="verify">
         <echo>Verifying signed UK metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${mdaggr.prod.signed}"/>
+        <VFY.uk.both i="${output.dir}/${mdaggr.prod.signed}"/>
 
         <echo>Verifying signed UK WAYF metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${mdaggr.wayf.signed}"/>
+        <VFY.uk.both i="${output.dir}/${mdaggr.wayf.signed}"/>
 
         <echo>Verifying signed UK CDS full metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${mdaggr.cdsall.signed}"/>
+        <VFY.uk.both i="${output.dir}/${mdaggr.cdsall.signed}"/>
 
         <echo>Verifying signed UK test metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${mdaggr.test.signed}"/>
+        <VFY.uk.both i="${output.dir}/${mdaggr.test.signed}"/>
 
         <echo>Verifying signed UK export metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${mdaggr.export.signed}"/>
+        <VFY.uk.both i="${output.dir}/${mdaggr.export.signed}"/>
 
         <echo>Verifying signed UK export preview metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${mdaggr.export.preview.signed}"/>
+        <VFY.uk.both i="${output.dir}/${mdaggr.export.preview.signed}"/>
 
         <echo>Verifying signed UK fallback metadata.</echo>
-        <VFY.uk.both i="${xml.dir}/${mdaggr.back.signed}"/>
+        <VFY.uk.both i="${output.dir}/${mdaggr.back.signed}"/>
 
         <echo>Verification completed.</echo>
     </target>
@@ -1059,7 +1096,7 @@
     -->
     <target name="stats">
         <CHANNEL.do channel="uk" verb="statistics"/>
-        <fixcrlf file="${xml.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
+        <fixcrlf file="${output.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
     </target>
 
     <!--
@@ -1185,7 +1222,7 @@
         <echo>Extracting embedded certificates</echo>
         <XALAN
             i="${uk.collected}"
-            o="${xml.dir}/embedded.pem"
+            o="${temp.dir}/embedded.pem"
             x="${build.dir}/extract_embedded.xsl"/>
     </target>
 
@@ -1194,12 +1231,12 @@
     -->
     <target name="check.embedded" depends="extract.embedded">
         <echo>Checking embedded certificates</echo>
-        <exec executable="perl" dir="${xml.dir}"
-            input="${xml.dir}/embedded.pem">
+        <exec executable="perl" dir="${temp.dir}"
+            input="${temp.dir}/embedded.pem">
             <arg value="${build.dir}/check_embedded.pl"/>
             <arg value="-q"/>
         </exec>
-        <delete file="${xml.dir}/embedded.pem" quiet="true" verbose="false"/>
+        <delete file="${temp.dir}/embedded.pem" quiet="true" verbose="false"/>
     </target>
 
     <!--

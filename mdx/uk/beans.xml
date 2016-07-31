@@ -113,7 +113,7 @@
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/entities"/>
+                <constructor-arg value="${entities.dir}"/>
             </bean>
         </property>
         <property name="sourceFileFilter">
@@ -130,7 +130,7 @@
         A Resource referencing the members.xml document.
     -->
     <bean id="uk_membersResource" parent="FileSystemResource">
-        <constructor-arg value="${basedir}/xml/members.xml"/>
+        <constructor-arg value="${members.dir}/members.xml"/>
     </bean>
     
     
@@ -153,7 +153,7 @@
     <bean id="uk_members" class="uk.org.ukfederation.members.Members">
         <constructor-arg>
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/members.xml"/>
+                <constructor-arg value="${members.dir}/members.xml"/>
             </bean>
         </constructor-arg>
     </bean>
@@ -453,7 +453,7 @@
     <bean id="uk_serializeStatistics" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/ukfederation-stats.html"/>
+                <constructor-arg value="${output.dir}/ukfederation-stats.html"/>
             </bean>
         </property>
     </bean>

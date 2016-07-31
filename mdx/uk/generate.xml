@@ -234,7 +234,7 @@
     <bean id="serializeUnsignedProductionAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/ukfederation-metadata-unsigned.xml"/>
+                <constructor-arg value="${output.dir}/ukfederation-metadata-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -291,7 +291,7 @@
     <bean id="serializeUnsignedWayfAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/ukfederation-wayf-unsigned.xml"/>
+                <constructor-arg value="${output.dir}/ukfederation-wayf-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -407,7 +407,7 @@
     <bean id="serializeCDSAllAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/ukfederation-cdsall-unsigned.xml"/>
+                <constructor-arg value="${output.dir}/ukfederation-cdsall-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -469,7 +469,7 @@
     <bean id="serializeUnsignedFallbackAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/ukfederation-back-unsigned.xml"/>
+                <constructor-arg value="${output.dir}/ukfederation-back-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -523,7 +523,7 @@
     <bean id="serializeUnsignedTestAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/ukfederation-test-unsigned.xml"/>
+                <constructor-arg value="${output.dir}/ukfederation-test-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -579,7 +579,7 @@
     <bean id="serializeUnsignedExportAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/ukfederation-export-unsigned.xml"/>
+                <constructor-arg value="${output.dir}/ukfederation-export-unsigned.xml"/>
             </bean>
         </property>
     </bean>
@@ -790,7 +790,7 @@
                 <bean id="serializeUnsignedExportPreviewAggregate" parent="SerializationStage">
                     <property name="outputFile">
                         <bean class="java.io.File">
-                            <constructor-arg value="${basedir}/xml/ukfederation-export-preview-unsigned.xml"/>
+                            <constructor-arg value="${output.dir}/ukfederation-export-preview-unsigned.xml"/>
                         </bean>
                     </property>
                 </bean>
@@ -864,7 +864,7 @@
     <bean id="serializeCMSAggregate" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/xml/cms-metadata.xml"/>
+                <constructor-arg value="${output.dir}/cms-metadata.xml"/>
             </bean>
         </property>
     </bean>
