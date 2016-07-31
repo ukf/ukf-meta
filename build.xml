@@ -338,7 +338,7 @@
             <!--
                 Verify using xmlsectool.
             -->
-            <XMLSECTOOL.VFY.uk i="temp.xml"/>
+            <XMLSECTOOL.VFY.uk i="${xml.dir}/temp.xml"/>
 
             <!--
                 Delete the temporary file.
@@ -364,12 +364,12 @@
             <!--
                 Verify using metadatatool.
             -->
-            <MDT.VFY.uk i="temp.xml"/>
+            <MDT.VFY.uk i="${xml.dir}/temp.xml"/>
 
             <!--
                 Verify using xmlsectool.
             -->
-            <XMLSECTOOL.VFY.uk i="temp.xml"/>
+            <XMLSECTOOL.VFY.uk i="${xml.dir}/temp.xml"/>
 
             <!--
                 Delete the temporary file.
@@ -579,8 +579,7 @@
         Macro to call tool to perform textual normalisation on an XML file
         containing a metadata aggregate.
 
-        Parameter 'i' is the file to be normalised; no assumption is made
-        about its location so this must contain a full path.
+        Parameter 'i' is the file to be normalised.
     -->
     <macrodef name="MDNORM">
         <attribute name="i"/><!-- input file -->
@@ -626,9 +625,9 @@
         Macro to run the metadatatool application with appropriate defaults.
     -->
     <macrodef name="MDT">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-        <attribute name="o"/><!-- output file location -->
-        <attribute name="keystore"/><!-- keystore file location -->
+        <attribute name="i"/><!-- input file -->
+        <attribute name="o"/><!-- output file -->
+        <attribute name="keystore"/><!-- keystore file -->
         <attribute name="storetype" default="JKS"/><!-- type of keystore to use -->
         <attribute name="alias"/><!-- alias of key to use -->
         <element name="args" optional="yes"/>
@@ -649,7 +648,7 @@
                 <arg value="--alias"/>
                 <arg value="@{alias}"/>
                 <arg value="--in"/>
-                <arg value="file:${xml.dir}/@{i}"/>
+                <arg value="file:@{i}"/>
                 <arg value="--out"/>
                 <arg value="@{o}"/>
             </java>
@@ -708,7 +707,7 @@
     -->
 
     <macrodef name="XMLSECTOOL">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+        <attribute name="i"/><!-- input file -->
         <element name="args" optional="yes"/>
         <sequential>
             <java classname="net.shibboleth.tool.xmlsectool.XMLSecTool"
@@ -723,14 +722,14 @@
                 <arg value="--schemaDirectory"/>
                 <arg value="${mdx.dir}/schema"/>
                 <arg value="--inFile"/>
-                <arg value="${xml.dir}/@{i}"/>
+                <arg value="@{i}"/>
             </java>
         </sequential>
     </macrodef>
 
     <macrodef name="XMLSECTOOL.SIGN.uk">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
-        <attribute name="o"/><!-- output file, assumed to be in the XML directory -->
+        <attribute name="i"/><!-- input file -->
+        <attribute name="o"/><!-- output file -->
         <attribute name="digest"/><!-- digest function to use -->
         <sequential>
             <!-- delete the temporary file to be sure we don't use old data -->
@@ -763,7 +762,7 @@
                     <arg value="--keyPassword"/>
                     <arg value="${keystore.pass}"/>
                     <arg value="--outFile"/>
-                    <arg value="${xml.dir}/@{o}"/>
+                    <arg value="@{o}"/>
                     <arg value="--referenceIdAttributeName"/>
                     <arg value="ID"/>
                     <!--
@@ -773,13 +772,13 @@
             </XMLSECTOOL>
 
             <!-- Force the output file to use Unix line endings -->
-            <fixcrlf file="${xml.dir}/@{o}" eol="lf" encoding="UTF-8"/>
+            <fixcrlf file="@{o}" eol="lf" encoding="UTF-8"/>
 
         </sequential>
     </macrodef>
 
     <macrodef name="XMLSECTOOL.VFY.uk">
-        <attribute name="i"/><!-- input file, assumed to be in the XML directory -->
+        <attribute name="i"/><!-- input file -->
         <sequential>
             <XMLSECTOOL i="@{i}">
                 <args>
@@ -936,25 +935,25 @@
     -->
     <target name="verify">
         <echo>Verifying signed UK metadata.</echo>
-        <VFY.uk.both i="${md.prod.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${md.prod.signed}"/>
 
         <echo>Verifying signed UK WAYF metadata.</echo>
-        <VFY.uk.both i="${md.wayf.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${md.wayf.signed}"/>
 
         <echo>Verifying signed UK CDS full metadata.</echo>
-        <VFY.uk.both i="${md.cdsall.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${md.cdsall.signed}"/>
 
         <echo>Verifying signed UK test metadata.</echo>
-        <VFY.uk.both i="${md.test.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${md.test.signed}"/>
 
         <echo>Verifying signed UK export metadata.</echo>
-        <VFY.uk.both i="${md.export.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${md.export.signed}"/>
 
         <echo>Verifying signed UK export preview metadata.</echo>
-        <VFY.uk.both i="${md.export.preview.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${md.export.preview.signed}"/>
 
         <echo>Verifying signed UK fallback metadata.</echo>
-        <VFY.uk.both i="${md.back.signed}"/>
+        <VFY.uk.both i="${xml.dir}/${md.back.signed}"/>
 
         <echo>Verification completed.</echo>
     </target>
