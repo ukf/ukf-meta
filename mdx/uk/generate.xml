@@ -798,100 +798,8 @@
             </list>
         </property>
     </bean>
-    
-    <!--
-        *************************************
-        ***                               ***
-        ***   C M S   A G G R E G A T E   ***
-        ***                               ***
-        *************************************
-    -->
-    
-    <!--
-        Produces an aggregate which is consumed by the helpdesk's
-        call management system. This will be well-formed XML
-        but will NOT be schema valid, as many required elements
-        are removed to give a smaller output file.
-    -->
-    
-    <!--
-        CMSStripUnwanted
-        
-        The CMS needs only a very restricted subset of
-        normal metadata in order to do its job.  This stage
-        removes everything it does not need.
-    -->
-    <bean id="CMSStripUnwanted" parent="CompositeStage">
-        <property name="composedStages">
-            <list>
-                <ref bean="stripComments"/>
-                
-                <ref bean="stripAlgNamespace"/>
-                <ref bean="stripIdpdiscNamespace"/>
-                <ref bean="stripInitNamespace"/>
-                <ref bean="stripMdattrNamespace"/>
-                <ref bean="stripWayfNamespace"/>
-                
-                <ref bean="stripArtifactResolutionService"/>
-                <ref bean="stripAssertionConsumerService"/>
-                <ref bean="stripAttributeAuthorityDescriptor"/>
-                <ref bean="stripKeyDescriptor"/>
-                <ref bean="stripManageNameIDService"/>
-                <ref bean="stripNameIDFormat"/>
-                <ref bean="stripSingleLogoutService"/>
-                <ref bean="stripSingleSignOnService"/>
-                
-                <ref bean="stripMDUIDiscoHints"/>
-                
-                <ref bean="stripEntityScopes"/>
-                
-                <!-- remove any now-empty Extensions elements -->
-                <ref bean="stripEmptyExtensions"/>
-            </list>
-        </property>
-    </bean>
-    
-    <bean id="CMSFinalise" parent="finalise_parent">
-        <property name="transformParameters">
-            <map>
-                <entry key="extraText"
-                    value="Call Management System metadata; not for end entity use"/>
-                <entry key="publisher" value-ref="uk_federation_uri"/>
-            </map>
-        </property>
-    </bean>
-    
-    <bean id="serializeCMSAggregate" parent="SerializationStage">
-        <property name="outputFile">
-            <bean class="java.io.File">
-                <constructor-arg value="${output.dir}/cms-metadata.xml"/>
-            </bean>
-        </property>
-    </bean>
-    
-    <bean id="CMSPipeline" parent="SimplePipeline">
-        <property name="stages">
-            <list>
-                <!-- make an aggregate first so that we're only traversing one item -->
-                <ref bean="uk_assemble"/>
-                
-                <!-- remove many things that the CMS doesn't look at -->
-                <ref bean="CMSStripUnwanted"/>
-                
-                <ref bean="CMSFinalise"/>
 
-                <!--
-                    Normalise namespaces in the most general way. This will leave in a number
-                    of unwanted namespace prefix declarations (e.g., xmlns:wayf) but that's
-                    not really important for an aggregate we don't publish.
-                -->
-                <ref bean="normaliseNamespaces"/>
-                
-                <ref bean="serializeCMSAggregate"/>
-            </list>
-        </property>
-    </bean>
-    
+
     <!--
         *************************************
         ***                               ***
@@ -922,18 +830,13 @@
                 -->
                 
                 <!--
-                    Fork new output pipelines for the registrar statistics and for
-                    the CMS aggregate.
+                    Fork a new output pipeline for the registrar statistics.
                 -->
                 <bean id="rawRegistrarDemux" parent="PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="uk_statisticsPipeline"/>
-                                <constructor-arg ref="everythingSelector"/>
-                            </bean>
-                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
-                                <constructor-arg ref="CMSPipeline"/>
                                 <constructor-arg ref="everythingSelector"/>
                             </bean>
                         </list>

@@ -156,7 +156,7 @@
 
     <!--
         There are many separate processing "streams":  production, test, export,
-        fallback, "wayf", "cdsall" and "cms".
+        fallback, "wayf", and "cdsall".
 
         Each stream has its own unsigned file, as follows:
     -->
@@ -168,10 +168,9 @@
     <property name="mdaggr.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
     <property name="mdaggr.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
     <property name="mdaggr.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
-    <property name="mdaggr.cms.unsigned"    value="cms-metadata.xml"/>
 
     <!--
-        Each stream except the CMS stream has its own signed file.
+        Each stream also has its own signed file, as follows:
     -->
     <property name="mdaggr.prod.signed"     value="ukfederation-metadata.xml"/>
     <property name="mdaggr.test.signed"     value="ukfederation-test.xml"/>
@@ -323,29 +322,6 @@
     </target>
 
     <!--
-        *************************
-        ***                   ***
-        ***   M E M B E R S   ***
-        ***                   ***
-        *************************
-    -->
-
-    <!--
-        generate.members.cms
-
-        Produce a variant of the members.xml file suitable for
-        consumption by the legacy CMS.
-    -->
-    <target name="generate.members.cms">
-        <echo>Generating CMS version of members.xml</echo>
-        <XALAN
-            i="${members.dir}/members.xml"
-            o="${output.dir}/members-cms.xml"
-            x="${mdx.dir}/uk/members-cms.xsl"/>
-        <echo>Generated CMS version of members.xml</echo>
-    </target>
-
-    <!--
         *************************************************
         ***                                           ***
         ***   M E T A D A T A   G E N E R A T I O N   ***
@@ -415,7 +391,6 @@
         <MDNORM i="${output.dir}/${mdaggr.prod.unsigned}"/>
         <MDNORM i="${output.dir}/${mdaggr.wayf.unsigned}"/>
         <MDNORM.noblank i="${output.dir}/${mdaggr.cdsall.unsigned}"/>
-        <MDNORM.noblank i="${output.dir}/${mdaggr.cms.unsigned}"/>
         <MDNORM i="${output.dir}/${mdaggr.test.unsigned}"/>
         <MDNORM i="${output.dir}/${mdaggr.export.unsigned}"/>
         <MDNORM i="${output.dir}/${mdaggr.export.preview.unsigned}"/>
