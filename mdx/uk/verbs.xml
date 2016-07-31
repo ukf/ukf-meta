@@ -62,7 +62,7 @@
                 <bean id="serialize" parent="SerializationStage">
                     <property name="outputFile">
                         <bean class="java.io.File">
-                            <constructor-arg value="${basedir}/mdx/uk/temp.html"/>
+                            <constructor-arg value="${mdx.dir}/uk/temp.html"/>
                         </bean>
                     </property>
                 </bean>
@@ -326,7 +326,7 @@
     <bean id="serializeImported" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/mdx/uk/imported.xml"/>
+                <constructor-arg value="${mdx.dir}/uk/imported.xml"/>
             </bean>
         </property>
     </bean>

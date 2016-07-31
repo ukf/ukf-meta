@@ -25,7 +25,7 @@
     <bean id="serializeImported" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/mdx/test/imported.xml"/>
+                <constructor-arg value="${mdx.dir}/test/imported.xml"/>
             </bean>
         </property>
     </bean>

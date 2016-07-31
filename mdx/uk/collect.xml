@@ -25,7 +25,7 @@
     <bean id="serializeCollected" parent="SerializationStage">
         <property name="outputFile">
             <bean class="java.io.File">
-                <constructor-arg value="${basedir}/mdx/uk/collected.xml"/>
+                <constructor-arg value="${mdx.dir}/uk/collected.xml"/>
             </bean>
         </property>
     </bean>

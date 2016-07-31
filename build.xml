@@ -412,6 +412,7 @@
     -->
     <property name="mda.java.endorsed.dirs" value="${tools.dir}/endorsed"/>
     <property name="mda.basedir" value="${basedir}"/>
+    <property name="mda.mdx.dir" value="${mdx.dir}"/>
 
     <!--
         Build a property set of all the properties to be passed through, with
