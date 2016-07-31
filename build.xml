@@ -12,11 +12,18 @@
 <project default="echoproperties">
 
     <!--
+        *******************************************
+        ***                                     ***
+        ***   P R O P E R T Y   S O U R C E S   ***
+        ***                                     ***
+        *******************************************
+    -->
+
+    <!--
         os.family
 
-        Set a property representing the general kind of operating system
-        we're executing on.  We use this to decide which properties files
-        to load.
+        Distinguish between the general kind of operating systems
+        we could be executing on.
 
         Values: windows, macosx, linux, other.
     -->
@@ -32,18 +39,39 @@
     <property name="os.family" value="other"/>
 
     <!--
+        env
+
+        Distinguish between different classes of deployment,
+        e.g., development vs. production.
+
+        Values: dev, preprod, prod
+
+        Defaults to "dev" here, but that can be overridden from the command
+        line, a Jenkins job, or in build.properties.
+    -->
+    <property name="env" value="dev"/>
+
+    <!--
         External property files.
 
-        Pull in properties from external files.  Because Ant properties are
-        immutable, the first file containing a particular property sets the
-        final value, and any of these files can override a property defined in
-        this file.
+        Pull in properties from external files. Because Ant properties are
+        immutable, amy properties declared in this file should be regarded as
+        defaults, and will be overridden by any definitions in the following
+        locations:
+
+        * on the command line
+        * in a Jenkins job definition
+        * in any of the external files listed below
+
+        The first location specifying a particular property sets the final value.
 
         The build.properties file is not source controlled, and should be used
-        to override properties for a particular deployment.
+        to override properties for a particular deployment, or to include
+        credentials.
     -->
     <property file="build.properties"/>
     <property file="${os.family}.properties"/>
+    <property file="${env}.properties"/>
     <property file="default.properties"/>
 
     <!--
