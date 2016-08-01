@@ -187,11 +187,6 @@
     <property name="mdaggr.stats" value="ukfederation-stats.html"/>
 
     <!--
-        Signing keystore alias.
-    -->
-    <property name="sign.uk.keyAlias" value="ukfederation"/>
-
-    <!--
         Verification keystore.
     -->
     <property name="keystore.uk.vfy.alias" value="ukfederation"/>
