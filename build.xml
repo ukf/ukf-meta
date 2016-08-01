@@ -250,8 +250,6 @@
     -->
     <property name="keystore.uk.vfy.alias" value="ukfederation"/>
 
-    <property name="known.hosts" value="${build.dir}/known_hosts"/>
-
     <!--
         Java memory requirements.
 
