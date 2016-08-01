@@ -654,13 +654,16 @@
                     <arg value="@{digest}"/>
 
                     <!--
-                        If we have a PKCS11 configuration specified, include it.
+                        If we have a PKCS#11 configuration specified, include it.
                     -->
                     <arg if:set="keystore.pkcs11.config" value="--pkcs11Config"/>
                     <arg if:set="keystore.pkcs11.config" value="${keystore.pkcs11.config}"/>
 
-                    <arg value="--keystoreProvider"/>
-                    <arg value="sun.security.pkcs11.SunPKCS11"/>
+                    <!--
+                        If we have a non-default keystore provider specified, include it.
+                    -->
+                    <arg if:set="keystore.uk.sign.provider" value="--keystoreProvider"/>
+                    <arg if:set="keystore.uk.sign.provider" value="${keystore.uk.sign.provider}"/>
 
                     <arg value="--key"/>
                     <arg value="${keystore.uk.sign.alias}"/>
