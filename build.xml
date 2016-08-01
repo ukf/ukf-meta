@@ -910,9 +910,9 @@
     </macrodef>
 
     <!--
-        Verify the signed metadata files.
+        Verify the signed aggregates.
     -->
-    <target name="verify">
+    <target name="samlmd.aggregates.verify">
         <echo>Verifying signed UK metadata.</echo>
         <VFY.uk.both i="${output.dir}/${mdaggr.prod.signed}"/>
 
