@@ -660,10 +660,24 @@
                     <arg if:set="sign.uk.keystoreProvider" value="--keystoreProvider"/>
                     <arg if:set="sign.uk.keystoreProvider" value="${sign.uk.keystoreProvider}"/>
 
-                    <arg value="--key"/>
-                    <arg value="${sign.uk.keyAlias}"/>
+                    <!--
+                        The "key" option can represent either a key file or a key alias.
+                        Different properties are used for the two cases (see XSTJ-67).
+                    -->
+                    <arg if:set="sign.uk.keyFile" value="--key"/>
+                    <arg if:set="sign.uk.keyFile" value="${sign.uk.keyFile}"/>
+                    <arg if:set="sign.uk.keyAlias" value="--key"/>
+                    <arg if:set="sign.uk.keyAlias" value="${sign.uk.keyAlias}"/>
+
+                    <!--
+                        Include an X.509 certificate if one is specified.
+                    -->
+                    <arg if:set="sign.uk.certificate" value="--certificate"/>
+                    <arg if:set="sign.uk.certificate" value="${sign.uk.certificate}"/>
+
                     <arg value="--keyPassword"/>
                     <arg value="${sign.uk.keyPassword}"/>
+
                     <arg value="--outFile"/>
                     <arg value="@{o}"/>
                     <arg value="--referenceIdAttributeName"/>
