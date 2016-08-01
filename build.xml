@@ -325,13 +325,6 @@
     -->
 
     <!--
-        Generate unsigned metadata.
-    -->
-    <target name="generate" depends="gen.uk.unsigned">
-        <echo>Generated unsigned metadata.</echo>
-    </target>
-
-    <!--
         uk.collected
 
         This is where the flow.uk.collect places its output.
@@ -349,22 +342,22 @@
     </target>
 
     <!--
-        flow.uk.verify
-
         Runs the MDA on the uk channel's verify verb to verify that the UK-registered
         metadata passes all the checks that would be imposed during a signing run.
 
         No output files are produced by this operation.
     -->
-    <target name="flow.uk.verify">
+    <target name="samlmd.aggregates.generate.dry-run">
+        <echo>Performing dry run of generating UKfed MD.</echo>
         <CHANNEL.do channel="uk" verb="verify"/>
+        <echo>All UKfed metadata successfully verified.</echo>
     </target>
 
     <!--
         Unsigned metadata generation for the UK Federation.
     -->
-    <target name="gen.uk.unsigned">
-        <echo>Generating unsigned UK metadata files.</echo>
+    <target name="samlmd.aggregates.generate">
+        <echo>Generating unsigned UKfed metadata files.</echo>
 
         <!--
             Call the generate verb in the uk mdx channel
@@ -878,6 +871,7 @@
 
         <echo>Verification completed.</echo>
     </target>
+
 
     <!--
         *****************************************
