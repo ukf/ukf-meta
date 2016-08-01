@@ -778,6 +778,9 @@
 
     <!--
         Acquire the signing keystore password.
+
+        Note: this will not result in a prompt if the sign.uk.keyPassword property
+        is already defined.
     -->
     <target name="get.sign.uk.keyPassword" unless="sign.uk.keyPassword">
         <input addproperty="sign.uk.keyPassword">
@@ -798,31 +801,32 @@
     </macrodef>
 
     <!--
-        Sign the various metadata files.
+      Signs the unsigned aggregates
     -->
-    <target name="sign">
-        <echo>Signing UK metadata.</echo>
-        <SIGN.uk i="${mdaggr.prod.unsigned}" o="${mdaggr.prod.signed}" digest="SHA-256"/>
+    <target name="samlmd.aggregates.sign" depends="get.sign.uk.keyPassword">
+        <echo>Signing unsigned aggregates.</echo>
 
-        <echo>Signing UK WAYF metadata.</echo>
-        <SIGN.uk i="${mdaggr.wayf.unsigned}" o="${mdaggr.wayf.signed}" digest="SHA-256"/>
+        <echo>Signing UKfed prod metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.prod.unsigned}" o="${output.dir}/${mdaggr.prod.signed}" digest="SHA-256"/>
 
-        <echo>Signing UK CDS full metadata.</echo>
-        <SIGN.uk i="${mdaggr.cdsall.unsigned}" o="${mdaggr.cdsall.signed}" digest="SHA-256"/>
+        <echo>Signing UKfed WAYF metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.wayf.unsigned}" o="${output.dir}/${mdaggr.wayf.signed}" digest="SHA-256"/>
 
-        <echo>Signing UK test metadata.</echo>
-        <SIGN.uk i="${mdaggr.test.unsigned}" o="${mdaggr.test.signed}" digest="SHA-256"/>
+        <echo>Signing UKfed CDS full metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.cdsall.unsigned}" o="${output.dir}/${mdaggr.cdsall.signed}" digest="SHA-256"/>
 
-        <echo>Signing UK export metadata.</echo>
-        <SIGN.uk i="${mdaggr.export.unsigned}" o="${mdaggr.export.signed}" digest="SHA-256"/>
+        <echo>Signing UKfed test metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.test.unsigned}" o="${output.dir}/${mdaggr.test.signed}" digest="SHA-256"/>
 
-        <echo>Signing UK export preview metadata.</echo>
-        <SIGN.uk i="${mdaggr.export.preview.unsigned}" o="${mdaggr.export.preview.signed}" digest="SHA-256"/>
+        <echo>Signing UKfed export metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.export.unsigned}" o="${output.dir}/${mdaggr.export.signed}" digest="SHA-256"/>
 
-        <echo>Signing UK fallback metadata.</echo>
-        <SIGN.uk i="${mdaggr.back.unsigned}" o="${mdaggr.back.signed}" digest="SHA-256"/>
+        <echo>Signing UKfed export preview metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.export.preview.unsigned}" o="${output.dir}/${mdaggr.export.preview.signed}" digest="SHA-256"/>
 
-        <echo>Generated signed UK metadata.</echo>
+        <echo>Signing UKfed fallback metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.back.unsigned}" o="${output.dir}/${mdaggr.back.signed}" digest="SHA-256"/>
+
     </target>
 
     <!--
