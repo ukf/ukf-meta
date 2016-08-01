@@ -189,7 +189,7 @@
     <!--
         Signing keystore alias.
     -->
-    <property name="keystore.uk.sign.alias" value="ukfederation"/>
+    <property name="sign.uk.keyAlias" value="ukfederation"/>
 
     <!--
         Verification keystore.
@@ -656,19 +656,19 @@
                     <!--
                         If we have a PKCS#11 configuration specified, include it.
                     -->
-                    <arg if:set="keystore.pkcs11.config" value="--pkcs11Config"/>
-                    <arg if:set="keystore.pkcs11.config" value="${keystore.pkcs11.config}"/>
+                    <arg if:set="sign.uk.pkcs11Config" value="--pkcs11Config"/>
+                    <arg if:set="sign.uk.pkcs11Config" value="${sign.uk.pkcs11Config}"/>
 
                     <!--
                         If we have a non-default keystore provider specified, include it.
                     -->
-                    <arg if:set="keystore.uk.sign.provider" value="--keystoreProvider"/>
-                    <arg if:set="keystore.uk.sign.provider" value="${keystore.uk.sign.provider}"/>
+                    <arg if:set="sign.uk.keystoreProvider" value="--keystoreProvider"/>
+                    <arg if:set="sign.uk.keystoreProvider" value="${sign.uk.keystoreProvider}"/>
 
                     <arg value="--key"/>
-                    <arg value="${keystore.uk.sign.alias}"/>
+                    <arg value="${sign.uk.keyAlias}"/>
                     <arg value="--keyPassword"/>
-                    <arg value="${keystore.pass}"/>
+                    <arg value="${sign.uk.keyPassword}"/>
                     <arg value="--outFile"/>
                     <arg value="@{o}"/>
                     <arg value="--referenceIdAttributeName"/>
@@ -768,10 +768,10 @@
     -->
 
     <!--
-        Acquire the keystore password.
+        Acquire the signing keystore password.
     -->
-    <target name="get.keystore.pass" unless="keystore.pass">
-        <input addproperty="keystore.pass">
+    <target name="get.sign.uk.keyPassword" unless="sign.uk.keyPassword">
+        <input addproperty="sign.uk.keyPassword">
             Please enter the password for the keystores:
         </input>
     </target>
