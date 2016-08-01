@@ -9,7 +9,7 @@
     * "ant push" sends all files to the remote site, and requires
       the remote site password.
 -->
-<project default="echoproperties">
+<project default="echoproperties" xmlns:if="ant:if" xmlns:unless="ant:unless">
 
     <!--
         *******************************************
@@ -654,13 +654,11 @@
                     <arg value="@{digest}"/>
 
                     <!--
-                        Sign using pkcs11Config with keystoreProvider
-
-                        This only works with XmlSecTool 1.2.0 and later.
-                        It requires the java.security file to be unmodified.
+                        If we have a PKCS11 configuration specified, include it.
                     -->
-                    <arg value="--pkcs11Config"/>
-                    <arg value="${keystore.pkcs11.config}"/>
+                    <arg if:set="keystore.pkcs11.config" value="--pkcs11Config"/>
+                    <arg if:set="keystore.pkcs11.config" value="${keystore.pkcs11.config}"/>
+
                     <arg value="--keystoreProvider"/>
                     <arg value="sun.security.pkcs11.SunPKCS11"/>
 
