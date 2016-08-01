@@ -660,7 +660,7 @@
                         It requires the java.security file to be unmodified.
                     -->
                     <arg value="--pkcs11Config"/>
-                    <arg value="${pkcs11.config}"/>
+                    <arg value="${keystore.pkcs11.config}"/>
                     <arg value="--keystoreProvider"/>
                     <arg value="sun.security.pkcs11.SunPKCS11"/>
 
