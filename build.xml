@@ -75,6 +75,39 @@
     <property file="default.properties"/>
 
     <!--
+        ***************************************************************
+        ***                                                         ***
+        ***   G I T   I N T E G R A T I O N   P R O P E R T I E S   ***
+        ***                                                         ***
+        ***************************************************************
+    -->
+
+    <property name="git.executable" value="git"/>
+    
+    <!--
+        This project is integrated with two others using Git.
+        
+        The following properties describe where the repositories for those projects are located.
+    -->
+    <property name="git.repo.user" value="git"/>
+    <property name="git.repo.host" value="repo.infr.ukfederation.org.uk"/>
+    <property name="git.repo.group" value="ukf"/>
+
+    <!--
+        Name each of the project repositories.
+    -->
+    <property name="git.repo.project.data" value="ukf-data"/>
+    <property name="git.repo.project.products" value="ukf-products"/>
+    <property name="git.repo.project.tooling" value="ukf-meta"/>
+
+    <!--
+        Build access URLs for each repository.
+    -->
+    <property name="git.repo.data.url" value="${git.repo.user}@${git.repo.host}:${git.repo.group}/${git.repo.project.data}"/>
+    <property name="git.repo.products.url" value="${git.repo.user}@${git.repo.host}:${git.repo.group}/${git.repo.project.products}"/>
+    <property name="git.repo.tooling.url" value="${git.repo.user}@${git.repo.host}:${git.repo.group}/${git.repo.project.tooling}"/>
+
+    <!--
         *********************************************
         ***                                       ***
         ***   S E R V E R   P R O P E R T I E S   ***
@@ -121,8 +154,9 @@
     <!--
         External specialised directories.
     -->
-    <property name="entities.dir" value="${shared.ws.dir}/ukf-data/entities"/>
-    <property name="members.dir" value="${shared.ws.dir}/ukf-data/members"/>
+    <property name="aggregates.dir" value="${shared.ws.dir}/${git.repo.project.products}/aggregates"/>
+    <property name="entities.dir" value="${shared.ws.dir}/${git.repo.project.data}/entities"/>
+    <property name="members.dir" value="${shared.ws.dir}/${git.repo.project.data}/members"/>
     <property name="output.dir" value="${shared.ws.dir}/build"/>
     <property name="temp.dir" value="${shared.ws.dir}/build"/>
 
