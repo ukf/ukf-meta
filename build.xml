@@ -123,6 +123,31 @@
     <property name="md.dist.host3.name" value="md3.infr.ukfederation.org.uk"/>
 
     <!--
+        Middlebox server properties.
+    -->
+    <property name="orchestrator.user" value="jenkins"/>
+    <property name="orchestrator.hostname" value="orchestrator.infr.ukfederation.org.uk"/>
+    <property name="orchestrator.path" value="${shared.ws.dir}/build"/>
+    <property name="orchestrator.url" value="${orchestrator.user}@${orchestrator.hostname}:${orchestrator.path}"/>
+    
+    <!--
+        Signing server properties.
+    -->
+    <property name="keymaster.user" value="jenkinsslave"/>
+    <property name="keymaster.hostname" value="keymaster.infr.ukfederation.org.uk"/>
+    <property name="keymaster.path" value="${shared.ws.dir}/build"/>
+    <property name="keymaster.url" value="${keymaster.user}@${keymaster.hostname}:${keymaster.path}"/>
+    
+    <!--
+        Web server properties.
+    -->
+    <property name="www.user" value="wwwscp"/>
+    <property name="www.hostname" value="web1.infr.ukfederation.org.uk"/>
+    <property name="www.path" value="/var/www/html/fed"/>
+    <property name="www.url" value="${www.user}@${www.hostname}:${www.path}"/>
+
+
+     <!--
         *******************************************************
         ***                                                 ***
         ***   F I L E   S Y S T E M   P R O P E R T I E S   ***
