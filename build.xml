@@ -3,13 +3,39 @@
 <!--
     Federation metadata signing process for the UK federation.
 
-    * "ant process" generates the other files from the master file, and
-      signs as appropriate.  Requires the keystore password.
+    The following are among the callable targets for this process:
 
-    * "ant push" sends all files to the remote site, and requires
-      the remote site password.
+    * "ant process.create-aggregates.test" generates the set of unsigned aggregates, and does nothing else
+    * "ant process.mergetomaster.deferred" takes the deferred branch of the data repository, and merges it to master, ready to create aggregates.
+    * "ant process.mergetomaster.immediate" takes the immediate branch of the data repository, and merges it to master, ready to create aggregates.
+    * "ant process.create-aggregates" generates the set of unsigned aggregates from the other files.
+    * "ant process.sign-aggregates.sign" signs each aggregate and verifies the signatures
+    * "ant process.collect-mdq" collects the static cache of MDQ responses
+    * "ant process.publish" sends all files to the metadata distribution servers.
 -->
 <project default="echoproperties" xmlns:if="ant:if" xmlns:unless="ant:unless">
+
+    <!--
+        *******************************
+        ***                         ***
+        ***   P R O P E R T I E S   ***
+        ***                         ***
+        *******************************
+    -->
+
+    <!--
+        When invoking the targets related to the signing process, a production deployment
+        MUST define the following properties:
+
+        * shared.ws.dir              - the full path the to the shared workspace that all this will execute under
+        * sign.uk.keyPassword        - password for the pkcs11 keystore
+
+        The following properties MUST be provided as arguments when invoking the targets that make use of them:
+
+        * jenkins.url.to.trigger.signing     - full URL to trigger the Jenkins task responsible for signing
+        * jenkins.url.to.trigger.publication - full URL to trigger the Jenkins task responsible for publication
+    -->
+
 
     <!--
         *******************************************
@@ -210,6 +236,11 @@
     <property name="temp.xml" value="${temp.dir}/temp.xml"/>
 
     <!--
+        Lockfile (the signing process should only be allowed to begin if this is not present)
+    -->
+    <property name="lockfile" value="${shared.ws.dir}/lockfile"/>
+
+    <!--
         There are many separate processing "streams":  production, test, export,
         fallback, "wayf", and "cdsall".
 
@@ -240,6 +271,7 @@
         Other files
     -->
     <property name="mdaggr.stats" value="ukfederation-stats.html"/>
+
 
     <!--
         *************************************************
@@ -281,6 +313,718 @@
         *************************************************
     -->
 
+    <!--
+        Stage 0 of md process: test creation of aggregates, looking for errors.
+
+        Runs on: aggr
+
+        Process:
+            * Git: Make sure all repos up to date
+            * SAML MD: Generate unsigned aggregates
+    -->
+    <target name="process.create-aggregates.test" depends="
+        git.pull.all,
+        git.data.deferredbranch.checkout,
+        samlmd.aggregates.generate.dry-run">
+        <echo>Stage 0 Success: Test aggregates built successfully from deferred branch.</echo>
+    </target>
+
+    <!--
+        Stage 1 (normal process) of md process: merge the updates into master
+
+        Runs on: aggr
+
+        Process:
+            * Lock: Check for presence of lockfile, if not present, create it
+            * API: Pause the API
+            * FS: Make sure output directory is clear
+            * Git: Make sure all repos up to date
+            * Git: Merge deferred branch into immediate branch
+            * Git: Merge immediate branch into master branch
+    -->
+    <target name="process.mergetomaster.deferred" depends="
+        lock.check,
+        lock.lock,
+        api.pause,
+        fs.clear.outputdir,
+        git.pull.all,
+        git.data.merge.deferredintoimmediate,
+        git.data.merge.immediateintomaster">
+        <echo>Stage 1 (normal) Success: Lockfile created, API paused, deferred branch merged into immediate and then into master.</echo>
+    </target>
+
+    <!--
+        Stage 1 (emergency change process) of md process: merge the updates into master
+
+        Runs on: aggr
+
+        Process:
+            * Lock: Check for presence of lockfile, if not present, create it
+            * API: Pause the API
+            * FS: Make sure output directory is clear
+            * Git: Make sure all repos up to date
+            * Git: Merge immediate tree into master
+    -->
+    <target name="process.mergetomaster.immediate" depends="
+        lock.check,
+        lock.lock,
+        api.pause,
+        fs.clear.outputdir,
+        git.pull.all,
+        git.data.merge.immediateintomaster">
+        <echo>Stage 1 (emergency) Success: Lockfile created, API paused, immediate branch merged into master.</echo>
+    </target>
+
+    <!--
+        Stage 1 of md process: manually triggered re-aggregation, signing & publication (without first merging any working branch).
+
+        Runs on: aggr
+
+        Process:
+            * Lock: Check for presence of lockfile, if not present, create it
+            * API: Pause the API
+            * FS: Make sure output directory is clear
+            * Git: Make sure all repos up to date
+            * Git: Merge immediate tree into master
+    -->
+    <target name="process.manual.retrigger" depends="
+        lock.check,
+        lock.lock,
+        fs.clear.outputdir,
+        api.pause,
+        git.pull.all">
+        <echo>Stage 1 (manual) Success: Lockfile created, API paused.</echo>
+    </target>
+
+    <!--
+        Stage 2 of md process: generate the unsigned aggregates
+
+        Runs on: aggr
+
+        Process:
+            * API: Unpause
+            * Git: Make sure we're on the master branch
+            * SAML MD: Generate unsigned aggregates
+            * Scp: Copy unsigned aggregates to orchestrator
+            * Jenkins: Trigger job on ochestrator to start signing process
+    -->
+    <target name="process.create-aggregates" depends="
+        api.unpause,
+        git.data.masterbranch.checkout,
+        samlmd.aggregates.generate,
+        fs.scp.unsigned.files.to.orchestrator,
+        jenkins.triggerjob.signing">
+        <echo>Stage 2 Success: Unsigned aggregates created, copied to orchestrator. Message sent to start signing.</echo>
+    </target>
+
+    <!--
+        Stage 3.0 of md process: create the signed aggregates / clear output dir
+
+        Runs on: keymaster
+
+        Process:
+            * FS: Clear outputdir
+    -->
+    <target name="process.sign-aggregates.clear.keymaster" depends="
+        fs.clear.outputdir">
+        <echo>Stage 3.0 Success: Output directory on keymaster cleared.</echo>
+    </target>
+
+    <!--
+        Stage 3.1 of md process: create the signed aggregates / update and copy to keymaster
+
+        Runs on: orchestrator
+
+        Process:
+            * Git: Make sure all repos up to date
+            * SCP: Copy files to keymaster
+    -->
+    <target name="process.sign-aggregates.prepare.and.scp" depends="
+        git.pull.all,
+        fs.scp.unsigned.files.to.keymaster">
+        <echo>Stage 3.1 Success: Aggregates send to keymaster for processing.</echo>
+    </target>
+
+    <!--
+        Stage 3.2 of md process: create the signed aggregates / sign
+
+        Runs on: keymaster
+
+        Process:
+            * SAML MD: Sign aggregates
+            * SAML MD: Verify signed aggregates
+    -->
+    <target name="process.sign-aggregates.sign" depends="
+        samlmd.aggregates.sign,
+        samlmd.aggregates.verify">
+        <echo>Stage 3.2 Success: Aggregates signed and verified".</echo>
+    </target>
+
+    <!--
+        Stage 3.3 of md process: create the signed aggregates / scp from keymaster and push
+
+        Runs on: orchestrator
+
+        Process:
+            * SCP: Copy files from keymaster
+            * FS: Copy other files from output dir into aggregates.dir so it'll get checked in
+            * Git: Add newly created files
+            * Git: Commit
+    -->
+    <target name="process.sign-aggregates.scp.and.push" depends="
+        fs.scp.signed.files.from.keymaster,
+        fs.cp.other.files.to.aggregates.dir,
+        git.products.addallnewfiles,
+        git.products.commit.signed">
+        <echo>Stage 3.3 Success: Signed aggregates and stats file comitted to data repository, pushed to origin.</echo>
+    </target>
+
+    <!--
+        Stage 4 of md process: collect the signed MDQ responses, tag the whole lot.
+
+        Runs on: orchestrator
+
+        Process:
+            * MDQ: Iterate through all entities, collect each representation of each entity's MD, save.
+            * Git: Add newly created files
+            * Git: Commit
+    -->
+    <target name="process.collectmdq" depends="
+        mdq.createcache">
+        <echo>Stage 4 Success: MDQ cache created (not yet implemented!); all files comitted to data repository.</echo>
+    </target>
+
+    <!--
+        Stage 5 of md process: collect the signed MDQ responses, tag the whole lot.
+
+        Runs on: orchestrator
+            * Git: Create New Tag
+            * Git: Push to origin
+            * Jenkins: Trigger publish task
+    -->
+    <target name="process.bagandtag" depends="
+        git.products.masterbranch.pushtoorigin,
+        git.products.createtagandpushtoorigin,
+        fs.clear.outputdir,
+        jenkins.triggerjob.publish">
+        <echo>Stage 5 Success: Master branch pushed to origin, new tag created and pushed, message sent to start publication.</echo>
+    </target>
+
+    <!--
+        Stage 6 of md process: publish
+
+        Runs on: aggr
+          * Git: Make sure repos are up to date
+          * Git: Merge master branch into immediate
+          * Git: Merge immediate branch into deferred
+          * SCP: Files to backend md servers
+          * SAML MD: Verify remote MD.
+          * Azure: Send purge to CDN
+          * Slack: Send notification to UKf channel
+    -->
+    <target name="process.publish" depends="
+        git.pull.all,
+        git.data.merge.masterintoimmediate,
+        git.data.merge.immediateintodeferred,
+        git.data.allbranches.pushtoorigin,
+        publish.md,
+        publish.otherfiles,
+        samlmd.aggregates.verify.remote,
+        azure.purgecdn,
+        lock.unlock,
+        slack.notify.publication.success">
+        <echo>Stage 6 Success: Aggregates and MDQ cache pushed and verified.</echo>
+    </target>
+
+
+    <!--
+        ***************************************************
+        ***                                             ***
+        ***   A P I   H A N D L I N G   T A R G E T S   ***
+        ***                                             ***
+        ***************************************************
+    -->
+
+    <target name="api.pause">
+        <exec executable="echo" failonerror="true">
+            <arg value="'API pause not yet implemented. This is not a failure, other than a moral one.'"/>
+        </exec>
+    </target>
+
+    <target name="api.unpause">
+        <exec executable="echo" failonerror="true">
+            <arg value="'API unpause not yet implemented. This is not a failure, other than a moral one.'"/>
+        </exec>
+    </target>
+
+
+    <!--
+        *****************************************
+        ***                                   ***
+        ***   L O C K I N G   T A R G E T S   ***
+        ***                                   ***
+        *****************************************
+    -->
+
+    <target name="lock.check">
+        <echo>Checking for presence of lockfile...</echo>
+        <fail message="-> Lockfile present! Aborting.">
+            <condition>
+                <available file="${lockfile}"/>
+            </condition>
+        </fail>
+        <echo>-> No lockfile, continuing...</echo>
+    </target>
+
+    <target name="lock.lock">
+        <touch file="${lockfile}"/>
+    </target>
+
+    <target name="lock.unlock">
+        <delete file="${lockfile}"/>
+    </target>
+
+
+    <!--
+        *********************************
+        ***                           ***
+        ***   G I T   T A R G E T S   ***
+        ***                           ***
+        *********************************
+     -->
+
+    <!--
+        Full hard reset of all repositories
+    -->
+    <target name="git.hardreset.all">
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="fetch"/>
+            <arg value="origin"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="reset"/>
+            <arg value="--hard"/>
+            <arg value="origin/master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="immediate"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="fetch"/>
+            <arg value="origin"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="reset"/>
+            <arg value="--hard"/>
+            <arg value="origin/immediate"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="deferred"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="fetch"/>
+            <arg value="origin"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="reset"/>
+            <arg value="--hard"/>
+            <arg value="deferred"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="fetch"/>
+            <arg value="origin"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="reset"/>
+            <arg value="--hard"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
+            <arg value="fetch"/>
+            <arg value="origin"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
+            <arg value="reset"/>
+            <arg value="--hard"/>
+        </exec>
+        <echo>All branches on all repositories, reset HARD.</echo>
+    </target>
+
+    <!--
+        Updates all of the local main repositories (all branches) from the origin.
+      -->
+    <target name="git.pull.all">
+        <echo>Pulling the latest state from all Git repositories (all branches).</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="pull"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="immediate"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="pull"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="deferred"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="pull"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="pull"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
+            <arg value="pull"/>
+        </exec>
+    </target>
+
+    <!--
+      Merges deferred branch into immediate branch of data repo.
+    -->
+    <target name="git.data.merge.deferredintoimmediate">
+        <echo>Merging deferred branch into immediate branch of data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="immediate"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="merge"/>
+            <arg value="deferred"/>
+            <arg value="-m"/>
+            <arg value="'Merging deferred branch into immediate branch.'"/>
+        </exec>
+    </target>
+
+    <!--
+      Merges immediate branch into master branch of data repo
+    -->
+    <target name="git.data.merge.immediateintomaster">
+        <echo>Merging immediate branch into master branch of data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="merge"/>
+            <arg value="immediate"/>
+            <arg value="-m"/>
+            <arg value="'Merging immediate branch into master branch.'"/>
+        </exec>
+    </target>
+
+    <!--
+      Merges master branch into immediate branch of data repo
+    -->
+    <target name="git.data.merge.masterintoimmediate">
+        <echo>Merging master branch into immediate branch of data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="immediate"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="merge"/>
+            <arg value="master"/>
+            <arg value="-m"/>
+            <arg value="'Merging master branch into immediate branch.'"/>
+        </exec>
+    </target>
+
+    <!--
+      Merges immediate branch into deferred branch of data repo
+    -->
+    <target name="git.data.merge.immediateintodeferred">
+        <echo>Merging immediate branch into deferred branch of data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="deferred"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="merge"/>
+            <arg value="immediate"/>
+            <arg value="-m"/>
+            <arg value="'Merging immedate branch into deferred branch.'"/>
+        </exec>
+    </target>
+
+    <!--
+      Merges immediate branch into deferred branch of data repo
+    -->
+    <target name="git.data.merge.masterintodeferred">
+        <echo>Merging master branch into deferred branch of data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="deferred"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="merge"/>
+            <arg value="master"/>
+            <arg value="-m"/>
+            <arg value="'Merging immedate branch into deferred branch.'"/>
+        </exec>
+    </target>
+
+    <!--
+      Merges immediate branch into deferred branch of data repo
+    -->
+    <target name="git.data.merge.deferredintomaster">
+        <echo>Merging deferred branch into master branch of data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="merge"/>
+            <arg value="deferred"/>
+            <arg value="-m"/>
+            <arg value="'Merging immedate branch into deferred branch.'"/>
+        </exec>
+    </target>
+
+    <!--
+      Checks out master branch of data repository
+    -->
+    <target name="git.data.masterbranch.checkout">
+        <echo>Switching to deferred branch in data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+    </target>
+
+    <!--
+      Checks out deferred branch of data repository
+    -->
+    <target name="git.data.deferredbranch.checkout">
+        <echo>Switching to deferred branch in data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="deferred"/>
+        </exec>
+    </target>
+
+    <!--
+      Checks out immediate branch of data repository
+    -->
+    <target name="git.data.immediatebranch.checkout">
+        <echo>Switching to immediate branch in data repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="deferred"/>
+        </exec>
+    </target>
+
+    <!--
+        Push all branches of data repo to the origin
+    -->
+    <target name="git.data.allbranches.pushtoorigin">
+        <echo>Pushing all branches of data repository to origin</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="push"/>
+            <arg value="-u"/>
+            <arg value="origin"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="deferred"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="push"/>
+            <arg value="-u"/>
+            <arg value="origin"/>
+            <arg value="deferred"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="immediate"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="push"/>
+            <arg value="-u"/>
+            <arg value="origin"/>
+            <arg value="immediate"/>
+        </exec>
+    </target>
+
+    <!--
+        Push master branch of products repo to the origin
+    -->
+    <target name="git.products.masterbranch.pushtoorigin">
+        <echo>Pushing master branch of products repository to origin</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="-u"/>
+            <arg value="origin"/>
+            <arg value="master"/>
+        </exec>
+    </target>
+
+    <!--
+        Push master branch of data repo to the origin
+    -->
+    <target name="git.products.databranch.pushtoorigin">
+        <echo>Pushing master branch of data repository to origin</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="push"/>
+            <arg value="-u"/>
+            <arg value="origin"/>
+            <arg value="master"/>
+        </exec>
+    </target>
+
+    <!--
+        Push immediate branch of data repo to the origin
+    -->
+    <target name="git.data.immediatebranch.pushtoorigin">
+        <echo>Pushing immediate branch of data repository to origin</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="immediate"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="push"/>
+            <arg value="-u"/>
+            <arg value="origin"/>
+            <arg value="immediate"/>
+        </exec>
+    </target>
+
+    <!--
+      Push deferred branch of data repo to the origin
+    -->
+    <target name="git.data.deferredbranch.pushtoorigin">
+        <echo>Pushing deferred branch of data repository to origin</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="checkout"/>
+            <arg value="deferred"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+            <arg value="push"/>
+            <arg value="-u"/>
+            <arg value="origin"/>
+            <arg value="deferred"/>
+        </exec>
+    </target>
+
+    <!--
+       Add any new files in /aggregates of products repository to working set
+    -->
+    <target name="git.products.addallnewfiles">
+        <echo>Adding all new files in aggregates/ directory of products repository into Git working set.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="add"/>
+            <arg value="aggregates/"/>
+        </exec>
+    </target>
+
+    <!--
+      Commit unsigned files to local products repository
+    -->
+    <target name="git.products.commit.unsigned">
+        <echo>Commiting all changes in products repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="commit"/>
+            <arg value="-m"/>
+            <arg value="'Commiting new unsigned files into products repo'"/>
+        </exec>
+    </target>
+
+    <!--
+      Commit signed files to local data repository (release branch):
+    -->
+    <target name="git.products.commit.signed">
+        <echo>Commiting all changes in products repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="commit"/>
+            <arg value="-m"/>
+            <arg value="'Commiting new signed files into products repo.'"/>
+        </exec>
+    </target>
+
+    <!--
+      Creates a new tag on the master branch
+    -->
+    <target name="git.products.createtagandpushtoorigin">
+        <echo>Creating new Tag in master branch of products repository.</echo>
+        <tstamp>
+            <format property="DATE_UTC" pattern="yyyy-MM-dd" locale="UTC"/>
+        </tstamp>
+        <tstamp>
+            <format property="TIME_UTC" pattern="HH-mm" locale="UTC"/>
+        </tstamp>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="tag"/>
+            <arg value="-a"/>
+            <arg value="UKf_${DATE_UTC}_${TIME_UTC}"/>
+            <arg value="-m"/>
+            <arg value="'UK federation publication - ${DATE_UTC} ${TIME_UTC}'"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="origin"/>
+            <arg value="UKf_${DATE_UTC}_${TIME_UTC}"/>
+        </exec>
+    </target>
+
+    <!--
+        Commit unsigned files to local products repository
+    -->
+    <target name="git.orchestrator.push.tooling.to.keymaster">
+        <echo>Commiting all changes in products repository.</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
+            <arg value="push"/>
+            <arg value="keymaster"/>
+            <arg value="master"/>
+        </exec>
+    </target>
+
+
+    <!--
+        *****************************************
+        ***                                   ***
+        ***   J E N K I N S   T A R G E T S   ***
+        ***                                   ***
+        *****************************************
+    -->
+
+    <!--
+        Does a HTTP Get on the URL that triggers the Jenkins signing job, but only if one is not currently in progress.
+    -->
+    <target name="jenkins.triggerjob.signing">
+        <echo>Triggering Jenkins signing job</echo>
+        <get src="${jenkins.url.to.trigger.signing}" dest="${temp.dir}/get.out"/>
+    </target>
+
+    <!--
+        Does a HTTP Get on the URL that triggers the Jenkins publication job.
+    -->
+    <target name="jenkins.triggerjob.publish">
+        <echo>Triggering Jenkins publication Job.</echo>
+        <get src="${jenkins.url.to.trigger.publication}" dest="${temp.dir}/get.out"/>
+    </target>
 
     <!--
         ****************************************************
@@ -935,6 +1679,148 @@
         <VFY.uk.both i="${output.dir}/${mdaggr.back.signed}"/>
 
         <echo>Verification completed.</echo>
+    </target>
+
+
+    <!--
+        *******************************************************
+        ***                                                 ***
+        ***   F I L E S Y S T E M   O P S   T A R G E T S   ***
+        ***                                                 ***
+        *******************************************************
+    -->
+
+    <target name="fs.clear.outputdir">
+        <echo>Clearing output directory.</echo>
+        <delete includeemptydirs="true">
+            <fileset dir="${output.dir}" includes="**/*"/>
+        </delete>
+    </target>
+
+    <target name="fs.cp.other.files.to.aggregates.dir">
+        <echo>CPing other files that should be checked into git into orchestrator's aggregates dir.</echo>
+        <copy failonerror="true" todir="${aggregates.dir}">
+            <fileset dir="${output.dir}">
+                <include name="${mdaggr.stats}"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="fs.scp.unsigned.files.to.orchestrator">
+        <echo>SCPing unsigned files and stats file from output dir to orchestrator's build dir.</echo>
+        <scp failonerror="true" remoteTodir="${orchestrator.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdaggr.prod.unsigned}"/>
+                <include name="${mdaggr.wayf.unsigned}"/>
+                <include name="${mdaggr.cdsall.unsigned}"/>
+                <include name="${mdaggr.test.unsigned}"/>
+                <include name="${mdaggr.back.unsigned}"/>
+                <include name="${mdaggr.export.unsigned}"/>
+                <include name="${mdaggr.export.preview.unsigned}"/>
+                <include name="${mdaggr.stats}"/>
+            </fileset>
+        </scp>
+    </target>
+
+    <target name="fs.scp.unsigned.files.to.keymaster">
+        <echo>SCPing unsigned aggregates from orchestrator's output dir to keymaster's build.dir.</echo>
+        <scp failonerror="true" remoteTodir="${keymaster.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdaggr.prod.unsigned}"/>
+                <include name="${mdaggr.wayf.unsigned}"/>
+                <include name="${mdaggr.cdsall.unsigned}"/>
+                <include name="${mdaggr.test.unsigned}"/>
+                <include name="${mdaggr.back.unsigned}"/>
+                <include name="${mdaggr.export.unsigned}"/>
+                <include name="${mdaggr.export.preview.unsigned}"/>
+            </fileset>
+        </scp>
+    </target>
+
+    <target name="fs.scp.signed.files.from.keymaster">
+        <echo>SCPing signed aggregates from keymaster's output dir into orchestrator's aggregates dir.</echo>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.prod.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.wayf.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.cdsall.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.test.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.back.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.export.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.export.preview.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+    </target>
+
+
+    <!--
+        ***************************************************
+        ***                                             ***
+        ***   M D Q   H A N D L I N G   T A R G E T S   ***
+        ***                                             ***
+        ***************************************************
+    -->
+
+    <target name="mdq.createcache">
+        <echo>Creating MDQ cache.</echo>
+        <echo>-> Not yet implemented. This is not a failure, other than a moral one</echo>
+    </target>
+
+
+    <!--
+        **************************************
+        ***                                ***
+        ***    A Z U R E   T A R G E T S   ***
+        ***                                ***
+        **************************************
+    -->
+
+    <target name="azure.purgecdn">
+        <echo>Sending Purge command to Azure CDN.</echo>
+        <echo>-> Not yet implemented. This is not a failure, other than a moral one</echo>
+    </target>
+
+
+    <!--
+        ***********************************************
+        ***                                         ***
+        ***   P U B L I S H I N G   T A R G E T S   ***
+        ***                                         ***
+        ***********************************************
+    -->
+
+    <target name="publish.md">
+        <!--
+            Push metadata files for the UK Federation to the MD dist servers
+        -->
+        <echo>Pushing UK Federation metadata files to MD dist.</echo>
+        <echo>-> MD1</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="md1"/>
+            <arg value="master"/>
+        </exec>
+        <echo>-> MD2</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="md2"/>
+            <arg value="master"/>
+        </exec>
+        <echo>-> MD3</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="md3"/>
+            <arg value="master"/>
+        </exec>
+    </target>
+
+    <target name="publish.otherfiles">
+        <!--
+            Push other files for the UK Federation to the web server
+        -->
+        <echo>Pushing UK Federation other files to web site.</echo>
+        <echo>-> Web1</echo>
+        <scp failonerror="true" remoteTodir="${www.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${aggregates.dir}">
+                <include name="${mdaggr.stats}"/>
+            </fileset>
+        </scp>
     </target>
 
 
