@@ -44,7 +44,7 @@
         Distinguish between different classes of deployment,
         e.g., development vs. production.
 
-        Values: dev, preprod, prod
+        Values: dev, preprod, prod, prod-old
 
         Defaults to "dev" here, but that can be overridden from the command
         line, a Jenkins job, or in build.properties.
