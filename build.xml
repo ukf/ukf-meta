@@ -205,15 +205,6 @@
     <property name="tools.xalan" value="${tools.dir}/xalan"/>
 
     <!--
-        Additional ANT task definitions.
-    -->
-    <taskdef resource="net/sf/antcontrib/antlib.xml">
-        <classpath>
-            <pathelement location="${tools.ant}/lib/ant-contrib-1.0b3.jar"/>
-        </classpath>
-    </taskdef>
-
-    <!--
         Full path to a commonly used temporary file.
     -->
     <property name="temp.xml" value="${temp.dir}/temp.xml"/>
@@ -257,6 +248,15 @@
         ***                                           ***
         *************************************************
     -->
+
+    <!--
+        Additional ANT task definitions.
+    -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="${tools.ant}/lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
 
     <!--
         Verification keystore.
