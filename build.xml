@@ -214,6 +214,11 @@
     </taskdef>
 
     <!--
+        Full path to a commonly used temporary file.
+    -->
+    <property name="temp.xml" value="${temp.dir}/temp.xml"/>
+
+    <!--
         There are many separate processing "streams":  production, test, export,
         fallback, "wayf", and "cdsall".
 
@@ -259,11 +264,6 @@
     -->
     <property name="java.max.memory" value="1024m"/>
 
-    <!--
-        Full paths to a couple of temporary file locations.
-    -->
-    <property name="temp.xml" value="${temp.dir}/temp.xml"/>
-
 
     <!--
         *************************************************
@@ -293,18 +293,18 @@
         <attribute name="i"/>
         <sequential>
             <echo>Verifying @{i}...</echo>
-            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
-            <get src="@{i}" dest="${temp.dir}/temp.xml"/>
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
+            <get src="@{i}" dest="${temp.xml}"/>
 
             <!--
                 Verify using xmlsectool.
             -->
-            <XMLSECTOOL.VFY.uk i="${temp.dir}/temp.xml"/>
+            <XMLSECTOOL.VFY.uk i="${temp.xml}"/>
 
             <!--
                 Delete the temporary file.
             -->
-            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
         </sequential>
     </macrodef>
 
@@ -319,23 +319,23 @@
         <attribute name="i"/>
         <sequential>
             <echo>Verifying @{i}...</echo>
-            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
-            <get src="@{i}" dest="${temp.dir}/temp.xml"/>
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
+            <get src="@{i}" dest="${temp.xml}"/>
 
             <!--
                 Verify using metadatatool.
             -->
-            <MDT.VFY.uk i="${temp.dir}/temp.xml"/>
+            <MDT.VFY.uk i="${temp.xml}"/>
 
             <!--
                 Verify using xmlsectool.
             -->
-            <XMLSECTOOL.VFY.uk i="${temp.dir}/temp.xml"/>
+            <XMLSECTOOL.VFY.uk i="${temp.xml}"/>
 
             <!--
                 Delete the temporary file.
             -->
-            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
         </sequential>
     </macrodef>
 
@@ -685,7 +685,7 @@
         <attribute name="digest"/><!-- digest function to use -->
         <sequential>
             <!-- delete the temporary file to be sure we don't use old data -->
-            <delete file="${temp.dir}/temp.xml" quiet="true" verbose="false"/>
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
 
             <echo>Signing @{i} using digest @{digest}.</echo>
 
