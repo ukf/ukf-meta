@@ -217,6 +217,7 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="mdx.dir" value="${basedir}/mdx"/>
     <property name="rules.dir" value="${mdx.dir}/_rules"/>
+    <property name="utilities.dir" value="${basedir}/utilities"/>
 
     <!--
         Location of externally supplied tool bundles.
@@ -2165,9 +2166,9 @@
     -->
     <target name="check.embedded" depends="extract.embedded">
         <echo>Checking embedded certificates</echo>
-        <exec executable="perl" dir="${build.dir}"
+        <exec executable="perl" dir="${utilities.dir}"
             input="${temp.dir}/embedded.pem">
-            <arg value="${build.dir}/check_embedded.pl"/>
+            <arg value="${utilities.dir}/check_embedded.pl"/>
             <arg value="-q"/>
         </exec>
         <delete file="${temp.dir}/embedded.pem" quiet="true" verbose="false"/>
