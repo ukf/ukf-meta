@@ -9,13 +9,13 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 # Load RSA key blacklists.
 #
 print "Loading key blacklists...\n";
-open KEYS, '../build/blacklist.RSA-1024' || die "can't open RSA 1024 blacklist";
+open(KEYS, '../build/blacklist.RSA-1024') || die "can't open RSA 1024 blacklist";
 while (<KEYS>) {
 	chomp;
 	$rsa1024{$_} = 1;
 }
 close KEYS;
-open KEYS, '../build/blacklist.RSA-2048' || die "can't open RSA 2048 blacklist";
+open(KEYS, '../build/blacklist.RSA-2048') || die "can't open RSA 2048 blacklist";
 while (<KEYS>) {
 	chomp;
 	$rsa2048{$_} = 1;
