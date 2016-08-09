@@ -53,7 +53,7 @@ $issuerMark{'GlobalSign ServerSign CA'} = 'x';
 #
 # Load expiry whitelist.
 #
-open(WL, '../build/expiry_whitelist.txt') || die "can't open certificate expiry whitelist";
+open(WL, 'expiry_whitelist.txt') || die "can't open certificate expiry whitelist";
 while (<WL>) {
 	# fold lines
 	while (/^(.*)\\\s*$/) {

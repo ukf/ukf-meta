@@ -2165,7 +2165,7 @@
     -->
     <target name="check.embedded" depends="extract.embedded">
         <echo>Checking embedded certificates</echo>
-        <exec executable="perl" dir="${temp.dir}"
+        <exec executable="perl" dir="${build.dir}"
             input="${temp.dir}/embedded.pem">
             <arg value="${build.dir}/check_embedded.pl"/>
             <arg value="-q"/>
