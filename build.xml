@@ -1093,35 +1093,121 @@
     </macrodef>
 
     <!--
+        Verify a metadata file held on the master distribution site.
+
+        Verification is performed using both metadatatool and xmlsectool.
+        This should be used when the file being verified must be compatible
+        with the Shibboleth 1.3 IdP.
+
+        Additionally, it'll compare the provided checksum against that of the
+        downloaded file, to ensure the file has the content you expected.
+    -->
+    <macrodef name="VFY.remote.both.and.checksum">
+        <attribute name="i"/>
+        <attribute name="checksum"/>
+        <sequential>
+            <echo>Verifying @{i}...</echo>
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
+            <get src="@{i}" dest="${temp.xml}"/>
+
+            <!--
+                Check the checksum matches what was expected.
+            -->
+            <local name="checksum.of.downloaded.file"/>
+            <checksum file="${temp.xml}" property="checksum.of.downloaded.file"/>
+            <fail message="Checksum of file in repository and on backend server does NOT match.">
+                <condition>
+                    <not>
+                        <equals arg1="@{checksum}" arg2="${checksum.of.downloaded.file}"/>
+                    </not>
+                </condition>
+            </fail>
+            <echo>Checksum of file matches expected value</echo>
+
+            <!--
+                Verify using metadatatool.
+            -->
+            <MDT.VFY.uk i="${temp.xml}"/>
+
+            <!--
+                Verify using xmlsectool.
+            -->
+            <XMLSECTOOL.VFY.uk i="${temp.xml}"/>
+
+            <!--
+                Delete the temporary file.
+            -->
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
+        </sequential>
+    </macrodef>
+
+    <!--
         Verify metadata files held on the master distribution site.
     -->
     <target name="samlmd.aggregates.verify.remote">
+        <echo>Computing checksums of each aggregate</echo>
+        <checksum file="${aggregates.dir}/${mdaggr.prod.signed}"
+            property="mdaggr.prod.signed.checksum"/>
+        <checksum file="${aggregates.dir}/${mdaggr.wayf.signed}"
+            property="mdaggr.wayf.signed.checksum"/>
+        <checksum file="${aggregates.dir}/${mdaggr.cdsall.signed}"
+            property="mdaggr.cdsall.signed.checksum"/>
+        <checksum file="${aggregates.dir}/${mdaggr.test.signed}"
+            property="mdaggr.test.signed.checksum"/>
+        <checksum file="${aggregates.dir}/${mdaggr.back.signed}"
+            property="mdaggr.back.signed.checksum"/>
+        <checksum file="${aggregates.dir}/${mdaggr.export.signed}"
+            property="mdaggr.export.signed.checksum"/>
+        <checksum file="${aggregates.dir}/${mdaggr.export.preview.signed}"
+            property="mdaggr.export.preview.signed.checksum"/>
+
         <echo>Verifying metadata held at ${md.dist.host1.name}</echo>
-        <VFY.remote.both i="http://${md.dist.host1.name}/${mdaggr.prod.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host1.name}/${mdaggr.wayf.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host1.name}/${mdaggr.cdsall.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host1.name}/${mdaggr.test.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host1.name}/${mdaggr.back.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host1.name}/${mdaggr.export.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host1.name}/${mdaggr.export.preview.signed}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.prod.signed}"
+            checksum="${mdaggr.prod.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.wayf.signed}"
+            checksum="${mdaggr.wayf.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.cdsall.signed}"
+            checksum="${mdaggr.cdsall.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.test.signed}"
+            checksum="${mdaggr.test.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.back.signed}"
+            checksum="${mdaggr.back.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.export.signed}"
+            checksum="${mdaggr.export.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.export.preview.signed}"
+            checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host2.name}</echo>
-        <VFY.remote.both i="http://${md.dist.host2.name}/${mdaggr.prod.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host2.name}/${mdaggr.wayf.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host2.name}/${mdaggr.cdsall.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host2.name}/${mdaggr.test.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host2.name}/${mdaggr.back.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host2.name}/${mdaggr.export.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host2.name}/${mdaggr.export.preview.signed}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.prod.signed}"
+            checksum="${mdaggr.prod.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.wayf.signed}"
+            checksum="${mdaggr.wayf.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.cdsall.signed}"
+            checksum="${mdaggr.cdsall.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.test.signed}"
+            checksum="${mdaggr.test.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.back.signed}"
+            checksum="${mdaggr.back.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.export.signed}"
+            checksum="${mdaggr.export.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.export.preview.signed}"
+            checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host3.name}</echo>
-        <VFY.remote.both i="http://${md.dist.host3.name}/${mdaggr.prod.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host3.name}/${mdaggr.wayf.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host3.name}/${mdaggr.cdsall.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host3.name}/${mdaggr.test.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host3.name}/${mdaggr.back.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host3.name}/${mdaggr.export.signed}"/>
-        <VFY.remote.both i="http://${md.dist.host3.name}/${mdaggr.export.preview.signed}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.prod.signed}"
+            checksum="${mdaggr.prod.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.wayf.signed}"
+            checksum="${mdaggr.wayf.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.cdsall.signed}"
+            checksum="${mdaggr.cdsall.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.test.signed}"
+            checksum="${mdaggr.test.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.back.signed}"
+            checksum="${mdaggr.back.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.export.signed}"
+            checksum="${mdaggr.export.signed.checksum}"/>
+        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.export.preview.signed}"
+            checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verification completed.</echo>
     </target>
