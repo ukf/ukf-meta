@@ -763,7 +763,7 @@
     </target>
 
     <!--
-      Merges immediate branch into deferred branch of data repo
+      Merges master branch into deferred branch of data repo
     -->
     <target name="git.data.merge.masterintodeferred">
         <echo>Merging master branch into deferred branch of data repository.</echo>
@@ -781,7 +781,7 @@
     </target>
 
     <!--
-      Merges immediate branch into deferred branch of data repo
+      Merges deferred branch into master branch of data repo
     -->
     <target name="git.data.merge.deferredintomaster">
         <echo>Merging deferred branch into master branch of data repository.</echo>
