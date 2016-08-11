@@ -827,7 +827,7 @@
         <echo>Switching to immediate branch in data repository.</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
-            <arg value="deferred"/>
+            <arg value="immediate"/>
         </exec>
     </target>
 
