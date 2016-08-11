@@ -1526,8 +1526,14 @@
         <tstamp>
             <format property="TIME_UTC" pattern="HH:mm" locale="UTC" />
         </tstamp>
-        <SLACK.send conf="${tools.slacktee}/conf/aggr-ant.conf" colour="good"
-            message="${DATE_UTC} ${TIME_UTC}: Successfully published new UKf MD Aggregates and MDQ cache." />
+        <!-- Only send when we're doing prod flows -->
+        <if>
+            <equals arg1="${env}" arg2="prod"/>
+            <then>
+                <SLACK.send conf="${tools.slacktee}/conf/aggr-ant.conf" colour="good"
+                    message="${DATE_UTC} ${TIME_UTC}: Successfully published new UKf MD Aggregates and MDQ cache." />
+            </then>
+        </if>
     </target>
 
     <!--
