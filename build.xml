@@ -316,18 +316,53 @@
 
     <!--
         Stage 0 of md process: test creation of aggregates, looking for errors.
+        Uses deferred branch.
+        Assumes you've run a git.pull.all first, as this target doesn't do that.
 
         Runs on: aggr
 
         Process:
-            * Git: Make sure all repos up to date
-            * SAML MD: Generate unsigned aggregates
+            * Git: Checkout deferred branch
+            * SAML MD: Run UK Verify flow
     -->
-    <target name="process.create-aggregates.test" depends="
-        git.pull.all,
+    <target name="process.create-aggregates.test.deferredbranch" depends="
         git.data.deferredbranch.checkout,
         samlmd.aggregates.generate.dry-run">
-        <echo>Stage 0 Success: Test aggregates built successfully from deferred branch.</echo>
+        <echo>Test aggregates built successfully from deferred branch.</echo>
+    </target>
+
+    <!--
+        Stage 0 of md process: test creation of aggregates, looking for errors.
+        Uses immediate branch.
+        Assumes you've run a git.pull.all first, as this target doesn't do that.
+
+        Runs on: aggr
+
+        Process:
+        * Git: Checkout immediate branch
+        * SAML MD: Run UK Verify flow
+    -->
+    <target name="process.create-aggregates.test.immediatebranch" depends="
+        git.data.immediatebranch.checkout,
+        samlmd.aggregates.generate.dry-run">
+        <echo>Test aggregates built successfully from immediate branch.</echo>
+    </target>
+
+    <!--
+        Stage 0 of md process: test creation of aggregates, looking for errors.
+        Uses master branch.
+        Assumes you've run a git.pull.all first, as this target doesn't do that.
+
+        Runs on: aggr
+
+        Process:
+        * Git: Checkout master branch
+        * SAML MD: Run UK Verify flow
+    -->
+    <target name="process.create-aggregates.test.masterbranch" depends="
+        git.data.masterbranch.checkout,
+        samlmd.aggregates.generate.dry-run">
+        <echo>Test aggregates built successfully from master branch.</echo>
     </target>
 
     <!--
