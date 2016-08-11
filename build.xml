@@ -109,10 +109,10 @@
     -->
 
     <property name="git.executable" value="git"/>
-    
+
     <!--
         This project is integrated with two others using Git.
-        
+
         The following properties describe where the repositories for those projects are located.
     -->
     <property name="git.repo.user" value="git"/>
@@ -155,7 +155,7 @@
     <property name="orchestrator.hostname" value="orchestrator.infr.ukfederation.org.uk"/>
     <property name="orchestrator.path" value="${shared.ws.dir}/build"/>
     <property name="orchestrator.url" value="${orchestrator.user}@${orchestrator.hostname}:${orchestrator.path}"/>
-    
+
     <!--
         Signing server properties.
     -->
@@ -163,7 +163,7 @@
     <property name="keymaster.hostname" value="keymaster.infr.ukfederation.org.uk"/>
     <property name="keymaster.path" value="${shared.ws.dir}/build"/>
     <property name="keymaster.url" value="${keymaster.user}@${keymaster.hostname}:${keymaster.path}"/>
-    
+
     <!--
         Web server properties.
     -->
