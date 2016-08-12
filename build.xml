@@ -572,6 +572,23 @@
         <echo>Stage 6 Success: Aggregates and MDQ cache pushed and verified.</echo>
     </target>
 
+    <!--
+        Wrapper target to perform periodic status check on embedded certificates.
+        Uses deferred branch.
+        Assumes you've run a git.pull.all first, as this target doesn't do that.
+
+        Runs on: aggr
+
+        Process:
+            * Git: Checkout deferred branch
+            * check embedded certificates
+    -->
+    <target name="process.check.embedded.deferredbranch" depends="
+        git.data.deferredbranch.checkout,
+        check.embedded">
+        <echo>Checked embedded certificates.</echo>
+    </target>
+
 
     <!--
         ***************************************************
