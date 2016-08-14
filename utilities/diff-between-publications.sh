@@ -64,7 +64,7 @@ gitlognumentries=$(git --work-tree=$repodata --git-dir=$repodata/.git log --form
 # =====
 
 # First part of the message is just a canned success message with a timestamp 
-msg="$(date) - Successfully published new UKf metadata.\n"
+msg="$(date) - Successfully published UKf metadata.\n"
 
 # Second part is some stats about the UK fed
 msg+="-> The UK federation now has $membercount members and $entitycountuk entities.\n"
@@ -72,21 +72,21 @@ msg+="-> The UK federation now has $membercount members and $entitycountuk entit
 # Third part is stats about the aggregate, and some diff info
 if [ $aggregatesizediff -lt 0 ]; then
     aggregatesizediffnegated=$(( $aggregatesizediff * -1 ))
-    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB ($aggregatesizediffnegated bytes smaller than the last publication, a $aggregatesizediffpc % difference).\n"
+    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB ($aggregatesizediffnegated bytes smaller than in the last publication, a $aggregatesizediffpc % difference).\n"
 elif [ $aggregatesizediff -eq 0 ]; then
-    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB (exactly the same size as the last publication).\n"
+    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB (exactly the same size as in the last publication).\n"
 else
-    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB ($aggregatesizediff bytes bigger than the last publication, a $aggregatesizediffpc % difference).\n"
+    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB ($aggregatesizediff bytes bigger than in the last publication, a $aggregatesizediffpc % difference).\n"
 fi
 
 # Finally all commits
 if [ $gitlognumentries -eq 0 ]; then
-    msg+="There have been no commits since last publication; all changes are from imported entities only.\n"
+    msg+="There have been no commits since last publication; any changes are from imported entities only.\n"
 elif [ $gitlognumentries -eq 1  ]; then
-    msg+="There has been $gitlognumentries commit since the last publication:\n"
+    msg+="There has been $gitlognumentries commit since last publication:\n"
     msg+="\`\`\`$gitlog\`\`\`"
 else
-    msg+="There have been $gitlognumentries commits since the last publication:\n"
+    msg+="There have been $gitlognumentries commits since last publication:\n"
     msg+="\`\`\`$gitlog\`\`\`"
 fi  
 
