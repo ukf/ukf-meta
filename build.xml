@@ -556,6 +556,7 @@
           * SCP: Files to backend md servers
           * SAML MD: Verify remote MD.
           * Azure: Send purge to CDN
+          * Git: Make sure we're on master branch (to calculate git commits)
           * Slack: Send notification to UKf channel
     -->
     <target name="process.publish" depends="
@@ -568,6 +569,7 @@
         samlmd.aggregates.verify.remote,
         azure.purgecdn,
         lock.unlock,
+        git.data.masterbranch.checkout,
         slack.notify.publication.success">
         <echo>Stage 6 Success: Aggregates and MDQ cache pushed and verified.</echo>
     </target>
