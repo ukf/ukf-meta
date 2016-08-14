@@ -12,7 +12,7 @@
 
 # Fail if $1 and $2 aren't provided.
 if [[ -z $1 && -z $2 ]]; then
-    echo "usage: git-diff-between-publications.sh <path to data repository> <path to products repository>"
+    echo "usage: diff-between-publications.sh <path to data repository> <path to products repository>"
     exit 1
 fi
 
