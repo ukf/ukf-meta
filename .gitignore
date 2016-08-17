@@ -1,5 +1,10 @@
 # Editor backup files
 *~
+.*swp
+
+# GUI metadata files
+.DS_Store
+Thumbs.db
 
 # /
 /private
