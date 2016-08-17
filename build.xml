@@ -1545,8 +1545,10 @@
             <then>
                 <exec executable="bash" failonerror="true" outputproperty="diff.between.publications">
                     <arg value="${utilities.dir}/diff-between-publications.sh"/>
-                    <arg value="${shared.ws.dir}/${git.repo.project.data}"/>
-                    <arg value="${shared.ws.dir}/${git.repo.project.products}"/>
+                    <arg value="${shared.ws.dir}"/>
+                    <arg value="${git.repo.group}"/>
+                    <arg value="${git.repo.project.data}"/>
+                    <arg value="${git.repo.project.products}"/>
                 </exec>
                 <SLACK.send conf="${tools.slacktee}/conf/aggr-ant.conf" colour="good"
                     message="${diff.between.publications}"/>
