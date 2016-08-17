@@ -1009,7 +1009,7 @@
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="commit"/>
             <arg value="-m"/>
-            <arg value="'Commiting new unsigned files into products repo'"/>
+            <arg value="Commit new unsigned files into products repo"/>
         </exec>
     </target>
 
@@ -1021,7 +1021,7 @@
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="commit"/>
             <arg value="-m"/>
-            <arg value="'Commiting new signed files into products repo.'"/>
+            <arg value="Commit new signed files into products repo"/>
         </exec>
     </target>
 
