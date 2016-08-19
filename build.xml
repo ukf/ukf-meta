@@ -1966,15 +1966,20 @@
 
     <target name="publish.otherfiles">
         <!--
-            Push other files for the UK Federation to the web server
+            Push other files for the UK Federation to the web server - but only when in prod env!
         -->
-        <echo>Pushing UK Federation other files to web site.</echo>
-        <echo>-> Web1</echo>
-        <scp failonerror="true" remoteTodir="${www.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${aggregates.dir}">
-                <include name="${mdaggr.stats}"/>
-            </fileset>
-        </scp>
+        <if>
+            <equals arg1="${env}" arg2="prod"/>
+                <then>
+                    <echo>Pushing UK Federation other files to web site.</echo>
+                    <echo>-> Web1</echo>
+                    <scp failonerror="true" remoteTodir="${www.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+                        <fileset dir="${aggregates.dir}">
+                            <include name="${mdaggr.stats}"/>
+                        </fileset>
+                    </scp>
+                </then>
+        </if>
     </target>
 
 
