@@ -71,16 +71,16 @@ gitlognumentries=$(git --work-tree=$sharedwsdir/$repodata --git-dir=$sharedwsdir
 msg="$(date) - Successfully published UKf metadata.\n"
 
 # Second part is some stats about the UK fed
-msg+="-> The UK federation now has $membercount members and $entitycountuk entities.\n"
+msg+="> The UK federation now has $membercount members and $entitycountuk entities.\n"
 
 # Third part is stats about the aggregate, and some diff info
 if [ $aggregatesizediff -lt 0 ]; then
     aggregatesizediffnegated=$(( $aggregatesizediff * -1 ))
-    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB ($aggregatesizediffnegated bytes smaller than in the last publication, a $aggregatesizediffpc % difference).\n"
+    msg+="> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB ($aggregatesizediffnegated bytes smaller than in the last publication, a $aggregatesizediffpc % difference).\n"
 elif [ $aggregatesizediff -eq 0 ]; then
-    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB (exactly the same size as in the last publication).\n"
+    msg+="> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB (exactly the same size as in the last publication).\n"
 else
-    msg+="-> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB ($aggregatesizediff bytes bigger than in the last publication, a $aggregatesizediffpc % difference).\n"
+    msg+="> The main aggregate contains $entitycounttotal entities and is $currentaggregatesizemb MB ($aggregatesizediff bytes bigger than in the last publication, a $aggregatesizediffpc % difference).\n"
 fi
 
 # Finally all commits
@@ -88,10 +88,10 @@ if [ $gitlognumentries -eq 0 ]; then
     msg+="There have been no commits since last publication; any changes are from imported entities only.\n"
 elif [ $gitlognumentries -eq 1  ]; then
     msg+="There has been $gitlognumentries commit since last publication:\n"
-    msg+="\`\`\`$gitlog\`\`\`"
+    msg+="\`\`\`\n$gitlog\n\`\`\`"
 else
     msg+="There have been $gitlognumentries commits since last publication:\n"
-    msg+="\`\`\`$gitlog\`\`\`"
+    msg+="\`\`\`\n$gitlog\n\`\`\`"
 fi  
 
 echo -e "$msg"
