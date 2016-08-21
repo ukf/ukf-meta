@@ -340,6 +340,7 @@
     <bean id="mdattr_namespace"     parent="String" c:_="urn:oasis:names:tc:SAML:metadata:attribute"/>
     <bean id="mdrpi_namespace"      parent="String" c:_="urn:oasis:names:tc:SAML:metadata:rpi"/>
     <bean id="mdui_namespace"       parent="String" c:_="urn:oasis:names:tc:SAML:metadata:ui"/>
+    <bean id="remd_namespace"       parent="String" c:_="http://refeds.org/metadata"/>
     <bean id="saml_namespace"       parent="String" c:_="urn:oasis:names:tc:SAML:2.0:assertion"/>
     <bean id="samlp_namespace"      parent="String" c:_="urn:oasis:names:tc:SAML:2.0:protocol"/>
     <bean id="shibmd_namespace"     parent="String" c:_="urn:mace:shibboleth:metadata:1.0"/>
@@ -372,6 +373,7 @@
                 <entry key="mdattr"     value-ref="mdattr_namespace"/>
                 <entry key="mdrpi"      value-ref="mdrpi_namespace"/>
                 <entry key="mdui"       value-ref="mdui_namespace"/>
+                <entry key="remd"       value-ref="remd_namespace"/>
                 <entry key="saml"       value-ref="saml_namespace"/>
                 <entry key="samlp"      value-ref="samlp_namespace"/>
                 <entry key="shibmd"     value-ref="shibmd_namespace"/>
@@ -942,6 +944,10 @@
         <bean parent="ClassPathResource">
             <!-- no imports -->
             <constructor-arg value="schema/incommon-metadata.xsd"/>
+        </bean>
+        <bean parent="ClassPathResource">
+            <!-- no imports -->
+            <constructor-arg value="schema/refeds-metadata.xsd"/>
         </bean>
         <bean parent="ClassPathResource">
             <!-- no imports -->

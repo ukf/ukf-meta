@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://refeds.org/metadata"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  blockDefault="substitution"
+  version="2.0">
+  
+  <xs:annotation>
+    <xs:documentation>
+      Unofficial schema for REFEDS metadata;
+      specifically the contactType extension required for SIRTFI.
+    </xs:documentation>
+  </xs:annotation>
+  
+  <xs:attribute name="contactType" type="xs:anyURI"/>
+  
+</xs:schema>
