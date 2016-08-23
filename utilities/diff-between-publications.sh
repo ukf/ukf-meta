@@ -60,7 +60,7 @@ aggregatesizediffpc=$(echo "scale=5;$aggregatesizediff/$previousaggregatesize" |
 # -> Finally, get a git log between those two dates (epoch) in data repo
 currenttagdate=$(git --work-tree=$sharedwsdir/$repoproducts --git-dir=$sharedwsdir/$repoproducts/.git log -1 $currenttag --format=%ct)
 previoustagdate=$(git --work-tree=$sharedwsdir/$repoproducts --git-dir=$sharedwsdir/$repoproducts/.git log -1 $previoustag --format=%ct)
-gitlog=$(git --work-tree=$sharedwsdir/$repodata --git-dir=$sharedwsdir/$repodata/.git log --format="<https://repo.infr.ukfederation.org.uk/$repogroup/$repodata/commit/%h|%h %an %s>" --after=$previoustagdate --before=$currenttagdate)
+gitlog=$(git --work-tree=$sharedwsdir/$repodata --git-dir=$sharedwsdir/$repodata/.git log --format="<https://repo.infr.ukfederation.org.uk/$repogroup/$repodata/commit/%h|%h %an %s>" --after=$previoustagdate --before=$currenttagdate | sed "s/'//g")
 gitlognumentries=$(git --work-tree=$sharedwsdir/$repodata --git-dir=$sharedwsdir/$repodata/.git log --format="%h" --after=$previoustagdate --before=$currenttagdate | wc -l | awk '{print $1}')
 
 # =====
