@@ -226,7 +226,6 @@
     <property name="tools.ant" value="${tools.dir}/ant"/>
     <property name="tools.mda" value="${tools.dir}/aggregator-cli-0.9.1"/>
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
-    <property name="tools.metadatatool" value="${tools.dir}/metadatatool"/>
     <property name="tools.slacktee" value="${tools.dir}/slacktee"/>
     <property name="tools.xmlsectool" value="${tools.dir}/xmlsectool-2.0.0"/>
     <property name="tools.xalan" value="${tools.dir}/xalan"/>
@@ -1123,22 +1122,13 @@
 
     <!--
         Verify a metadata file held on the master distribution site.
-
-        Verification is performed using both metadatatool and xmlsectool.
-        This should be used when the file being verified must be compatible
-        with the Shibboleth 1.3 IdP.
     -->
-    <macrodef name="VFY.remote.both">
+    <macrodef name="VFY.remote">
         <attribute name="i"/>
         <sequential>
             <echo>Verifying @{i}...</echo>
             <delete file="${temp.xml}" quiet="true" verbose="false"/>
             <get src="@{i}" dest="${temp.xml}"/>
-
-            <!--
-                Verify using metadatatool.
-            -->
-            <MDT.VFY.uk i="${temp.xml}"/>
 
             <!--
                 Verify using xmlsectool.
@@ -1155,14 +1145,10 @@
     <!--
         Verify a metadata file held on the master distribution site.
 
-        Verification is performed using both metadatatool and xmlsectool.
-        This should be used when the file being verified must be compatible
-        with the Shibboleth 1.3 IdP.
-
         Additionally, it'll compare the provided checksum against that of the
         downloaded file, to ensure the file has the content you expected.
     -->
-    <macrodef name="VFY.remote.both.and.checksum">
+    <macrodef name="VFY.remote.and.checksum">
         <attribute name="i"/>
         <attribute name="checksum"/>
         <sequential>
@@ -1183,11 +1169,6 @@
                 </condition>
             </fail>
             <echo>Checksum of file matches expected value</echo>
-
-            <!--
-                Verify using metadatatool.
-            -->
-            <MDT.VFY.uk i="${temp.xml}"/>
 
             <!--
                 Verify using xmlsectool.
@@ -1222,51 +1203,51 @@
             property="mdaggr.export.preview.signed.checksum"/>
 
         <echo>Verifying metadata held at ${md.dist.host1.name}</echo>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.prod.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.wayf.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.wayf.signed}"
             checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.cdsall.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.cdsall.signed}"
             checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.test.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.back.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.back.signed}"
             checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.export.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.export.signed}"
             checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host1.name}/${mdaggr.export.preview.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host2.name}</echo>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.prod.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.wayf.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.wayf.signed}"
             checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.cdsall.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.cdsall.signed}"
             checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.test.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.back.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.back.signed}"
             checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.export.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.export.signed}"
             checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host2.name}/${mdaggr.export.preview.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host3.name}</echo>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.prod.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.wayf.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.wayf.signed}"
             checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.cdsall.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.cdsall.signed}"
             checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.test.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.back.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.back.signed}"
             checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.export.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.export.signed}"
             checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.both.and.checksum i="http://${md.dist.host3.name}/${mdaggr.export.preview.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verification completed.</echo>
@@ -1461,57 +1442,6 @@
                     <arg value="--discardBlankLines"/>
                 </args>
             </MDNORM>
-        </sequential>
-    </macrodef>
-
-    <!--
-        *********************************************
-        ***                                       ***
-        ***   M E T A D A T A T O O L   T O O L   ***
-        ***                                       ***
-        *********************************************
-    -->
-
-    <!--
-        Macro to run the metadatatool application with appropriate defaults.
-    -->
-    <macrodef name="MDT">
-        <attribute name="i"/><!-- input file -->
-        <attribute name="o"/><!-- output file -->
-        <attribute name="keystore"/><!-- keystore file -->
-        <attribute name="storetype" default="JKS"/><!-- type of keystore to use -->
-        <attribute name="alias"/><!-- alias of key to use -->
-        <element name="args" optional="yes"/>
-        <sequential>
-            <java classname="edu.internet2.middleware.shibboleth.utils.MetadataTool"
-                fork="true" failonerror="true" maxmemory="${java.max.memory}">
-                <classpath>
-                    <fileset dir="${tools.metadatatool}/lib">
-                        <include name="*.jar"/>
-                    </fileset>
-                </classpath>
-                <jvmarg value="-Djava.endorsed.dirs=${tools.metadatatool}/endorsed"/>
-                <args/>
-                <arg value="--keystore"/>
-                <arg value="@{keystore}"/>
-                <arg value="--storetype"/>
-                <arg value="@{storetype}"/>
-                <arg value="--alias"/>
-                <arg value="@{alias}"/>
-                <arg value="--in"/>
-                <arg value="file:@{i}"/>
-                <arg value="--out"/>
-                <arg value="@{o}"/>
-            </java>
-        </sequential>
-    </macrodef>
-
-    <macrodef name="MDT.VFY.uk">
-        <attribute name="i"/>
-        <sequential>
-            <MDT i="@{i}" o="${null.device}"
-                keystore="${mdx.dir}/uk/ukfederation-2014.jks"
-                alias="${keystore.uk.vfy.alias}"/>
         </sequential>
     </macrodef>
 
@@ -1787,51 +1717,29 @@
     </target>
 
     <!--
-        Verify UK federation metadata with both verification tools.
-
-        This should be used when the metadata needs to be compatible
-        with the Shibboleth 1.3 IdP.
-    -->
-    <macrodef name="VFY.uk.both">
-        <attribute name="i"/>
-        <sequential>
-            <!--
-                Verify using metadatatool.
-            -->
-            <MDT.VFY.uk i="@{i}"/>
-
-            <!--
-                Verify using xmlsectool.
-            -->
-            <XMLSECTOOL.VFY.uk i="@{i}"/>
-
-        </sequential>
-    </macrodef>
-
-    <!--
         Verify the signed aggregates.
     -->
     <target name="samlmd.aggregates.verify">
         <echo>Verifying signed UK metadata.</echo>
-        <VFY.uk.both i="${output.dir}/${mdaggr.prod.signed}"/>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.prod.signed}"/>
 
         <echo>Verifying signed UK WAYF metadata.</echo>
-        <VFY.uk.both i="${output.dir}/${mdaggr.wayf.signed}"/>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.wayf.signed}"/>
 
         <echo>Verifying signed UK CDS full metadata.</echo>
-        <VFY.uk.both i="${output.dir}/${mdaggr.cdsall.signed}"/>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.cdsall.signed}"/>
 
         <echo>Verifying signed UK test metadata.</echo>
-        <VFY.uk.both i="${output.dir}/${mdaggr.test.signed}"/>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.test.signed}"/>
 
         <echo>Verifying signed UK export metadata.</echo>
-        <VFY.uk.both i="${output.dir}/${mdaggr.export.signed}"/>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.export.signed}"/>
 
         <echo>Verifying signed UK export preview metadata.</echo>
-        <VFY.uk.both i="${output.dir}/${mdaggr.export.preview.signed}"/>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.export.preview.signed}"/>
 
         <echo>Verifying signed UK fallback metadata.</echo>
-        <VFY.uk.both i="${output.dir}/${mdaggr.back.signed}"/>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.back.signed}"/>
 
         <echo>Verification completed.</echo>
     </target>
