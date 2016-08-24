@@ -1526,11 +1526,12 @@
     <macrodef name="SLACK.send">
         <attribute name="conf"/>
         <attribute name="colour"/>
+        <attribute name="channel"/>
         <attribute name="message"/>
         <sequential>
             <exec executable="bash" failonerror="true">
                 <arg value="-c"/>
-                <arg value="echo -e '@{message}' | ${tools.slacktee}/bin/slacktee.sh -p --config @{conf} -a @{colour}"/>
+                <arg value="echo -e '@{message}' | ${tools.slacktee}/bin/slacktee.sh -p --config @{conf} -a @{colour} -c @{channel}"/>
             </exec>
         </sequential>
     </macrodef>
@@ -1550,7 +1551,7 @@
                     <arg value="${git.repo.project.data}"/>
                     <arg value="${git.repo.project.products}"/>
                 </exec>
-                <SLACK.send conf="${tools.slacktee}/conf/aggr-ant.conf" colour="good"
+                <SLACK.send conf="${tools.slacktee}/conf/aggr-ant.conf" colour="good" channel="events-publications"
                     message="${diff.between.publications}"/>
             </then>
         </if>
