@@ -147,6 +147,7 @@
     <property name="md.dist.host1.name" value="md1.infr.ukfederation.org.uk"/>
     <property name="md.dist.host2.name" value="md2.infr.ukfederation.org.uk"/>
     <property name="md.dist.host3.name" value="md3.infr.ukfederation.org.uk"/>
+    <property name="md.dist.path.name" value="/"/>
 
     <!--
         Middlebox server properties.
@@ -1177,51 +1178,51 @@
             property="mdaggr.export.preview.signed.checksum"/>
 
         <echo>Verifying metadata held at ${md.dist.host1.name}</echo>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.prod.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.wayf.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.wayf.signed}"
             checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.cdsall.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
             checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.test.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.back.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.back.signed}"
             checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.export.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.export.signed}"
             checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}/${mdaggr.export.preview.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host2.name}</echo>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.prod.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.wayf.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.wayf.signed}"
             checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.cdsall.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
             checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.test.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.back.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.back.signed}"
             checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.export.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.export.signed}"
             checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}/${mdaggr.export.preview.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host3.name}</echo>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.prod.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.wayf.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.wayf.signed}"
             checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.cdsall.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
             checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.test.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.back.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.back.signed}"
             checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.export.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.export.signed}"
             checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}/${mdaggr.export.preview.signed}"
+        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
 
         <echo>Verification completed.</echo>
