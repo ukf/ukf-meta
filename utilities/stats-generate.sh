@@ -234,7 +234,7 @@ if [[ "$timeperiod" == "day" ]]; then
     # Daily message, usually output via slack
     #
     msg="Daily stats for $(date -d $date '+%a %d %b %Y'):\n"
-    msg+=">*MD dist:* $mdaggrcountfriendly requests ($mdaggrfullpc% downloads) from $mdaggruniqueip clients; $mdaggrtotalgb GB of data shipped.\n"
+    msg+=">*MD dist:* $mdaggrcountfriendly requests ($mdaggrfullpc% full D/Ls) from $mdaggruniqueip IPs; $mdaggrtotalgb GB shipped.\n"
     msg+=">*CDS:* $cdscount requests serviced (DS: $cdsdscount / WAYF: $cdswayfcount).\n"
     msg+=">*Wugen:* $wugencount WAYFless URLs generated, $wugennewsubs new subscriptions.\n"
     msg+=">*Test IdP:* $testidplogincount logins to $testidpspcount SPs.\n"
