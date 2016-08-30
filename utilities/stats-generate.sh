@@ -267,7 +267,7 @@ else
     msg+="-> $wugennewsubs new subscriptions.\n"
     msg+="\n-----\n"
     msg+="Test IdP usage:\n"
-    msg+="-> $testidplogincount logins to $testidpspcount SPs.\n\n"
+    msg+="-> $testidplogincount logins to $testidpspcount SPs.\n"
     msg+="\n-----\n"
     msg+="Test SP usage:\n"
     msg+="-> $testsplogincount logins from $testspidpcount IdPs.\n"    
