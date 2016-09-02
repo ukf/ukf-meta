@@ -159,25 +159,25 @@ apacheignore="grep -Ev \"(Sensu-HTTP-Check|dummy|check_http|Balancer)\""
 #
 
 # Aggregate requests
-mdaggrcount=$(grep $apachesearchterm $logslocation/md/md1/access_log* $logslocation/md/md2/access_log* $logslocation/md/md3/access_log* | $apacheignore | grep ".xml" | wc -l)
+mdaggrcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | wc -l)
 mdaggrcountfriendly=$(echo $mdaggrcount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Aggregate downloads (i.e. HTTP 200 responses only)
-mdaggrcountfull=$(grep $apachesearchterm $logslocation/md/md1/access_log* $logslocation/md/md2/access_log* $logslocation/md/md3/access_log* | $apacheignore | grep ".xml" | grep "\" 200" | wc -l)
+mdaggrcountfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | wc -l)
 
 # Percentage of HTTP 200 responses compared to total requests
 mdaggrfullpc=$(echo "scale=2;($mdaggrcountfull/$mdaggrcount)*100" | bc | awk '{printf "%.0f\n", $0}')
 
 # Unique IP addresses requesting aggregtes
-mdaggruniqueip=$(grep $apachesearchterm $logslocation/md/md1/access_log* $logslocation/md/md2/access_log* $logslocation/md/md3/access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+mdaggruniqueip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Total data shipped
-mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/access_log* $logslocation/md/md2/access_log* $logslocation/md/md3/access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
+mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
 mdaggrtotalgb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
 mdaggrtotaltb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
 
 # Top 10 downloaders and how many downloads / total data shipped
-mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/access_log* $logslocation/md/md2/access_log* $logslocation/md/md3/access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
 
 
 #
