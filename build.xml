@@ -810,7 +810,6 @@
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="merge"/>
             <arg value="immediate"/>
-            <arg value="--ff-only"/>
             <arg value="-m"/>
             <arg value="'Merging immedate branch into deferred branch.'"/>
         </exec>
