@@ -166,18 +166,105 @@ mdaggrcountfriendly=$(echo $mdaggrcount | awk '{ printf ("%'"'"'d\n", $0) }')
 mdaggrcountfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | wc -l)
 
 # Percentage of HTTP 200 responses compared to total requests
-mdaggrfullpc=$(echo "scale=2;($mdaggrcountfull/$mdaggrcount)*100" | bc | awk '{printf "%.0f\n", $0}')
+if [[ "$mdaggrcount" -ne "0" ]]; then
+    mdaggrfullpc=$(echo "scale=2;($mdaggrcountfull/$mdaggrcount)*100" | bc | awk '{printf "%.0f\n", $0}')
+else
+    mdaggrfullpc="N/A"
+fi
 
 # Unique IP addresses requesting aggregtes
 mdaggruniqueip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Total data shipped
 mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
-mdaggrtotalgb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
-mdaggrtotaltb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
+    mdaggrtotalgb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+    mdaggrtotaltb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+else
+    mdaggrtotalgb="0.00"
+    mdaggrtotaltb="0.00"
+fi
 
 # Top 10 downloaders and how many downloads / total data shipped
 mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+
+#
+# MDQ stats
+#
+
+# MDQ requests
+mdqcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities" | grep -v 404 | grep -v "/entities/ " | wc -l)
+mdqcountfriendly=$(echo $mdqcount | awk '{ printf ("%'"'"'d\n", $0) }')
+
+# MDQ requests for entityId based names
+mdqcountentityid=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities/http" | grep -v 404 | wc -l)
+if [[ "$mdqcount" -ne "0" ]]; then
+    mdqcountentityidpc=$(echo "scale=3;($mdqcountentityid/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdqcountentityidpc="N/A"
+fi
+
+# MDQ requests for hash based names
+mdqcountsha1=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities" | grep -v 404 | grep -v "/entities/ " | grep sha1 | wc -l)
+if [[ "$mdqcount" -ne "0" ]]; then
+    mdqcountsha1pc=$(echo "scale=3;($mdqcountsha1/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdqcountsha1pc="N/A"
+fi
+
+# MDQ requests for all entities
+mdqcountallentities=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities " | wc -l)
+
+# MDQ downloads (i.e. HTTP 200 responses only)
+mdqcountfull=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities/" | grep -v "/entities/ " | grep "\" 200" | wc -l)
+
+# Percentage of HTTP 200 responses compared to total requests
+if [[ "$mdqcount" -ne "0" ]]; then
+    mdqfullpc=$(echo "scale=2;($mdqcountfull/$mdqcount)*100" | bc | awk '{printf "%.0f\n", $0}')
+else
+    mdqfullpc="N/A"
+fi
+
+# Unique IP addresses requesting MDQ
+mdquniqueip=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities/" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+
+# Total data shipped
+mdqtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities/" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
+if [[ "$mdqtotalbytes" -gt "0" ]]; then
+    mdqtotalgb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+    mdqtotaltb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+else
+    mdqtotalgb="0.00"
+    mdqtotaltb="0.00"
+fi
+
+# Min queries per IP
+if [[ $mdqcount -gt "0" ]]; then
+    mdqminqueriesperip=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities" | grep -v 404 | grep -v "/entities/ " | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | tail -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
+else
+    mdqminqueriesperip="0"
+fi
+
+# Avg queries per IP
+if [[ "$mdquniqueip" -ne "0" ]]; then
+    mdqavgqueriesperip=$(echo "scale=2;($mdqcount/$mdquniqueip)" | bc | awk '{printf "%.0f\n", $0}')
+else
+    mdqavgqueriesperip="0"
+fi
+
+# Max queries per IP
+if [[ $mdqcount -gt "0" ]]; then
+    mdqmaxqueriesperip=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities" | grep -v 404 | grep -v "/entities/ " | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
+else
+    mdqmaxqueriesperip="0"
+fi
+
+# Top 10 downloaders and how many downloads / total data shipped
+mdqtoptenipsbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities" | grep -v 404 | grep -v "/entities/ " | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+
+# Top 10 queries and how many downloads / total data shipped
+mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep /entities/ | grep -v 404 | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b" | sort | uniq -c | sort -nr | head -10)
+
 
 
 #
@@ -235,6 +322,10 @@ if [[ "$timeperiod" == "day" ]]; then
     #
     msg="Daily stats for $(date -d $date '+%a %d %b %Y'):\n"
     msg+=">*MD dist:* $mdaggrcountfriendly requests ($mdaggrfullpc% full D/Ls) from $mdaggruniqueip IPs; $mdaggrtotalgb GB shipped.\n"
+    msg+=">*MDQ:* $mdqcountfriendly requests ($mdqfullpc% full D/Ls) from $mdquniqueip IPs; $mdqtotalgb GB shipped.\n"
+    msg+=">-> of which $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
+    msg+=">-> $mdqminqueriesperip/$mdqavgqueriesperip/$mdqmaxqueriesperip min/avg/max queries per querying IP\n"
+    msg+=">-> $mdqcountallentities queries for collection of all entities\n"
     msg+=">*CDS:* $cdscount requests serviced (DS: $cdsdscount / WAYF: $cdswayfcount).\n"
     msg+=">*Wugen:* $wugencount WAYFless URLs generated, $wugennewsubs new subscriptions.\n"
     msg+=">*Test IdP:* $testidplogincount logins to $testidpspcount SPs.\n"
@@ -257,6 +348,17 @@ else
     msg+="-> $mdaggrtotaltb TB of data shipped.\n"
     msg+="\nTop 10 downloaders:\n"
     msg+="$mdaggrtoptenbycount\n"
+    msg+="\n-----\n"
+    msg+="MDQ:\n"
+    msg+="-> $mdqcountfriendly requests ($mdqfullpc% full downloads) from $mdquniqueip clients\n"
+    msg+="-> $mdqtotalgb GB of data shipped.\n"
+    msg+="-> of which $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
+    msg+="-> $mdqminqueriesperip min/$mdqavgqueriesperip avg/$mdqmaxqueriesperip max queries per querying IP\n"
+    msg+="-> $mdqcountallentities queries for collection of all entities\n"
+    msg+="\nTop 10 queryers:\n"
+    msg+="$mdqtoptenipsbycount\n"
+    msg+="\nTop 10 entities queried for:\n"
+    msg+="$mdqtoptenqueriesbycount\n"
     msg+="\n-----\n"
     msg+="Central Discovery Service:\n"
     msg+="-> $cdscount total requests serviced\n"
