@@ -1484,14 +1484,25 @@
 
     <macrodef name="SLACK.send">
         <attribute name="conf"/>
-        <attribute name="colour"/>
+        <attribute name="colour" default="none"/>
         <attribute name="channel"/>
         <attribute name="message"/>
         <sequential>
-            <exec executable="bash" failonerror="true">
-                <arg value="-c"/>
-                <arg value="echo -e '@{message}' | ${tools.slacktee}/bin/slacktee.sh -p --config @{conf} -a @{colour} -c @{channel}"/>
-            </exec>
+            <if>
+                <equals arg1="@{colour}" arg2="none"/>
+                <then>
+                    <exec executable="bash" failonerror="true">
+                        <arg value="-c"/>
+                        <arg value="echo -e '@{message}' | ${tools.slacktee}/bin/slacktee.sh -p --config @{conf} -c @{channel}"/>
+                    </exec>
+                </then>
+                <else>
+                    <exec executable="bash" failonerror="true">
+                        <arg value="-c"/>
+                        <arg value="echo -e '@{message}' | ${tools.slacktee}/bin/slacktee.sh -p --config @{conf} -a @{colour} -c @{channel}"/>
+                    </exec>
+                </else>
+            </if>
         </sequential>
     </macrodef>
 
