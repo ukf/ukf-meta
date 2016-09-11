@@ -173,7 +173,8 @@ else
 fi
 
 # Unique IP addresses requesting aggregtes
-mdaggruniqueip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+mdaggruniqueip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
+mdaggruniqueipfriendly=$(echo $mdaggruniqueip | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Total data shipped
 mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
@@ -183,6 +184,27 @@ if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
 else
     mdaggrtotalgb="0.00"
     mdaggrtotaltb="0.00"
+fi
+
+# Min queries per IP
+if [[ $mdaggrcount -gt "0" ]]; then
+    mdaggrminqueriesperip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep -v 404 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | tail -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
+else
+    mdqaggrinqueriesperip="0"
+fi
+
+# Avg queries per IP
+if [[ "$mdaggruniqueip" -ne "0" ]]; then
+    mdaggravgqueriesperip=$(echo "scale=2;($mdaggrcount/$mdaggruniqueip)" | bc | awk '{printf "%.0f\n", $0}')
+else
+    mdaggravgqueriesperip="0"
+fi
+
+# Max queries per IP
+if [[ $mdaggrcount -gt "0" ]]; then
+    mdaggrmaxqueriesperip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep -v 404 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
+else
+    mdaggrmaxqueriesperip="0"
 fi
 
 # Top 10 downloaders and how many downloads / total data shipped
@@ -226,7 +248,8 @@ else
 fi
 
 # Unique IP addresses requesting MDQ
-mdquniqueip=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities/" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+mdquniqueip=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities/" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
+mdquniqueipfriendly=$(echo $mdquniqueip | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Total data shipped
 mdqtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities/" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
@@ -321,8 +344,9 @@ if [[ "$timeperiod" == "day" ]]; then
     # Daily message, usually output via slack
     #
     msg="Daily stats for $(date -d $date '+%a %d %b %Y'):\n"
-    msg+=">*MD dist:* $mdaggrcountfriendly requests ($mdaggrfullpc% full D/Ls) from $mdaggruniqueip IPs; $mdaggrtotalgb GB shipped.\n"
-    msg+=">*MDQ:* $mdqcountfriendly requests ($mdqfullpc% full D/Ls) from $mdquniqueip IPs; $mdqtotalgb GB shipped.\n"
+    msg+=">*MD dist:* $mdaggrcountfriendly requests ($mdaggrfullpc% full D/Ls) from $mdaggruniqueipfriendly IPs; $mdaggrtotalgb GB shipped.\n"
+    msg+=">-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP\n"
+    msg+=">*MDQ:* $mdqcountfriendly requests ($mdqfullpc% full D/Ls) from $mdquniqueipfriendly IPs; $mdqtotalgb GB shipped.\n"
     msg+=">-> of which $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
     msg+=">-> $mdqminqueriesperip/$mdqavgqueriesperip/$mdqmaxqueriesperip min/avg/max queries per querying IP\n"
     msg+=">-> $mdqcountallentities queries for collection of all entities\n"
@@ -344,13 +368,13 @@ else
     msg+="==========\n"
     msg+="\n-----\n"
     msg+="Metadata aggregate distribution:\n"
-    msg+="-> $mdaggrcountfriendly requests ($mdaggrfullpc% full downloads) from $mdaggruniqueip clients\n"
+    msg+="-> $mdaggrcountfriendly requests ($mdaggrfullpc% full downloads) from $mdaggruniqueipfriendly clients\n"
     msg+="-> $mdaggrtotaltb TB of data shipped.\n"
     msg+="\nTop 10 downloaders:\n"
     msg+="$mdaggrtoptenbycount\n"
     msg+="\n-----\n"
     msg+="MDQ:\n"
-    msg+="-> $mdqcountfriendly requests ($mdqfullpc% full downloads) from $mdquniqueip clients\n"
+    msg+="-> $mdqcountfriendly requests ($mdqfullpc% full downloads) from $mdquniqueipfriendly clients\n"
     msg+="-> $mdqtotalgb GB of data shipped.\n"
     msg+="-> of which $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
     msg+="-> $mdqminqueriesperip min/$mdqavgqueriesperip avg/$mdqmaxqueriesperip max queries per querying IP\n"
