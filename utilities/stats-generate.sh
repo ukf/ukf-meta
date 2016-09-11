@@ -370,6 +370,7 @@ else
     msg+="Metadata aggregate distribution:\n"
     msg+="-> $mdaggrcountfriendly requests ($mdaggrfullpc% full downloads) from $mdaggruniqueipfriendly clients\n"
     msg+="-> $mdaggrtotaltb TB of data shipped.\n"
+    msg+="-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP\n"
     msg+="\nTop 10 downloaders:\n"
     msg+="$mdaggrtoptenbycount\n"
     msg+="\n-----\n"
