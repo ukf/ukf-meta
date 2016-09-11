@@ -176,6 +176,10 @@ fi
 mdaggruniqueip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
 mdaggruniqueipfriendly=$(echo $mdaggruniqueip | awk '{ printf ("%'"'"'d\n", $0) }')
 
+# Unique IP addresses requesting aggregtes, full D/Ls only
+mdaggruniqueipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
+
+
 # Total data shipped
 mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
 if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
@@ -205,6 +209,27 @@ if [[ $mdaggrcount -gt "0" ]]; then
     mdaggrmaxqueriesperip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep -v 404 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
 else
     mdaggrmaxqueriesperip="0"
+fi
+
+# Min queries per IP, full D/L only
+if [[ $mdaggrcountfull -gt "0" ]]; then
+    mdaggrminqueriesperipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | tail -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
+else
+    mdqaggrinqueriesperipfull="0"
+fi
+
+# Avg queries per IP, full D/L only
+if [[ "$mdaggruniqueipfull" -ne "0" ]]; then
+    mdaggravgqueriesperipfull=$(echo "scale=2;($mdaggrcountfull/$mdaggruniqueipfull)" | bc | awk '{printf "%.0f\n", $0}')
+else
+    mdaggravgqueriesperipfull="0"
+fi
+
+# Max queries per IP, full D/L only
+if [[ $mdaggrcountfull -gt "0" ]]; then
+    mdaggrmaxqueriesperipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
+else
+    mdaggrmaxqueriesperipfull="0"
 fi
 
 # Top 10 downloaders and how many downloads / total data shipped
@@ -345,7 +370,8 @@ if [[ "$timeperiod" == "day" ]]; then
     #
     msg="Daily stats for $(date -d $date '+%a %d %b %Y'):\n"
     msg+=">*MD dist:* $mdaggrcountfriendly requests ($mdaggrfullpc% full D/Ls) from $mdaggruniqueipfriendly IPs; $mdaggrtotalgb GB shipped.\n"
-    msg+=">-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP\n"
+    msg+=">-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP (all reqs)\n"
+    msg+=">-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
     msg+=">*MDQ:* $mdqcountfriendly requests ($mdqfullpc% full D/Ls) from $mdquniqueipfriendly IPs; $mdqtotalgb GB shipped.\n"
     msg+=">-> of which $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
     msg+=">-> $mdqminqueriesperip/$mdqavgqueriesperip/$mdqmaxqueriesperip min/avg/max queries per querying IP\n"
@@ -370,7 +396,8 @@ else
     msg+="Metadata aggregate distribution:\n"
     msg+="-> $mdaggrcountfriendly requests ($mdaggrfullpc% full downloads) from $mdaggruniqueipfriendly clients\n"
     msg+="-> $mdaggrtotaltb TB of data shipped.\n"
-    msg+="-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP\n"
+    msg+="-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP (all reqs)\n"
+    msg+="-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
     msg+="\nTop 10 downloaders:\n"
     msg+="$mdaggrtoptenbycount\n"
     msg+="\n-----\n"
