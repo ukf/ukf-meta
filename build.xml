@@ -292,11 +292,6 @@
     </taskdef>
 
     <!--
-        Verification keystore.
-    -->
-    <property name="keystore.uk.vfy.alias" value="ukfederation"/>
-
-    <!--
         Java memory requirements.
 
         This is used as the max heap setting for all Java invocations.  This amount will
