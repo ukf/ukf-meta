@@ -207,6 +207,12 @@
     
     
     <!--
+        check_uk_member
+    -->
+    <bean id="check_uk_member" parent="XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_member.xsl"/>
+
+    <!--
         check_uk_urlenc
     -->
     <bean id="check_uk_urlenc" parent="XSLValidationStage"
@@ -332,6 +338,7 @@
                 <ref bean="check_uk_keydesc_key"/>
                 <ref bean="check_uk_mdattr"/>
                 <ref bean="check_uk_mdrps"/>
+                <ref bean="check_uk_member"/>
                 <ref bean="check_uk_urlenc"/>
                 <ref bean="mdui_dn_en_present"/>
                 <ref bean="mdui_dn_en_match"/>
