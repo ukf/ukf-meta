@@ -826,7 +826,7 @@
             <arg value="master"/>
             <arg value="--ff-only"/>
             <arg value="-m"/>
-            <arg value="Merge immedate branch into deferred branch"/>
+            <arg value="Merge master branch into deferred branch"/>
         </exec>
     </target>
 
@@ -844,7 +844,7 @@
             <arg value="deferred"/>
             <arg value="--ff-only"/>
             <arg value="-m"/>
-            <arg value="Merge immedate branch into deferred branch"/>
+            <arg value="Merge deferred branch into master branch"/>
         </exec>
     </target>
 
