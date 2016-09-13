@@ -1342,7 +1342,6 @@
                         <li>
                             <xsl:value-of select="@ID"/>
                             <xsl:text>:</xsl:text>
-                            <xsl:if test="not(md:Extensions/ukfedlabel:UKFederationMember)"> [not-M]</xsl:if>
                             <xsl:if test="md:IDPSSODescriptor"> [IdP]</xsl:if>
                             <xsl:if test="md:Extensions/mdattr:EntityAttributes/saml:Attribute
                                 [@Name = 'http://macedir.org/entity-category']
