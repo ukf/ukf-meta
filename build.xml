@@ -755,7 +755,7 @@
             <arg value="deferred"/>
             <arg value="--ff-only"/>
             <arg value="-m"/>
-            <arg value="'Merging deferred branch into immediate branch.'"/>
+            <arg value="Merge deferred branch into immediate branch"/>
         </exec>
     </target>
 
@@ -773,7 +773,7 @@
             <arg value="immediate"/>
             <arg value="--ff-only"/>
             <arg value="-m"/>
-            <arg value="'Merging immediate branch into master branch.'"/>
+            <arg value="Merge immediate branch into master branch"/>
         </exec>
     </target>
 
@@ -791,7 +791,7 @@
             <arg value="master"/>
             <arg value="--ff-only"/>
             <arg value="-m"/>
-            <arg value="'Merging master branch into immediate branch.'"/>
+            <arg value="Merge master branch into immediate branch"/>
         </exec>
     </target>
 
@@ -808,7 +808,7 @@
             <arg value="merge"/>
             <arg value="immediate"/>
             <arg value="-m"/>
-            <arg value="'Merging immedate branch into deferred branch.'"/>
+            <arg value="Merge immedate branch into deferred branch"/>
         </exec>
     </target>
 
@@ -826,7 +826,7 @@
             <arg value="master"/>
             <arg value="--ff-only"/>
             <arg value="-m"/>
-            <arg value="'Merging immedate branch into deferred branch.'"/>
+            <arg value="Merge immedate branch into deferred branch"/>
         </exec>
     </target>
 
@@ -844,7 +844,7 @@
             <arg value="deferred"/>
             <arg value="--ff-only"/>
             <arg value="-m"/>
-            <arg value="'Merging immedate branch into deferred branch.'"/>
+            <arg value="Merge immedate branch into deferred branch"/>
         </exec>
     </target>
 
