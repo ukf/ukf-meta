@@ -125,22 +125,14 @@
     
     
     <!--
-        uk_membersResource
-        
-        A Resource referencing the members.xml document.
-    -->
-    <bean id="uk_membersResource" parent="FileSystemResource">
-        <constructor-arg value="${members.dir}/members.xml"/>
-    </bean>
-    
-    
-    <!--
         uk_membersDocument
         
         This bean contains the contents of the members.xml file as a DOM Document.
     -->
     <bean id="uk_membersDocument" parent="DOMDocumentFactoryBean">
-        <property name="resource" ref="uk_membersResource"/>
+        <property name="resource">
+            <bean parent="FileSystemResource" c:_="${members.dir}/members.xml"/>
+        </property>
         <property name="parserPool" ref="parserPool"/>
     </bean>
     
