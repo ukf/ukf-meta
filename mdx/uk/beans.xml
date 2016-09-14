@@ -150,13 +150,8 @@
         
         This bean implements an API for access to the contents of the members.xml document.
     -->
-    <bean id="uk_members" class="uk.org.ukfederation.members.Members">
-        <constructor-arg>
-            <bean class="java.io.File">
-                <constructor-arg value="${members.dir}/members.xml"/>
-            </bean>
-        </constructor-arg>
-    </bean>
+    <bean id="uk_members" class="uk.org.ukfederation.members.Members"
+        c:_-ref="uk_membersDocument"/>
     
     
     <!--
