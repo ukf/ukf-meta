@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     targetNamespace="http://ukfederation.org.uk/2006/11/label"
-    version="2014-07-22"
+    version="2016-09-15"
     elementFormDefault="qualified">
     
     <annotation>
@@ -43,13 +43,46 @@
         </complexContent>
     </complexType>
 
-    <element name="UKFederationMember" type="ukfedlabel:basicLabel">
+    <simpleType name="orgIDType">
+        <restriction base="string">
+            <annotation>
+                <documentation>
+                    An organization ID is a string constrained to be the string "ukforg"
+                    followed by a numeric code.
+
+                    These codes are defined as IDs in the members.xml database, but
+                    are simple strings in entity metadata.
+                </documentation>
+            </annotation>
+            <pattern value="ukforg\d+"/>
+        </restriction>
+    </simpleType>
+
+    <element name="UKFederationMember">
         <annotation>
             <documentation>
                 Indicates an entity whose owner is a member in good standing
                 of the UK federation.
             </documentation>
         </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="ukfedlabel:basicLabel">
+                    <attribute name="orgID" type="ukfedlabel:orgIDType" use="optional">
+                        <annotation>
+                            <documentation>
+                                The orgID attribute is described as "optional" in this schema
+                                so that it can be omitted in published metadata. However, it
+                                is mandatory in entity fragment files.
+
+                                orgID can become a mandatory attribute if we ever stop
+                                publishing UKFederationMember labels.
+                            </documentation>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
     </element>
     
     <element name="AccountableUsers" type="ukfedlabel:basicLabel">
