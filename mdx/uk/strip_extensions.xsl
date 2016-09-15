@@ -22,7 +22,15 @@
 	-->
 	<xsl:template match="ukfedlabel:UKFederationMember | ukfedlabel:AccountableUsers">
 		<xsl:copy>
-			<xsl:apply-templates select="node()|@*"/>
+			<!--
+				Copy nested text and comments, but not attributes.
+
+				AccountableUsers does not have any attributes.
+
+				UKFederationMember does not have any attributes intended for
+				publication.
+			-->
+			<xsl:apply-templates select="text()|comment()"/>
 		</xsl:copy>
 	</xsl:template>
 	
