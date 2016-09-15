@@ -113,7 +113,7 @@
 				<!--
 					Always assumed to be owned by a member of the UK federation.
 				-->
-				<ukfedlabel:UKFederationMember/>
+				<ukfedlabel:UKFederationMember orgID="*** FILL IN ***"/>
 
 				<!--
 					Dummy elements to include for IdPs only.
