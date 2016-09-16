@@ -113,7 +113,8 @@
                 <!--
                     Always assumed to be owned by a member of the UK federation.
                 -->
-                <ukfedlabel:UKFederationMember orgID="*** FILL IN ***"/>
+                <xsl:comment> *** FILL IN APPROPRIATE orgID VALUE BELOW *** </xsl:comment>
+                <ukfedlabel:UKFederationMember orgID="ukforg99999"/>
 
                 <!--
                     Dummy elements to include for IdPs only.
