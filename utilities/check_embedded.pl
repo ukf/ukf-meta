@@ -32,25 +32,6 @@ my $daysBeforeError = 18;
 my $longExpiredDays = 30*3; # about three months
 
 #
-# Request verbose tabulation of certificate issuers.
-#
-my $verboseIssuers = 0;
-
-#
-# Issuer marks (only shown in the absence of verboseIssuers)
-#
-my %issuerMark;
-
-# ex-roots
-$issuerMark{'AddTrust External CA Root'} = 'X';
-$issuerMark{'UTN-USERFirst-Hardware'} = 'x';
-$issuerMark{'TERENA SSL CA'} = 'x';
-$issuerMark{'GlobalSign Root CA'} = 'X';
-$issuerMark{'GlobalSign Organization Validation CA'} = 'x';
-$issuerMark{'GlobalSign Primary Secure Server CA'} = 'x';
-$issuerMark{'GlobalSign ServerSign CA'} = 'x';
-
-#
 # Load expiry whitelist.
 #
 open(WL, 'expiry_whitelist.txt') || die "can't open certificate expiry whitelist";
@@ -131,7 +112,7 @@ while (<>) {
 	# Discard blank lines.
 	#
 	next if /^\s*$/;
-	
+
 	#
 	# Handle Entity/KeyName header line.
 	#
@@ -148,7 +129,7 @@ while (<>) {
 		if ($entity =~ /^\[(.+)\](.+)$/) {
 			$entity = $2 . ' (' . $1 . ')';
 		}
-		
+
 		#
 		# Output header line.
 		#
@@ -178,13 +159,13 @@ while (<>) {
 		select((select($fh), $|=1)[0]);
 		next;
 	}
-	
+
 	#
 	# Put other lines into a temporary file.
 	#
 	print $fh $_;
 	$blob .= '|' . $_;
-	
+
 	#
 	# If this is the last line of the certificate, actually do
 	# something with it.
@@ -200,7 +181,7 @@ while (<>) {
 			close $fh;
 			next;
 		}
-		
+
 		#
 		# Otherwise, remember this blob so that we won't process it again.
 		#
@@ -213,12 +194,12 @@ while (<>) {
 		# disabled, so the file can simply be passed to other applications
 		# as input, perhaps multiple times.
 		#
-		
+
 		#
 		# Collection of names this certificate contains
 		#
 		my %names;
-		
+
 		#
 		# Use openssl to convert the certificate to text
 		#
@@ -239,7 +220,7 @@ while (<>) {
 				}
 				next;
 			}
-			
+
 			if (/^\s*Subject:\s*(.*)$/) {
 				$subject = $1;
 				if ($subject =~ /CN=([^,]+)/) {
@@ -250,7 +231,7 @@ while (<>) {
 				}
 				next;
 			}
-			
+
 			#
 			# Extract the certificate fingerprint.
 			#
@@ -272,7 +253,7 @@ while (<>) {
 				$pubSize = $1;
 				next;
 			}
-			
+
 			if (/Not After : (.*)$/) {
 				$notAfter = $1;
 				$notAfterTime = str2time($notAfter);
@@ -314,7 +295,7 @@ while (<>) {
 				#    DNS:www.example.co.uk, DNS:example.co.uk, URI:http://example.co.uk/
 				#
 				my $next = <SSL>;
-				
+
 				#
 				# Make an array of components, each something like "DNS:example.co.uk"
 				#
@@ -322,17 +303,17 @@ while (<>) {
 				my @altNames = split /\s*,\s*/, $next;
 				# my $altSet = "{" . join(", ", @altNames) . "}";
 				# print "Alt set: $altSet\n";
-				
+
 				#
 				# Each "DNS" component is an additional name for this certificate.
 				#
 				while (@altNames) {
 					my ($type, $altName) = split(":", pop @altNames);
-					$names{lc $altName}++ if $type eq 'DNS'; 
+					$names{lc $altName}++ if $type eq 'DNS';
 				}
 				next;
 			}
-			
+
 		}
 		close SSL;
 		#print "   text lines: $#lines\n";
@@ -377,26 +358,12 @@ while (<>) {
 		close $fh;
 
 		#
-		# Add a warning for certain issuers.
-		#
-		if (defined $issuerMark{$issuerCN}) {
-			my $mark = $issuerMark{$issuerCN};
-			if ($mark eq '?') {
-				warning("issuer '$issuerCN' suspect; verify");
-			}
-		}
-
-		#
 		# Count issuers.
 		#
 		if ($issuer eq $subject) {
 			$issuers{'(self-signed certificate)'}++;
 		} else {
-			if ($verboseIssuers) {
-				$issuers{$issuer}++;
-			} else {
-				$issuers{$issuerCN}++;
-			}
+			$issuers{'Other'}++;
 		}
 
 		#
