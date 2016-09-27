@@ -179,7 +179,6 @@ mdaggruniqueipfriendly=$(echo $mdaggruniqueip | awk '{ printf ("%'"'"'d\n", $0) 
 # Unique IP addresses requesting aggregtes, full D/Ls only
 mdaggruniqueipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
 
-
 # Total data shipped
 mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
 if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
@@ -189,6 +188,14 @@ else
     mdaggrtotalgb="0.00"
     mdaggrtotaltb="0.00"
 fi
+
+# IPv4 vs IPv6 traffic
+# Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
+# When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
+mdaggrv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+mdaggrv4pc=$(echo "scale=4;($mdaggrv4count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+mdaggrv6count=$(( mdaggrcount - mdaggrv4count ))
+mdaggrv6pc=$(echo "scale=4;($mdaggrv6count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 
 # Min queries per IP
 if [[ $mdaggrcount -gt "0" ]]; then
@@ -235,6 +242,7 @@ fi
 # Top 10 downloaders and how many downloads / total data shipped
 mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
 
+
 #
 # MDQ stats
 #
@@ -242,6 +250,19 @@ mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-a
 # MDQ requests
 mdqcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities" | grep -v 404 | grep -v "/entities/ " | wc -l)
 mdqcountfriendly=$(echo $mdqcount | awk '{ printf ("%'"'"'d\n", $0) }')
+
+# IPv4 vs IPv6 traffic
+# Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
+# When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
+if [[ "$mdqcount" -ne "0" ]]; then
+    mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep "/entities" | grep -v 404 | grep -v "/entities/ " | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+    mdqv4pc=$(echo "scale=4;($mdqv4count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    mdqv6count=$(( mdqcount - mdqv4count ))
+    mdqv6pc=$(echo "scale=4;($mdqv6count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdqv4pc="N/A"
+    mdqv6pc="N/A"
+fi
 
 # MDQ requests for entityId based names
 mdqcountentityid=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities/http" | grep -v 404 | wc -l)
@@ -314,13 +335,22 @@ mdqtoptenipsbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access
 mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep /entities/ | grep -v 404 | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b" | sort | uniq -c | sort -nr | head -10)
 
 
-
 #
 # CDS stats
 #
 
 # How many accesses to .ds.
-cdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+cdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | wc -l)
+cdscountfriendly=$(echo $cdscount | awk '{ printf ("%'"'"'d\n", $0) }')
+
+# IPv4 vs IPv6 traffic
+# Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
+# When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
+cdsv4count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+cdsv4pc=$(echo "scale=4;($cdsv4count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+cdsv6count=$(( cdscount - cdsv4count ))
+cdsv6pc=$(echo "scale=4;($cdsv6count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+
 
 # How many of these were to the DS (has entityId in the parameters)
 cdsdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep entityID | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
@@ -370,13 +400,16 @@ if [[ "$timeperiod" == "day" ]]; then
     #
     msg="Daily stats for $(date -d $date '+%a %d %b %Y'):\n"
     msg+=">*MD dist:* $mdaggrcountfriendly requests ($mdaggrfullpc% full D/Ls) from $mdaggruniqueipfriendly IPs; $mdaggrtotalgb GB shipped.\n"
+    msg+=">-> IPv4: $mdaggrv4pc% vs IPv6: $mdaggrv6pc%\n"
     msg+=">-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP (all reqs)\n"
     msg+=">-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
     msg+=">*MDQ:* $mdqcountfriendly requests ($mdqfullpc% full D/Ls) from $mdquniqueipfriendly IPs; $mdqtotalgb GB shipped.\n"
+    msg+=">-> IPv4: $mdqv4pc% vs IPv6: $mdqv6pc%\n"
     msg+=">-> of which $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
     msg+=">-> $mdqminqueriesperip/$mdqavgqueriesperip/$mdqmaxqueriesperip min/avg/max queries per querying IP\n"
     msg+=">-> $mdqcountallentities queries for collection of all entities\n"
-    msg+=">*CDS:* $cdscount requests serviced (DS: $cdsdscount / WAYF: $cdswayfcount).\n"
+    msg+=">*CDS:* $cdscountfriendly requests serviced (DS: $cdsdscount / WAYF: $cdswayfcount).\n"
+    msg+=">-> IPv4: $cdsv4pc% vs IPv6: $cdsv6pc%\n"
     msg+=">*Wugen:* $wugencount WAYFless URLs generated, $wugennewsubs new subscriptions.\n"
     msg+=">*Test IdP:* $testidplogincount logins to $testidpspcount SPs.\n"
     msg+=">*Test SP:* $testsplogincount logins from $testspidpcount IdPs."    
@@ -396,6 +429,7 @@ else
     msg+="Metadata aggregate distribution:\n"
     msg+="-> $mdaggrcountfriendly requests ($mdaggrfullpc% full downloads) from $mdaggruniqueipfriendly clients\n"
     msg+="-> $mdaggrtotaltb TB of data shipped.\n"
+    msg+="-> IPv4: $mdaggrv4pc% vs IPv6: $mdaggrv6pc%\n"
     msg+="-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP (all reqs)\n"
     msg+="-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
     msg+="\nTop 10 downloaders:\n"
@@ -403,8 +437,9 @@ else
     msg+="\n-----\n"
     msg+="MDQ:\n"
     msg+="-> $mdqcountfriendly requests ($mdqfullpc% full downloads) from $mdquniqueipfriendly clients\n"
-    msg+="-> $mdqtotalgb GB of data shipped.\n"
     msg+="-> of which $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
+    msg+="-> $mdqtotalgb GB of data shipped.\n"
+    msg+="-> IPv4: $mdqv4pc% vs IPv6: $mdqv6pc%\n"
     msg+="-> $mdqminqueriesperip min/$mdqavgqueriesperip avg/$mdqmaxqueriesperip max queries per querying IP\n"
     msg+="-> $mdqcountallentities queries for collection of all entities\n"
     msg+="\nTop 10 queryers:\n"
@@ -413,7 +448,8 @@ else
     msg+="$mdqtoptenqueriesbycount\n"
     msg+="\n-----\n"
     msg+="Central Discovery Service:\n"
-    msg+="-> $cdscount total requests serviced\n"
+    msg+="-> $cdscountfriendly total requests serviced\n"
+    msg+="-> IPv4: $cdsv4pc% vs IPv6: $cdsv6pc%\n"
     msg+="-> DS: $cdsdscount / WAYF: $cdswayfcount\n"
     msg+="\n-----\n"
     msg+="Wugen:\n"
