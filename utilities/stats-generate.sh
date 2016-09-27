@@ -380,6 +380,10 @@ testidplogincount=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* |
 # And to how many unique SPs?
 testidpspcount=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* | grep "sso/browser" | cut -f 4 -d "|" | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
+# Top 10 SPs the IdP has logged into
+testidptoptenspsbycount=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* | grep "sso/browser" | cut -d "|" -f 4 | sort | uniq -c | sort -nr | head -10)
+
+
 #
 # Test SP stats
 #
@@ -458,6 +462,8 @@ else
     msg+="\n-----\n"
     msg+="Test IdP usage:\n"
     msg+="-> $testidplogincount logins to $testidpspcount SPs.\n"
+    msg+="\nTop 10 SPs logged into:\n"
+    msg+="$testidptoptenspsbycount\n"
     msg+="\n-----\n"
     msg+="Test SP usage:\n"
     msg+="-> $testsplogincount logins from $testspidpcount IdPs.\n"    
