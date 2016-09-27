@@ -240,7 +240,7 @@ else
 fi
 
 # Top 10 downloaders and how many downloads / total data shipped
-mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | $apacheignore | grep ".xml" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
 
 
 #
@@ -329,10 +329,10 @@ else
 fi
 
 # Top 10 downloaders and how many downloads / total data shipped
-mdqtoptenipsbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep "/entities" | grep -v 404 | grep -v "/entities/ " | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+mdqtoptenipsbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep "/entities" | grep -v 404 | grep -v "/entities/ " | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
 
 # Top 10 queries and how many downloads / total data shipped
-mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep /entities/ | grep -v 404 | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b" | sort | uniq -c | sort -nr | head -10)
+mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | $apacheignore | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep /entities/ | grep -v 404 | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b" | sort | uniq -c | sort -nr | head -10)
 
 
 #
