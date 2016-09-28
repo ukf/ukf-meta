@@ -394,6 +394,10 @@ testsplogincount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new sessi
 # And from how many unique IdPs?
 testspidpcount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | cut -f 12 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
+# Top 10 IdPs used to log into the Test SP
+testsptoptenidpsbycount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | awk '{print $12}' | cut -d "(" -f 2 | cut -d ")" -f 1 | sort | uniq -c | sort -nr | head -10)
+
+
 # =====
 # = Now we're ready to build the message. Different message for daily vs month/year
 # =====
@@ -467,6 +471,8 @@ else
     msg+="\n-----\n"
     msg+="Test SP usage:\n"
     msg+="-> $testsplogincount logins from $testspidpcount IdPs.\n"    
+    msg+="\nTop 10 IdPs logged in from:\n"
+    msg+="$testsptoptenidpsbycount\n"
     msg+="\n-----"
 fi
 
