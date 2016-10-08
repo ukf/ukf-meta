@@ -138,12 +138,26 @@
     
     
     <!--
+        uk_membersSchemaDocument
+        
+        This bean loads the schema for the members.xml file as a DOM Document.
+    -->
+    <bean id="uk_membersSchemaDocument" parent="DOMDocumentFactoryBean">
+        <property name="resource">
+            <bean parent="FileSystemResource" c:_="${members.dir}/ukfederation-members.xsd"/>
+        </property>
+        <property name="parserPool" ref="parserPool"/>
+    </bean>
+    
+
+    <!--
         uk_members
         
         This bean implements an API for access to the contents of the members.xml document.
     -->
     <bean id="uk_members" class="uk.org.ukfederation.members.Members"
-        c:_-ref="uk_membersDocument"/>
+        c:_0-ref="uk_membersDocument"
+        c:_1-ref="uk_membersSchemaDocument"/>
     
     
     <!--
