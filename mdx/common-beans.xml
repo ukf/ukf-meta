@@ -274,6 +274,14 @@
     <bean id="CompositeStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.CompositeStage"/>
 
+    <bean id="FilesInDirectoryMultiOutputStrategy" abstract="true" parent="component_parent"
+        class="net.shibboleth.metadata.pipeline.FilesInDirectoryMultiOutputStrategy"/>
+
+    <bean id="MultiOutputSerializationStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.MultiOutputSerializationStage">
+        <property name="serializer" ref="serializer"/>
+    </bean>
+
     <bean id="PipelineDemultiplexerStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
         p:waitingForPipelines="true"
@@ -295,6 +303,14 @@
 
     <bean id="SplitMergeStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.SplitMergeStage"/>
+
+    <!-- *** Parent beans for net.shibboleth.metadata.utils package. *** -->
+
+    <bean id="PathSegmentStringTransformer" abstract="true"
+        class="net.shibboleth.metadata.util.PathSegmentStringTransformer"/>
+
+    <bean id="SHA1StringTransformer" abstract="true"
+        class="net.shibboleth.metadata.util.SHA1StringTransformer"/>
 
     <!-- *** Parent beans for ukf-mda. *** -->
 
