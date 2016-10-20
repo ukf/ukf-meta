@@ -254,6 +254,9 @@
     <bean id="EntityFilterStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.EntityFilterStage"/>
 
+    <bean id="GenerateIdStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.GenerateIdStage"/>
+
     <bean id="NamespacesStrippingStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.NamespacesStrippingStage"/>
     
@@ -262,6 +265,12 @@
 
     <bean id="PipelineMergeStage.deduplicate" abstract="true" parent="PipelineMergeStage"
         p:collectionMergeStrategy-ref="deduplicateMergeStrategy"/>
+
+    <bean id="SetCacheDurationStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.SetCacheDurationStage"/>
+
+    <bean id="SetValidUntilStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.dom.saml.SetValidUntilStage"/>
 
     <bean id="SplitMergeStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.pipeline.SplitMergeStage"/>
