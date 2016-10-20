@@ -210,6 +210,7 @@
     <property name="entities.dir" value="${shared.ws.dir}/${git.repo.project.data}/entities"/>
     <property name="members.dir" value="${shared.ws.dir}/${git.repo.project.data}/members"/>
     <property name="output.dir" value="${shared.ws.dir}/build"/>
+    <property name="mdq.output.dir" value="${shared.ws.dir}/build/mdq"/>
     <property name="temp.dir" value="${shared.ws.dir}/build"/>
 
     <!--
@@ -1374,6 +1375,9 @@
     <property name="mda.mdx.dir" value="${mdx.dir}"/>
     <property name="mda.members.dir" value="${members.dir}"/>
     <property name="mda.output.dir" value="${output.dir}"/>
+    <property name="mda.sign.keyAlias" value="${sign.uk.keyAlias}"/>
+    <property name="mda.sign.pkcs11Config" value="${sign.uk.pkcs11Config}"/>
+    <property name="mda.mdq.output" value="${mdq.output.dir}"/>
 
     <!--
         Build a property set of all the properties to be passed through, with
@@ -1708,6 +1712,7 @@
         <input addproperty="sign.uk.keyPassword">
             Please enter the password for the keystores:
         </input>
+        <property name="mda.sign.keyPassword" value="${sign.uk.keyPassword}"/>
     </target>
 
     <!--
@@ -1777,6 +1782,36 @@
         <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.back.signed}"/>
 
         <echo>Verification completed.</echo>
+    </target>
+
+    <!--
+        Break the production aggregate into per-entity metadata, sign the
+        individual documents and write them as individual files into a
+        destination directory.
+    -->
+    <target name="samlmd.mdq.sign" depends="get.sign.uk.keyPassword">
+        <property name="mda.mdq.input" value="${output.dir}/${mdaggr.prod.unsigned}"/>
+        <echo>Generating per-entity metadata in ${mda.mdq.output}</echo>
+        <echo>    from production aggregate in ${mda.mdq.input}</echo>
+        <delete dir="${mdq.output.dir}" quiet="true"/>
+        <mkdir dir="${mdq.output.dir}"/>
+        <CHANNEL.do channel="uk" verb="mdq-multisign"/>
+        <echo>Generation complete.</echo>
+    </target>
+
+    <!--
+        Simple local test of per-entity metadata generation, based on a single
+        entity rather than the whole production aggregate, because dev environment
+        PKCS#11 tokens are not fast enough to sign everything.
+    -->
+    <target name="samlmd.mdq.sign.test" depends="get.sign.uk.keyPassword">
+        <property name="mda.mdq.input" value="${entities.dir}/uk000006.xml"/>
+        <echo>Generating per-entity metadata in ${mda.mdq.output}</echo>
+        <echo>    from test metadata in ${mda.mdq.input}</echo>
+        <delete dir="${mdq.output.dir}" quiet="true"/>
+        <mkdir dir="${mdq.output.dir}"/>
+        <CHANNEL.do channel="uk" verb="mdq-multisign"/>
+        <echo>Generation complete.</echo>
     </target>
 
 

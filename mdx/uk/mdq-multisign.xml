@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Generate and sign per-entity metadata.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+        Import commonly used beans.
+    -->
+    <import resource="classpath:common-beans.xml"/>
+
+    <!--
+        Import channel-specific beans.
+    -->
+    <import resource="classpath:uk/beans.xml"/>
+
+    <!-- This bean MUST be called "conversionService" to work properly. -->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="net.shibboleth.ext.spring.config.DurationToLongConverter" />
+                <bean class="net.shibboleth.ext.spring.config.StringToIPRangeConverter" />
+                <bean class="net.shibboleth.ext.spring.config.BooleanToPredicateConverter" />
+                <bean class="net.shibboleth.ext.spring.config.StringBooleanToPredicateConverter" />
+                <bean class="net.shibboleth.ext.spring.config.StringToResourceConverter" />
+            </set>
+        </property>
+    </bean>
+
+    <!--
+        Generate per-entity metadata.
+    -->
+    <bean id="mdq-multisign" parent="SimplePipeline">
+        <property name="stages">
+            <list>
+                <!--
+                    Start with the unsigned production aggregate.
+                -->
+                <bean id="production_aggregate" parent="DOMResourceSourceStage">
+                    <property name="DOMResource">
+                        <bean parent="FileSystemResource" c:_0="${mdq.input}"/>
+                    </property>
+                </bean>
+
+                <!-- Break down into individual entities. -->
+                <ref bean="disassemble"/>
+
+                <!-- Populate ItemId with the entityID. -->
+                <ref bean="populateItemIds"/>
+
+                <!-- Set ID, cacheDuration and validUntil attributes. -->
+                <bean parent="GenerateIdStage"/>
+                <bean parent="SetCacheDurationStage" p:cacheDuration="PT6H"/>
+                <bean parent="SetValidUntilStage" p:validityDuration="P14D"/>
+
+                <!-- Identity transform fixes signing issues. -->
+                <bean parent="XSLTransformationStage"
+                    p:XSLResource="classpath:identity.xsl"/>
+
+                <!-- Sign each item. -->
+                <bean id="perform.signature" parent="XMLSignatureSigningStage">
+                    <property name="privateKey">
+                        <bean parent="PKCS11PrivateKeyFactoryBean"
+                            p:pkcs11Config="${sign.pkcs11Config}"
+                            p:keyPassword="${sign.keyPassword}"
+                            p:keyAlias="${sign.keyAlias}"
+                        />
+                    </property>
+                </bean>
+
+                <!-- Write individual entity documents to files. -->
+                <bean id="write.perentity" parent="MultiOutputSerializationStage">
+                    <property name="outputStrategy">
+                        <bean parent="FilesInDirectoryMultiOutputStrategy" p:nameSuffix=".xml">
+                            <property name="directory">
+                                <bean class="java.io.File" c:_="${mdq.output}"/>
+                            </property>
+                            <property name="nameTransformer">
+                                <bean parent="PathSegmentStringTransformer"/>
+                            </property>
+                        </bean>
+                    </property>
+                </bean>
+
+            </list>
+        </property>
+    </bean>
+
+</beans>
