@@ -57,28 +57,12 @@
         init-method="initialize" destroy-method="destroy"/>
     
     <!--
-        SimplePipeline
-        
-        Parent for pipelines.
-    -->
-    <bean id="SimplePipeline" abstract="true" parent="component_parent"
-        class="net.shibboleth.metadata.pipeline.SimplePipeline"/>
-    
-    <!--
         stage_parent
         
         Parent for all stages.
     -->
     <bean id="stage_parent" abstract="true" parent="component_parent"/>
     
-    <!--
-        CompositeStage
-        
-        Parent for composite stages.
-    -->
-    <bean id="CompositeStage" abstract="true" parent="stage_parent"
-        class="net.shibboleth.metadata.pipeline.CompositeStage"/>
-
     <bean id="XMLSignatureSigningStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.XMLSignatureSigningStage"/>
 
@@ -198,27 +182,6 @@
     </bean>
 
     <!--
-        SerializationStage
-        
-        Parent for serialization stages.
-    -->
-    <bean id="SerializationStage" abstract="true" parent="stage_parent"
-        class="net.shibboleth.metadata.pipeline.SerializationStage">
-        <property name="serializer" ref="serializer"/>
-    </bean>
-    
-    <!--
-        PipelineDemultiplexerStage
-        
-        Parent for demultiplexer stages.  Defaults to waiting for pipelines
-        to complete.
-    -->
-    <bean id="PipelineDemultiplexerStage" abstract="true" parent="stage_parent"
-        class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
-        p:waitingForPipelines="true"
-    />
-    
-    <!--
         EntityRegistrationAuthorityFilterStage
         
         Parent for registration authority filtering stages.
@@ -230,6 +193,10 @@
 
     <bean id="DOMDocumentFactoryBean" abstract="true"
         class="net.shibboleth.ext.spring.factory.DOMDocumentFactoryBean"/>
+
+    <!-- PKCS11PrivateKeyFactoryBean is in MDA in V0.9.2. -->
+    <bean id="PKCS11PrivateKeyFactoryBean" abstract="true"
+        class="net.shibboleth.metadata.util.PKCS11PrivateKeyFactoryBean"/>
     
     <bean id="PrivateKeyFactoryBean" abstract="true"
         class="net.shibboleth.ext.spring.factory.PrivateKeyFactoryBean"/>
@@ -260,25 +227,16 @@
     <bean id="NamespacesStrippingStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.NamespacesStrippingStage"/>
     
-    <bean id="PipelineMergeStage" abstract="true" parent="stage_parent"
-        class="net.shibboleth.metadata.pipeline.PipelineMergeStage"/>
-
-    <bean id="PipelineMergeStage.deduplicate" abstract="true" parent="PipelineMergeStage"
-        p:collectionMergeStrategy-ref="deduplicateMergeStrategy"/>
-
     <bean id="SetCacheDurationStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.SetCacheDurationStage"/>
 
     <bean id="SetValidUntilStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.SetValidUntilStage"/>
 
-    <bean id="SplitMergeStage" abstract="true" parent="stage_parent"
-        class="net.shibboleth.metadata.pipeline.SplitMergeStage"/>
-
     <bean id="XPathItemSelectionStrategy" abstract="true"
         class="net.shibboleth.metadata.dom.XPathItemSelectionStrategy"/>
     
-    <!-- *** Parent beans for entity attribute handling. -->
+    <!-- *** Parent beans for entity attribute handling. *** -->
     
     <bean id="EntityAttributeFilteringStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.saml.mdattr.EntityAttributeFilteringStage"/>
@@ -295,7 +253,7 @@
     <bean id="RegistrationAuthorityMatcher" abstract="true"
         class="net.shibboleth.metadata.dom.saml.mdattr.RegistrationAuthorityMatcher"/>
     
-    <!-- *** Parent beans for X.509 Certificate validation. -->
+    <!-- *** Parent beans for X.509 Certificate validation. *** -->
 
     <bean id="X509ValidationStage" abstract="true" parent="stage_parent"
         class="net.shibboleth.metadata.dom.ds.X509ValidationStage"/>
@@ -310,6 +268,33 @@
     
     <bean id="X509RSAOpenSSLBlacklistValidator" abstract="true" parent="validator_parent"
         class="net.shibboleth.metadata.validate.x509.X509RSAOpenSSLBlacklistValidator"/>
+
+    <!-- *** Parent beans for net.shibboleth.metadata.pipeline package. *** -->
+
+    <bean id="CompositeStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.CompositeStage"/>
+
+    <bean id="PipelineDemultiplexerStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.PipelineDemultiplexerStage"
+        p:waitingForPipelines="true"
+    />
+
+    <bean id="PipelineMergeStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.PipelineMergeStage"/>
+
+    <bean id="PipelineMergeStage.deduplicate" abstract="true" parent="PipelineMergeStage"
+        p:collectionMergeStrategy-ref="deduplicateMergeStrategy"/>
+
+    <bean id="SerializationStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.SerializationStage">
+        <property name="serializer" ref="serializer"/>
+    </bean>
+
+    <bean id="SimplePipeline" abstract="true" parent="component_parent"
+        class="net.shibboleth.metadata.pipeline.SimplePipeline"/>
+
+    <bean id="SplitMergeStage" abstract="true" parent="stage_parent"
+        class="net.shibboleth.metadata.pipeline.SplitMergeStage"/>
 
     <!-- *** Parent beans for ukf-mda. *** -->
 
