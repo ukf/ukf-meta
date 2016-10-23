@@ -213,8 +213,8 @@ mdaggruniqueipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-ac
 # Total data shipped, all .xml files
 mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep "\" 200" | grep "GET" | cut -f 10 -d " " | awk '{sum+=$1} END {print sum}')
 if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
-    mdaggrtotalgb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
-    mdaggrtotaltb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+    mdaggrtotalgb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
+    mdaggrtotaltb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
 else
     mdaggrtotalgb="0.00"
     mdaggrtotaltb="0.00"
@@ -223,8 +223,8 @@ fi
 # Total data shipped, ukfederation-metadata.xml file
 mdaggrmaintotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-metadata.xml" | grep "\" 200" | grep "GET" | cut -f 10 -d " " | awk '{sum+=$1} END {print sum}')
 if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
-    mdaggrmaintotalgb=$(echo "scale=5;$mdaggrmaintotalbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
-    mdaggrmaintotaltb=$(echo "scale=5;$mdaggrmaintotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+    mdaggrmaintotalgb=$(echo "scale=5;$mdaggrmaintotalbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
+    mdaggrmaintotaltb=$(echo "scale=5;$mdaggrmaintotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
 else
     mdaggrmaintotalgb="0.00"
     mdaggrmaintotaltb="0.00"
@@ -233,8 +233,8 @@ fi
 # Estimate total data shipped without compression
 mdaggrmaintotalestnocompressbytes=$(( mdaggrmaincountfull * aggrfilesizebytes ))
 if [[ "$mdaggrmaintotalestnocompressbytes" -gt "0" ]]; then
-    mdaggrmaintotalestnocompressgb=$(echo "scale=5;$mdaggrmaintotalestnocompressbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
-    mdaggrmaintotalestnocompresstb=$(echo "scale=5;$mdaggrmaintotalestnocompressbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+    mdaggrmaintotalestnocompressgb=$(echo "scale=5;$mdaggrmaintotalestnocompressbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
+    mdaggrmaintotalestnocompresstb=$(echo "scale=5;$mdaggrmaintotalestnocompressbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
 else
     mdaggrmaintotalestnocompressgb="0.00"
     mdaggrmaintotalestnocompresstb="0.00"
@@ -243,8 +243,8 @@ fi
 # Estimate total data shipped without compression & conditional get
 mdaggrmaintotalestnocompressnocgetbytes=$(( mdaggrmaincount * aggrfilesizebytes ))
  if [[ "$mdaggrmaintotalestnocompressnocgetbytes" -gt "0" ]]; then
-    mdaggrmaintotalestnocompressnocgetgb=$(echo "scale=5;$mdaggrmaintotalestnocompressnocgetbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
-    mdaggrmaintotalestnocompressnocgettb=$(echo "scale=5;$mdaggrmaintotalestnocompressnocgetbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+    mdaggrmaintotalestnocompressnocgetgb=$(echo "scale=5;$mdaggrmaintotalestnocompressnocgetbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
+    mdaggrmaintotalestnocompressnocgettb=$(echo "scale=5;$mdaggrmaintotalestnocompressnocgetbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
 else
     mdaggrmaintotalestnocompressnocgetgb="0.00"
     mdaggrmaintotalestnocompressnocgettb="0.00"
@@ -378,8 +378,8 @@ mdquniqueipfriendly=$(echo $mdquniqueip | awk '{ printf ("%'"'"'d\n", $0) }')
 # Total data shipped
 mdqtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
 if [[ "$mdqtotalbytes" -gt "0" ]]; then
-    mdqtotalgb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
-    mdqtotaltb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.2f\n", $0}')
+    mdqtotalgb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
+    mdqtotaltb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
 else
     mdqtotalgb="0.00"
     mdqtotaltb="0.00"
