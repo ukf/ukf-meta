@@ -144,6 +144,7 @@
     <!--
         Metadata Distribution Service server properties.
     -->
+    <property name="md.user" value="mdscp"/>
     <property name="md.dist.host1.name" value="md1.infr.ukfederation.org.uk"/>
     <property name="md.dist.host2.name" value="md2.infr.ukfederation.org.uk"/>
     <property name="md.dist.host3.name" value="md3.infr.ukfederation.org.uk"/>
@@ -173,8 +174,15 @@
     <property name="www.path" value="/var/www/html/fed"/>
     <property name="www.url" value="${www.user}@${www.hostname}:${www.path}"/>
 
+    <!--
+        Repo properties.
+    -->
+    <property name="repo.user" value="mdscp"/>
+    <property name="repo.hostname" value="repo.infr.ukfederation.org.uk"/>
+    <property name="repo.path" value="/tmp"/>
+    <property name="repo.url" value="${repo.user}@${repo.hostname}:${repo.path}"/>
 
-     <!--
+    <!--
         *******************************************************
         ***                                                 ***
         ***   F I L E   S Y S T E M   P R O P E R T I E S   ***
@@ -272,6 +280,7 @@
     <!--
         Other files
     -->
+    <property name="mdq.cache" value="mdqcache.tar.gz"/>
     <property name="mdaggr.stats" value="ukfederation-stats.html"/>
 
 
@@ -495,7 +504,22 @@
     </target>
 
     <!--
-        Stage 3.3 of md process: create the signed aggregates / scp from keymaster and push
+        Stage 4.1 of md process: Create the cache of MDQ responses, tar the whole lot.
+
+        Runs on: keymaster
+
+        Process:
+            * MDQ: Create mdq cache.
+            * Tar: Tar the cache up into a single file
+    -->
+    <target name="process.create-mdq-cache.create.and.tar" depends="
+        mdq.createcache,
+        fs.tar.mdqcache">
+        <echo>Stage 4 Success: MDQ cache created; all files comitted to data repository.</echo>
+    </target>
+    
+    <!--
+        Stage 4.2 of md process: Copy files from keymaster, push.
 
         Runs on: orchestrator
 
@@ -505,63 +529,54 @@
             * Git: Add newly created files
             * Git: Commit
     -->
-    <target name="process.sign-aggregates.scp.and.push" depends="
+    <target name="process.create-mdq-cache.scp.and.push" depends="
         fs.scp.signed.files.from.keymaster,
+        fs.scp.mdqcache.from.keymaster,
         fs.cp.other.files.to.aggregates.dir,
         git.products.addallnewfiles,
         git.products.commit.signed">
-        <echo>Stage 3.3 Success: Signed aggregates and stats file comitted to data repository, pushed to origin.</echo>
+        <echo>Stage 4.2 Success: Signed aggregates and stats file comitted to data repository.</echo>
     </target>
 
     <!--
-        Stage 4 of md process: collect the signed MDQ responses, tag the whole lot.
-
-        Runs on: orchestrator
-
-        Process:
-            * MDQ: Iterate through all entities, collect each representation of each entity's MD, save.
-            * Git: Add newly created files
-            * Git: Commit
-    -->
-    <target name="process.collectmdq" depends="
-        mdq.createcache">
-        <echo>Stage 4 Success: MDQ cache created (not yet implemented!); all files comitted to data repository.</echo>
-    </target>
-
-    <!--
-        Stage 5 of md process: collect the signed MDQ responses, tag the whole lot.
+        Stage 5 of md process: Create Tag on products repository, push all to repo (incl. SCPing mdq cache)
 
         Runs on: orchestrator
             * Git: Create New Tag
             * Git: Push to origin
+            * SCP: Copy mdq cache to repo 
             * Jenkins: Trigger publish task
     -->
     <target name="process.bagandtag" depends="
         git.products.masterbranch.pushtoorigin,
         git.products.createtagandpushtoorigin,
+        fs.scp.mdqcache.to.repo,
         fs.clear.outputdir,
         jenkins.triggerjob.publish">
-        <echo>Stage 5 Success: Master branch pushed to origin, new tag created and pushed, message sent to start publication.</echo>
+        <echo>Stage 5 Success: Master branch pushed to origin, new tag created and pushed, mdq cache sent to repo, message sent to start publication.</echo>
     </target>
 
     <!--
         Stage 6 of md process: publish
 
         Runs on: aggr
+          * SCP: Get mdq cache from repo
           * Git: Make sure repos are up to date
           * Git: Merge master branch into immediate
           * Git: Merge immediate branch into deferred
-          * SCP: Files to backend md servers
+          * Git/SCP: Files to backend md servers
           * SAML MD: Verify remote MD.
           * Azure: Send purge to CDN
           * Git: Make sure we're on master branch (to calculate git commits)
           * Slack: Send notification to UKf channel
     -->
     <target name="process.publish" depends="
+        fs.scp.mdqcache.from.repo,
         git.pull.all,
         git.data.merge.masterintoimmediate,
         git.data.merge.immediateintodeferred,
         git.data.allbranches.pushtoorigin,
+        publish.mdqcache,
         publish.md,
         publish.otherfiles,
         samlmd.aggregates.verify.remote,
@@ -1833,6 +1848,11 @@
         </delete>
     </target>
 
+    <target name="fs.tar.mdqcache">
+        <echo>Creating tar of MDQ cache.</echo>
+        <tar compression="gzip" longfile="posix" destfile="${output.dir}/${mdq.cache}" basedir="${mdq.output.dir}"/>
+    </target>
+
     <target name="fs.cp.other.files.to.aggregates.dir">
         <echo>CPing other files that should be checked into git into orchestrator's aggregates dir.</echo>
         <copy failonerror="true" todir="${aggregates.dir}">
@@ -1884,6 +1904,24 @@
         <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.export.preview.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
     </target>
 
+    <target name="fs.scp.mdqcache.from.keymaster">
+        <echo>SCPing mdq cache from keymaster's output dir to a directory on orchestrator.</echo>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdq.cache}" todir="${output.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+    </target>
+
+    <target name="fs.scp.mdqcache.to.repo">
+        <echo>SCPing mdq cache from orchestrator's build dir to a temp directory on repo.</echo>
+        <scp failonerror="true" remoteTodir="${repo.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
+    </target>
+
+    <target name="fs.scp.mdqcache.from.repo">
+        <echo>SCPing mdq cache from temp directory on repo to output.dir on aggr.</echo>
+        <scp failonerror="true" remoteFile="${repo.url}/${mdq.cache}" todir="${output.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+    </target>
 
     <!--
         ***************************************************
@@ -1893,9 +1931,8 @@
         ***************************************************
     -->
 
-    <target name="mdq.createcache">
-        <echo>Creating MDQ cache.</echo>
-        <echo>-> Not yet implemented. This is not a failure, other than a moral one</echo>
+    <target name="mdq.createcache" depends="samlmd.mdq.sign">
+        <echo>MDQ cache created.</echo>
     </target>
 
 
@@ -1944,6 +1981,31 @@
             <arg value="md3"/>
             <arg value="master"/>
         </exec>
+    </target>
+
+    <target name="publish.mdqcache">
+        <!--
+            Push mdq cache tar to the MD dist servers
+        -->
+        <echo>Pushing UK Federation mdq cache to MD dist.</echo>
+        <echo>-> MD1</echo>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host1.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
+        <echo>-> MD2</echo>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host2.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
+        <echo>-> MD3</echo>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host3.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
     </target>
 
     <target name="publish.otherfiles">
