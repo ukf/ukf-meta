@@ -1712,6 +1712,9 @@
         <input addproperty="sign.uk.keyPassword">
             Please enter the password for the keystores:
         </input>
+    </target>
+    
+    <target name="set.mda.sign.uk.keyPassword">
         <property name="mda.sign.keyPassword" value="${sign.uk.keyPassword}"/>
     </target>
 
@@ -1730,7 +1733,7 @@
     <!--
       Signs the unsigned aggregates
     -->
-    <target name="samlmd.aggregates.sign" depends="get.sign.uk.keyPassword">
+    <target name="samlmd.aggregates.sign" depends="get.sign.uk.keyPassword, set.mda.sign.uk.keyPassword">
         <echo>Signing unsigned aggregates.</echo>
 
         <echo>Signing UKfed prod metadata.</echo>
@@ -1789,7 +1792,7 @@
         individual documents and write them as individual files into a
         destination directory.
     -->
-    <target name="samlmd.mdq.sign" depends="get.sign.uk.keyPassword">
+    <target name="samlmd.mdq.sign" depends="get.sign.uk.keyPassword, set.mda.sign.uk.keyPassword">
         <property name="mda.mdq.input" value="${output.dir}/${mdaggr.prod.unsigned}"/>
         <echo>Generating per-entity metadata in ${mda.mdq.output}</echo>
         <echo>    from production aggregate in ${mda.mdq.input}</echo>
@@ -1804,7 +1807,7 @@
         entity rather than the whole production aggregate, because dev environment
         PKCS#11 tokens are not fast enough to sign everything.
     -->
-    <target name="samlmd.mdq.sign.test" depends="get.sign.uk.keyPassword">
+    <target name="samlmd.mdq.sign.test" depends="get.sign.uk.keyPassword, set.mda.sign.uk.keyPassword">
         <property name="mda.mdq.input" value="${entities.dir}/uk000006.xml"/>
         <echo>Generating per-entity metadata in ${mda.mdq.output}</echo>
         <echo>    from test metadata in ${mda.mdq.input}</echo>
