@@ -148,6 +148,7 @@
     <property name="md.dist.host1.name" value="md1.infr.ukfederation.org.uk"/>
     <property name="md.dist.host2.name" value="md2.infr.ukfederation.org.uk"/>
     <property name="md.dist.host3.name" value="md3.infr.ukfederation.org.uk"/>
+    <property name="mdq.dist.name" value="mdq.ukfederation.org.uk"/>
     <property name="md.dist.path.name" value="/"/>
 
     <!--
@@ -580,6 +581,7 @@
         publish.md,
         publish.otherfiles,
         samlmd.aggregates.verify.remote,
+        samlmd.mdq.verify.remote,
         azure.purgecdn,
         lock.unlock,
         git.data.masterbranch.checkout,
@@ -1292,6 +1294,16 @@
 
         <echo>Verification completed.</echo>
     </target>
+
+    <!--
+        Verify a few select mdq files held on the master distribution site.
+    -->
+    <target name="samlmd.mdq.verify.remote">
+        <echo>Verifying MDQ held at ${mdq.dist.name}</echo>
+        <VFY.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest-idp.ukfederation.org.uk%2Fidp%2Fshibboleth"/>
+        <VFY.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest.ukfederation.org.uk%2Fentity"/>
+    </target>
+
 
     <!--
         *************************************************
