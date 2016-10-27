@@ -1300,6 +1300,7 @@
     -->
     <target name="samlmd.mdq.verify.remote">
         <echo>Verifying MDQ held at ${mdq.dist.name}</echo>
+        <VFY.remote i="http://${mdq.dist.name}/entities"/>
         <VFY.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest-idp.ukfederation.org.uk%2Fidp%2Fshibboleth"/>
         <VFY.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest.ukfederation.org.uk%2Fentity"/>
     </target>
