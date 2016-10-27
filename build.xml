@@ -1824,6 +1824,9 @@
         <mkdir dir="${mdq.output.dir}"/>
         <CHANNEL.do channel="uk" verb="mdq-multisign"/>
         <echo>Generation complete.</echo>
+        <echo>Generating all.xml in ${mda.mdq.output}</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.prod.unsigned}" o="${mdq.output.dir}/all.xml" digest="SHA-256"/>
+        <echo>Generation complete.</echo>
     </target>
 
     <!--
