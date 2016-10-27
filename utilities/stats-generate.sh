@@ -156,7 +156,7 @@ fi
 # Get the filesize of the latest uncompressed main aggregate.
 # Since this is just used for estimation, we'll just take the biggest
 # unique filesize for the relevant periods
-aggrfilesizebytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-metadata.xml" | grep "\" 200" | grep "GET" | cut -f 10 -d " " | grep -v "GZIP" | sort -r | uniq | head -1)
+aggrfilesizebytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-metadata.xml" | grep "\" 200" | grep "GET" | grep -v "GZIP" | cut -f 10 -d " " | sort -r | uniq | head -1)
 
 #
 # Download counts
@@ -313,11 +313,11 @@ mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-a
 # =====
 
 # MDQ requests
-mdqcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v 404 | grep -v "/entities/ " | wc -l)
+mdqcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | wc -l)
 mdqcountfriendly=$(echo $mdqcount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # MDQ downloads (i.e. HTTP 200 responses only)
-mdqcountfull=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/" | grep -v "/entities/ " | grep "\" 200" | grep "GET" | wc -l)
+mdqcountfull=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep "\" 200" | grep "GET" | wc -l)
 mdqcountfullfriendly=$(echo $mdqcountfull | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Percentage of HTTP 200 responses compared to total requests
@@ -328,7 +328,7 @@ else
 fi
 
 # Compressed downloads
-mdqfullcomprcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v 404 | grep -v "/entities/ " | grep "\" 200" | grep "GET" | grep "\"GZIP\"" | wc -l)
+mdqfullcomprcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | grep "\" 200" | grep "GET" | grep "\"GZIP\"" | wc -l)
 mdqfullcomprcountfriendly=$(echo $mdqfullcomprcount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Percentage of GZIPPED HTTP 200 responses compared to total full downloads
@@ -343,7 +343,7 @@ fi
 # Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
 # When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
 if [[ "$mdqcount" -ne "0" ]]; then
-    mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v 404 | grep -v "/entities/ " | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+    mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v 404 | grep -v "/entities " | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
     mdqv4pc=$(echo "scale=4;($mdqv4count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
     mdqv6count=$(( mdqcount - mdqv4count ))
     mdqv6pc=$(echo "scale=4;($mdqv6count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
@@ -353,20 +353,24 @@ else
 fi
 
 # MDQ requests for entityId based names
-mdqcountentityid=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/http" | grep -v 404 | wc -l)
+mdqcountentityid=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | grep "/entities/http" | wc -l)
 if [[ "$mdqcount" -ne "0" ]]; then
     mdqcountentityidpc=$(echo "scale=3;($mdqcountentityid/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 else
     mdqcountentityidpc="N/A"
 fi
+mdqcountentityidfriendly=$(echo $mdqcountentityid | awk '{ printf ("%'"'"'d\n", $0) }')
+
 
 # MDQ requests for hash based names
-mdqcountsha1=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v 404 | grep -v "/entities/ " | grep sha1 | wc -l)
+mdqcountsha1=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | grep sha1 | wc -l)
 if [[ "$mdqcount" -ne "0" ]]; then
     mdqcountsha1pc=$(echo "scale=3;($mdqcountsha1/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 else
     mdqcountsha1pc="N/A"
 fi
+mdqcountsha1friendly=$(echo $mdqcountsha1 | awk '{ printf ("%'"'"'d\n", $0) }')
+
 
 # MDQ requests for all entities
 mdqcountallentities=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities " | wc -l)
@@ -495,7 +499,7 @@ if [[ "$timeperiod" == "day" ]]; then
     msg+=">-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
     msg+=">*MDQ:* $mdqcountfriendly requests* from $mdquniqueipfriendly IPs, $mdqtotalgb GB shipped.\n"
     msg+=">-> * $mdqcountfullfriendly ($mdqfullpc%) were full D/Ls, of which $mdqfullcomprcountfriendly ($mdqfullcomprpc%) were compressed.\n"
-    msg+=">-> $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
+    msg+=">-> $mdqcountentityidfriendly ($mdqcountentityidpc%) entityId vs $mdqcountsha1friendly ($mdqcountsha1pc%) sha1 based queries\n"
     msg+=">-> $mdqminqueriesperip/$mdqavgqueriesperip/$mdqmaxqueriesperip min/avg/max queries per querying IP\n"
     msg+=">-> $mdqcountallentities queries for collection of all entities\n"
     msg+=">*CDS:* $cdscountfriendly requests serviced (DS: $cdsdscount / WAYF: $cdswayfcount).\n"
@@ -528,7 +532,7 @@ else
     msg+="MDQ:\n"
     msg+="-> $mdqcountfriendly requests* from $mdquniqueipfriendly clients, $mdqtotaltb TB shipped.\n"
     msg+="--> * $mdqcountfullfriendly ($mdqfullpc%) were full downloads, of which $mdqfullcomprcountfriendly ($mdqfullcomprpc%) were compressed.\n"
-    msg+="-> $mdqcountentityidpc% entityId vs $mdqcountsha1pc% sha1 based queries\n"
+    msg+="-> $mdqcountentityidfriendly ($mdqcountentityidpc%) entityId vs $mdqcountsha1friendly ($mdqcountsha1pc%) sha1 based queries\n"
     msg+="-> IPv4: $mdqv4pc% vs IPv6: $mdqv6pc%\n"
     msg+="-> $mdqminqueriesperip min/$mdqavgqueriesperip avg/$mdqmaxqueriesperip max queries per querying IP\n"
     msg+="-> $mdqcountallentities queries for collection of all entities\n"
