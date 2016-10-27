@@ -343,7 +343,7 @@ fi
 # Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
 # When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
 if [[ "$mdqcount" -ne "0" ]]; then
-    mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v 404 | grep -v "/entities " | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+    mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
     mdqv4pc=$(echo "scale=4;($mdqv4count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
     mdqv6count=$(( mdqcount - mdqv4count ))
     mdqv6pc=$(echo "scale=4;($mdqv6count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
