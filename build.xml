@@ -1739,7 +1739,6 @@
         <input addproperty="sign.uk.keyPassword">
             Please enter the password for the keystores:
         </input>
-        <property name="mda.sign.keyPassword" value="${sign.uk.keyPassword}"/>
     </target>
 
     <!--
@@ -1818,6 +1817,7 @@
     -->
     <target name="samlmd.mdq.sign" depends="get.sign.uk.keyPassword">
         <property name="mda.mdq.input" value="${output.dir}/${mdaggr.prod.unsigned}"/>
+        <property name="mda.sign.keyPassword" value="${sign.uk.keyPassword}"/>
         <echo>Generating per-entity metadata in ${mda.mdq.output}</echo>
         <echo>    from production aggregate in ${mda.mdq.input}</echo>
         <delete dir="${mdq.output.dir}" quiet="true"/>
@@ -1833,6 +1833,7 @@
     -->
     <target name="samlmd.mdq.sign.test" depends="get.sign.uk.keyPassword">
         <property name="mda.mdq.input" value="${entities.dir}/uk000006.xml"/>
+        <property name="mda.sign.keyPassword" value="${sign.uk.keyPassword}"/>
         <echo>Generating per-entity metadata in ${mda.mdq.output}</echo>
         <echo>    from test metadata in ${mda.mdq.input}</echo>
         <delete dir="${mdq.output.dir}" quiet="true"/>
