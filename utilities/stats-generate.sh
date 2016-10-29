@@ -372,10 +372,55 @@ else
     mdaggrmaxqueriesperipfull="0"
 fi
 
-# Top 10 downloaders and how many downloads / total data shipped (full downloads only) (don't count these when doing daily stats)
+# Don't count these when doing daily stats
 if [[ "$timeperiod" != "day" ]]; then
-    mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+
+    # Top 10 downloaders and how many downloads / total data shipped (full downloads only)
+    if [[ "$timeperiod" != "day" ]]; then
+        mdaggrtoptenipsbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+    fi
+
+    #
+    # Manipute results of the top 10
+    #
+    
+    # Blank the output we're going to set
+    mdaggrtoptenipsbycountdetailed=""
+    
+    i=1
+    IFS=$'\n'
+    for line in $mdaggrtoptenipsbycount
+    do
+        # Parse the line
+        count=$(echo $line | awk '{print $1}')
+        ipaddr=$(echo $line | awk '{print $2'})
+    
+        # Make count friendly
+        countfriendly=$(echo $count | awk '{ printf ("%'"'"'d\n", $0) }')
+    
+        # Figure out total traffic shipped to this IP
+        totaldataforthisip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | grep $ipaddr | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
+        if [[ "$totaldataforthisip" -gt "0" ]]; then
+            totaldataforthisiphr=$(bytestohr $totaldataforthisip)
+        else
+            totaldataforthisiphr="0 B"
+        fi
+    
+        # Get Reverse DNS for this IP address
+        rdnsforthisip=$(dig +noall +answer -x $ipaddr | awk '{print $5}')
+        if [[ -z $rdnsforthisip ]]; then
+            rdnsforthisip="No RDNS available"
+        fi
+    
+        # Add to the output
+        mdaggrtoptenipsbycountdetailed+="$i: $countfriendly D/Ls ($totaldataforthisiphr) from $ipaddr ($rdnsforthisip)\n"
+        
+        # Increment the count, and blank the rdns response
+        i=$((i+1))
+        rdnsforthisip=""
+    done
 fi
+
 
 # =====
 # MDQ stats
@@ -455,7 +500,7 @@ mdqtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* 
 if [[ "$mdqtotalbytes" -gt "0" ]]; then
     mdqtotalhr=$(bytestohr $mdqtotalbytes)
 else
-    mdqtotalgb="0 B"
+    mdqtotalhr="0 B"
 fi
 
 # Min queries per IP
@@ -482,6 +527,47 @@ fi
 if [[ "$timeperiod" != "day" ]]; then
     # Top 10 downloaders and how many downloads / total data shipped
     mdqtoptenipsbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep "/entities" | grep -v 404 | grep -v "/entities/ " | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+    
+    #
+    # Manipute results of the top 10
+    #
+    
+    # Blank the output we're going to set
+    mdqtoptenipsbycountdetailed=""
+    
+    i=1
+    IFS=$'\n'
+    for line in $mdqtoptenipsbycount
+    do
+        # Parse the line
+        count=$(echo $line | awk '{print $1}')
+        ipaddr=$(echo $line | awk '{print $2'})
+    
+        # Make count friendly
+        countfriendly=$(echo $count | awk '{ printf ("%'"'"'d\n", $0) }')
+    
+        # Figure out total traffic shipped to this IP
+        totaldataforthisip=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/" | grep -v 404 | grep "\" 200" | grep $ipaddr | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
+        if [[ "$totaldataforthisip" -gt "0" ]]; then
+            totaldataforthisiphr=$(bytestohr $totaldataforthisip)
+        else
+            totaldataforthisiphr="0 B"
+        fi
+    
+        # Get Reverse DNS for this IP address
+        rdnsforthisip=$(dig +noall +answer -x $ipaddr | awk '{print $5}')
+        if [[ -z $rdnsforthisip ]]; then
+            rdnsforthisip="No RDNS available"
+        fi
+    
+        # Add to the output
+        mdqtoptenipsbycountdetailed+="$i: $countfriendly D/Ls ($totaldataforthisiphr) from $ipaddr ($rdnsforthisip)\n"
+        
+        # Increment the count, and blank the rdns response
+        i=$((i+1))
+        rdnsforthisip=""
+    done
+    
     
     # Top 10 queries and how many downloads / total data shipped
     mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep /entities/ | grep -v 404 | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b" | sort | uniq -c | sort -nr | head -10)
@@ -612,7 +698,7 @@ else
     msg+="-> * ukfederation-cdsall.xml   = $mdaggrcdsallcountfriendly requests ($mdaggrcdsallpc% of total)\n"
     msg+="-> * ukfederation-wayf.xml     = $mdaggrwayfcountfriendly requests ($mdaggrwayfpc% of total)\n"
     msg+="\nTop 10 downloaders (full downloads only):\n"
-    msg+="$mdaggrtoptenbycount\n"
+    msg+="$mdaggrtoptenipsbycountdetailed\n"
     msg+="\n-----\n"
     msg+="MDQ:\n"
     msg+="-> $mdqcountfriendly requests* from $mdquniqueipfriendly clients, $mdqtotalhr shipped.\n"
@@ -622,7 +708,7 @@ else
     msg+="-> $mdqminqueriesperip min/$mdqavgqueriesperip avg/$mdqmaxqueriesperip max queries per querying IP\n"
     msg+="-> $mdqcountallentities queries for collection of all entities\n"
     msg+="\nTop 10 queryers:\n"
-    msg+="$mdqtoptenipsbycount\n"
+    msg+="$mdqtoptenipsbycountdetailed\n"
     msg+="\nTop 10 entities queried for:\n"
     msg+="$mdqtoptenqueriesbycount\n"
     msg+="\n-----\n"
@@ -637,14 +723,14 @@ else
     msg+="\n-----\n"
     msg+="Test IdP usage:\n"
     msg+="-> $testidplogincount logins to $testidpspcount SPs.\n"
-    msg+="\nLogins per test user:\n"
+    msg+="\n-> Logins per test user:\n"
     msg+="$testidplogincountbyuser\n"
-    msg+="\nTop 10 SPs logged into:\n"
+    msg+="\n-> Top 10 SPs logged into:\n"
     msg+="$testidptoptenspsbycount\n"
     msg+="\n-----\n"
     msg+="Test SP usage:\n"
     msg+="-> $testsplogincount logins from $testspidpcount IdPs.\n"    
-    msg+="\nTop 10 IdPs logged in from:\n"
+    msg+="\n-> Top 10 IdPs logged in from:\n"
     msg+="$testsptoptenidpsbycount\n"
     msg+="\n-----"
 fi
