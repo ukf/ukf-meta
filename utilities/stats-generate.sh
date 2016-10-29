@@ -19,11 +19,13 @@
 bytestohr()
 {
         value=$1
+        valueint=$1
         i=0
         suffix=" KMGTPEZY"
-        while [ $value -gt 1024 ]; do
+        while [ $valueint -gt 1024 ]; do
                 i=$((i+1))
-                value=$((value/1024))
+                valueint=$((valueint/1024))
+                value=$(echo "scale=1;$value/1024" | bc)
         done
         echo $value ${suffix:$i:1}B
 }
