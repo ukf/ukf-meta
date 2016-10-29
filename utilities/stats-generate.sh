@@ -163,7 +163,7 @@ aggrfilesizebytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-acc
 #
 
 # Aggregate requests. Everything for .xml (HEAD/GET, 200 and 304)
-mdaggrcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | wc -l)
+mdaggrcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | wc -l)
 mdaggrcountfriendly=$(echo $mdaggrcount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Main Aggregate requests. Everything for ukfederation-metadata.xml (HEAD/GET, 200 and 304)
@@ -171,7 +171,7 @@ mdaggrmaincount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-acces
 mdaggrmaincountfriendly=$(echo $mdaggrmaincount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Aggregate downloads (i.e. GETs with HTTP 200 responses only)
-mdaggrcountfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep "\" 200" | grep "GET" | wc -l)
+mdaggrcountfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404| grep "\" 200" | grep "GET" | wc -l)
 mdaggrcountfullfriendly=$(echo $mdaggrcountfull | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Main Aggregate downloads (i.e. GETs with HTTP 200 responses only)
@@ -186,7 +186,7 @@ else
 fi
 
 # Compressed downloads for all
-mdaggrcountfullcompr=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep "\" 200" | grep "GET" | grep "\"GZIP\"" | wc -l)
+mdaggrcountfullcompr=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | grep "\"GZIP\"" | wc -l)
 mdaggrcountfullcomprfriendly=$(echo $mdaggrcountfullcompr | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Compressed downloads for main aggregate
@@ -200,18 +200,18 @@ else
 fi
 
 # Unique IP addresses requesting aggregates
-mdaggruniqueip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
+mdaggruniqueip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
 mdaggruniqueipfriendly=$(echo $mdaggruniqueip | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Unique IP addresses requesting aggregates, full D/Ls only
-mdaggruniqueipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep "\" 200" | grep "GET" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
+mdaggruniqueipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
 
 #
 # Data shipped
 #
 
 # Total data shipped, all .xml files
-mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep "\" 200" | grep "GET" | cut -f 10 -d " " | awk '{sum+=$1} END {print sum}')
+mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | cut -f 10 -d " " | awk '{sum+=$1} END {print sum}')
 if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
     mdaggrtotalgb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
     mdaggrtotaltb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
@@ -257,7 +257,7 @@ fi
 # IPv4 vs IPv6 traffic
 # Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
 # When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
-mdaggrv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+mdaggrv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
 mdaggrv4pc=$(echo "scale=4;($mdaggrv4count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 mdaggrv6count=$(( mdaggrcount - mdaggrv4count ))
 mdaggrv6pc=$(echo "scale=4;($mdaggrv6count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
@@ -285,7 +285,7 @@ fi
 
 # Min queries per IP, full D/L only
 if [[ $mdaggrcountfull -gt "0" ]]; then
-    mdaggrminqueriesperipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep "\" 200" | grep "GET" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | tail -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
+    mdaggrminqueriesperipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | tail -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
 else
     mdqaggrinqueriesperipfull="0"
 fi
@@ -299,13 +299,13 @@ fi
 
 # Max queries per IP, full D/L only
 if [[ $mdaggrcountfull -gt "0" ]]; then
-    mdaggrmaxqueriesperipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep "\" 200" | grep "GET" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
+    mdaggrmaxqueriesperipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
 else
     mdaggrmaxqueriesperipfull="0"
 fi
 
 # Top 10 downloaders and how many downloads / total data shipped (full downloads only)
-mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep "\" 200" | grep "GET" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
 
 
 # =====
@@ -317,7 +317,7 @@ mdqcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logs
 mdqcountfriendly=$(echo $mdqcount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # MDQ downloads (i.e. HTTP 200 responses only)
-mdqcountfull=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep "\" 200" | grep "GET" | wc -l)
+mdqcountfull=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v 404 | grep "\" 200" | grep "GET" | wc -l)
 mdqcountfullfriendly=$(echo $mdqcountfull | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Percentage of HTTP 200 responses compared to total requests
@@ -328,7 +328,7 @@ else
 fi
 
 # Compressed downloads
-mdqfullcomprcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | grep "\" 200" | grep "GET" | grep "\"GZIP\"" | wc -l)
+mdqfullcomprcount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v 404 | grep "\" 200" | grep "GET" | grep "\"GZIP\"" | wc -l)
 mdqfullcomprcountfriendly=$(echo $mdqfullcomprcount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Percentage of GZIPPED HTTP 200 responses compared to total full downloads
@@ -343,7 +343,7 @@ fi
 # Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
 # When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
 if [[ "$mdqcount" -ne "0" ]]; then
-    mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+    mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v 404 | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
     mdqv4pc=$(echo "scale=4;($mdqv4count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
     mdqv6count=$(( mdqcount - mdqv4count ))
     mdqv6pc=$(echo "scale=4;($mdqv6count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
@@ -353,7 +353,7 @@ else
 fi
 
 # MDQ requests for entityId based names
-mdqcountentityid=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | grep "/entities/http" | wc -l)
+mdqcountentityid=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v 404 | grep "/entities/http" | wc -l)
 if [[ "$mdqcount" -ne "0" ]]; then
     mdqcountentityidpc=$(echo "scale=3;($mdqcountentityid/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 else
@@ -363,7 +363,7 @@ mdqcountentityidfriendly=$(echo $mdqcountentityid | awk '{ printf ("%'"'"'d\n", 
 
 
 # MDQ requests for hash based names
-mdqcountsha1=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 404 | grep "/entities" | grep -v "/entities " | grep sha1 | wc -l)
+mdqcountsha1=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v 404 | grep sha1 | wc -l)
 if [[ "$mdqcount" -ne "0" ]]; then
     mdqcountsha1pc=$(echo "scale=3;($mdqcountsha1/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 else
@@ -373,14 +373,14 @@ mdqcountsha1friendly=$(echo $mdqcountsha1 | awk '{ printf ("%'"'"'d\n", $0) }')
 
 
 # MDQ requests for all entities
-mdqcountallentities=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities " | wc -l)
+mdqcountallentities=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities " | grep -v 404 | wc -l)
 
 # Unique IP addresses requesting MDQ
-mdquniqueip=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
+mdquniqueip=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/" | grep -v 404 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq | wc -l)
 mdquniqueipfriendly=$(echo $mdquniqueip | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Total data shipped
-mdqtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/" | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
+mdqtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/" | grep -v 404 | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
 if [[ "$mdqtotalbytes" -gt "0" ]]; then
     mdqtotalgb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
     mdqtotaltb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
