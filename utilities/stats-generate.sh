@@ -13,16 +13,37 @@
 
 
 # =====
-# = Preamble
+# = Some common functions
 # =====
 
+bytestohr()
+{
+        value=$1
+        i=0
+        suffix=" KMGTPEZY"
+        while [ $value -gt 1024 ]; do
+                i=$((i+1))
+                value=$((value/1024))
+        done
+        echo $value ${suffix:$i:1}B
+}
 
-#
-# Set some common options
-#
+
+
+
+# =====
+# = Set some common options
+# =====
+
 logslocation="/var/stats"
 usageerrormsg="usage: generate-stats.sh <time period to run stats on (day/month/year)> [<date (YYYY-MM-DD/YYYY-MM/YYYY)>]"
 
+
+
+
+# =====
+# = Preamble
+# =====
 
 #
 # Fail if required input isn't provided.
@@ -213,41 +234,33 @@ mdaggruniqueipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-ac
 # Total data shipped, all .xml files
 mdaggrtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | cut -f 10 -d " " | awk '{sum+=$1} END {print sum}')
 if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
-    mdaggrtotalgb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
-    mdaggrtotaltb=$(echo "scale=5;$mdaggrtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrtotalhr=$(bytestohr $mdaggrtotalbytes)
 else
-    mdaggrtotalgb="0.00"
-    mdaggrtotaltb="0.00"
+    mdaggrtotalhr="0 B"
 fi
 
 # Total data shipped, ukfederation-metadata.xml file
 mdaggrmaintotalbytes=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-metadata.xml" | grep "\" 200" | grep "GET" | cut -f 10 -d " " | awk '{sum+=$1} END {print sum}')
 if [[ "$mdaggrtotalbytes" -gt "0" ]]; then
-    mdaggrmaintotalgb=$(echo "scale=5;$mdaggrmaintotalbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
-    mdaggrmaintotaltb=$(echo "scale=5;$mdaggrmaintotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrmaintotalhr=$(bytestohr $mdaggrmaintotalbytes)
 else
-    mdaggrmaintotalgb="0.00"
-    mdaggrmaintotaltb="0.00"
+    mdaggrmaintotalhr="0 B"
 fi
 
 # Estimate total data shipped without compression
 mdaggrmaintotalestnocompressbytes=$(( mdaggrmaincountfull * aggrfilesizebytes ))
 if [[ "$mdaggrmaintotalestnocompressbytes" -gt "0" ]]; then
-    mdaggrmaintotalestnocompressgb=$(echo "scale=5;$mdaggrmaintotalestnocompressbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
-    mdaggrmaintotalestnocompresstb=$(echo "scale=5;$mdaggrmaintotalestnocompressbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrmaintotalestnocompresshr=$(bytestohr $mdaggrmaintotalestnocompressbytes)
 else
-    mdaggrmaintotalestnocompressgb="0.00"
-    mdaggrmaintotalestnocompresstb="0.00"
+    mdaggrmaintotalestnocompresshr="0 B"
 fi
 
 # Estimate total data shipped without compression & conditional get
 mdaggrmaintotalestnocompressnocgetbytes=$(( mdaggrmaincount * aggrfilesizebytes ))
  if [[ "$mdaggrmaintotalestnocompressnocgetbytes" -gt "0" ]]; then
-    mdaggrmaintotalestnocompressnocgetgb=$(echo "scale=5;$mdaggrmaintotalestnocompressnocgetbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
-    mdaggrmaintotalestnocompressnocgettb=$(echo "scale=5;$mdaggrmaintotalestnocompressnocgetbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrmaintotalestnocompressnocgethr=$(bytestohr $mdaggrmaintotalestnocompressnocgetbytes)
 else
-    mdaggrmaintotalestnocompressnocgetgb="0.00"
-    mdaggrmaintotalestnocompressnocgettb="0.00"
+    mdaggrmaintotalestnocompressnocgethr="0 B"
 fi
 
 #
@@ -382,11 +395,9 @@ mdquniqueipfriendly=$(echo $mdquniqueip | awk '{ printf ("%'"'"'d\n", $0) }')
 # Total data shipped
 mdqtotalbytes=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities/" | grep -v 404 | grep "\" 200" | cut -f 10 -d " " | grep -v - | awk '{sum+=$1} END {print sum}')
 if [[ "$mdqtotalbytes" -gt "0" ]]; then
-    mdqtotalgb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024" | bc | awk '{printf "%.0f\n", $0}')
-    mdqtotaltb=$(echo "scale=5;$mdqtotalbytes/1024/1024/1024/1024" | bc | awk '{printf "%.1f\n", $0}')
+    mdqtotalhr=$(bytestohr $mdqtotalbytes)
 else
-    mdqtotalgb="0.00"
-    mdqtotaltb="0.00"
+    mdqtotalgb="0 B"
 fi
 
 # Min queries per IP
@@ -492,12 +503,12 @@ if [[ "$timeperiod" == "day" ]]; then
     # Daily message, usually output via slack
     #
     msg="Daily stats for $(date -d $date '+%a %d %b %Y'):\n"
-    msg+=">*MD dist:* $mdaggrcountfriendly requests* from $mdaggruniqueipfriendly IPs, $mdaggrtotalgb GB shipped.\n"
+    msg+=">*MD dist:* $mdaggrcountfriendly requests* from $mdaggruniqueipfriendly IPs, $mdaggrtotalhr shipped.\n"
     msg+=">-> * $mdaggrcountfullfriendly ($mdaggrfullpc%) were full D/Ls, of which $mdaggrcountfullcomprfriendly ($mdaggrfullcomprpc%) were compressed.\n"
-    msg+=">-> ukf-md.xml: $mdaggrmaintotalgb GB actual; est. $mdaggrmaintotalestnocompressgb GB w/no compr, $mdaggrmaintotalestnocompressnocgetgb GB also w/no c/get.\n"
+    msg+=">-> ukf-md.xml: $mdaggrmaintotalhr actual; est. $mdaggrmaintotalestnocompresshr w/no compr, $mdaggrmaintotalestnocompressnocgethr also w/no c/get.\n"
     msg+=">-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP (all reqs)\n"
     msg+=">-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
-    msg+=">*MDQ:* $mdqcountfriendly requests* from $mdquniqueipfriendly IPs, $mdqtotalgb GB shipped.\n"
+    msg+=">*MDQ:* $mdqcountfriendly requests* from $mdquniqueipfriendly IPs, $mdqtotalhr shipped.\n"
     msg+=">-> * $mdqcountfullfriendly ($mdqfullpc%) were full D/Ls, of which $mdqfullcomprcountfriendly ($mdqfullcomprpc%) were compressed.\n"
     msg+=">-> $mdqcountentityidfriendly ($mdqcountentityidpc%) entityId vs $mdqcountsha1friendly ($mdqcountsha1pc%) sha1 based queries\n"
     msg+=">-> $mdqminqueriesperip/$mdqavgqueriesperip/$mdqmaxqueriesperip min/avg/max queries per querying IP\n"
@@ -520,9 +531,9 @@ else
     msg+="==========\n"
     msg+="\n-----\n"
     msg+="Metadata aggregate distribution:\n"
-    msg+="-> $mdaggrcountfriendly requests* from $mdaggruniqueipfriendly clients, $mdaggrtotaltb TB shipped.\n"
+    msg+="-> $mdaggrcountfriendly requests* from $mdaggruniqueipfriendly clients, $mdaggrtotalhr shipped.\n"
     msg+="--> * $mdaggrcountfullfriendly ($mdaggrfullpc%) were full downloads, of which $mdaggrcountfullcomprfriendly ($mdaggrfullcomprpc%) were compressed.\n"
-    msg+="--> ukfederation-metadata.xml: $mdaggrmaintotaltb TB of data actually shipped; would have been an estimated $mdaggrmaintotalestnocompresstb TB without compression, and $mdaggrmaintotalestnocompressnocgettb TB without compression or conditional gets.\n"
+    msg+="--> ukfederation-metadata.xml: $mdaggrmaintotalhr of data actually shipped; would have been an estimated $mdaggrmaintotalestnocompresshr without compression, and $mdaggrmaintotalestnocompressnocgethr without compression or conditional gets.\n"
     msg+="-> IPv4: $mdaggrv4pc% vs IPv6: $mdaggrv6pc%\n"
     msg+="-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP (all reqs)\n"
     msg+="-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
@@ -530,7 +541,7 @@ else
     msg+="$mdaggrtoptenbycount\n"
     msg+="\n-----\n"
     msg+="MDQ:\n"
-    msg+="-> $mdqcountfriendly requests* from $mdquniqueipfriendly clients, $mdqtotaltb TB shipped.\n"
+    msg+="-> $mdqcountfriendly requests* from $mdquniqueipfriendly clients, $mdqtotalhr shipped.\n"
     msg+="--> * $mdqcountfullfriendly ($mdqfullpc%) were full downloads, of which $mdqfullcomprcountfriendly ($mdqfullcomprpc%) were compressed.\n"
     msg+="-> $mdqcountentityidfriendly ($mdqcountentityidpc%) entityId vs $mdqcountsha1friendly ($mdqcountsha1pc%) sha1 based queries\n"
     msg+="-> IPv4: $mdqv4pc% vs IPv6: $mdqv6pc%\n"
