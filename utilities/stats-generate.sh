@@ -587,32 +587,32 @@ fi
 # =====
 
 # How many accesses to .ds.
-cdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | wc -l)
+cdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | wc -l)
 cdscountfriendly=$(echo $cdscount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # IPv4 vs IPv6 traffic (don't count these for daily stats)
 if [[ "$timeperiod" != "day" ]]; then
     # Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
     # When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
-    cdsv4count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+    cdsv4count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
     cdsv4pc=$(echo "scale=4;($cdsv4count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
     cdsv6count=$(( cdscount - cdsv4count ))
     cdsv6pc=$(echo "scale=4;($cdsv6count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
 
     # Per-server request count
-    cds1count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds1 | wc -l)
+    cds1count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds1 | wc -l)
     cds1pc=$(echo "scale=4;($cds1count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cds2count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds2 | wc -l)
-    cds2pc=$(echo "scale=4;($cds1count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cds3count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds3 | wc -l)
-    cds3pc=$(echo "scale=4;($cds1count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    cds2count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds2 | wc -l)
+    cds2pc=$(echo "scale=4;($cds2count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    cds3count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds3 | wc -l)
+    cds3pc=$(echo "scale=4;($cds3count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
 fi
 
 # How many of these were to the DS (has entityId in the parameters)
-cdsdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep entityID | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+cdsdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep entityID | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # How many of these were to the WAYF (has shire in the parameters)
-cdswayfcount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shire | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+cdswayfcount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shire | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 
 # =====
