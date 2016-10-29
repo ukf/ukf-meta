@@ -198,48 +198,50 @@ else
     mdaggrmainpc="0.0"
 fi
 
-# Other aggregate requests (only calculate these if doing monthly stats)
-mdaggrbackcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-back.xml" | wc -l)
-mdaggrbackcountfriendly=$(echo $mdaggrbackcount | awk '{ printf ("%'"'"'d\n", $0) }')
-if [[ "$mdaggrbackcount" -ne "0" ]]; then
-    mdaggrbackpc=$(echo "scale=4;($mdaggrbackcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-else
-    mdaggrbackpc="0.0"
-fi
-mdaggrcdsallcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-cdsall.xml" | wc -l)
-mdaggrcdsallcountfriendly=$(echo $mdaggrcdsallcount | awk '{ printf ("%'"'"'d\n", $0) }')
-if [[ "$mdaggrcdsallcount" -ne "0" ]]; then
-    mdaggrcdsallpc=$(echo "scale=4;($mdaggrcdsallcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-else
-    mdaggrcdsallpc="0.0"
-fi
-mdaggrexportpreviewcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-export-preview.xml" | wc -l)
-mdaggrexportpreviewcountfriendly=$(echo $mdaggrexportpreviewcount | awk '{ printf ("%'"'"'d\n", $0) }')
-if [[ "$mdaggrexportpreviewkcount" -ne "0" ]]; then
-    mdaggrexportpreviewpc=$(echo "scale=4;($mdaggrexportpreviewcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-else
-    mdaggrexportpreviewpc="0.0"
-fi
-mdaggrexportcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-export.xml" | wc -l)
-mdaggrexportcountfriendly=$(echo $mdaggrexportcount | awk '{ printf ("%'"'"'d\n", $0) }')
-if [[ "$mdaggrexportcount" -ne "0" ]]; then
-    mdaggrexportpc=$(echo "scale=4;($mdaggrexportcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-else
-    mdaggrexportpc="0.0"
-fi
-mdaggrtestcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-test.xml" | wc -l)
-mdaggrtestcountfriendly=$(echo $mdaggrtestcount | awk '{ printf ("%'"'"'d\n", $0) }')
-if [[ "$mdaggrtestcount" -ne "0" ]]; then
-    mdaggrtestpc=$(echo "scale=4;($mdaggrtestcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-else
-    mdaggrtestpc="0.0"
-fi
-mdaggrwayfcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-wayf.xml" | wc -l)
-mdaggrwayfcountfriendly=$(echo $mddaggrwayfcount | awk '{ printf ("%'"'"'d\n", $0) }')
-if [[ "$mdaggrwayfcount" -ne "0" ]]; then
-    mdaggrwayfpc=$(echo "scale=4;($mdaggrwayfcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-else
-    mdaggrwayfpc="0.0"
+# Other aggregate requests (don't calculate these if doing daily stats)
+if [[ "$timeperiod" != "day" ]]; then
+    mdaggrbackcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-back.xml" | wc -l)
+    mdaggrbackcountfriendly=$(echo $mdaggrbackcount | awk '{ printf ("%'"'"'d\n", $0) }')
+    if [[ "$mdaggrbackcount" -ne "0" ]]; then
+        mdaggrbackpc=$(echo "scale=4;($mdaggrbackcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    else
+        mdaggrbackpc="0.0"
+    fi
+    mdaggrcdsallcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-cdsall.xml" | wc -l)
+    mdaggrcdsallcountfriendly=$(echo $mdaggrcdsallcount | awk '{ printf ("%'"'"'d\n", $0) }')
+    if [[ "$mdaggrcdsallcount" -ne "0" ]]; then
+        mdaggrcdsallpc=$(echo "scale=4;($mdaggrcdsallcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    else
+        mdaggrcdsallpc="0.0"
+    fi
+    mdaggrexportpreviewcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-export-preview.xml" | wc -l)
+    mdaggrexportpreviewcountfriendly=$(echo $mdaggrexportpreviewcount | awk '{ printf ("%'"'"'d\n", $0) }')
+    if [[ "$mdaggrexportpreviewkcount" -ne "0" ]]; then
+        mdaggrexportpreviewpc=$(echo "scale=4;($mdaggrexportpreviewcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    else
+        mdaggrexportpreviewpc="0.0"
+    fi
+    mdaggrexportcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-export.xml" | wc -l)
+    mdaggrexportcountfriendly=$(echo $mdaggrexportcount | awk '{ printf ("%'"'"'d\n", $0) }')
+    if [[ "$mdaggrexportcount" -ne "0" ]]; then
+        mdaggrexportpc=$(echo "scale=4;($mdaggrexportcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    else
+        mdaggrexportpc="0.0"
+    fi
+    mdaggrtestcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-test.xml" | wc -l)
+    mdaggrtestcountfriendly=$(echo $mdaggrtestcount | awk '{ printf ("%'"'"'d\n", $0) }')
+    if [[ "$mdaggrtestcount" -ne "0" ]]; then
+        mdaggrtestpc=$(echo "scale=4;($mdaggrtestcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    else
+        mdaggrtestpc="0.0"
+    fi
+    mdaggrwayfcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-wayf.xml" | wc -l)
+    mdaggrwayfcountfriendly=$(echo $mddaggrwayfcount | awk '{ printf ("%'"'"'d\n", $0) }')
+    if [[ "$mdaggrwayfcount" -ne "0" ]]; then
+        mdaggrwayfpc=$(echo "scale=4;($mdaggrwayfcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    else
+        mdaggrwayfpc="0.0"
+    fi
 fi
 
 # Aggregate downloads (i.e. GETs with HTTP 200 responses only)
@@ -315,16 +317,18 @@ else
 fi
 
 #
-# Other things
+# Other things 
 #
 
-# IPv4 vs IPv6 traffic
+# IPv4 vs IPv6 traffic (don't calculate these if doing daily stats)
 # Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
 # When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
-mdaggrv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
-mdaggrv4pc=$(echo "scale=4;($mdaggrv4count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-mdaggrv6count=$(( mdaggrcount - mdaggrv4count ))
-mdaggrv6pc=$(echo "scale=4;($mdaggrv6count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+if [[ "$timeperiod" != "day" ]]; then
+    mdaggrv4count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+    mdaggrv4pc=$(echo "scale=4;($mdaggrv4count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrv6count=$(( mdaggrcount - mdaggrv4count ))
+    mdaggrv6pc=$(echo "scale=4;($mdaggrv6count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+fi
 
 # Min queries per IP
 if [[ $mdaggrcount -gt "0" ]]; then
@@ -368,9 +372,10 @@ else
     mdaggrmaxqueriesperipfull="0"
 fi
 
-# Top 10 downloaders and how many downloads / total data shipped (full downloads only)
-mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
-
+# Top 10 downloaders and how many downloads / total data shipped (full downloads only) (don't count these when doing daily stats)
+if [[ "$timeperiod" != "day" ]]; then
+    mdaggrtoptenbycount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+fi
 
 # =====
 # MDQ stats
@@ -403,17 +408,20 @@ else
 fi
 
 
-# IPv4 vs IPv6 traffic
-# Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
-# When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
-if [[ "$mdqcount" -ne "0" ]]; then
-    mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v 404 | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
-    mdqv4pc=$(echo "scale=4;($mdqv4count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    mdqv6count=$(( mdqcount - mdqv4count ))
-    mdqv6pc=$(echo "scale=4;($mdqv6count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
-else
-    mdqv4pc="N/A"
-    mdqv6pc="N/A"
+# IPv4 vs IPv6 traffic (don't calculate this for daily stats)
+
+if [[ "$timeperiod" != "day" ]]; then
+    # Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
+    # When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
+    if [[ "$mdqcount" -ne "0" ]]; then
+        mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v 404 | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+        mdqv4pc=$(echo "scale=4;($mdqv4count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+        mdqv6count=$(( mdqcount - mdqv4count ))
+        mdqv6pc=$(echo "scale=4;($mdqv6count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    else
+        mdqv4pc="N/A"
+        mdqv6pc="N/A"
+    fi
 fi
 
 # MDQ requests for entityId based names
@@ -424,7 +432,6 @@ else
     mdqcountentityidpc="N/A"
 fi
 mdqcountentityidfriendly=$(echo $mdqcountentityid | awk '{ printf ("%'"'"'d\n", $0) }')
-
 
 # MDQ requests for hash based names
 mdqcountsha1=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v 404 | grep sha1 | wc -l)
@@ -472,12 +479,13 @@ else
     mdqmaxqueriesperip="0"
 fi
 
-# Top 10 downloaders and how many downloads / total data shipped
-mdqtoptenipsbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep "/entities" | grep -v 404 | grep -v "/entities/ " | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
-
-# Top 10 queries and how many downloads / total data shipped
-mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep /entities/ | grep -v 404 | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b" | sort | uniq -c | sort -nr | head -10)
-
+if [[ "$timeperiod" != "day" ]]; then
+    # Top 10 downloaders and how many downloads / total data shipped
+    mdqtoptenipsbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep "/entities" | grep -v 404 | grep -v "/entities/ " | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | head -10)
+    
+    # Top 10 queries and how many downloads / total data shipped
+    mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep /entities/ | grep -v 404 | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b" | sort | uniq -c | sort -nr | head -10)
+fi
 
 # =====
 # CDS stats
@@ -487,14 +495,15 @@ mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-ac
 cdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | wc -l)
 cdscountfriendly=$(echo $cdscount | awk '{ printf ("%'"'"'d\n", $0) }')
 
-# IPv4 vs IPv6 traffic
-# Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
-# When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
-cdsv4count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
-cdsv4pc=$(echo "scale=4;($cdsv4count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-cdsv6count=$(( cdscount - cdsv4count ))
-cdsv6pc=$(echo "scale=4;($cdsv6count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-
+# IPv4 vs IPv6 traffic (don't count these for daily stats)
+if [[ "$timeperiod" != "day" ]]; then
+    # Note, while all v6 traffic passes through v6v4proxy1/2, we're counting accesses from the IPv4 addresses of those servers vs all others.
+    # When we add "real" v6 support to the servers, this needs changing to count IPv4 addresses vs IPv6 addresses.
+    cdsv4count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep -v 193.63.72.83 | grep -v 194.83.7.211 | wc -l)
+    cdsv4pc=$(echo "scale=4;($cdsv4count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    cdsv6count=$(( cdscount - cdsv4count ))
+    cdsv6pc=$(echo "scale=4;($cdsv6count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+fi
 
 # How many of these were to the DS (has entityId in the parameters)
 cdsdscount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep entityID | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
@@ -524,11 +533,14 @@ testidplogincount=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* |
 # And to how many unique SPs?
 testidpspcount=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* | grep "sso/browser" | cut -f 4 -d "|" | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
-# Top 10 SPs the IdP has logged into
-testidptoptenspsbycount=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* | grep "sso/browser" | cut -d "|" -f 4 | sort | uniq -c | sort -nr | head -10)
-
-# Which Test IdPs are being used, and how much?
-testidplogincountbyuser=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* | grep "sso/browser" | cut -d "|" -f 9 | sort | uniq -ic)
+# Don't count these for daily stats
+if [[ "$timeperiod" != "day" ]]; then
+    # Top 10 SPs the IdP has logged into
+    testidptoptenspsbycount=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* | grep "sso/browser" | cut -d "|" -f 4 | sort | uniq -c | sort -nr | head -10)
+    
+    # Which Test IdPs accounts are being used, and how much?
+    testidplogincountbyuser=$(zgrep "^$javasearchterm" $logslocation/test-idp/idp-audit* | grep "sso/browser" | cut -d "|" -f 9 | sort | uniq -ic)
+fi
 
 
 # =====
@@ -541,8 +553,11 @@ testsplogincount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new sessi
 # And from how many unique IdPs?
 testspidpcount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | cut -f 12 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
-# Top 10 IdPs used to log into the Test SP
-testsptoptenidpsbycount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | awk '{print $12}' | cut -d "(" -f 2 | cut -d ")" -f 1 | sort | uniq -c | sort -nr | head -10)
+# Don't count these for daily stats
+if [[ "$timeperiod" != "day" ]]; then
+    # Top 10 IdPs used to log into the Test SP
+    testsptoptenidpsbycount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | awk '{print $12}' | cut -d "(" -f 2 | cut -d ")" -f 1 | sort | uniq -c | sort -nr | head -10)
+fi
 
 
 # =====
