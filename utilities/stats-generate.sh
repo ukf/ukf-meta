@@ -328,7 +328,16 @@ if [[ "$timeperiod" != "day" ]]; then
     mdaggrv4pc=$(echo "scale=4;($mdaggrv4count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
     mdaggrv6count=$(( mdaggrcount - mdaggrv4count ))
     mdaggrv6pc=$(echo "scale=4;($mdaggrv6count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+
+    # Per-server request count
+    mdaggrmd1count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | cut -f 5 -d "/" | grep md1 | wc -l)
+    mdaggrmd1pc=$(echo "scale=4;($mdaggrmd1count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrmd2count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | cut -f 5 -d "/" | grep md2 | wc -l)
+    mdaggrmd2pc=$(echo "scale=4;($mdaggrmd1count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrmd3count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | cut -f 5 -d "/" | grep md3 | wc -l)
+    mdaggrmd3pc=$(echo "scale=4;($mdaggrmd1count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 fi
+
 
 # Min queries per IP
 if [[ $mdaggrcount -gt "0" ]]; then
@@ -589,6 +598,14 @@ if [[ "$timeperiod" != "day" ]]; then
     cdsv4pc=$(echo "scale=4;($cdsv4count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
     cdsv6count=$(( cdscount - cdsv4count ))
     cdsv6pc=$(echo "scale=4;($cdsv6count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+
+    # Per-server request count
+    cds1count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds1 | wc -l)
+    cds1pc=$(echo "scale=4;($cds1count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    cds2count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds2 | wc -l)
+    cds2pc=$(echo "scale=4;($cds1count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    cds3count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/access_log* $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | grep shib-cds3 | wc -l)
+    cds3pc=$(echo "scale=4;($cds1count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
 fi
 
 # How many of these were to the DS (has entityId in the parameters)
@@ -687,6 +704,7 @@ else
     msg+="--> * $mdaggrcountfullfriendly ($mdaggrfullpc%) were full downloads, of which $mdaggrcountfullcomprfriendly ($mdaggrfullcomprpc%) were compressed.\n"
     msg+="--> ukfederation-metadata.xml: $mdaggrmaintotalhr of data actually shipped; would have been an estimated $mdaggrmaintotalestnocompresshr without compression, and $mdaggrmaintotalestnocompressnocgethr without compression or conditional gets.\n"
     msg+="-> IPv4: $mdaggrv4pc% vs IPv6: $mdaggrv6pc%\n"
+    msg+="-> Server distribution: md1: $mdaggrmd1pc% md2: $mdaggrmd2pc% md3: $mdaggrmd3pc%\n"
     msg+="-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP (all reqs)\n"
     msg+="-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
     msg+="\nRequests per published aggregate\n"
@@ -715,6 +733,7 @@ else
     msg+="Central Discovery Service:\n"
     msg+="-> $cdscountfriendly total requests serviced\n"
     msg+="-> IPv4: $cdsv4pc% vs IPv6: $cdsv6pc%\n"
+    msg+="-> Server distribution: shib-cds1: $cds1pc% shib-cds2: $cds2pc% shib-cds3: $cds3pc%\n"
     msg+="-> DS: $cdsdscount / WAYF: $cdswayfcount\n"
     msg+="\n-----\n"
     msg+="Wugen:\n"
