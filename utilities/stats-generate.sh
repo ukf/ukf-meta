@@ -190,6 +190,55 @@ mdaggrcountfriendly=$(echo $mdaggrcount | awk '{ printf ("%'"'"'d\n", $0) }')
 # Main Aggregate requests. Everything for ukfederation-metadata.xml (HEAD/GET, 200 and 304)
 mdaggrmaincount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-metadata.xml" | wc -l)
 mdaggrmaincountfriendly=$(echo $mdaggrmaincount | awk '{ printf ("%'"'"'d\n", $0) }')
+if [[ "$mdaggrmaincount" -ne "0" ]]; then
+    mdaggrmainpc=$(echo "scale=4;($mdaggrmaincount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdaggrmainpc="0.0"
+fi
+
+# Other aggregate requests (only calculate these if doing monthly stats)
+mdaggrbackcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-back.xml" | wc -l)
+mdaggrbackcountfriendly=$(echo $mdaggrbackcount | awk '{ printf ("%'"'"'d\n", $0) }')
+if [[ "$mdaggrbackcount" -ne "0" ]]; then
+    mdaggrbackpc=$(echo "scale=4;($mdaggrbackcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdaggrbackpc="0.0"
+fi
+mdaggrcdsallcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-cdsall.xml" | wc -l)
+mdaggrcdsallcountfriendly=$(echo $mdaggrcdsallcount | awk '{ printf ("%'"'"'d\n", $0) }')
+if [[ "$mdaggrcdsallcount" -ne "0" ]]; then
+    mdaggrcdsallpc=$(echo "scale=4;($mdaggrcdsallcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdaggrcdsallpc="0.0"
+fi
+mdaggrexportpreviewcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-export-preview.xml" | wc -l)
+mdaggrexportpreviewcountfriendly=$(echo $mdaggrexportpreviewcount | awk '{ printf ("%'"'"'d\n", $0) }')
+if [[ "$mdaggrexportpreviewkcount" -ne "0" ]]; then
+    mdaggrexportpreviewpc=$(echo "scale=4;($mdaggrexportpreviewcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdaggrexportpreviewpc="0.0"
+fi
+mdaggrexportcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-export.xml" | wc -l)
+mdaggrexportcountfriendly=$(echo $mdaggrexportcount | awk '{ printf ("%'"'"'d\n", $0) }')
+if [[ "$mdaggrexportcount" -ne "0" ]]; then
+    mdaggrexportpc=$(echo "scale=4;($mdaggrexportcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdaggrexportpc="0.0"
+fi
+mdaggrtestcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-test.xml" | wc -l)
+mdaggrtestcountfriendly=$(echo $mdaggrtestcount | awk '{ printf ("%'"'"'d\n", $0) }')
+if [[ "$mdaggrtestcount" -ne "0" ]]; then
+    mdaggrtestpc=$(echo "scale=4;($mdaggrtestcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdaggrtestpc="0.0"
+fi
+mdaggrwayfcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-wayf.xml" | wc -l)
+mdaggrwayfcountfriendly=$(echo $mddaggrwayfcount | awk '{ printf ("%'"'"'d\n", $0) }')
+if [[ "$mdaggrwayfcount" -ne "0" ]]; then
+    mdaggrwayfpc=$(echo "scale=4;($mdaggrwayfcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+else
+    mdaggrwayfpc="0.0"
+fi
 
 # Aggregate downloads (i.e. GETs with HTTP 200 responses only)
 mdaggrcountfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404| grep "\" 200" | grep "GET" | wc -l)
@@ -537,6 +586,14 @@ else
     msg+="-> IPv4: $mdaggrv4pc% vs IPv6: $mdaggrv6pc%\n"
     msg+="-> $mdaggrminqueriesperip/$mdaggravgqueriesperip/$mdaggrmaxqueriesperip min/avg/max queries per querying IP (all reqs)\n"
     msg+="-> $mdaggrminqueriesperipfull/$mdaggravgqueriesperipfull/$mdaggrmaxqueriesperipfull min/avg/max queries per querying IP (full D/Ls only)\n"
+    msg+="\nRequests per published aggregate\n"
+    msg+="-> * ukfederation-metadata.xml = $mdaggrmaincountfriendly requests ($mdaggrmainpc% of total)\n"
+    msg+="-> * ukfederation-back.xml     = $mdaggrbackcountfriendly requests ($mdaggrbackpc% of total)\n"
+    msg+="-> * ukfederation-test.xml     = $mdaggrtestcountfriendly requests ($mdaggrtestpc% of total)\n"
+    msg+="-> * ukfederation-export.xml   = $mdaggrexportcountfriendly requests ($mdaggrexportpc% of total)\n"
+    msg+="-> * ukfed'-export-preview.xml = $mdaggrexportpreviewcountfriendly requests ($mdaggrexportpreviewpc% of total)\n"
+    msg+="-> * ukfederation-cdsall.xml   = $mdaggrcdsallcountfriendly requests ($mdaggrcdsallpc% of total)\n"
+    msg+="-> * ukfederation-wayf.xml     = $mdaggrwayfcountfriendly requests ($mdaggrwayfpc% of total)\n"
     msg+="\nTop 10 downloaders (full downloads only):\n"
     msg+="$mdaggrtoptenbycount\n"
     msg+="\n-----\n"
