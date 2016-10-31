@@ -15,7 +15,8 @@
     <!--
         Import additional channel-local beans.
     -->
-    <import resource="classpath:int_edugain/entity-blacklist.xml"/>
+    <import resource="file:${edugain.dir}/entity-blacklist.xml"/>
+    <import resource="file:${edugain.dir}/verify-blacklist.xml"/>
     
     <!--
         Location of various resources.
