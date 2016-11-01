@@ -236,7 +236,7 @@ if [[ "$timeperiod" != "day" ]]; then
         mdaggrtestpc="0.0"
     fi
     mdaggrwayfcount=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "ukfederation-wayf.xml" | wc -l)
-    mdaggrwayfcountfriendly=$(echo $mddaggrwayfcount | awk '{ printf ("%'"'"'d\n", $0) }')
+    mdaggrwayfcountfriendly=$(echo $mdaggrwayfcount | awk '{ printf ("%'"'"'d\n", $0) }')
     if [[ "$mdaggrwayfcount" -ne "0" ]]; then
         mdaggrwayfpc=$(echo "scale=4;($mdaggrwayfcount/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
     else
