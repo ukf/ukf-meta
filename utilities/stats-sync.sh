@@ -34,6 +34,7 @@ rsync -at stats@test-idp:/opt/shibboleth-idp/logs/idp-audit* $logslocation/test-
 # Logs from Test SP
 rsync -at --exclude modsec* stats@test-sp:/var/log/httpd/* $logslocation/test-sp/
 rsync -at stats@test-sp:/var/log/shibboleth/shibd* $logslocation/test-sp/
+rsync -at stats@test-sp:/var/log/shibboleth/transaction* $logslocation/test-sp/
 
 # Exit happily
 exit 0
