@@ -1786,6 +1786,17 @@
     </target>
 
     <!--
+      Tests signing the unsigned main aggregate
+    -->
+    <target name="samlmd.aggregates.sign.test" depends="get.sign.uk.keyPassword">
+        <echo>Testing signing the unsigned main aggregate.</echo>
+
+        <echo>Test signing UKfed prod metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.prod.unsigned}" o="${output.dir}/${mdaggr.prod.signed}" digest="SHA-256"/>
+
+    </target>
+
+    <!--
         Verify the signed aggregates.
     -->
     <target name="samlmd.aggregates.verify">
@@ -1811,6 +1822,16 @@
         <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.back.signed}"/>
 
         <echo>Verification completed.</echo>
+    </target>
+
+    <!--
+        Tests verifying the signed main aggregate.
+    -->
+    <target name="samlmd.aggregates.verify.test">
+        <echo>Testing verifying the signed main aggregate.</echo>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.prod.signed}"/>
+
+        <echo>Test verification completed.</echo>
     </target>
 
     <!--
