@@ -8,6 +8,7 @@ their registrar.
 from xml.dom.minidom import parse
 from urllib import urlopen
 from datetime import date
+import sys
 
 REGISTRAR_NAME = {
 
@@ -76,11 +77,14 @@ def display(infile, split):
 		print "%10s: %d" % (e[0], e[1])
 	print "%10s: %d" % ("other", sum([e[1] for e in rest_counts]))
 
-cache_file = date.today().strftime("cache/%Y-%m.xml")
-print "Most recent monthly UK federation production aggregate (%s):" % (cache_file)
-display(cache_file, 9)
+if len(sys.argv) == 2:
+	display(sys.argv[1], 9)
+else:
+	cache_file = date.today().strftime("cache/%Y-%m.xml")
+	print "Most recent monthly UK federation production aggregate (%s):" % (cache_file)
+	display(cache_file, 9)
 
-print
+	print
 
-print "Current eduGAIN production aggregate:"
-display(urlopen("http://mds.edugain.org/"), 9)
+	print "Current eduGAIN production aggregate:"
+	display(urlopen("http://mds.edugain.org/"), 9)
