@@ -11,13 +11,18 @@ use Months;
 # Parse command line arguments
 use Getopt::Long;
 my $allMonths;
-GetOptions('all' => \$allMonths);
+my $oneYear;
+GetOptions('all' => \$allMonths, 'year' => \$oneYear);
 
 # By default, only show results for the most recent month
-if (!$allMonths) {
+if ($allMonths) {
+	# leave table intact
+} elsif ($oneYear) {
+	# reduce months table to just the last 12 entries
+	@months = @months[-12..-1];
+} else {
 	# reduce months table to one element
-	my $oneMonth = pop @months;
-	@months = ( $oneMonth );
+	@months = @months[-1..-1];
 }
 
 # ingest files
