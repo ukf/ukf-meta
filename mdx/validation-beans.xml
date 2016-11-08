@@ -312,6 +312,21 @@
 
 
     <!--
+        ***************************************************
+        ***                                             ***
+        ***   S I R T F I   S P E C I F I C A T I O N   ***
+        ***                                             ***
+        ***************************************************
+    -->
+
+    <!--
+        check_sirtfi
+    -->
+    <bean id="check_sirtfi" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_sirtfi.xsl"/>
+
+
+    <!--
         *******************************************************************
         ***                                                             ***
         ***   U K   F E D E R A T I O N   S P E C I F I C A T I O N S   ***
