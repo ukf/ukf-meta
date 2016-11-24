@@ -1164,7 +1164,7 @@
     -->
 
     <!--
-        Verify a metadata file held on the master distribution site.
+        Verify a metadata file held on the master distribution site, using the ukfederation-2014.pem key
     -->
     <macrodef name="VFY.remote">
         <attribute name="i"/>
@@ -1177,6 +1177,28 @@
                 Verify using xmlsectool.
             -->
             <XMLSECTOOL.VFY.uk i="${temp.xml}"/>
+
+            <!--
+                Delete the temporary file.
+            -->
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
+        </sequential>
+    </macrodef>
+    
+    <!--
+        Verify a metadata file held on the master distribution site, using the ukfederation-mdq.pem key
+    -->
+    <macrodef name="VFY.MDQ.remote">
+        <attribute name="i"/>
+        <sequential>
+            <echo>Verifying @{i}...</echo>
+            <delete file="${temp.xml}" quiet="true" verbose="false"/>
+            <get src="@{i}" dest="${temp.xml}"/>
+
+            <!--
+                Verify using xmlsectool.
+            -->
+            <XMLSECTOOL.VFY.MDQ.uk i="${temp.xml}"/>
 
             <!--
                 Delete the temporary file.
@@ -1301,9 +1323,9 @@
     -->
     <target name="samlmd.mdq.verify.remote">
         <echo>Verifying MDQ held at ${mdq.dist.name}</echo>
-        <VFY.remote i="http://${mdq.dist.name}/entities"/>
-        <VFY.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest-idp.ukfederation.org.uk%2Fidp%2Fshibboleth"/>
-        <VFY.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest.ukfederation.org.uk%2Fentity"/>
+        <VFY.MDQ.remote i="http://${mdq.dist.name}/entities"/>
+        <VFY.MDQ.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest-idp.ukfederation.org.uk%2Fidp%2Fshibboleth"/>
+        <VFY.MDQ.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest.ukfederation.org.uk%2Fentity"/>
     </target>
 
 
@@ -1658,6 +1680,22 @@
                     <arg value="--verifySignature"/>
                     <arg value="--certificate"/>
                     <arg value="${mdx.dir}/uk/ukfederation-2014.pem"/>
+                    <!--
+                    <arg value="- -quiet"/>
+                    -->
+                </args>
+            </XMLSECTOOL>
+        </sequential>
+    </macrodef>
+    
+    <macrodef name="XMLSECTOOL.VFY.MDQ.uk">
+        <attribute name="i"/><!-- input file -->
+        <sequential>
+            <XMLSECTOOL i="@{i}">
+                <args>
+                    <arg value="--verifySignature"/>
+                    <arg value="--certificate"/>
+                    <arg value="${mdx.dir}/uk/ukfederation-mdq.pem"/>
                     <!--
                     <arg value="- -quiet"/>
                     -->
