@@ -41,9 +41,6 @@ F9:04:F9:4A:4B:D4:7D:30:42:88:64:1B:C8:51:EF:CC:43:D9:30:10 \
 90:A3:BB:7B:C3:8E:EB:57:8D:DA:4E:42:01:64:3B:11:D9:B4:F5:75 \
     Certificate expires 8 January 2015 - merger - Stourbridge College.  Entity uk001743. Call 11565.
 
-10:6D:8F:2D:14:31:B6:56:18:D8:CB:E9:BD:AB:96:DC:9D:ED:30:35 \
-    Certificate expired 8 March 2015 - Shibboleth IdP for Southport College. Entity uk000308. Call 11905.
-    
 64:44:D0:DF:86:52:F3:CD:3D:D6:75:8F:8E:84:82:92:7F:4E:93:C3 \
     Certificate expired 10 April 2015 - Dawson Shibboleth SP for Semantico Limited.  Entity uk002112. Call 12202.
 
