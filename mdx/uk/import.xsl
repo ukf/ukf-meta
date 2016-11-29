@@ -32,6 +32,7 @@
     xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
     xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
     xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+    xmlns:remd="http://refeds.org/metadata"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
     xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
@@ -73,6 +74,7 @@
             urn:oasis:names:tc:SAML:2.0:assertion saml-schema-assertion-2.0.xsd
             urn:mace:shibboleth:metadata:1.0 shibboleth-metadata-1.0.xsd
             http://ukfederation.org.uk/2006/11/label uk-fed-label.xsd
+            http://refeds.org/metadata refeds-metadata.xsd
             http://sdss.ac.uk/2006/06/WAYF uk-wayf.xsd
             http://www.w3.org/2001/04/xmlenc# xenc-schema.xsd
             http://www.w3.org/2009/xmlenc11# xenc-schema-11.xsd
