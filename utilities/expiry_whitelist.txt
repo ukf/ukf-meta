@@ -70,4 +70,7 @@ F3:63:1C:35:CC:BC:FD:E7:A4:B7:3B:C8:54:FF:AF:0F:0F:A2:66:04 \
     
 13:C7:EB:D0:42:30:4A:41:40:1C:6F:F8:08:AA:EB:89:B2:31:05:2B \
     Expired certificate (09/05/2016) for a Shibboleth IdP for King George V College. Entity uk001322. Call 15465.
+
+F6:FF:A2:1A:61:1A:05:C0:2A:A3:5B:30:63:95:32:7D:16:39:D7:05 \
+    Expired certificate in IdP for Henley College Coventry (uk001729) which is being replaced - SR00113049
 # END
