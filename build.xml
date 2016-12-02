@@ -172,8 +172,10 @@
     -->
     <property name="www.user" value="wwwscp"/>
     <property name="www.hostname" value="web1.infr.ukfederation.org.uk"/>
-    <property name="www.path" value="/var/www/html/fed"/>
-    <property name="www.url" value="${www.user}@${www.hostname}:${www.path}"/>
+    <property name="www.path.stats" value="/var/www/html/fed"/>
+    <property name="www.path.members" value="/var/www/externals"/>
+    <property name="www.url.stats" value="${www.user}@${www.hostname}:${www.path.stats}"/>
+    <property name="www.url.members" value="${www.user}@${www.hostname}:${www.path.members}"/>
 
     <!--
         Repo properties.
@@ -2092,9 +2094,14 @@
                 <then>
                     <echo>Pushing UK Federation other files to web site.</echo>
                     <echo>-> Web1</echo>
-                    <scp failonerror="true" remoteTodir="${www.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+                    <scp failonerror="true" remoteTodir="${www.url.stats}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
                         <fileset dir="${aggregates.dir}">
                             <include name="${mdaggr.stats}"/>
+                        </fileset>
+                    </scp>
+                    <scp failonerror="true" remoteTodir="${www.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+                        <fileset dir="${members.dir}">
+                            <include name="members.xml"/>
                         </fileset>
                     </scp>
                 </then>
