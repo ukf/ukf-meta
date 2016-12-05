@@ -33,6 +33,7 @@
 	xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
 	xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
 	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+	xmlns:remd="http://refeds.org/metadata"
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"

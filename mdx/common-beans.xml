@@ -1173,6 +1173,7 @@
                             <ref bean="mdattr_namespace"/>
                             <ref bean="mdrpi_namespace"/>
                             <ref bean="mdui_namespace"/>
+                            <ref bean="remd_namespace"/>
                             <ref bean="saml_namespace"/>
                             <ref bean="shibmd_namespace"/>
                             <ref bean="xenc_namespace"/>

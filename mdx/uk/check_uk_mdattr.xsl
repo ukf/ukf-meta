@@ -63,6 +63,7 @@
 	<xsl:template match="mdattr:EntityAttributes/saml:Attribute
 		[@Name != 'http://macedir.org/entity-category']
 		[@Name != 'http://macedir.org/entity-category-support']
+		[@Name != 'urn:oasis:names:tc:SAML:attribute:assurance-certification']
 		">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
@@ -102,5 +103,20 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
+	<!--
+		Validate assurance certification values.
+	-->
+	<xsl:template match="mdattr:EntityAttributes/saml:Attribute[@Name='urn:oasis:names:tc:SAML:attribute:assurance-certification']
+		/saml:AttributeValue
+		[. != 'https://refeds.org/sirtfi']
+		">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:text>unknown assurance certification URI </xsl:text>
+				<xsl:value-of select="."/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
 </xsl:stylesheet>

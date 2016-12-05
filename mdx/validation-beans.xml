@@ -644,6 +644,7 @@
                 <ref bean="check_saml_strings"/>
                 <ref bean="check_shib_noregscope"/>
                 <ref bean="check_shibboleth"/>
+                <ref bean="check_sirtfi"/>
                 <ref bean="check_sp_tls"/>
                 <ref bean="check_uk_algorithms"/>
                 <ref bean="check_uk_trust"/>

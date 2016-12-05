@@ -119,7 +119,67 @@
             </list>
         </property>
     </bean>
-    
+
+    <!--
+        *****************************************
+        ***                                   ***
+        ***   S I R T F I   H A N D L I N G   ***
+        ***                                   ***
+        *****************************************
+    -->
+
+    <!--
+        Entity attribute matcher for the SIRTFI assurance certification.
+    -->
+    <bean id="SIRTFI.entity.attribute.matcher" parent="MultiPredicateMatcher">
+        <property name="nameFormatPredicate">
+            <bean class="com.google.common.base.Predicates"
+                factory-method="equalTo"
+                c:_="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+            />
+        </property>
+        <property name="namePredicate">
+            <bean class="com.google.common.base.Predicates"
+                factory-method="equalTo"
+                c:_="urn:oasis:names:tc:SAML:attribute:assurance-certification"
+            />
+        </property>
+        <property name="valuePredicate">
+            <bean class="com.google.common.base.Predicates"
+                factory-method="equalTo"
+                c:_="https://refeds.org/sirtfi"
+            />
+        </property>
+    </bean>
+
+    <!--
+        Remove the REFEDS metadata namespace.
+    -->
+    <bean id="strip.remd.namespace" parent="NamespaceStrippingStage"
+        p:namespace-ref="remd_namespace"/>
+
+    <!--
+        Strip SIRTFI information.
+    -->
+    <bean id="strip.SIRTFI" parent="CompositeStage">
+        <property name="composedStages">
+            <list>
+                <!-- remove the REFEDS metadata namespace -->
+                <ref bean="strip.remd.namespace"/>
+
+                <!-- remove the SIRTFI entity attribute -->
+                <bean id="entityAttributes" parent="EntityAttributeFilteringStage"
+                    p:whitelisting="false">
+                    <property name="rules">
+                        <list>
+                            <ref bean="SIRTFI.entity.attribute.matcher"/>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
     <!--
         *******************************************
         ***                                     ***
@@ -205,6 +265,10 @@
                             <!-- Permit REFEDS R&S category *support* from any eduGAIN participant. -->
                             <bean parent="EntityCategorySupportMatcher"
                                 c:category="http://refeds.org/category/research-and-scholarship"/>
+
+                            <!-- Permit SIRTFI entity attribute from any eduGAIN participant -->
+                            <ref bean="SIRTFI.entity.attribute.matcher"/>
+
                         </list>
                     </property>
                 </bean>
@@ -242,6 +306,11 @@
     <bean id="uk_productionPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
+                <!--
+                    Remove SIRTFI metadata.
+                -->
+                <ref bean="strip.SIRTFI"/>
+
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
@@ -299,6 +368,11 @@
     <bean id="uk_wayfPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
+                <!--
+                    Remove SIRTFI metadata.
+                -->
+                <ref bean="strip.SIRTFI"/>
+
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
@@ -477,6 +551,11 @@
     <bean id="uk_fallbackPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
+                <!--
+                    Remove SIRTFI metadata.
+                -->
+                <ref bean="strip.SIRTFI"/>
+
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
