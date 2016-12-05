@@ -164,6 +164,10 @@
     <bean id="strip.SIRTFI" parent="CompositeStage">
         <property name="composedStages">
             <list>
+                <!-- remove REFEDS contacts associated with SIRTFI -->
+                <bean id="strip.SIRTFI.contacts" parent="XSLTransformationStage"
+                    p:XSLResource="classpath:uk/strip_sirtfi_contacts.xsl"/>
+
                 <!-- remove the REFEDS metadata namespace -->
                 <ref bean="strip.remd.namespace"/>
 
@@ -667,6 +671,11 @@
         <property name="stages">
             <list>
                 <!--
+                    Remove SIRTFI metadata.
+                -->
+                <ref bean="strip.SIRTFI"/>
+
+                <!--
                     Additional rules excluding entities from the aggregate.
                     
                     The basic rule (expressed in uk_exportPreviewSelector) is that
@@ -776,7 +785,11 @@
     <bean id="uk_exportPreviewPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
-
+                <!--
+                    Remove SIRTFI metadata.
+                -->
+                <ref bean="strip.SIRTFI"/>
+                
                 <!--
                     Additional rules excluding entities from the aggregate.
                     
