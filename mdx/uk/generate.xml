@@ -786,11 +786,6 @@
         <property name="stages">
             <list>
                 <!--
-                    Remove SIRTFI metadata.
-                -->
-                <ref bean="strip.SIRTFI"/>
-                
-                <!--
                     Additional rules excluding entities from the aggregate.
                     
                     The basic rule (expressed in uk_exportPreviewSelector) is that
