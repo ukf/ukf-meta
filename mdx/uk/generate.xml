@@ -311,11 +311,6 @@
         <property name="stages">
             <list>
                 <!--
-                    Remove SIRTFI metadata.
-                -->
-                <ref bean="strip.SIRTFI"/>
-
-                <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
                 <ref bean="check_dup_display"/>
@@ -670,11 +665,6 @@
     <bean id="uk_exportPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
-                <!--
-                    Remove SIRTFI metadata.
-                -->
-                <ref bean="strip.SIRTFI"/>
-
                 <!--
                     Additional rules excluding entities from the aggregate.
                     
