@@ -124,8 +124,12 @@
                 <xsl:if test="md:IDPSSODescriptor">
                     <xsl:comment> *** VERIFY OR REMOVE THE FOLLOWING ELEMENT *** </xsl:comment>
                     <ukfedlabel:AccountableUsers/>
-                    <xsl:comment> *** VERIFY OR REMOVE THE FOLLOWING ELEMENT *** </xsl:comment>
-                    <wayf:HideFromWAYF xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"/>
+                    <xsl:comment> *** VERIFY OR REMOVE THE FOLLOWING ELEMENT AND ITS CHILDREN *** </xsl:comment>
+                    <mdattr:EntityAttributes>
+                        <saml:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                            <saml:AttributeValue>http://refeds.org/category/hide-from-discovery</saml:AttributeValue>
+                        </saml:Attribute>
+                    </mdattr:EntityAttributes>
                 </xsl:if>
 
                 <!--
