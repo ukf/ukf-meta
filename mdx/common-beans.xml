@@ -506,6 +506,7 @@
     <bean id="ie_edugate_registrar"      parent="String" c:_="http://www.heanet.ie"/>
     <bean id="il_iif_registrar"          parent="String" c:_="http://iif.iucc.ac.il"/>
     <bean id="in_infed_registrar"        parent="String" c:_="http://infilibnet.ac.in/"/>
+    <bean id="it_gridp_registrar"        parent="String" c:_="http://gridp.garr.it"/>
     <bean id="it_idem_registrar"         parent="String" c:_="http://www.idem.garr.it/"/>
     <bean id="jp_gakunin_registrar"      parent="String" c:_="https://www.gakunin.jp"/>
     <bean id="kr_kafe_registrar"         parent="String" c:_="http://kafe.kreonet.net"/>
@@ -590,6 +591,7 @@
                 <!-- eduGAIN voting-only members -->
                 <entry key-ref="ar_mate_registrar"            value="AR"/>
                 <entry key-ref="by_febas_registrar"           value="BY"/>
+                <entry key-ref="it_gridp_registrar"           value="IT-GRIDP"/>
                 
                 <!-- eduGAIN candidates -->
                 <entry key-ref="dz_arnaai_registrar"          value="DZ"/>
