@@ -551,11 +551,6 @@
         <property name="stages">
             <list>
                 <!--
-                    Remove SIRTFI metadata.
-                -->
-                <ref bean="strip.SIRTFI"/>
-
-                <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
                 <ref bean="check_dup_display"/>
