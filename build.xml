@@ -2297,7 +2297,7 @@
     <target name="check.mailing.list" depends="flow.uk.collect">
         <echo>Checking mailing list entries.</echo>
         <exec executable="perl" dir="${build.dir}">
-            <arg value="${build.dir}/addresses.pl"/>
+            <arg value="${utilities.dir}/addresses.pl"/>
         </exec>
     </target>
 

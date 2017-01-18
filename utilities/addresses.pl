@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use lib "../build";
 use Xalan;
 
 #
@@ -8,7 +9,7 @@ use Xalan;
 # One extra address per line.  Blank lines and lines starting with '#' are
 # ignored.
 #
-open(EXTRAS, "extra_addresses.txt") || die "could not open extra addresses file";
+open(EXTRAS, "../../ukf-data/members/extra_addresses.txt") || die "could not open extra addresses file";
 while (<EXTRAS>) {
 	chomp;	# remove \n
 	next if /^#/;
