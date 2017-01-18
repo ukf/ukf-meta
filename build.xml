@@ -2426,7 +2426,7 @@
         <exec executable="perl" dir="${utilities.dir}"
             input="${temp.dir}/embedded.pem">
             <arg value="${utilities.dir}/check_embedded.pl"/>
-            <arg value="-q"/>
+            <arg value="${entities.dir}/expiry_whitelist.txt"/>
         </exec>
         <delete file="${temp.dir}/embedded.pem" quiet="true" verbose="false"/>
     </target>

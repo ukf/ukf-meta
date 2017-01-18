@@ -13,7 +13,7 @@ use Digest::SHA1 qw(sha1 sha1_hex sha1_base64);
 #
 # Command line options:
 #
-#	-q	quiet		don't print anything out if there are no problems detected
+#   check_embedded.pl whitelistfile inputfile
 #
 
 #
@@ -30,22 +30,6 @@ my $daysBeforeError = 18;
 # Number of days in the past we should regard as "long expired".
 #
 my $longExpiredDays = 30*3; # about three months
-
-#
-# Load expiry whitelist.
-#
-open(WL, 'expiry_whitelist.txt') || die "can't open certificate expiry whitelist";
-while (<WL>) {
-	# fold lines
-	while (/^(.*)\\\s*$/) {
-		chomp;
-		$_ .= ' ' . <WL>;
-	}
-	next if /^\s*#/;	# drop comments
-	next if /^\s*$/;	# drop blank lines
-	my ($fingerprint) = split;
-	$expiry_whitelist{uc $fingerprint} = 'unused';
-}
 
 sub error {
 	my($s) = @_;
@@ -67,10 +51,7 @@ sub comment {
 #
 # Process command-line options.
 #
-while (@ARGV) {
-	$arg = shift @ARGV;
-	$quiet = 1 if $arg eq '-q';
-}
+$whitelistfile = shift @ARGV;
 
 #
 # Hash of already-seen blobs.
@@ -105,6 +86,22 @@ $maxYear = 0;
 $num2038 = 0;
 
 my $total_certs = 0;
+
+#
+# Load expiry whitelist.
+#
+open(WL, $whitelistfile) || die "can't open certificate expiry whitelist $whitelistfile";
+while (<WL>) {
+    # fold lines
+    while (/^(.*)\\\s*$/) {
+        chomp;
+        $_ .= ' ' . <WL>;
+    }
+    next if /^\s*#/;    # drop comments
+    next if /^\s*$/;    # drop blank lines
+    my ($fingerprint) = split;
+    $expiry_whitelist{uc $fingerprint} = 'unused';
+}
 
 while (<>) {
 
@@ -369,7 +366,7 @@ while (<>) {
 		#
 		# Print any interesting things related to this certificate.
 		#
-		if ($printme || !$quiet) {
+		if ($printme) {
 			foreach $oline (@olines) {
 				print $oline, "\n";
 			}
