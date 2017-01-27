@@ -243,6 +243,48 @@
         </property>
     </bean>
 
+    <bean id="entityAttributes.blacklist" parent="EntityAttributeFilteringStage">
+        <property name="whitelisting" value="false"/>
+        <property name="rules">
+            <list>
+                <!-- Deny "InCommon registration" attribute (duplicates mdrpi:registrationAuthority) -->
+                <bean parent="EntityCategoryMatcher"
+                    c:category="http://id.incommon.org/category/registered-by-incommon"/>
+
+                <!-- Deny InCommon "supports InCommon R+S" attribute (duplicates REFEDS variant) -->
+                <bean parent="EntityCategorySupportMatcher"
+                    c:category="http://id.incommon.org/category/research-and-scholarship"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="entityAttributes.whitelist" parent="EntityAttributeFilteringStage">
+        <property name="whitelisting" value="true"/>
+        <property name="rules">
+            <list>
+                <!-- Permit GÉANT CoC category from any eduGAIN participant. -->
+                <bean parent="EntityCategoryMatcher"
+                    c:category="http://www.geant.net/uri/dataprotection-code-of-conduct/v1"/>
+                
+                <!-- Permit REFEDS Hide From Discovery category from any eduGAIN participant. -->
+                <bean parent="EntityCategoryMatcher"
+                    c:category="http://refeds.org/category/hide-from-discovery"/>
+                
+                <!-- Permit REFEDS R&S category from any eduGAIN participant. -->
+                <bean parent="EntityCategoryMatcher"
+                    c:category="http://refeds.org/category/research-and-scholarship"/>
+                
+                <!-- Permit REFEDS R&S category *support* from any eduGAIN participant. -->
+                <bean parent="EntityCategorySupportMatcher"
+                    c:category="http://refeds.org/category/research-and-scholarship"/>
+                
+                <!-- Permit SIRTFI entity attribute from any eduGAIN participant -->
+                <ref bean="SIRTFI.entity.attribute.matcher"/>
+                
+            </list>
+        </property>
+    </bean>
+    
     <bean id="uk_int_edugain_importPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
@@ -251,31 +293,7 @@
                 <!--
                     Entity Attribute policy for entities from eduGAIN participants.
                 -->
-                <bean id="entityAttributes" parent="EntityAttributeFilteringStage">
-                    <property name="rules">
-                        <list>
-                            <!-- Permit GÉANT CoC category from any eduGAIN participant. -->
-                            <bean parent="EntityCategoryMatcher"
-                                c:category="http://www.geant.net/uri/dataprotection-code-of-conduct/v1"/>
-
-                            <!-- Permit REFEDS Hide From Discovery category from any eduGAIN participant. -->
-                            <bean parent="EntityCategoryMatcher"
-                                c:category="http://refeds.org/category/hide-from-discovery"/>
-
-                            <!-- Permit REFEDS R&S category from any eduGAIN participant. -->
-                            <bean parent="EntityCategoryMatcher"
-                            	c:category="http://refeds.org/category/research-and-scholarship"/>
-
-                            <!-- Permit REFEDS R&S category *support* from any eduGAIN participant. -->
-                            <bean parent="EntityCategorySupportMatcher"
-                                c:category="http://refeds.org/category/research-and-scholarship"/>
-
-                            <!-- Permit SIRTFI entity attribute from any eduGAIN participant -->
-                            <ref bean="SIRTFI.entity.attribute.matcher"/>
-
-                        </list>
-                    </property>
-                </bean>
+                <ref bean="entityAttributes.blacklist"/>
 
                 <ref bean="importCommonTail"/>
             </list>
@@ -316,6 +334,7 @@
                 <ref bean="check_dup_display"/>
                 <ref bean="errorTerminatingFilter"/>
                 
+                <ref bean="entityAttributes.whitelist"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="fixup_keyuse"/>
@@ -556,6 +575,7 @@
                 <ref bean="check_dup_display"/>
                 <ref bean="errorTerminatingFilter"/>
                 
+                <ref bean="entityAttributes.whitelist"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="fixup_keyuse"/>
