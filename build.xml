@@ -2247,6 +2247,9 @@
     <target name="flow.verifyEdugain.output">
         <CHANNEL.do verb="verify" channel="int_edugain"/>
     </target>
+    <target name="flow.verifyEdugain.output.new">
+        <CHANNEL.do verb="verify.new" channel="int_edugain"/>
+    </target>
     <target name="flow.verifyEdugain.output.all">
         <CHANNEL.do verb="verify.all" channel="int_edugain"/>
     </target>

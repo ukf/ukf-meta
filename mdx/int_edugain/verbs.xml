@@ -84,6 +84,26 @@
     </bean>
 
     <!--
+        verify.new
+        
+        Live verify, but adding "new" checks that we don't impose on the live import.
+    -->
+    <bean id="verify.new" parent="SimplePipeline">
+        <property name="stages">
+            <list>
+                <ref bean="int_edugain_productionEntities"/>
+                <bean id="removeBlacklistedEntities" parent="EntityFilterStage"
+                    p:whitelistingEntities="false"
+                    p:designatedEntities-ref="int_edugain_verify_blacklist"/>
+                
+                <ref bean="check_rands"/>
+                <ref bean="standardImportActions"/>
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--
         verify.recovered
         
         Looks for eduGAIN entities which *were* in an error state, as shown by
