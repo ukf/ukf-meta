@@ -280,6 +280,30 @@
     <!--
         ***********************************************************
         ***                                                     ***
+        ***   R E F E D S   R + S   S P E C I F I C A T I O N   ***
+        ***                                                     ***
+        ***********************************************************
+    -->
+
+    <bean id="check_rands_member" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_rands_member.xsl"/>
+
+    <bean id="check_rands_support" parent="XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_rands_support.xsl"/>
+
+    <bean id="check_rands" parent="CompositeStage">
+        <property name="composedStages">
+            <list>
+                <ref bean="check_rands_member"/>
+                <ref bean="check_rands_support"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <!--
+        ***********************************************************
+        ***                                                     ***
         ***   S H I B B O L E T H   S P E C I F I C A T I O N   ***
         ***                                                     ***
         ***********************************************************

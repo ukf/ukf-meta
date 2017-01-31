@@ -334,6 +334,7 @@
                 <ref bean="check_uk_mdattr"/>
                 <ref bean="check_uk_mdrps"/>
                 <ref bean="check_uk_urlenc"/>
+                <ref bean="check_rands"/>
                 <ref bean="mdui_dn_en_present"/>
                 <ref bean="mdui_dn_en_match"/>
                 <ref bean="check_dup_display"/>
