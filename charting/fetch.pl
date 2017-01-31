@@ -7,7 +7,7 @@ use File::stat;
 use Months;
 
 # Call git on the products directory
-my $git = "/usr/bin/env git -C ../../ukf-products";
+my $git = "/usr/bin/env git --git-dir ../../ukf-products/.git";
 
 $fn1 = 'aggregates/ukfederation-metadata.xml';
 $fn2 = 'aggregates/ukfederation-stats.html';
