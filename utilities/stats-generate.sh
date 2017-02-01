@@ -479,7 +479,9 @@ if [[ "$timeperiod" != "day" ]]; then
 fi
 
 # MDQ requests for entityId based names
-mdqcountentityid=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v "/entities/ " | grep -v 404 | grep "/entities/http" | wc -l)
+mdqcountentityidhttp=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v "/entities/ " | grep -v 404 | grep "/entities/http" | wc -l)
+mdqcountentityidurn=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v "/entities/ " | grep -v 404 | grep "/entities/urn" | wc -l)
+mdqcountentityid=$((mdqcountentityidhttp+mdqcountentityidurn))
 if [[ "$mdqcount" -ne "0" ]]; then
     mdqcountentityidpc=$(echo "scale=3;($mdqcountentityid/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 else
