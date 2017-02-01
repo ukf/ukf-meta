@@ -343,7 +343,7 @@ fi
 if [[ $mdaggrcount -gt "0" ]]; then
     mdaggrminqueriesperip=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | tail -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
 else
-    mdqaggrinqueriesperip="0"
+    mdaggrinqueriesperip="0"
 fi
 
 # Avg queries per IP
@@ -364,7 +364,7 @@ fi
 if [[ $mdaggrcountfull -gt "0" ]]; then
     mdaggrminqueriesperipfull=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | grep "\" 200" | grep "GET" | cut -f 2 -d ":" | cut -f 1 -d " " | sort | uniq -c | sort -nr | tail -1 | awk '{print $1}' | awk '{ printf ("%'"'"'d\n", $0) }')
 else
-    mdqaggrinqueriesperipfull="0"
+    mdaggrinqueriesperipfull="0"
 fi
 
 # Avg queries per IP, full D/L only
