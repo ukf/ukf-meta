@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	ns_norm_export.xsl
+	ns_norm_export_preview.xsl
 	
-	Normalise the namespaces in the export aggregate.
+	Normalise the namespaces in the export preview aggregate.
 	
 	The strategy is to define the most commonly-used prefixes in the document element.
 	
