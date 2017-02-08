@@ -146,9 +146,10 @@
                    This may be because they have not yet registered any; perhaps because they have only recently joined. 
                    Alternatively, they may have outsourced their identity provision.
                    Outsourcing of IdP provision is indicated by an asterisk in the OSrc column in the table.
-                   This indicates either outsourcing to an Eduserv virtual IdP or a member who "pushes" scopes
+                   This indicates a member who "pushes" scopes
                    to an aggregate IdP.
-                   Other IdP outsourcing, and any SP outsourcing, is not recorded in the table.
+                   Other IdP outsourcing (such as use of an OpenAthens virtual IdP),
+                   and any SP outsourcing, is not recorded in the table.
                 </p>
                 <table border="1" cellspacing="2" cellpadding="4">
                     <tr>
@@ -180,12 +181,6 @@
                     select="set:difference($membersWithSps, $membersWithIdPs)"/>
                 <xsl:variable name="membersWithNone"
                     select="set:difference($members, $membersWithEither)"/>
-                <xsl:variable name="membersWithAthensIdP"
-                    select="$members[@usesAthensIdP = 'true']"/>
-                <xsl:variable name="membersWithJustAthensIdP"
-                    select="set:difference($membersWithAthensIdP, $membersWithEither)"/>
-                <xsl:variable name="membersWithNoneNoAthens"
-                    select="set:difference($membersWithNone, $membersWithAthensIdP)"/>
                 <xsl:variable name="membersWithIdPsCount" select="count($membersWithIdPs)"/>
                 <xsl:variable name="membersWithSpsCount" select="count($membersWithSps)"/>
                 <xsl:variable name="membersWithBothCount" select="count($membersWithBoth)"/>
@@ -193,8 +188,6 @@
                 <xsl:variable name="membersWithJustIdPsCount" select="count($membersWithJustIdPs)"/>
                 <xsl:variable name="membersWithJustSPsCount" select="count($membersWithJustSPs)"/>
                 <xsl:variable name="membersWithNoneCount" select="count($membersWithNone)"/>
-                <xsl:variable name="membersWithJustAthensIdPCount" select="count($membersWithJustAthensIdP)"/>
-                <xsl:variable name="membersWithNoneNoAthensCount" select="count($membersWithNoneNoAthens)"/>
                 <p>Breakdown of members by entity registration status:</p>
                 <ul>
                     <li>
@@ -241,24 +234,11 @@
                     </li>
                     <li>
                         <p>
-                            Without entities, but with Athens IdP access: <xsl:value-of select="$membersWithJustAthensIdPCount"/>
-                            (<xsl:value-of select="format-number($membersWithJustAthensIdPCount div $memberCount, '0.0%')"/>)
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Without entities, and with no Athens IdP access: <xsl:value-of select="$membersWithNoneNoAthensCount"/>
-                            (<xsl:value-of select="format-number($membersWithNoneNoAthensCount div $memberCount, '0.0%')"/>)
-                        </p>
-                    </li>
-                    <li>
-                        <p>
                             Chart:
                             <xsl:value-of select="$membersWithJustIdPsCount"/>,
                             <xsl:value-of select="$membersWithJustSPsCount"/>,
                             <xsl:value-of select="$membersWithBothCount"/>,
-                            <xsl:value-of select="$membersWithJustAthensIdPCount"/>,
-                            <xsl:value-of select="$membersWithNoneNoAthensCount"/>.                            
+                            <xsl:value-of select="$membersWithNoneCount"/>.                            
                         </p>
                     </li>
                 </ul>
@@ -272,34 +252,6 @@
                 -->
                 
                 <!--
-                    Members who are Eduserv.
-                    
-                    This is computed because Eduserv are an exception to the normal
-                    rules about outsourcing because they do not outsource even though
-                    they do use an Athens IdP.
-                -->
-                <xsl:variable name="members.eduserv"
-                    select="$members[members:Name = 'Eduserv']"/>
-                <xsl:variable name="members.eduserv.count" select="count($members.eduserv)"/>
-                
-                <!--
-                    Members who are deduced as outsourcing as a result of their use
-                    of an Athens IdP.
-                -->
-                <xsl:variable name="members.osrc.athens"
-                    select="$members[@usesAthensIdP = 'true']"/>
-                <xsl:variable name="members.osrc.athens.count" select="count($members.osrc.athens)"/>
-                
-                <!--
-                    Members who are deduced as outsourcing as a result of their use
-                    of an Athens IdP.  This count excludes Eduserv, as clearly they
-                    can not outsource to themselves.
-                -->
-                <xsl:variable name="members.osrc.athens.true"
-                    select="$members[@usesAthensIdP = 'true'][members:Name != 'Eduserv']"/>
-                <xsl:variable name="members.osrc.athens.true.count" select="count($members.osrc.athens.true)"/>
-                
-                <!--
                     Members who are deduced as outsourcing as a result of their use
                     of the mechanism for describing scopes "pushed" to a specific entity.
                 -->
@@ -310,8 +262,7 @@
                 <!--
                     Members who are deduced as outsourcing.
                 -->
-                <xsl:variable name="members.osrc"
-                    select="set:distinct($members.osrc.athens.true | $members.osrc.scopes.push)"/>
+                <xsl:variable name="members.osrc" select="$members.osrc.scopes.push"/>
                 <xsl:variable name="members.osrc.count" select="count($members.osrc)"/>
                 
                 <!--
@@ -330,24 +281,6 @@
                 
                 <p>Outsourcing worksheet:</p>
                 <ul>
-                    <li>
-                        <p>
-                            Members who are Eduserv: <xsl:value-of select="$members.eduserv.count"/>
-                            (<xsl:value-of select="format-number($members.eduserv.count div $memberCount, '0.0%')"/>)
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Members using an Athens IdP: <xsl:value-of select="$members.osrc.athens.count"/>
-                            (<xsl:value-of select="format-number($members.osrc.athens.count div $memberCount, '0.0%')"/>)
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Members (other than Eduserv) using an Athens IdP: <xsl:value-of select="$members.osrc.athens.true.count"/>
-                            (<xsl:value-of select="format-number($members.osrc.athens.true.count div $memberCount, '0.0%')"/>)
-                        </p>
-                    </li>
                     <li>
                         <p>
                             Members pushing scopes: <xsl:value-of select="$members.osrc.scopes.push.count"/>
@@ -971,8 +904,8 @@
                     ***************************************************************
                 -->
                 <h2><a name="undeployedMembers">Members Lacking Deployment</a></h2>
-                <!-- start with members with no entities and no OpenAthens -->
-                <xsl:variable name="nodeploy.0" select="$membersWithNoneNoAthens"/>
+                <!-- start with members with no entities -->
+                <xsl:variable name="nodeploy.0" select="$membersWithNone"/>
                 <!-- remove members who have scopes sent to some entity -->
                 <xsl:variable name="nodeploy.1"
                     select="$nodeploy.0[not(members:Scopes/members:Entity)]"
@@ -981,7 +914,9 @@
                 <p>
                     The following <xsl:value-of select="count($nodeploy.out)"/>
                     members of the UK federation have no deployed entities,
-                    either in their own name or deployed on their behalf by other members.
+                    either in their own name or deployed on their behalf by other members
+                    and to which they have "pushed" scopes.
+                    Use of OpenAthens virtual IdPs is not considered here.
                     The list is ordered by date of joining the UK federation.
                 </p>
                 <ul>
@@ -1254,11 +1189,6 @@
                 	<!-- Special case: Eduserv does NOT outsource -->
                     <xsl:when test="members:Name = 'Eduserv'">
                         &#160;
-                    </xsl:when>
-                    
-                    <!-- anyone else using the Athens IdP does outsource -->
-                    <xsl:when test="@usesAthensIdP = 'true'">
-                        *
                     </xsl:when>
                     
                     <!--
