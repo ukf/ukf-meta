@@ -53,21 +53,20 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 
 ### Test Aggregate vs. Production Aggregate
 
-Status (2017-01-27):
+Status (2017-02-08):
 
 * the test aggregate implements a _blacklisting_ approach to entity attributes imported from eduGAIN,
 while the production aggregate implements the traditional entity attribute _whitelist_.
 * the test aggregate no longer implements the "key use" fixup required for pre-1.3.1 Shibboleth SPs.
 This adds the `use="signing"` XML attribute to `<KeyDescriptor>` elements present in IdP metadata
 without a `use` attribute. It is not needed for later releases of the Shibboleth SP.
-* The test aggregate defines the `saml` namespace prefix (used by entity attributes) on the document element
-instead of in each SAML `<Attribute>`.
-* The test aggregate defines the `mdattr` namespace prefix (used by entity attributes) on the document element
-instead of in each `<EntityAttributes>` element.
 * The test aggregate normalises the `xenc` namespace to not use a prefix, as it is not very commonly used.
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2017-01-27):
+Status (2017-02-08):
 
-* these two aggregates are currently identical
+* The production aggregate defines the `saml` namespace prefix (used by entity attributes) on the document element
+instead of in each SAML `<Attribute>`. (2017-02-08)
+* The production aggregate defines the `mdattr` namespace prefix (used by entity attributes) on the document element
+instead of in each `<EntityAttributes>` element. (2017-02-08)
