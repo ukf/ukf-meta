@@ -28,12 +28,9 @@ before being included in the `export` version consumed by interfederation partne
 
 ### Export Preview Aggregate vs. Export Aggregate
 
-Status (2017-02-08):
+Status (2017-02-10):
 
-* The export preview aggregate defines the `saml` namespace prefix (used by entity attributes) on the document element
-instead of in each SAML `<Attribute>`. (2017-02-08)
-* The export preview aggregate defines the `mdattr` namespace prefix (used by entity attributes) on the document element
-instead of in each `<EntityAttributes>` element. (2017-02-08)
+* these aggregates are currently identical
 
 ## Production Maturity Pipeline
 
