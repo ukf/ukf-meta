@@ -337,12 +337,10 @@
                 <ref bean="entityAttributes.whitelist"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="fixup_keyuse"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
                 
                 <!-- production aggregate MUST pass publishability test -->
-                <ref bean="check_fixup_keyuse"/>
                 <ref bean="checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
@@ -407,12 +405,10 @@
                 <ref bean="stripEmptyExtensions"/>
                 
                 <ref bean="stripMdattrNamespace"/>
-                <ref bean="fixup_keyuse"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- WAYF aggregate MUST pass publishability test -->
-                <ref bean="check_fixup_keyuse"/>
                 <ref bean="checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
 
