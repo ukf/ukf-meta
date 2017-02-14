@@ -128,6 +128,7 @@
                     <li><p><a href="#shib13">Shibboleth 1.3 Remnants</a></p></li>
                     <li><p><a href="#exportOptOut">Export Aggregate: Entities Opted Out</a></p></li>
                     <li><p><a href="#exportOptIn">Export Aggregate: Entities Explicitly Opted In</a></p></li>
+                    <li><p><a href="#charting">Charting Statistics</a></p></li>
                     <li><p><a href="#nosaml2">Entities Without SAML 2.0 Support</a></p></li>
                 </ul>
                 
@@ -303,16 +304,6 @@
                         <p>
                             Members neither deployed nor outsourcing: <xsl:value-of select="$members.osrc.none.count"/>
                             (<xsl:value-of select="format-number($members.osrc.none.count div $memberCount, '0.0%')"/>)
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Chart:
-                            <xsl:value-of select="$membersWithJustIdPsCount"/>,
-                            <xsl:value-of select="$membersWithJustSPsCount"/>,
-                            <xsl:value-of select="$membersWithBothCount"/>,
-                            <xsl:value-of select="$members.osrc.only.count"/>,
-                            <xsl:value-of select="$members.osrc.none.count"/>.                            
                         </p>
                     </li>
                 </ul>
@@ -1066,6 +1057,65 @@
                     </ul>
                 </xsl:if>
                 
+                
+                <!--
+                    ***************************
+                    ***                     ***
+                    ***   C H A R T I N G   ***
+                    ***                     ***
+                    ***************************
+                -->
+                <h2><a name="charting">Charting Statistics</a></h2>
+                <ul>
+                    <li>Members: <xsl:value-of select="$memberCount"/></li>
+                    <li>
+                        Outsourcing chart:
+                        <xsl:value-of select="$membersWithJustIdPsCount"/>,
+                        <xsl:value-of select="$membersWithJustSPsCount"/>,
+                        <xsl:value-of select="$membersWithBothCount"/>,
+                        <xsl:value-of select="$members.osrc.only.count"/>,
+                        <xsl:value-of select="$members.osrc.none.count"/>                  
+                    </li>
+                    <li>Entities: <xsl:value-of select="$entityCount"/></li>
+                    <li>IdPs: <xsl:value-of select="$idpCount"/></li>
+                    <li>SPs: <xsl:value-of select="$spCount"/></li>
+                    <li>Entities per member: <xsl:value-of select="$entityCount div $memberCount"/></li>
+                    <xsl:variable name="charting.entities.algsupport" select="$entities[descendant::alg:* or descendant::md:EncryptionMethod]"/>
+                    <xsl:variable name="charting.entities.algsupport.count" select="count($charting.entities.algsupport)"/>
+                    <li>
+                        Algorithm support:
+                        <xsl:value-of select="format-number($charting.entities.algsupport.count div $entityCount, '0.00%')"/>
+                        of all entities
+                    </li>
+                    <xsl:variable name="charting.entities.algsupport.gcm"
+                        select="$charting.entities.algsupport[
+                        descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes128-gcm' or
+                        descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes192-gcm' or
+                        descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes256-gcm']"/>
+                    <xsl:variable name="charting.entities.algsupport.gcm.count" select="count($charting.entities.algsupport.gcm)"/>
+                    <li>
+                        GCM support:
+                        <xsl:value-of select="format-number($charting.entities.algsupport.gcm.count div $entityCount, '0.00%')"/>
+                        of all entities
+                    </li>
+                    <xsl:variable name="charting.sps.algsupport" select="$sps[descendant::alg:* or descendant::md:EncryptionMethod]"/>
+                    <xsl:variable name="charting.sps.algsupport.count" select="count($charting.sps.algsupport)"/>
+                    <li>
+                        Algorithm support:
+                        <xsl:value-of select="format-number($charting.sps.algsupport.count div $spCount, '0.00%')"/>
+                        of SP entities
+                    </li>
+                    <xsl:variable name="charting.idp3" select="$idps[
+                        md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '3']
+                        ]"/>
+                    <xsl:variable name="charting.idp3.count" select="count($charting.idp3)"/>
+                    <li>
+                        Shibboleth IdP v3:
+                        <xsl:value-of select="$charting.idp3.count"/>
+                        (<xsl:value-of select="format-number($charting.idp3.count div $idpCount, '0.0%')"/> of IdPs)
+                    </li>
+                </ul>
+
                 <!--
                     *****************************************************************************
                     ***                                                                       ***
@@ -1086,9 +1136,14 @@
                     The software used by the entity, if known, is included at the end of the listing within
                     brackets [like this].
                 </p>
+                <xsl:variable name="nosaml2.sps" select="$sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                    'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
+                <xsl:variable name="nosaml2.sps.count" select="count($nosaml2.sps)"/>
+                <p>
+                    SPs: <xsl:value-of select="$nosaml2.sps.count"/>
+                </p>
                 <ul>
-                    <xsl:for-each select="$sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
-                        'urn:oasis:names:tc:SAML:2.0:protocol'))]]">
+                    <xsl:for-each select="$nosaml2.sps">
                         <xsl:sort select="descendant::md:OrganizationName"/>
                         <li>
                             <xsl:value-of select="@ID"/>
@@ -1115,9 +1170,14 @@
                 </xsl:call-template>
 
                 <h3>Identity Providers Without SAML 2.0 Support</h3>
+                <xsl:variable name="nosaml2.idps" select="$idps[md:IDPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                    'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
+                <xsl:variable name="nosaml2.idps.count" select="count($nosaml2.idps)"/>
+                <p>
+                    IdPs: <xsl:value-of select="$nosaml2.idps.count"/>
+                </p>
                 <xsl:call-template name="entity.breakdown.by.software">
-                    <xsl:with-param name="entities" select="$idps[md:IDPSSODescriptor[not(contains(@protocolSupportEnumeration,
-                        'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
+                    <xsl:with-param name="entities" select="$nosaml2.idps"/>
                 </xsl:call-template>
                 
             </body>
