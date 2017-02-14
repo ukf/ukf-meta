@@ -27,5 +27,10 @@
             <xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location does not start with https://</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
-
+	<xsl:template match="md:SPSSODescriptor//*[@ResponseLocation and not(starts-with(@ResponseLocation,'https://'))]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> ResponseLocation does not start with https://</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 </xsl:stylesheet>

@@ -82,6 +82,20 @@
 
 
 	<!--
+        Check for ResponseLocation attributes that aren't valid URLs.
+    -->
+	<xsl:template match="md:*[@ResponseLocation and mdxURL:invalidURL(@ResponseLocation)]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m">
+				<xsl:value-of select='local-name()'/>
+				<xsl:text> ResponseLocation is not a valid URL: </xsl:text>
+				<xsl:value-of select="mdxURL:whyInvalid(@ResponseLocation)"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
+
+	<!--
 		Check for OrganizationURLs that aren't valid URLs.
 	-->
 	<xsl:template match="md:OrganizationURL[mdxURL:invalidURL(.)]">

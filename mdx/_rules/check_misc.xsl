@@ -56,6 +56,19 @@
 	
 	
 	<!--
+        @ResponseLocation attributes should not contain space characters.
+        
+        This may be a little strict, and might be better confined to md:* elements.
+        At present, however, this produces no false positives.
+    -->
+	<xsl:template match="*[contains(@ResponseLocation, ' ')]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> ResponseLocation contains space character</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
+
+	<!--
 		@Binding attributes should not contain space characters.
 		
 		This may be a little strict, and might be better confined to md:* elements.

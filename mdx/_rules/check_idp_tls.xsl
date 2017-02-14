@@ -27,10 +27,20 @@
             <xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location does not start with https://</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
+	<xsl:template match="md:IDPSSODescriptor//*[@ResponseLocation and not(starts-with(@ResponseLocation,'https://'))]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> ResponseLocation does not start with https://</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
 	<xsl:template match="md:AttributeAuthorityDescriptor//*[@Location and not(starts-with(@Location,'https://'))]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> Location does not start with https://</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-
+	<xsl:template match="md:AttributeAuthorityDescriptor//*[@ResponseLocation and not(starts-with(@ResponseLocation,'https://'))]">
+		<xsl:call-template name="error">
+			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> ResponseLocation does not start with https://</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+	
 </xsl:stylesheet>
