@@ -28,9 +28,9 @@ before being included in the `export` version consumed by interfederation partne
 
 ### Export Preview Aggregate vs. Export Aggregate
 
-Status (2017-02-13):
+Status (2017-02-14):
 
-* The export preview aggregate normalises the `xenc` namespace to not use a prefix, as it is not very commonly used. (2017-02-13)
+* These aggregates are currently identical.
 
 ## Production Maturity Pipeline
 

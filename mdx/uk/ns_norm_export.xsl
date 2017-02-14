@@ -32,8 +32,9 @@
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
+	xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
 	
-	exclude-result-prefixes="alg md ukfedlabel wayf"
+	exclude-result-prefixes="alg md ukfedlabel wayf xenc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
@@ -106,6 +107,27 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
+	
+
+	<!--
+        ***************************************
+        ***                                 ***
+        ***   X E N C   N A M E S P A C E   ***
+        ***                                 ***
+        ***************************************
+    -->
+
+
+	<!--
+        xenc:*
+        
+        Normalise namespace to not use a prefix.
+    -->
+	<xsl:template match="xenc:*">
+		<xsl:element name="{local-name()}" namespace="http://www.w3.org/2001/04/xmlenc#">
+			<xsl:apply-templates select="node()|@*"/>
+		</xsl:element>
+	</xsl:template>	
 	
 	
 </xsl:stylesheet>
