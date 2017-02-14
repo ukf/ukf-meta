@@ -2435,6 +2435,29 @@
     </target>
 
     <!--
+        Check embedded certificates in our production aggregate.
+
+        You can ignore almost all of the output from this, other than
+        the summary information at the end and in particular the
+        number of distinct RSA moduli.
+    -->
+    <target name="check.embedded.all">
+        <echo>Extracting embedded certificates</echo>
+        <XALAN
+            i="${aggregates.dir}/${mdaggr.prod.signed}"
+            o="${temp.dir}/embedded.pem"
+            x="${build.dir}/extract_embedded.xsl"/>
+        <echo>Checking embedded certificates</echo>
+        <echo>Note: ignore expiry on eduGAIN entities</echo>
+        <exec executable="perl" dir="${utilities.dir}"
+            input="${temp.dir}/embedded.pem">
+            <arg value="${utilities.dir}/check_embedded.pl"/>
+            <arg value="${entities.dir}/expiry_whitelist.txt"/>
+        </exec>
+        <delete file="${temp.dir}/embedded.pem" quiet="true" verbose="false"/>
+    </target>
+
+    <!--
        Check for IdPs using the single-port configuration.
     -->
     <target name="check.ports">

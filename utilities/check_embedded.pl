@@ -311,6 +311,14 @@ while (<>) {
 				next;
 			}
 
+            #
+            # Track distinct RSA moduli
+            #
+            if (/^Modulus=(.*)$/) {
+                $modulus = $1;
+                # print "   modulus: '$modulus'\n";
+                $rsa_modulus{$modulus} = 1;
+            }
 		}
 		close SSL;
 		#print "   text lines: $#lines\n";
@@ -404,6 +412,11 @@ if ($distinct_certs > 1) {
 		print " $mark $issuer: $count\n";
 	}
 	print "\n";
+
+    $distinct_moduli = scalar keys %rsa_modulus;
+    if ($distinct_moduli > 1) {
+        print "Distinct RSA moduli: $distinct_moduli\n";
+    }
 
 	my $first = 1;
 	foreach $fingerprint (sort keys %expiry_whitelist) {
