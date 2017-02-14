@@ -660,6 +660,7 @@
                 <ref bean="check_mdrpi"/>
                 <ref bean="check_mdui"/>
                 <ref bean="check_misc"/>
+                <ref bean="check_rands"/>
                 <ref bean="check_reqattr"/>
                 <ref bean="check_saml1"/>
                 <ref bean="check_saml2"/>

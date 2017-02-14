@@ -96,7 +96,6 @@
                     p:whitelistingEntities="false"
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
                 
-                <ref bean="check_rands"/>
                 <ref bean="standardImportActions"/>
                 <ref bean="errorTerminatingFilter"/>
             </list>
