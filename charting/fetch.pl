@@ -1,8 +1,9 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 #
 # fetch.pl
 #
+use warnings;
 use File::stat;
 use Months;
 

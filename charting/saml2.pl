@@ -1,10 +1,11 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 #
 # saml2.pl
 #
 # Extracts statistics about SAML 2 adoption from the published metadata.
 #
+use warnings;
 use lib "../build";
 use Xalan;
 use Months;

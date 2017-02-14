@@ -1,8 +1,9 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 #
 # sizes.pl
 #
+use warnings;
 use lib "../build";
 use File::stat;
 use Xalan;

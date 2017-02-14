@@ -1,10 +1,11 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 #
 # scopes.pl
 #
 # Extracts statistics about number of scopes from the published metadata.
 #
+use warnings;
 use lib "../build";
 use Xalan;
 use Months;

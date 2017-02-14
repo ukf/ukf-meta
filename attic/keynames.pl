@@ -1,10 +1,11 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 #
 # keynames.pl
 #
 # Extracts statistics about KeyName elements from the published metadata.
 #
+use warnings;
 use lib "../build";
 use Xalan;
 use Months;

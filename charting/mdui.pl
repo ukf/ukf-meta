@@ -1,8 +1,9 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 
 #
 # mdui.pl
 #
+use warnings;
 use lib "../build";
 use Xalan;
 use Months;

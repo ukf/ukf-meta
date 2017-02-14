@@ -1,4 +1,6 @@
-#!/usr/bin/env perl -W
+#!/usr/bin/env perl
+
+use warnings;
 
 open(F, "id-to-name.txt") || die "could not open id-to-name map";
 while (<F>) {

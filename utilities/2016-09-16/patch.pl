@@ -1,4 +1,6 @@
-#!/usr/bin/env perl -W
+#!/usr/bin/env perl
+
+use warnings;
 
 my $orgID = shift @ARGV;
 
