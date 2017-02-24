@@ -525,6 +525,7 @@
     <bean id="ug_rif_registrar"          parent="String" c:_="https://www.renu.ac.ug"/>
     <bean id="uk_ukf_registrar"          parent="String" c:_="http://ukfederation.org.uk"/>
     <bean id="us_incommon_registrar"     parent="String" c:_="https://incommon.org"/>
+    <bean id="za_safire_registrar"       parent="String" c:_="https://safire.ac.za"/>
 
     
     
@@ -580,6 +581,7 @@
                 <entry key-ref="pl_pionier_registrar"         value="PL"/>
                 <entry key-ref="pt_rctsaai_registrar"         value="PT"/>
                 <entry key-ref="si_arnes_registrar"           value="SI"/>
+                <entry key-ref="za_safire_registrar"          value="ZA"/>
                 <entry key-ref="es_sir_registrar"             value="ES"/>
                 <entry key-ref="se_swamid_registrar"          value="SE"/>
                 <entry key-ref="ch_switchaai_registrar"       value="CH"/>
