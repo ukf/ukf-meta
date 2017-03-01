@@ -9,7 +9,11 @@ Since there can only be a single Entity Attribute element in an entity fragment 
 we first check that there are no hidden IdPs that already have an Entity Attributes
 element. If there are (and there are not too many) we edit these files manually.
 
-Run the script on the entity fragment files: `xsltproc listHideFromWAYFandEA.xsl uk*.xml`
+First, check that the XSLT will flag an entity fragment file that has an Entity
+Attribute and the HideFromWAYF element. Run `xsltproc listHideFromWAYFandEA.xsl ./test.xml`.
+This should report `https://idp.example.ac.uk/idp/shibboleth`.
+
+Then run the script on all entity fragment files: `xsltproc listHideFromWAYFandEA.xsl uk*.xml`
 
 ## 2. Replace HideFromWAYF element with hide-from-disco Entity Category
 

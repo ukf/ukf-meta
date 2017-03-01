@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:oasis:names:tc:SAML:2.0:metadata saml-schema-metadata-2.0.xsd
+        urn:oasis:names:tc:SAML:metadata:attribute sstc-metadata-attr.xsd
+        urn:oasis:names:tc:SAML:2.0:assertion saml-schema-assertion-2.0.xsd
+        http://sdss.ac.uk/2006/06/WAYF uk-wayf.xsd"
+    ID="test000275" entityID="https://idp.example.ac.uk/idp/shibboleth">
+    <Extensions>
+        <mdattr:EntityAttributes>
+            <saml:Attribute Name="http://macedir.org/entity-category-support" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml:AttributeValue>http://refeds.org/category/research-and-scholarship</saml:AttributeValue>
+            </saml:Attribute>
+        </mdattr:EntityAttributes>
+        <wayf:HideFromWAYF />
+    </Extensions>
+</EntityDescriptor>
