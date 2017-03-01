@@ -34,9 +34,9 @@ eduGAIN -- these differences can be ignored.
 
 ```
 ant samlmd.aggregates.generate
-cp ukfederation-metadata.xml /tmp/
+cp ukfederation-metadata-unsigned.xml /tmp/
 replaceHideFromWAYF.pl uk*.xml
 ant samlmd.aggregates.generate
-diff ukfederation-metadata.xml /tmp/
+diff ukfederation-metadata-unsigned.xml /tmp/
 ```
 
