@@ -334,7 +334,6 @@
                 <ref bean="check_dup_display"/>
                 <ref bean="errorTerminatingFilter"/>
                 
-                <ref bean="entityAttributes.whitelist"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="uk_finaliseProduction"/>

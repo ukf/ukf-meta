@@ -59,15 +59,16 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 
 ### Test Aggregate vs. Production Aggregate
 
-Status (2017-02-13):
+Status (2017-03-02):
 
-* the test aggregate implements a _blacklisting_ approach to entity attributes imported from eduGAIN,
-while the production aggregate implements the traditional entity attribute _whitelist_.
+* These aggregates are currently identical.
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2017-02-13):
+Status (2017-03-02):
 
+* the production aggregate implements a _blacklisting_ approach to entity attributes imported from eduGAIN,
+while the production aggregate implements the traditional entity attribute _whitelist_. (2017-03-02)
 * The production aggregate defines the `saml` namespace prefix (used by entity attributes) on the document element
 instead of in each SAML `<Attribute>`. (2017-02-08)
 * The production aggregate defines the `mdattr` namespace prefix (used by entity attributes) on the document element
