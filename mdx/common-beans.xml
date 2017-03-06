@@ -505,7 +505,7 @@
     <bean id="hu_eduid_registrar"        parent="String" c:_="http://eduid.hu"/>
     <bean id="ie_edugate_registrar"      parent="String" c:_="http://www.heanet.ie"/>
     <bean id="il_iif_registrar"          parent="String" c:_="http://iif.iucc.ac.il"/>
-    <bean id="in_infed_registrar"        parent="String" c:_="http://infilibnet.ac.in/"/>
+    <bean id="in_infed_registrar"        parent="String" c:_="http://inflibnet.ac.in"/>
     <bean id="it_gridp_registrar"        parent="String" c:_="http://gridp.garr.it"/>
     <bean id="it_idem_registrar"         parent="String" c:_="http://www.idem.garr.it/"/>
     <bean id="jp_gakunin_registrar"      parent="String" c:_="https://www.gakunin.jp"/>
@@ -568,6 +568,7 @@
                 <entry key-ref="de_dfnaai_registrar"          value="DE"/>
                 <entry key-ref="gr_grnet_registrar"           value="GR"/>
                 <entry key-ref="hu_eduid_registrar"           value="HU"/>
+                <entry key-ref="in_infed_registrar"           value="IN"/>
                 <entry key-ref="ie_edugate_registrar"         value="IE"/>
                 <entry key-ref="il_iif_registrar"             value="IL"/>
                 <entry key-ref="it_idem_registrar"            value="IT"/>
@@ -576,6 +577,7 @@
                 <entry key-ref="lv_laife_registrar"           value="LV"/>
                 <entry key-ref="lt_litnet_registrar"          value="LT"/>
                 <entry key-ref="lu_eduid_registrar"           value="LU"/>
+                <entry key-ref="mk_aaiedumk_registrar"        value="MK"/>
                 <entry key-ref="md_leaf_registrar"            value="MD"/>
                 <entry key-ref="no_feide_registrar"           value="NO"/>
                 <entry key-ref="pl_pionier_registrar"         value="PL"/>
@@ -597,8 +599,6 @@
                 
                 <!-- eduGAIN candidates -->
                 <entry key-ref="dz_arnaai_registrar"          value="DZ"/>
-                <entry key-ref="in_infed_registrar"           value="IN"/>
-                <entry key-ref="mk_aaiedumk_registrar"        value="MK"/>
                 <entry key-ref="ug_rif_registrar"             value="UG"/>
             </map>
         </property>
