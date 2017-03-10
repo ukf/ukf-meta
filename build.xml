@@ -2126,21 +2126,25 @@
             <arg value="md3"/>
             <arg value="master"/>
         </exec>
+        <echo>-> MD-NE-01</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="push"/>
             <arg value="md-ne-01"/>
             <arg value="master"/>
         </exec>
+        <echo>-> MD-NE-02</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="push"/>
             <arg value="md-ne-02"/>
             <arg value="master"/>
         </exec>
+        <echo>-> MD-WE-01</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="push"/>
             <arg value="md-we-01"/>
             <arg value="master"/>
         </exec>
+        <echo>-> MD-WE-01</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="push"/>
             <arg value="md-we-02"/>
@@ -2171,21 +2175,25 @@
                 <include name="${mdq.cache}"/>
             </fileset>
         </scp>
+        <echo>-> MD-NE-01</echo>
         <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${output.dir}">
                 <include name="${mdq.cache}"/>
             </fileset>
         </scp>
+        <echo>-> MD-NE-02</echo>
         <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-02.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${output.dir}">
                 <include name="${mdq.cache}"/>
             </fileset>
         </scp>
+        <echo>-> MD-WE-01</echo>
         <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${output.dir}">
                 <include name="${mdq.cache}"/>
             </fileset>
         </scp>
+        <echo>-> MD-WE-02</echo>
         <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-02.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${output.dir}">
                 <include name="${mdq.cache}"/>
