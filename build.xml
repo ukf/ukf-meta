@@ -148,6 +148,10 @@
     <property name="md.dist.host1.name" value="md1.infr.ukfederation.org.uk"/>
     <property name="md.dist.host2.name" value="md2.infr.ukfederation.org.uk"/>
     <property name="md.dist.host3.name" value="md3.infr.ukfederation.org.uk"/>
+    <property name="md.dist.host-ne-01.name" value="md-ne-01.infr.ukfederation.org.uk"/>
+    <property name="md.dist.host-ne-02.name" value="md-ne-02.infr.ukfederation.org.uk"/>
+    <property name="md.dist.host-we-01.name" value="md-we-01.infr.ukfederation.org.uk"/>
+    <property name="md.dist.host-we-02.name" value="md-we-02.infr.ukfederation.org.uk"/>
     <property name="mdq.dist.name" value="mdq.ukfederation.org.uk"/>
     <property name="md.dist.path.name" value="/"/>
 
@@ -1317,6 +1321,70 @@
         <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
 
+        <echo>Verifying metadata held at ${md.dist.host-ne-01.name}</echo>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.prod.signed}"
+            checksum="${mdaggr.prod.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.wayf.signed}"
+            checksum="${mdaggr.wayf.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
+            checksum="${mdaggr.cdsall.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.test.signed}"
+            checksum="${mdaggr.test.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.back.signed}"
+            checksum="${mdaggr.back.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.export.signed}"
+            checksum="${mdaggr.export.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
+            checksum="${mdaggr.export.preview.signed.checksum}"/>
+
+        <echo>Verifying metadata held at ${md.dist.host-ne-02.name}</echo>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.prod.signed}"
+            checksum="${mdaggr.prod.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.wayf.signed}"
+            checksum="${mdaggr.wayf.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
+            checksum="${mdaggr.cdsall.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.test.signed}"
+            checksum="${mdaggr.test.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.back.signed}"
+            checksum="${mdaggr.back.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.export.signed}"
+            checksum="${mdaggr.export.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
+            checksum="${mdaggr.export.preview.signed.checksum}"/>
+
+        <echo>Verifying metadata held at ${md.dist.host-we-01.name}</echo>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.prod.signed}"
+            checksum="${mdaggr.prod.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.wayf.signed}"
+            checksum="${mdaggr.wayf.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
+            checksum="${mdaggr.cdsall.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.test.signed}"
+            checksum="${mdaggr.test.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.back.signed}"
+            checksum="${mdaggr.back.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.export.signed}"
+            checksum="${mdaggr.export.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
+            checksum="${mdaggr.export.preview.signed.checksum}"/>
+
+        <echo>Verifying metadata held at ${md.dist.host-we-02.name}</echo>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.prod.signed}"
+            checksum="${mdaggr.prod.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.wayf.signed}"
+            checksum="${mdaggr.wayf.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
+            checksum="${mdaggr.cdsall.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.test.signed}"
+            checksum="${mdaggr.test.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.back.signed}"
+            checksum="${mdaggr.back.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.export.signed}"
+            checksum="${mdaggr.export.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
+            checksum="${mdaggr.export.preview.signed.checksum}"/>
+
         <echo>Verification completed.</echo>
     </target>
 
@@ -2058,6 +2126,26 @@
             <arg value="md3"/>
             <arg value="master"/>
         </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="md-ne-01"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="md-ne-02"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="md-we-01"/>
+            <arg value="master"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="md-we-02"/>
+            <arg value="master"/>
+        </exec>
     </target>
 
     <target name="publish.mdqcache">
@@ -2079,6 +2167,26 @@
         </scp>
         <echo>-> MD3</echo>
         <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host3.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-02.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-02.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${output.dir}">
                 <include name="${mdq.cache}"/>
             </fileset>
