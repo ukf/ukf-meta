@@ -65,14 +65,10 @@ Status (2017-03-02):
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2017-03-02):
+Status (2017-03-10):
 
 * the production aggregate implements a _blacklisting_ approach to entity attributes imported from eduGAIN,
 while the production aggregate implements the traditional entity attribute _whitelist_. (2017-03-02)
-* The production aggregate defines the `saml` namespace prefix (used by entity attributes) on the document element
-instead of in each SAML `<Attribute>`. (2017-02-08)
-* The production aggregate defines the `mdattr` namespace prefix (used by entity attributes) on the document element
-instead of in each `<EntityAttributes>` element. (2017-02-08)
 * the production aggregate no longer implements the "key use" fixup required for pre-1.3.1 Shibboleth SPs.
 This adds the `use="signing"` XML attribute to `<KeyDescriptor>` elements present in IdP metadata
 without a `use` attribute. It is not needed for later releases of the Shibboleth SP. (2017-02-10)
