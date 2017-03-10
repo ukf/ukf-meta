@@ -61,46 +61,6 @@
         </property>
     </bean>
     
-    
-    <!--
-        ***********************
-        ***                 ***
-        ***   F I X U P S   ***
-        ***                 ***
-        ***********************
-    -->
-    
-    <!--
-        Published UK federation metadata for consumption by federation
-        members has a couple of restrictions arising from known bugs in
-        early software.  We address these by "fixups" which transform the
-        metadata into a form which doesn't trigger the bug, and verify that
-        each constraints is met before publication.
-        
-        We apply fixups "late" in each publication pipeline, so that
-        the metadata is only transformed if required for a particular
-        output document.  Our export aggregate, for example, does
-        not have any of the fixups applied.
-        
-        In the long term, we'd hope to retire these fixups entirely as the
-        software they to cater for is retired.
-    -->
-    
-    <!--
-        fixup_keyuse
-        
-        Patch any @use-less KeyName descriptors in IdP roles
-        for the benefit of Shib SPs pre-1.3.1.
-    -->
-    <bean id="fixup_keyuse" parent="XSLTransformationStage"
-        p:XSLResource="classpath:uk/fixup_keyuse.xsl"/>
-    
-    <!--
-        check_fixup_keyuse
-    -->
-    <bean id="check_fixup_keyuse" parent="XSLValidationStage"
-        p:XSLResource="classpath:uk/check_fixup_keyuse.xsl"/>
-    
     <!--
         checkPublishable
         
@@ -120,6 +80,7 @@
         </property>
     </bean>
 
+    
     <!--
         *****************************************
         ***                                   ***
@@ -573,13 +534,11 @@
                 <ref bean="entityAttributes.whitelist"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
-                <ref bean="fixup_keyuse"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
                 
                 <!-- fallback aggregate MUST pass publishability test -->
-                <ref bean="check_fixup_keyuse"/>
                 <ref bean="checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
                 
