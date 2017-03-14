@@ -65,8 +65,7 @@ Status (2017-03-02):
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2017-03-10):
+Status (2017-03-14):
 
 * the production aggregate implements a _blacklisting_ approach to entity attributes imported from eduGAIN,
 while the production aggregate implements the traditional entity attribute _whitelist_. (2017-03-02)
-* The production aggregate normalises the `xenc` namespace to not use a prefix, as it is not very commonly used. (2017-02-13)
