@@ -2409,6 +2409,15 @@
         <CHANNEL.do channel="uk" verb="statistics"/>
         <fixcrlf file="${output.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
     </target>
+    
+    <!--
+        This variant generates a much simpler file, intended for use when building the
+        monthly chart pack.
+    -->
+    <target name="stats.charting">
+        <CHANNEL.do channel="uk" verb="statistics.charting"/>
+        <fixcrlf file="${output.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
+    </target>
 
     <!--
         Check mailing list against current metadata

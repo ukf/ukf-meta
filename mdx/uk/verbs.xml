@@ -47,6 +47,35 @@
     </bean>
 
     <!--
+        statistics.charting
+        
+        Stand-along statistics generation for charting.
+    -->
+    <bean id="statistics.charting" parent="SimplePipeline">
+        <property name="stages">
+            <list>
+                <ref bean="uk_registeredEntities"/>
+                <ref bean="assemble"/>
+                <bean parent="XSLTransformationStage"
+                    p:XSLResource="classpath:uk/statistics-charting.xsl">
+                    <property name="transformParameters">
+                        <map>
+                            <entry key="memberDocument" value-ref="uk_membersDocument"/>
+                        </map>
+                    </property>
+                </bean>
+                <bean parent="SerializationStage">
+                    <property name="outputFile">
+                        <bean class="java.io.File">
+                            <constructor-arg value="${output.dir}/statistics-charting.html"/>
+                        </bean>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <!--
         sp_mdui_test
         
         Generates a page of links to discovery services, for each SP that
