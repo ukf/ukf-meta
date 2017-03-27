@@ -333,9 +333,9 @@ if [[ "$timeperiod" != "day" ]]; then
     mdaggrmd1count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | cut -f 5 -d "/" | grep md1 | wc -l)
     mdaggrmd1pc=$(echo "scale=4;($mdaggrmd1count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
     mdaggrmd2count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | cut -f 5 -d "/" | grep md2 | wc -l)
-    mdaggrmd2pc=$(echo "scale=4;($mdaggrmd1count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrmd2pc=$(echo "scale=4;($mdaggrmd2count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
     mdaggrmd3count=$(grep $apachesearchterm $logslocation/md/md1/metadata.uou-access_log* $logslocation/md/md2/metadata.uou-access_log* $logslocation/md/md3/metadata.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep ".xml" | grep -v 404 | cut -f 5 -d "/" | grep md3 | wc -l)
-    mdaggrmd3pc=$(echo "scale=4;($mdaggrmd1count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    mdaggrmd3pc=$(echo "scale=4;($mdaggrmd3count/$mdaggrcount)*100" | bc | awk '{printf "%.1f\n", $0}')
 fi
 
 
