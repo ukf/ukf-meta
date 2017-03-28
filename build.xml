@@ -175,7 +175,7 @@
         Web server properties.
     -->
     <property name="www.user" value="wwwscp"/>
-    <property name="www.hostname" value="web1.infr.ukfederation.org.uk"/>
+    <property name="www.hostname" value="www-ne-01.infr.ukfederation.org.uk"/>
     <property name="www.path.stats" value="/var/www/html/fed"/>
     <property name="www.path.members" value="/var/www/externals"/>
     <property name="www.url.stats" value="${www.user}@${www.hostname}:${www.path.stats}"/>
