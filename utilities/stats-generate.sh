@@ -679,6 +679,31 @@ fi
 
 
 # =====
+# Website stats
+# =====
+
+# How many requests were there for the main content files?
+wwwaccesscount=$(grep $apachesearchterm $logslocation/www/web1/ssl_access_log* $logslocation/www/web2/ssl_access_log* $logslocation/www/www-ne-01/ssl_access_log* $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+
+# And from how many unique IdPs?
+wwwaccessipcount=$($apachesearchterm $logslocation/www/web1/ssl_access_log* $logslocation/www/web2/ssl_access_log* $logslocation/www/www-ne-01/ssl_access_log* $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | cut -f 1 -d " " | cut -f 2-9 -d ":" | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+
+# Don't count these when doing daily stats
+if [[ "$timeperiod" != "day" ]]; then
+
+    # Per-server request count
+    wwwaccessweb1count=$(grep $apachesearchterm $logslocation/www/web1/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | wc -l)
+    wwwaccessweb1pc=$(echo "scale=4;($wwwaccessweb1count/$wwwaccesscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    wwwaccessweb2count=$(grep $apachesearchterm $logslocation/www/web2/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | wc -l)
+    wwwaccessweb2pc=$(echo "scale=4;($wwwaccessweb2count/$wwwaccesscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    wwwaccessne01count=$(grep $apachesearchterm $logslocation/www/www-ne-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | wc -l)
+    wwwaccessne01pc=$(echo "scale=4;($wwwaccessne01count/$wwwaccesscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+    wwwaccesswe01count=$(grep $apachesearchterm $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | wc -l)
+    wwwaccesswe01pc=$(echo "scale=4;($wwwaccesswe01count/$wwwaccesscount)*100" | bc | awk '{printf "%.1f\n", $0}')
+fi
+
+
+# =====
 # = Now we're ready to build the message. Different message for daily vs month/year
 # =====
 
@@ -700,7 +725,9 @@ if [[ "$timeperiod" == "day" ]]; then
     msg+=">*CDS:* $cdscountfriendly requests serviced (DS: $cdsdscount / WAYF: $cdswayfcount).\n"
     msg+=">*Wugen:* $wugencount WAYFless URLs generated, $wugennewsubs new subscriptions.\n"
     msg+=">*Test IdP:* $testidplogincount logins to $testidpspcount SPs.\n"
-    msg+=">*Test SP:* $testsplogincount logins from $testspidpcount IdPs."
+    msg+=">*Test SP:* $testsplogincount logins from $testspidpcount IdPs.\n"
+    msg+=">*Website:* $wwwaccesscount hits from $wwwaccessipcount unique IPs."
+    
     
 else
     #
@@ -766,6 +793,10 @@ else
     msg+="-> $testsplogincount logins from $testspidpcount IdPs.\n"    
     msg+="\n-> Top 10 IdPs logged in from:\n"
     msg+="$testsptoptenidpsbycount\n"
+    msg+="\n-----\n"
+    msg+="Website usage:\n"
+    msg+="-> $wwwaccesscount hits from $wwwaccessipcount unique IPs."
+    msg+="-> Server distribution: www-ne-01: $wwwaccessne01pc% www-we-01: $wwwaccesswe01pc% / web1: $wwwaccessweb1pc% web2: $wwwaccessweb2pc% \n"
     msg+="\n-----"
 fi
 
