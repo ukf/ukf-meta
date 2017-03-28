@@ -474,7 +474,7 @@ fi
 if [[ "$timeperiod" != "day" ]]; then
     # Some v6 traffic has traditionally passed through v6v4proxy1/2, so to count v4 we're counting all accesses, minus those from the v4 proxy IP addresses, minus actual v6 addresses
     if [[ "$mdqcount" -ne "0" ]]; then
-        mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* $logslocation/md/md-ne-01/mdq.uou-access_log* $logslocation/md/md-ne-02/mdq.uou-access_log* $logslocation/md/md-we-01/mdq.uou-access_log* $logslocation/md/md-we-02/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v "/entities/ " | grep -v 404 | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep -v ":" | wc -l)
+        mdqv4count=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* $logslocation/md/md-ne-01/mdq.uou-access_log* $logslocation/md/md-ne-02/mdq.uou-access_log* $logslocation/md/md-we-01/mdq.uou-access_log* $logslocation/md/md-we-02/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep "/entities" | grep -v "/entities " | grep -v "/entities/ " | grep -v 404 | cut -f 1 -d " " | cut -f 2-9 -d ":" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep -v ":" | wc -l)
         mdqv4pc=$(echo "scale=4;($mdqv4count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
         mdqv6count=$(( mdqcount - mdqv4count ))
         mdqv6pc=$(echo "scale=4;($mdqv6count/$mdqcount)*100" | bc | awk '{printf "%.1f\n", $0}')
@@ -601,7 +601,7 @@ cdscountfriendly=$(echo $cdscount | awk '{ printf ("%'"'"'d\n", $0) }')
 # IPv4 vs IPv6 traffic (don't count these for daily stats)
 if [[ "$timeperiod" != "day" ]]; then
     # Some v6 traffic has traditionally passed through v6v4proxy1/2, so to count v4 we're counting all accesses, minus those from the v4 proxy IP addresses, minus actual v6 addresses
-    cdsv4count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* $logslocation/cds/shibcds-ne-01/ssl_access_log* $logslocation/cds/shibcds-ne-02/ssl_access_log* $logslocation/cds/shibcds-we-01/ssl_access_log* $logslocation/cds/shibcds-we-02/ssl_access_log* | grep .ds? | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep -v ":" | wc -l)
+    cdsv4count=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* $logslocation/cds/shibcds-ne-01/ssl_access_log* $logslocation/cds/shibcds-ne-02/ssl_access_log* $logslocation/cds/shibcds-we-01/ssl_access_log* $logslocation/cds/shibcds-we-02/ssl_access_log* | grep .ds? | cut -f 1 -d " " | cut -f 2-9 -d ":" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep -v ":" | wc -l)
     cdsv4pc=$(echo "scale=4;($cdsv4count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
     cdsv6count=$(( cdscount - cdsv4count ))
     cdsv6pc=$(echo "scale=4;($cdsv6count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
@@ -611,7 +611,7 @@ if [[ "$timeperiod" != "day" ]]; then
     cds1pc=$(echo "scale=4;($cds1count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
     cds2count=$(grep $apachesearchterm $logslocation/cds/shib-cds2/ssl_access_log* | grep .ds? | wc -l)
     cds2pc=$(echo "scale=4;($cds2count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cds2count=$(grep $apachesearchterm $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | wc -l)
+    cds3count=$(grep $apachesearchterm $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | wc -l)
     cds3pc=$(echo "scale=4;($cds3count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
     cdsne01count=$(grep $apachesearchterm $logslocation/cds/shibcds-ne-01/ssl_access_log* | grep .ds? | wc -l)
     cdsne01pc=$(echo "scale=4;($cdsne01count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
@@ -686,7 +686,7 @@ fi
 wwwaccesscount=$(grep $apachesearchterm $logslocation/www/web1/ssl_access_log* $logslocation/www/web2/ssl_access_log* $logslocation/www/www-ne-01/ssl_access_log* $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # And from how many unique IdPs?
-wwwaccessipcount=$($apachesearchterm $logslocation/www/web1/ssl_access_log* $logslocation/www/web2/ssl_access_log* $logslocation/www/www-ne-01/ssl_access_log* $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | cut -f 1 -d " " | cut -f 2-9 -d ":" | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+wwwaccessipcount=$(grep $apachesearchterm $logslocation/www/web1/ssl_access_log* $logslocation/www/web2/ssl_access_log* $logslocation/www/www-ne-01/ssl_access_log* $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | cut -f 1 -d " " | cut -f 2-9 -d ":" | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Don't count these when doing daily stats
 if [[ "$timeperiod" != "day" ]]; then
@@ -775,7 +775,7 @@ else
     msg+="Central Discovery Service:\n"
     msg+="-> $cdscountfriendly total requests serviced\n"
     msg+="-> IPv4: $cdsv4pc% vs IPv6: $cdsv6pc%\n"
-    msg+="-> Server distribution: shibcds-ne-01: $cdsne01pc% shibcds-ne-02: $cdsne021pc% shibcds-we-01: $cdswe01pc% shibcds-we-02: $cdswe02pc% / shib-cds1: $cds1pc% shib-cds2: $cds2pc% shib-cds3: $cds3pc%\n"
+    msg+="-> Server distribution: shibcds-ne-01: $cdsne01pc% shibcds-ne-02: $cdsne02pc% shibcds-we-01: $cdswe01pc% shibcds-we-02: $cdswe02pc% / shib-cds1: $cds1pc% shib-cds2: $cds2pc% shib-cds3: $cds3pc%\n"
     msg+="-> DS: $cdsdscount / WAYF: $cdswayfcount\n"
     msg+="\n-----\n"
     msg+="Wugen:\n"
@@ -795,7 +795,7 @@ else
     msg+="$testsptoptenidpsbycount\n"
     msg+="\n-----\n"
     msg+="Website usage:\n"
-    msg+="-> $wwwaccesscount hits from $wwwaccessipcount unique IPs."
+    msg+="-> $wwwaccesscount hits from $wwwaccessipcount unique IPs.\n"
     msg+="-> Server distribution: www-ne-01: $wwwaccessne01pc% www-we-01: $wwwaccesswe01pc% / web1: $wwwaccessweb1pc% web2: $wwwaccessweb2pc% \n"
     msg+="\n-----"
 fi
