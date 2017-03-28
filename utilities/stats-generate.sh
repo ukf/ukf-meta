@@ -683,7 +683,8 @@ fi
 # =====
 
 # How many requests were there for the main content files?
-wwwaccesscount=$(grep $apachesearchterm $logslocation/www/web1/ssl_access_log* $logslocation/www/web2/ssl_access_log* $logslocation/www/www-ne-01/ssl_access_log* $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+wwwaccesscount=$(grep $apachesearchterm $logslocation/www/web1/ssl_access_log* $logslocation/www/web2/ssl_access_log* $logslocation/www/www-ne-01/ssl_access_log* $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | wc -l)
+wwwaccesscountfriendly=$(echo $wwwaccesscount | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # And from how many unique IdPs?
 wwwaccessipcount=$(grep $apachesearchterm $logslocation/www/web1/ssl_access_log* $logslocation/www/web2/ssl_access_log* $logslocation/www/www-ne-01/ssl_access_log* $logslocation/www/www-we-01/ssl_access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer)" | grep 200 | grep "/content/" | cut -f 1 -d " " | cut -f 2-9 -d ":" | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
@@ -726,7 +727,7 @@ if [[ "$timeperiod" == "day" ]]; then
     msg+=">*Wugen:* $wugencount WAYFless URLs generated, $wugennewsubs new subscriptions.\n"
     msg+=">*Test IdP:* $testidplogincount logins to $testidpspcount SPs.\n"
     msg+=">*Test SP:* $testsplogincount logins from $testspidpcount IdPs.\n"
-    msg+=">*Website:* $wwwaccesscount hits from $wwwaccessipcount unique IPs."
+    msg+=">*Website:* $wwwaccesscountfriendly hits from $wwwaccessipcount unique IPs."
     
     
 else
@@ -795,7 +796,7 @@ else
     msg+="$testsptoptenidpsbycount\n"
     msg+="\n-----\n"
     msg+="Website usage:\n"
-    msg+="-> $wwwaccesscount hits from $wwwaccessipcount unique IPs.\n"
+    msg+="-> $wwwaccesscountfriendly hits from $wwwaccessipcount unique IPs.\n"
     msg+="-> Server distribution: www-ne-01: $wwwaccessne01pc% www-we-01: $wwwaccesswe01pc% / web1: $wwwaccessweb1pc% web2: $wwwaccessweb2pc% \n"
     msg+="\n-----"
 fi
