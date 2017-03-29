@@ -18,9 +18,13 @@ The second main category excluded from the public repository is the historic reg
 
 Since 2016, we have separated the entity database and aggregate record from the main toolchain repository, but the nature of Git is to never discard anything. We will therefore continue to make this repository publicly available only in redacted form.
 
-## Licensing
+## Copyright and License
 
-Everything in the public repository is Copyright (C) 2004&ndash;2015, University of Edinburgh. Each file is made available to you under the following terms:
+The contents of this repository are Copyright (C) the named contributors or their
+employers, as appropriate.
+
+In particular, all content authored prior to the 1st of August 2016 is
+Copyright (C) 2011&mdash;2016, University of Edinburgh.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
