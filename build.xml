@@ -145,9 +145,6 @@
         Metadata Distribution Service server properties.
     -->
     <property name="md.user" value="mdscp"/>
-    <property name="md.dist.host1.name" value="md1.infr.ukfederation.org.uk"/>
-    <property name="md.dist.host2.name" value="md2.infr.ukfederation.org.uk"/>
-    <property name="md.dist.host3.name" value="md3.infr.ukfederation.org.uk"/>
     <property name="md.dist.host-ne-01.name" value="md-ne-01.infr.ukfederation.org.uk"/>
     <property name="md.dist.host-ne-02.name" value="md-ne-02.infr.ukfederation.org.uk"/>
     <property name="md.dist.host-we-01.name" value="md-we-01.infr.ukfederation.org.uk"/>
@@ -2108,24 +2105,6 @@
             Push metadata files for the UK Federation to the MD dist servers
         -->
         <echo>Pushing UK Federation metadata files to MD dist.</echo>
-        <echo>-> MD1</echo>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
-            <arg value="push"/>
-            <arg value="md1"/>
-            <arg value="master"/>
-        </exec>
-        <echo>-> MD2</echo>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
-            <arg value="push"/>
-            <arg value="md2"/>
-            <arg value="master"/>
-        </exec>
-        <echo>-> MD3</echo>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
-            <arg value="push"/>
-            <arg value="md3"/>
-            <arg value="master"/>
-        </exec>
         <echo>-> MD-NE-01</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="push"/>
@@ -2157,24 +2136,6 @@
             Push mdq cache tar to the MD dist servers
         -->
         <echo>Pushing UK Federation mdq cache to MD dist.</echo>
-        <echo>-> MD1</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host1.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdq.cache}"/>
-            </fileset>
-        </scp>
-        <echo>-> MD2</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host2.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdq.cache}"/>
-            </fileset>
-        </scp>
-        <echo>-> MD3</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host3.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdq.cache}"/>
-            </fileset>
-        </scp>
         <echo>-> MD-NE-01</echo>
         <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${output.dir}">
