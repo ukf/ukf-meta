@@ -1270,54 +1270,6 @@
         <checksum file="${aggregates.dir}/${mdaggr.export.preview.signed}"
             property="mdaggr.export.preview.signed.checksum"/>
 
-        <echo>Verifying metadata held at ${md.dist.host1.name}</echo>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.prod.signed}"
-            checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.wayf.signed}"
-            checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
-            checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.test.signed}"
-            checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.back.signed}"
-            checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.export.signed}"
-            checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host1.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
-            checksum="${mdaggr.export.preview.signed.checksum}"/>
-
-        <echo>Verifying metadata held at ${md.dist.host2.name}</echo>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.prod.signed}"
-            checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.wayf.signed}"
-            checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
-            checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.test.signed}"
-            checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.back.signed}"
-            checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.export.signed}"
-            checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host2.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
-            checksum="${mdaggr.export.preview.signed.checksum}"/>
-
-        <echo>Verifying metadata held at ${md.dist.host3.name}</echo>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.prod.signed}"
-            checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.wayf.signed}"
-            checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
-            checksum="${mdaggr.cdsall.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.test.signed}"
-            checksum="${mdaggr.test.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.back.signed}"
-            checksum="${mdaggr.back.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.export.signed}"
-            checksum="${mdaggr.export.signed.checksum}"/>
-        <VFY.remote.and.checksum i="http://${md.dist.host3.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
-            checksum="${mdaggr.export.preview.signed.checksum}"/>
-
         <echo>Verifying metadata held at ${md.dist.host-ne-01.name}</echo>
         <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
