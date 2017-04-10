@@ -219,33 +219,6 @@
         </property>
     </bean>
 
-    <bean id="entityAttributes.whitelist" parent="EntityAttributeFilteringStage">
-        <property name="whitelisting" value="true"/>
-        <property name="rules">
-            <list>
-                <!-- Permit GÉANT CoC category from any eduGAIN participant. -->
-                <bean parent="EntityCategoryMatcher"
-                    c:category="http://www.geant.net/uri/dataprotection-code-of-conduct/v1"/>
-                
-                <!-- Permit REFEDS Hide From Discovery category from any eduGAIN participant. -->
-                <bean parent="EntityCategoryMatcher"
-                    c:category="http://refeds.org/category/hide-from-discovery"/>
-                
-                <!-- Permit REFEDS R&S category from any eduGAIN participant. -->
-                <bean parent="EntityCategoryMatcher"
-                    c:category="http://refeds.org/category/research-and-scholarship"/>
-                
-                <!-- Permit REFEDS R&S category *support* from any eduGAIN participant. -->
-                <bean parent="EntityCategorySupportMatcher"
-                    c:category="http://refeds.org/category/research-and-scholarship"/>
-                
-                <!-- Permit SIRTFI entity attribute from any eduGAIN participant -->
-                <ref bean="SIRTFI.entity.attribute.matcher"/>
-                
-            </list>
-        </property>
-    </bean>
-    
     <bean id="uk_int_edugain_importPipeline" parent="SimplePipeline">
         <property name="stages">
             <list>
@@ -531,7 +504,6 @@
                 <ref bean="check_dup_display"/>
                 <ref bean="errorTerminatingFilter"/>
                 
-                <ref bean="entityAttributes.whitelist"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripWayfNamespace"/>
                 <ref bean="stripEmptyExtensions"/>
