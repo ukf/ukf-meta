@@ -96,69 +96,6 @@
         <pre>
 
             <!--
-                Break down members by whether or not they have entities registered
-            -->
-            <xsl:variable name="membersWithIdPs"
-                select="$members[members:Name = $idps//md:OrganizationName]"/>
-            <xsl:variable name="membersWithSps"
-                select="$members[members:Name = $sps//md:OrganizationName]"/>
-            <xsl:variable name="membersWithBoth"
-                select="set:intersection($membersWithIdPs, $membersWithSps)"/>
-            <xsl:variable name="membersWithEither"
-                select="set:distinct($membersWithIdPs | $membersWithSps)"/>
-            <xsl:variable name="membersWithJustIdPs"
-                select="set:difference($membersWithIdPs, $membersWithSps)"/>
-            <xsl:variable name="membersWithJustSPs"
-                select="set:difference($membersWithSps, $membersWithIdPs)"/>
-            <xsl:variable name="membersWithNone"
-                select="set:difference($members, $membersWithEither)"/>
-            <xsl:variable name="membersWithIdPsCount" select="count($membersWithIdPs)"/>
-            <xsl:variable name="membersWithSpsCount" select="count($membersWithSps)"/>
-            <xsl:variable name="membersWithBothCount" select="count($membersWithBoth)"/>
-            <xsl:variable name="membersWithEitherCount" select="count($membersWithEither)"/>
-            <xsl:variable name="membersWithJustIdPsCount" select="count($membersWithJustIdPs)"/>
-            <xsl:variable name="membersWithJustSPsCount" select="count($membersWithJustSPs)"/>
-            <xsl:variable name="membersWithNoneCount" select="count($membersWithNone)"/>
-            
-            <!--
-                *********************************
-                ***                           ***
-                ***   O U T S O U R C I N G   ***
-                ***                           ***
-                *********************************
-            -->
-            
-            <!--
-                Members who are deduced as outsourcing as a result of their use
-                of the mechanism for describing scopes "pushed" to a specific entity.
-            -->
-            <xsl:variable name="members.osrc.scopes.push"
-                select="$members[members:Scopes/members:Entity]"/>
-            <xsl:variable name="members.osrc.scopes.push.count" select="count($members.osrc.scopes.push)"/>
-            
-            <!--
-                Members who are deduced as outsourcing.
-            -->
-            <xsl:variable name="members.osrc" select="$members.osrc.scopes.push"/>
-            <xsl:variable name="members.osrc.count" select="count($members.osrc)"/>
-            
-            <!--
-                Members whose only representation in the federation is through outsourcing.
-            -->
-            <xsl:variable name="members.osrc.only"
-                select="set:difference($members.osrc, $membersWithEither)"/>
-            <xsl:variable name="members.osrc.only.count" select="count($members.osrc.only)"/>
-            
-            <!--
-                Members with no representation, even through outsourcing.
-            -->
-            <xsl:variable name="members.osrc.none"
-                select="set:difference($membersWithNone, $members.osrc)"/>
-            <xsl:variable name="members.osrc.none.count" select="count($members.osrc.none)"/>
-
-
-
-            <!--
                 ***************************
                 ***                     ***
                 ***   C H A R T I N G   ***
@@ -169,18 +106,6 @@
 
             <xsl:text>Members: </xsl:text>
             <xsl:value-of select="$memberCount"/>
-            <xsl:text>&#10;</xsl:text>
-
-            <xsl:text>Outsourcing chart: </xsl:text>
-            <xsl:value-of select="$membersWithJustIdPsCount"/>
-            <xsl:text>, </xsl:text>
-            <xsl:value-of select="$membersWithJustSPsCount"/>
-            <xsl:text>, </xsl:text>
-            <xsl:value-of select="$membersWithBothCount"/>
-            <xsl:text>, </xsl:text>
-            <xsl:value-of select="$members.osrc.only.count"/>
-            <xsl:text>, </xsl:text>
-            <xsl:value-of select="$members.osrc.none.count"/>
             <xsl:text>&#10;</xsl:text>
 
             <xsl:text>Entities: </xsl:text>
@@ -396,24 +321,9 @@
             select="set:difference($entities.shib.2.in, $entities.shib.2)"/>
 
         <!--
-            Classify Shibboleth 1.3 entities.
-        -->
-        <xsl:variable name="entities.shib.13.in" select="$entities.shib.2.out"/>
-        <xsl:variable name="entities.shib.13"
-            select="$entities.shib.13.in[
-                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '1.3'] |
-                md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '-idp/SSO')] |
-                md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]
-            ][
-                not(md:*[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')])
-            ]"/>
-        <xsl:variable name="entities.shib.13.out"
-            select="set:difference($entities.shib.13.in, $entities.shib.13)"/>
-        
-        <!--
             Classify Athens Gateway entities
         -->
-        <xsl:variable name="entities.gateways.in" select="$entities.shib.13.out"/>
+        <xsl:variable name="entities.gateways.in" select="$entities.shib.2.out"/>
         <xsl:variable name="entities.gateways"
             select="$entities.gateways.in[md:Extensions/ukfedlabel:Software/@name='Eduserv Gateway']"/>
         <xsl:variable name="entities.gateways.out"
@@ -477,15 +387,8 @@
             <xsl:with-param name="name">Shibboleth 2.x</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
-        <xsl:call-template name="entity.breakdown.by.software.line">
-            <xsl:with-param name="entities" select="$entities.shib.13"/>
-            <xsl:with-param name="name">Shibboleth 1.3</xsl:with-param>
-            <xsl:with-param name="total" select="$entityCount"/>
-            <xsl:with-param name="show.max" select="10"/>
-        </xsl:call-template>
 
-        <xsl:variable name="entities.shib" select="$entities.shib.13 | $entities.shib.2 | $entities.shib.3"/>
+        <xsl:variable name="entities.shib" select="$entities.shib.2 | $entities.shib.3"/>
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.shib"/>
             <xsl:with-param name="name">Shibboleth combined</xsl:with-param>
