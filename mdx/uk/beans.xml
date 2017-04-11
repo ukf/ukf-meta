@@ -328,6 +328,8 @@
                 
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
+                <bean id="check_ukfedlabel" parent="XSLValidationStage"
+                    p:XSLResource="classpath:uk/check_ukfedlabel.xsl"/>
                 <ref bean="check_ukreg"/>
                 <ref bean="check_owner"/>
                 <ref bean="check_uk_keydesc_key"/>
