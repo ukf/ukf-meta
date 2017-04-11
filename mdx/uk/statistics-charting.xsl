@@ -232,7 +232,7 @@
             <xsl:value-of select="$charting.idp3.count"/>
             <xsl:text> (</xsl:text>
             <xsl:value-of select="format-number($charting.idp3.count div $idpCount, '0.0%')"/>
-            <xsl:text>of IdPs)</xsl:text>
+            <xsl:text> of IdPs)</xsl:text>
             <xsl:text>&#10;</xsl:text>
 
             <xsl:variable name="nosaml2.sps" select="$sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
