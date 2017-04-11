@@ -125,7 +125,6 @@
                     <li><p><a href="#byOwner">Entities by Owner</a></p></li>
                     <li><p><a href="#accountableIdPs">Identity Provider Accountability</a></p></li>
                     <li><p><a href="#undeployedMembers">Members Lacking Deployment</a></p></li>
-                    <li><p><a href="#shib13">Shibboleth 1.3 Remnants</a></p></li>
                     <li><p><a href="#exportOptOut">Export Aggregate: Entities Opted Out</a></p></li>
                     <li><p><a href="#exportOptIn">Export Aggregate: Entities Explicitly Opted In</a></p></li>
                     <li><p><a href="#charting">Charting Statistics</a></p></li>
@@ -923,33 +922,6 @@
 
 
                 <!--
-                    ***************************************************************
-                    ***                                                         ***
-                    ***      S H I B B O L E T H   1 . 3   R E M N A N T S      ***
-                    ***                                                         ***
-                    ***************************************************************
-                -->
-                <h2><a name="shib13">Shibboleth 1.3 Remnants</a></h2>
-                <p>
-                    The following lists show entities that are believed to be running the
-                    Shibboleth 1.3 software, which reached its official end of life
-                    date on 30-June-2010.
-                    As heuristics have been used to create these lists, they may
-                    not be completely accurate.
-                </p>
-
-                <h3>Shibboleth 1.3 Identity Provider Entities</h3>
-                <xsl:call-template name="list.shibboleth.1.3.entities">
-                    <xsl:with-param name="entities" select="$idps"/>
-                </xsl:call-template>
-
-                <h3>Shibboleth 1.3 Service Provider Entities</h3>
-                <xsl:call-template name="list.shibboleth.1.3.entities">
-                    <xsl:with-param name="entities" select="$sps"/>
-                </xsl:call-template>
- 
- 
-                <!--
                     ***************************************
                     ***                                 ***
                     ***   E X P O R T   O P T   O U T   ***
@@ -1541,62 +1513,6 @@
     </xsl:template>
 
 
-
-    <!--
-        Given a list of entities, extract and list those which are apparently running Shibboleth 1.3.
-    -->
-    <xsl:template name="list.shibboleth.1.3.entities">
-        <xsl:param name="entities"/>
-        <!--
-            Remove everything that says it is something other than Shibboleth, or which includes
-            a SAML 2.0 token in any of its role descriptors' protocolSupportEnumerations.
-        -->
-        <xsl:variable name="entities.1"
-            select="set:difference($entities,
-                $entities[
-                    md:Extensions/ukfedlabel:Software[@name != 'Shibboleth'] |
-                    md:*[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-                ])"/>
-        <!-- remove things that look like Shibboleth 2.x -->
-        <xsl:variable name="entities.2"
-            select="set:difference($entities.1,
-                $entities.1[
-                    md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '/profile/Shibboleth/SSO')] |
-                    md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, '/Shibboleth.sso/SAML2/POST')] |
-                    md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '2']
-                ]
-            )"/>
-        <!-- select only remainder that look like Shibboleth 1.3 -->
-        <xsl:variable name="entities.3"
-            select="$entities.2[
-                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '1.3'] |
-                md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '-idp/SSO')] |
-                md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]
-            ]"/>
-        <!-- final set -->
-        <xsl:variable name="entities.out" select="$entities.3"/>
-        <xsl:variable name="entities.out.count" select="count($entities.out)"/>
-        <!-- print the list -->
-        <p>
-            <xsl:value-of select="$entities.out.count"/> entities:
-        </p>
-        <ul>
-            <xsl:for-each select="$entities.out">
-                <li>
-                    <xsl:value-of select="@ID"/>:
-                    <code><xsl:value-of select="@entityID"/></code>
-                    <!-- suspect misclassification if an SP has an encryption key -->
-                    <xsl:if test="md:SPSSODescriptor/md:KeyDescriptor[@use='encryption']">
-                        <xsl:text> [HasEncKey]</xsl:text>
-                    </xsl:if>
-                    <xsl:text> (</xsl:text>
-                    <xsl:value-of select="md:Organization/md:OrganizationName"/>
-                    <xsl:text>)</xsl:text>
-                </li>
-            </xsl:for-each>
-        </ul>
-    </xsl:template>
-    
     <!--
         Break down a set of entities by the software used.
     -->
@@ -1708,24 +1624,9 @@
                 select="set:difference($entities.shib.2.in, $entities.shib.2)"/>
 
             <!--
-                Classify Shibboleth 1.3 entities.
-            -->
-            <xsl:variable name="entities.shib.13.in" select="$entities.shib.2.out"/>
-            <xsl:variable name="entities.shib.13"
-                select="$entities.shib.13.in[
-                    md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '1.3'] |
-                    md:IDPSSODescriptor/md:SingleSignOnService[contains(@Location, '-idp/SSO')] |
-                    md:SPSSODescriptor/md:AssertionConsumerService[contains(@Location, 'Shibboleth.sso')]
-                ][
-                    not(md:*[contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')])
-                ]"/>
-            <xsl:variable name="entities.shib.13.out"
-                select="set:difference($entities.shib.13.in, $entities.shib.13)"/>
-            
-            <!--
                 Classify Athens Gateway entities
             -->
-            <xsl:variable name="entities.gateways.in" select="$entities.shib.13.out"/>
+            <xsl:variable name="entities.gateways.in" select="$entities.shib.2.out"/>
             <xsl:variable name="entities.gateways"
                 select="$entities.gateways.in[md:Extensions/ukfedlabel:Software/@name='Eduserv Gateway']"/>
             <xsl:variable name="entities.gateways.out"
@@ -1789,15 +1690,8 @@
                 <xsl:with-param name="name">Shibboleth 2.x</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
             </xsl:call-template>
-            
-            <xsl:call-template name="entity.breakdown.by.software.line">
-                <xsl:with-param name="entities" select="$entities.shib.13"/>
-                <xsl:with-param name="name">Shibboleth 1.3</xsl:with-param>
-                <xsl:with-param name="total" select="$entityCount"/>
-                <xsl:with-param name="show.max" select="10"/>
-            </xsl:call-template>
 
-            <xsl:variable name="entities.shib" select="$entities.shib.13 | $entities.shib.2 | $entities.shib.3"/>
+            <xsl:variable name="entities.shib" select="$entities.shib.2 | $entities.shib.3"/>
             <xsl:call-template name="entity.breakdown.by.software.line">
                 <xsl:with-param name="entities" select="$entities.shib"/>
                 <xsl:with-param name="name">Shibboleth combined</xsl:with-param>
