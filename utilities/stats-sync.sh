@@ -10,26 +10,18 @@ logslocation="/var/stats"
 # Logs from API
 
 # Logs from MD servers
-rsync -at --exclude modsec* stats@md1:/var/log/httpd/* $logslocation/md/md1/
-rsync -at --exclude modsec* stats@md2:/var/log/httpd/* $logslocation/md/md2/
-rsync -at --exclude modsec* stats@md3:/var/log/httpd/* $logslocation/md/md3/
 rsync -at --exclude modsec* stats@md-ne-01:/var/log/httpd/* $logslocation/md/md-ne-01/
 rsync -at --exclude modsec* stats@md-ne-02:/var/log/httpd/* $logslocation/md/md-ne-02/
 rsync -at --exclude modsec* stats@md-we-01:/var/log/httpd/* $logslocation/md/md-we-01/
 rsync -at --exclude modsec* stats@md-we-02:/var/log/httpd/* $logslocation/md/md-we-02/
 
 # Logs from CDS servers
-rsync -at --exclude modsec* stats@shib-cds1:/var/log/httpd/* $logslocation/cds/shib-cds1/
-rsync -at --exclude modsec* stats@shib-cds2:/var/log/httpd/* $logslocation/cds/shib-cds2/
-rsync -at --exclude modsec* stats@shib-cds3:/var/log/httpd/* $logslocation/cds/shib-cds3/
 rsync -at --exclude modsec* stats@shibcds-ne-01:/var/log/httpd/* $logslocation/cds/shibcds-ne-01/
 rsync -at --exclude modsec* stats@shibcds-ne-02:/var/log/httpd/* $logslocation/cds/shibcds-ne-02/
 rsync -at --exclude modsec* stats@shibcds-we-01:/var/log/httpd/* $logslocation/cds/shibcds-we-01/
 rsync -at --exclude modsec* stats@shibcds-we-02:/var/log/httpd/* $logslocation/cds/shibcds-we-02/
 
 # Logs from websites
-rsync -at --exclude modsec* stats@web1:/var/log/httpd/* $logslocation/www/web1/
-rsync -at --exclude modsec* stats@web2:/var/log/httpd/* $logslocation/www/web2/
 rsync -at --exclude modsec* stats@www-ne-01:/var/log/httpd/* $logslocation/www/www-ne-01/
 rsync -at --exclude modsec* stats@www-we-01:/var/log/httpd/* $logslocation/www/www-we-01/
 
