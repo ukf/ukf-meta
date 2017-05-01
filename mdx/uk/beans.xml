@@ -112,7 +112,7 @@
     <bean id="uk_fetchFragmentFiles" parent="mda.DOMFilesystemSourceStage">
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${entities.dir}"/>
             </bean>
         </property>
@@ -453,7 +453,7 @@
     <bean id="uk_serializeStatistics" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${output.dir}/ukfederation-stats.html"/>
             </bean>
         </property>

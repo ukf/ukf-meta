@@ -67,7 +67,7 @@
                 <bean parent="mda.SerializationStage">
                     <property name="serializer" ref="serializer"/>
                     <property name="outputFile">
-                        <bean class="java.io.File">
+                        <bean parent="File">
                             <constructor-arg value="${output.dir}/statistics-charting.html"/>
                         </bean>
                     </property>
@@ -92,7 +92,7 @@
                 <bean id="serialize" parent="mda.SerializationStage">
                     <property name="serializer" ref="serializer"/>
                     <property name="outputFile">
-                        <bean class="java.io.File">
+                        <bean parent="File">
                             <constructor-arg value="${mdx.dir}/uk/temp.html"/>
                         </bean>
                     </property>
@@ -225,7 +225,7 @@
     <bean id="fetchImportMetadata" parent="mda.DOMFilesystemSourceStage">
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${entities.dir}/import.xml"/>
             </bean>
         </property>
@@ -239,7 +239,7 @@
     <bean id="serializeImportedMetadata" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${entities.dir}/imported.xml"/>
             </bean>
         </property>
@@ -359,7 +359,7 @@
     <bean id="serializeImported" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${mdx.dir}/uk/imported.xml"/>
             </bean>
         </property>

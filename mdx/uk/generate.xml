@@ -253,7 +253,7 @@
     <bean id="serializeUnsignedProductionAggregate" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${output.dir}/ukfederation-metadata-unsigned.xml"/>
             </bean>
         </property>
@@ -309,7 +309,7 @@
     <bean id="serializeUnsignedWayfAggregate" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${output.dir}/ukfederation-wayf-unsigned.xml"/>
             </bean>
         </property>
@@ -429,7 +429,7 @@
     <bean id="serializeCDSAllAggregate" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${output.dir}/ukfederation-cdsall-unsigned.xml"/>
             </bean>
         </property>
@@ -492,7 +492,7 @@
     <bean id="serializeUnsignedFallbackAggregate" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${output.dir}/ukfederation-back-unsigned.xml"/>
             </bean>
         </property>
@@ -545,7 +545,7 @@
     <bean id="serializeUnsignedTestAggregate" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${output.dir}/ukfederation-test-unsigned.xml"/>
             </bean>
         </property>
@@ -599,7 +599,7 @@
     <bean id="serializeUnsignedExportAggregate" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${output.dir}/ukfederation-export-unsigned.xml"/>
             </bean>
         </property>
@@ -822,7 +822,7 @@
                 <bean id="serializeUnsignedExportPreviewAggregate" parent="mda.SerializationStage">
                     <property name="serializer" ref="serializer"/>
                     <property name="outputFile">
-                        <bean class="java.io.File">
+                        <bean parent="File">
                             <constructor-arg value="${output.dir}/ukfederation-export-preview-unsigned.xml"/>
                         </bean>
                     </property>

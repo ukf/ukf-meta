@@ -83,7 +83,7 @@
                     <property name="outputStrategy">
                         <bean parent="mda.FilesInDirectoryMultiOutputStrategy" p:nameSuffix=".xml">
                             <property name="directory">
-                                <bean class="java.io.File" c:_="${mdq.output}"/>
+                                <bean parent="File" c:_="${mdq.output}"/>
                             </property>
                             <property name="nameTransformer">
                                 <bean parent="mda.PathSegmentStringTransformer"/>

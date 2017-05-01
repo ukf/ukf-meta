@@ -35,6 +35,7 @@
     <!--
         Java class parent shorthand beans.
     -->
+    <bean id="File" abstract="true" class="java.io.File"/>
     <bean id="String" abstract="true" class="java.lang.String"/>
     <bean id="QName" abstract="true" class="javax.xml.namespace.QName"/>
     

@@ -28,7 +28,7 @@
     <bean id="serializeImported" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
-            <bean class="java.io.File">
+            <bean parent="File">
                 <constructor-arg value="${mdx.dir}/us_incommon/imported.xml"/>
             </bean>
         </property>
