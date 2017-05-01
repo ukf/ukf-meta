@@ -118,27 +118,6 @@
         </property>
     </bean>
 
-    <bean id="XPathFilteringStage" abstract="true" parent="mda.XPathFilteringStage"
-        p:namespaceContext-ref="commonNamespaces"/>
-
-    <!--
-        DomFilesystemSourceStage
-        
-        Parent for DOM filesystem source stages.
-    -->
-    <bean id="DOMFilesystemSourceStage" abstract="true" parent="mda.DOMFilesystemSourceStage">
-        <property name="parserPool" ref="parserPool"/>
-    </bean>
-
-    <!--
-        DOMResourceSourceStage
-        
-        Parent for DOM resource source stages.
-    -->
-    <bean id="DOMResourceSourceStage" abstract="true" parent="mda.DOMResourceSourceStage">
-        <property name="parserPool" ref="parserPool"/>
-    </bean>
-
     <!-- *** Parent beans for Shibboleth spring-extensions factory beans. *** -->
 
     <bean id="DOMDocumentFactoryBean" abstract="true"
@@ -159,19 +138,6 @@
 
     <bean id="X509CertificateFactoryBean" abstract="true"
         class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"/>
-
-    <!-- *** Parent beans for net.shibboleth.metadata.pipeline package. *** -->
-
-    <bean id="MultiOutputSerializationStage" abstract="true" parent="mda.MultiOutputSerializationStage">
-        <property name="serializer" ref="serializer"/>
-    </bean>
-
-    <bean id="PipelineMergeStage.deduplicate" abstract="true" parent="mda.PipelineMergeStage"
-        p:collectionMergeStrategy-ref="deduplicateMergeStrategy"/>
-
-    <bean id="SerializationStage" abstract="true" parent="mda.SerializationStage">
-        <property name="serializer" ref="serializer"/>
-    </bean>
 
     <!-- *** Parent beans for ukf-mda. *** -->
 

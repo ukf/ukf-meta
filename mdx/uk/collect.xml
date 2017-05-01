@@ -22,7 +22,8 @@
     -->
     <import resource="classpath:uk/beans.xml"/>
 
-    <bean id="serializeCollected" parent="SerializationStage">
+    <bean id="serializeCollected" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${mdx.dir}/uk/collected.xml"/>

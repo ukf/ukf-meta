@@ -64,7 +64,8 @@
                         </map>
                     </property>
                 </bean>
-                <bean parent="SerializationStage">
+                <bean parent="mda.SerializationStage">
+                    <property name="serializer" ref="serializer"/>
                     <property name="outputFile">
                         <bean class="java.io.File">
                             <constructor-arg value="${output.dir}/statistics-charting.html"/>
@@ -88,7 +89,8 @@
                 <ref bean="assemble"/>
                 <bean id="process" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/sp_mdui_test.xsl"/>
-                <bean id="serialize" parent="SerializationStage">
+                <bean id="serialize" parent="mda.SerializationStage">
+                    <property name="serializer" ref="serializer"/>
                     <property name="outputFile">
                         <bean class="java.io.File">
                             <constructor-arg value="${mdx.dir}/uk/temp.html"/>
@@ -220,7 +222,8 @@
         Fetches the contents of the file used to hold metadata to be imported
         into a UK federation fragment file.
     -->
-    <bean id="fetchImportMetadata" parent="DOMFilesystemSourceStage">
+    <bean id="fetchImportMetadata" parent="mda.DOMFilesystemSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
                 <constructor-arg value="${entities.dir}/import.xml"/>
@@ -233,7 +236,8 @@
         
         Serialise the fragment file just imported.
     -->
-    <bean id="serializeImportedMetadata" parent="SerializationStage">
+    <bean id="serializeImportedMetadata" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${entities.dir}/imported.xml"/>
@@ -352,7 +356,8 @@
         #################################################
     -->
     
-    <bean id="serializeImported" parent="SerializationStage">
+    <bean id="serializeImported" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${mdx.dir}/uk/imported.xml"/>

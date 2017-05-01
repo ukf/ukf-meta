@@ -15,7 +15,8 @@
     <!--
         Fetch the aggregate aggregate.
     -->
-    <bean id="test_aggregate" parent="DOMResourceSourceStage"
+    <bean id="test_aggregate" parent="mda.DOMResourceSourceStage"
+        p:parserPool-ref="parserPool"
         p:DOMResource="classpath:test/input.xml"/>
     
     <!--

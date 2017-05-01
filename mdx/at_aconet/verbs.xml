@@ -22,7 +22,8 @@
     -->
     <import resource="classpath:at_aconet/beans.xml"/>
     
-    <bean id="serializeImported" parent="SerializationStage">
+    <bean id="serializeImported" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${mdx.dir}/at_aconet/imported.xml"/>

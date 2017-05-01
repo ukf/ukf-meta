@@ -27,7 +27,8 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="at_aconet_productionAggregate" parent="DOMResourceSourceStage">
+    <bean id="at_aconet_productionAggregate" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -39,7 +40,8 @@
     <!--
         Fetch the eduGAIN export aggregate.
     -->
-    <bean id="at_aconet_edugainAggregate" parent="DOMResourceSourceStage">
+    <bean id="at_aconet_edugainAggregate" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>

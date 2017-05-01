@@ -44,7 +44,8 @@
                 <!--
                     Start with the unsigned production aggregate.
                 -->
-                <bean id="production_aggregate" parent="DOMResourceSourceStage">
+                <bean id="production_aggregate" parent="mda.DOMResourceSourceStage">
+                    <property name="parserPool" ref="parserPool"/>
                     <property name="DOMResource">
                         <bean parent="FileSystemResource" c:_0="${mdq.input}"/>
                     </property>
@@ -77,7 +78,8 @@
                 </bean>
 
                 <!-- Write individual entity documents to files. -->
-                <bean id="write.perentity" parent="MultiOutputSerializationStage">
+                <bean id="write.perentity" parent="mda.MultiOutputSerializationStage">
+                    <property name="serializer" ref="serializer"/>
                     <property name="outputStrategy">
                         <bean parent="mda.FilesInDirectoryMultiOutputStrategy" p:nameSuffix=".xml">
                             <property name="directory">

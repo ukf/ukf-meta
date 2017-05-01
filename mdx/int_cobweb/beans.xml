@@ -22,7 +22,8 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="int_cobweb_productionAggregate" parent="DOMResourceSourceStage">
+    <bean id="int_cobweb_productionAggregate" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>

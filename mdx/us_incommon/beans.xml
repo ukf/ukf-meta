@@ -31,7 +31,8 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="us_incommon_productionAggregate" parent="DOMResourceSourceStage">
+    <bean id="us_incommon_productionAggregate" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>

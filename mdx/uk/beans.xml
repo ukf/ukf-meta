@@ -42,7 +42,8 @@
     <!--
         Fetch the export aggregate.
     -->
-    <bean id="uk_exportAggregate" parent="DOMResourceSourceStage">
+    <bean id="uk_exportAggregate" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -55,7 +56,8 @@
     <!--
         Fetch the production aggregate.
     -->
-    <bean id="uk_productionAggregate" parent="DOMResourceSourceStage">
+    <bean id="uk_productionAggregate" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -448,7 +450,8 @@
         Serialise the (assumed HTML) DomDocumentItem into the UK federation statistics
         output file in the production XML directory.
     -->
-    <bean id="uk_serializeStatistics" parent="SerializationStage">
+    <bean id="uk_serializeStatistics" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${output.dir}/ukfederation-stats.html"/>

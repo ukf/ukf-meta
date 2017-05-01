@@ -250,7 +250,8 @@
         </property>
     </bean>
 
-    <bean id="serializeUnsignedProductionAggregate" parent="SerializationStage">
+    <bean id="serializeUnsignedProductionAggregate" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${output.dir}/ukfederation-metadata-unsigned.xml"/>
@@ -305,7 +306,8 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeUnsignedWayfAggregate" parent="SerializationStage">
+    <bean id="serializeUnsignedWayfAggregate" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${output.dir}/ukfederation-wayf-unsigned.xml"/>
@@ -424,7 +426,8 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeCDSAllAggregate" parent="SerializationStage">
+    <bean id="serializeCDSAllAggregate" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${output.dir}/ukfederation-cdsall-unsigned.xml"/>
@@ -486,7 +489,8 @@
     <bean id="uk_normaliseFallback" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/ns_norm_back.xsl"/>
     
-    <bean id="serializeUnsignedFallbackAggregate" parent="SerializationStage">
+    <bean id="serializeUnsignedFallbackAggregate" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${output.dir}/ukfederation-back-unsigned.xml"/>
@@ -538,7 +542,8 @@
     <bean id="uk_normaliseTest" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/ns_norm_test.xsl"/>
     
-    <bean id="serializeUnsignedTestAggregate" parent="SerializationStage">
+    <bean id="serializeUnsignedTestAggregate" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${output.dir}/ukfederation-test-unsigned.xml"/>
@@ -591,7 +596,8 @@
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="serializeUnsignedExportAggregate" parent="SerializationStage">
+    <bean id="serializeUnsignedExportAggregate" parent="mda.SerializationStage">
+        <property name="serializer" ref="serializer"/>
         <property name="outputFile">
             <bean class="java.io.File">
                 <constructor-arg value="${output.dir}/ukfederation-export-unsigned.xml"/>
@@ -631,7 +637,8 @@
                                 <list>
                                     
                                     <!-- Identity providers lacking support for SAML 2.0 -->
-                                    <bean id="SAML1onlyIdPs" parent="XPathFilteringStage"
+                                    <bean id="SAML1onlyIdPs" parent="mda.XPathFilteringStage"
+                                        p:namespaceContext-ref="commonNamespaces"
                                         p:XPathExpression="md:IDPSSODescriptor
                                         [not(contains(@protocolSupportEnumeration,'urn:oasis:names:tc:SAML:2.0:protocol'))]">
                                     </bean>
@@ -640,13 +647,15 @@
                                     <!--
                                         Preferred implementation:
                                         
-                                        <bean id="syntheticScopes" parent="XPathFilteringStage"
+                                        <bean id="syntheticScopes" parent="mda.XPathFilteringStage"
+                                            p:namespaceContext-ref="commonNamespaces"
                                             p:XPathExpression="shibmd:Scope[ends-with(., '.eng.ukfederation.org.uk']"/>
                                         
                                         Unfortunately, the "ends-with" function is an XPath 2 feature, so we settle for
                                         using "contains" instead; in our case it is equivalent.
                                     -->
-                                    <bean id="syntheticScopes" parent="XPathFilteringStage"
+                                    <bean id="syntheticScopes" parent="mda.XPathFilteringStage"
+                                        p:namespaceContext-ref="commonNamespaces"
                                         p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
                                     <!-- Specific providers not caught by the previous condition -->
                                     <bean id="GlowScotland" parent="mda.EntityFilterStage">
@@ -658,7 +667,8 @@
                                     </bean>
                                     
                                     <!-- Identity providers with regular expression scopes -->
-                                    <bean id="regexScopes" parent="XPathFilteringStage"
+                                    <bean id="regexScopes" parent="mda.XPathFilteringStage"
+                                        p:namespaceContext-ref="commonNamespaces"
                                         p:XPathExpression="//shibmd:Scope[@regexp='true']"/>
                                 </list>
                             </property>
@@ -743,7 +753,8 @@
                                 <list>
 
                                     <!-- Identity providers lacking support for SAML 2.0 -->
-                                    <bean id="SAML1onlyIdPs" parent="XPathFilteringStage"
+                                    <bean id="SAML1onlyIdPs" parent="mda.XPathFilteringStage"
+                                        p:namespaceContext-ref="commonNamespaces"
                                         p:XPathExpression="md:IDPSSODescriptor
                                             [not(contains(@protocolSupportEnumeration,'urn:oasis:names:tc:SAML:2.0:protocol'))]">
                                     </bean>
@@ -752,13 +763,15 @@
                                     <!--
                                         Preferred implementation:
                                         
-                                        <bean id="syntheticScopes" parent="XPathFilteringStage"
+                                        <bean id="syntheticScopes" parent="mda.XPathFilteringStage"
+                                            p:namespaceContext-ref="commonNamespaces"
                                             p:XPathExpression="shibmd:Scope[ends-with(., '.eng.ukfederation.org.uk']"/>
                                         
                                         Unfortunately, the "ends-with" function is an XPath 2 feature, so we settle for
                                         using "contains" instead; in our case it is equivalent.
                                     -->
-                                    <bean id="syntheticScopes" parent="XPathFilteringStage"
+                                    <bean id="syntheticScopes" parent="mda.XPathFilteringStage"
+                                        p:namespaceContext-ref="commonNamespaces"
                                         p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
                                     <!-- Specific providers not caught by the previous condition -->
                                     <bean id="GlowScotland" parent="mda.EntityFilterStage">
@@ -770,7 +783,8 @@
                                     </bean>
 
                                     <!-- Identity providers with regular expression scopes -->
-                                    <bean id="regexScopes" parent="XPathFilteringStage"
+                                    <bean id="regexScopes" parent="mda.XPathFilteringStage"
+                                        p:namespaceContext-ref="commonNamespaces"
                                         p:XPathExpression="//shibmd:Scope[@regexp='true']"/>
                                 </list>
                             </property>
@@ -805,7 +819,8 @@
                 <ref bean="check_namespaces"/>
                 <ref bean="errorTerminatingFilter"/>
                 
-                <bean id="serializeUnsignedExportPreviewAggregate" parent="SerializationStage">
+                <bean id="serializeUnsignedExportPreviewAggregate" parent="mda.SerializationStage">
+                    <property name="serializer" ref="serializer"/>
                     <property name="outputFile">
                         <bean class="java.io.File">
                             <constructor-arg value="${output.dir}/ukfederation-export-preview-unsigned.xml"/>
@@ -927,7 +942,8 @@
                     Merge in entities from production metadata exchange sources.
                 -->
                 
-                <bean id="mergeProductionMDXEntities" parent="PipelineMergeStage.deduplicate">
+                <bean id="mergeProductionMDXEntities" parent="mda.PipelineMergeStage"
+                    p:collectionMergeStrategy-ref="deduplicateMergeStrategy">
                     <property name="mergedPipelines">
                         <list>
                             <!-- entries earlier in the list have higher precedence -->
@@ -982,7 +998,8 @@
                     Merge in entities from pre-production metadata exchange sources.
                 -->
 
-                <bean id="mergePreproductionMDXEntities" parent="PipelineMergeStage.deduplicate">
+                <bean id="mergePreproductionMDXEntities" parent="mda.PipelineMergeStage"
+                    p:collectionMergeStrategy-ref="deduplicateMergeStrategy">
                     <property name="mergedPipelines">
                         <list>
                             <!-- entries earlier in the list have higher precedence -->

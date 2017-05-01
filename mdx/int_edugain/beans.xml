@@ -33,7 +33,8 @@
     <!--
         Fetches the eduGAIN production aggregate.
     -->
-    <bean id="int_edugain_productionAggregate" parent="DOMResourceSourceStage">
+    <bean id="int_edugain_productionAggregate" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
@@ -45,7 +46,8 @@
     <!--
         Fetch the eduGAIN test aggregate.
     -->
-    <bean id="int_edugain_testAggregate" parent="DOMResourceSourceStage">
+    <bean id="int_edugain_testAggregate" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
