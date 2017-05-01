@@ -850,7 +850,7 @@
                 <!--
                     Fork a new output pipeline for the registrar statistics.
                 -->
-                <bean id="rawRegistrarDemux" parent="PipelineDemultiplexerStage">
+                <bean id="rawRegistrarDemux" parent="mda.PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
@@ -890,7 +890,7 @@
                     metadata as closely as possible, so the fork must happen before
                     too many UK-specific transformations are performed.
                 -->
-                <bean id="registrarDemux" parent="PipelineDemultiplexerStage">
+                <bean id="registrarDemux" parent="mda.PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
@@ -952,7 +952,7 @@
                 <!--
                     Fork into new pipelines for the production, fallback and WAYF aggregates.
                 -->
-                <bean id="productionDemux" parent="PipelineDemultiplexerStage">
+                <bean id="productionDemux" parent="mda.PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
@@ -1007,7 +1007,7 @@
                 <!--
                     Fork into new pipelines for additional aggregates.
                 -->
-                <bean id="preProductionDemux" parent="PipelineDemultiplexerStage">
+                <bean id="preProductionDemux" parent="mda.PipelineDemultiplexerStage">
                     <property name="pipelineAndSelectionStrategies">
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">

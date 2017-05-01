@@ -166,10 +166,6 @@
         <property name="serializer" ref="serializer"/>
     </bean>
 
-    <bean id="PipelineDemultiplexerStage" abstract="true" parent="mda.PipelineDemultiplexerStage"
-        p:waitingForPipelines="true"
-    />
-
     <bean id="PipelineMergeStage.deduplicate" abstract="true" parent="mda.PipelineMergeStage"
         p:collectionMergeStrategy-ref="deduplicateMergeStrategy"/>
 
