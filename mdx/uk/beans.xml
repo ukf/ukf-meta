@@ -258,17 +258,6 @@
     </bean>
     
 
-    <!--
-        UK federation unnamed EntitiesDescriptor assembler pipeline stage.
-        
-        Name attribute is not set.  UK ordering is applied.
-    -->
-    <bean id="uk_assembleUnnamed" parent="mda.EntitiesDescriptorAssemblerStage">
-        <property name="itemOrderingStrategy">
-            <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
-        </property>
-    </bean>
-    
 
     <!--
         Fetch and process the registered entities as a collection.
