@@ -25,6 +25,11 @@
     <import resource="mda-beans.xml"/>
 
     <!--
+        Pick up UK federation MDA beans.
+    -->
+    <import resource="ukf-beans.xml"/>
+
+    <!--
         ***********************************
         ***                             ***
         ***   P A R E N T   B E A N S   ***
@@ -140,17 +145,6 @@
     <bean id="X509CertificateFactoryBean" abstract="true"
         class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"/>
 
-    <!-- *** Parent beans for ukf-mda. *** -->
-
-    <bean id="EntityAttributeAddingStage" abstract="true" parent="stage_parent"
-        class="uk.org.ukfederation.mda.dom.saml.mdattr.EntityAttributeAddingStage"/>
-
-    <bean id="SAMLStringElementCheckingStage" abstract="true" parent="stage_parent"
-        class="uk.org.ukfederation.mda.dom.saml.SAMLStringElementCheckingStage"/>
-
-    <bean id="X509ConsistentNameValidator" abstract="true" parent="mda.validator_parent"
-        class="uk.org.ukfederation.mda.validate.X509ConsistentNameValidator"/>
-        
     <!-- *** Default Shibboleth component bean id property from Spring bean id *** -->
     <bean class="net.shibboleth.ext.spring.config.IdentifiableBeanPostProcessor" lazy-init="false"/>
     

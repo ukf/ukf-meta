@@ -117,7 +117,7 @@
             </bean>
         </property>
         <property name="sourceFileFilter">
-            <bean class="uk.org.ukfederation.mda.RegexFileFilter">
+            <bean parent="ukf.RegexFileFilter">
                 <constructor-arg value="uk\d{6}.xml"/>
             </bean>
         </property>
@@ -182,8 +182,7 @@
         
         Checks that entities are owned by UK federation members.
     -->
-    <bean id="check_owner" parent="stage_parent"
-        class="uk.org.ukfederation.mda.dom.saml.EntityOwnerCheckingStage"
+    <bean id="check_owner" parent="ukf.EntityOwnerCheckingStage"
         p:members-ref="uk_members"/>
     
     <!--
@@ -241,8 +240,7 @@
     <!--
         Populate UKId values from entities.
     -->
-    <bean id="uk_populateIds" parent="stage_parent"
-        class="uk.org.ukfederation.mda.EntityDescriptorUKIdPopulationStage"/>
+    <bean id="uk_populateIds" parent="ukf.EntityDescriptorUKIdPopulationStage"/>
     
 
     <!--
@@ -253,7 +251,7 @@
     <bean id="uk_assemble" parent="mda.EntitiesDescriptorAssemblerStage">
         <property name="descriptorName" ref="uk_federation_uri"/>
         <property name="itemOrderingStrategy">
-            <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
+            <bean parent="ukf.UKEntityOrderingStrategy"/>
         </property>
     </bean>
     
@@ -278,8 +276,7 @@
                 <!--
                     Inject scopes "pushed" to entities from the members.xml file.
                 -->
-                <bean id="scopes_inject" parent="stage_parent"
-                    class="uk.org.ukfederation.mda.dom.saml.ScopeInjectionStage"
+                <bean id="scopes_inject" parent="ukf.ScopeInjectionStage"
                     p:members-ref="uk_members"/>
 
                 <ref bean="populateItemIds"/>
@@ -303,7 +300,7 @@
                     <property name="selectedItemPipeline">
                         <bean id="selectedItemPipeline" parent="mda.SimplePipeline">
                             <property name="stages">
-                                <bean id="addHideFromDiscovery" parent="EntityAttributeAddingStage"
+                                <bean id="addHideFromDiscovery" parent="ukf.EntityAttributeAddingStage"
                                     p:attributeValue="http://refeds.org/category/hide-from-discovery"
                                     p:addingFirstChild="true"/>
                             </property>
@@ -335,7 +332,7 @@
                             <!-- Error on small RSA public exponents. -->
                             <bean parent="mda.X509RSAExponentValidator"/>
                             <!-- Error on inconsistent subjectAltNames. -->
-                            <bean parent="X509ConsistentNameValidator"/>
+                            <bean parent="ukf.X509ConsistentNameValidator"/>
                             
                             <!--
                                 Debian weak key blacklists.

@@ -315,7 +315,7 @@
                             <!-- Error on small RSA public exponents. -->
                             <bean parent="mda.X509RSAExponentValidator"/>
                             <!-- Error on inconsistent subjectAltNames. -->
-                            <bean parent="X509ConsistentNameValidator"/>
+                            <bean parent="ukf.X509ConsistentNameValidator"/>
 
                             <!--
                                 Debian weak key blacklists.

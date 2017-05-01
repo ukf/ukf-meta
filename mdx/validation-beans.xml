@@ -209,8 +209,7 @@
         
         Checks for the mdui:IPHint element.
     -->
-    <bean id="check_mdui_iphint" parent="stage_parent"
-        class="uk.org.ukfederation.mda.validate.mdui.IPHintValidationStage"
+    <bean id="check_mdui_iphint" parent="ukf.IPHintValidationStage"
         p:checkingNetworks="true"/>
     
     <!--
@@ -408,9 +407,8 @@
         It is assumed that the entities are independently represented as EntityDescriptor
         items in the item collection.
     -->
-    <bean id="check_dup_display" parent="stage_parent"
-        p:identificationStrategy-ref="identificationStrategy"
-        class="uk.org.ukfederation.mda.IdPDisplayNameDuplicateDetectingStage"/>
+    <bean id="check_dup_display" parent="ukf.IdPDisplayNameDuplicateDetectingStage"
+        p:identificationStrategy-ref="identificationStrategy"/>
 
 
     <!--
@@ -581,7 +579,7 @@
     <!--
         check_saml_strings
     -->
-    <bean id="check_saml_strings" parent="SAMLStringElementCheckingStage">
+    <bean id="check_saml_strings" parent="ukf.SAMLStringElementCheckingStage">
         <property name="elementNames">
             <set>
                 <ref bean="md-Company"/>
