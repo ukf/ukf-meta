@@ -68,13 +68,6 @@
         init-method="initialize" destroy-method="destroy"/>
     
     <!--
-        stage_parent
-        
-        Parent for all stages.
-    -->
-    <bean id="stage_parent" abstract="true" parent="component_parent"/>
-
-    <!--
         XMLSignatureValidationStage
         
         Parent for XML Signature validation stages.
