@@ -16,11 +16,11 @@
         Location of various resources.
     -->
     <!-- ACOnet-registered entities without interfederation -->
-    <bean id="at_aconet_registrarAggregate_url" class="java.lang.String">
+    <bean id="at_aconet_registrarAggregate_url" parent="String">
         <constructor-arg value="http://eduid.at/md/aconet-registered.xml"/>
     </bean>
     <!-- eduGAIN export aggregate -->
-    <bean id="at_aconet_edugainAggregate_url" class="java.lang.String">
+    <bean id="at_aconet_edugainAggregate_url" parent="String">
         <constructor-arg value="http://eduid.at/md/upstream-edugain.xml"/>
     </bean>
     

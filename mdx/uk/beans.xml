@@ -15,10 +15,10 @@
     <!--
         Location of various resources.
     -->
-    <bean id="uk_productionAggregate_url" class="java.lang.String">
+    <bean id="uk_productionAggregate_url" parent="String">
         <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-metadata.xml"/>
     </bean>
-    <bean id="uk_exportAggregate_url" class="java.lang.String">
+    <bean id="uk_exportAggregate_url" parent="String">
         <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-export.xml"/>
     </bean>
     

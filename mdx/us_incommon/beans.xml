@@ -15,16 +15,16 @@
     <!--
         Location of various resources.
     -->
-    <bean id="us_incommon_productionAggregate_url" class="java.lang.String">
+    <bean id="us_incommon_productionAggregate_url" parent="String">
         <constructor-arg value="http://md.incommon.org/InCommon/InCommon-metadata.xml"/>
     </bean>
-    <bean id="us_incommon_fallbackAggregate_url" class="java.lang.String">
+    <bean id="us_incommon_fallbackAggregate_url" parent="String">
         <constructor-arg value="http://md.incommon.org/InCommon/InCommon-metadata-fallback.xml"/>
     </bean>
-    <bean id="us_incommon_previewAggregate_url" class="java.lang.String">
+    <bean id="us_incommon_previewAggregate_url" parent="String">
         <constructor-arg value="http://md.incommon.org/InCommon/InCommon-metadata-preview.xml"/>
     </bean>
-    <bean id="us_incommon_legacyAggregate_url" class="java.lang.String">
+    <bean id="us_incommon_legacyAggregate_url" parent="String">
         <constructor-arg value="http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml"/>
     </bean>
     

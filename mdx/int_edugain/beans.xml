@@ -22,11 +22,11 @@
         Location of various resources.
     -->
     <!-- production aggregate -->
-    <bean id="int_edugain_productionAggregate_url" class="java.lang.String">
+    <bean id="int_edugain_productionAggregate_url" parent="String">
         <constructor-arg value="http://mds.edugain.org/"/>
     </bean>
     <!-- test aggregate -->
-    <bean id="int_edugain_testAggregate_url" class="java.lang.String">
+    <bean id="int_edugain_testAggregate_url" parent="String">
         <constructor-arg value="http://mds-test.edugain.org"/>
     </bean>
 

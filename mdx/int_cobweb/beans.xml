@@ -15,7 +15,7 @@
     <!--
         Location of various resources.
     -->
-    <bean id="int_cobweb_productionAggregate_url" class="java.lang.String">
+    <bean id="int_cobweb_productionAggregate_url" parent="String">
         <constructor-arg value="https://cobweb.edina.ac.uk/metadata/cobweb-metadata.xml"/>
     </bean>
     
