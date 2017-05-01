@@ -70,14 +70,14 @@
     <!--
         Remove blacklisted entities.
     -->
-    <bean id="int_edugain_removeBlacklistedEntities" parent="EntityFilterStage"
+    <bean id="int_edugain_removeBlacklistedEntities" parent="mda.EntityFilterStage"
         p:whitelistingEntities="false"
         p:designatedEntities-ref="int_edugain_entity_blacklist"/>
 
     <!--
         Fetch the production entities as a collection.
     -->
-    <bean id="int_edugain_productionEntities" parent="CompositeStage">
+    <bean id="int_edugain_productionEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="int_edugain_productionAggregate"/>
@@ -107,7 +107,7 @@
     <!--
         Fetch the test entities as a collection.
     -->
-    <bean id="int_edugain_testEntities" parent="CompositeStage">
+    <bean id="int_edugain_testEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="int_edugain_testAggregate"/>

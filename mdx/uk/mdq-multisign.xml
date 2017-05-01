@@ -38,7 +38,7 @@
     <!--
         Generate per-entity metadata.
     -->
-    <bean id="mdq-multisign" parent="SimplePipeline">
+    <bean id="mdq-multisign" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -57,16 +57,16 @@
                 <ref bean="populateItemIds"/>
 
                 <!-- Set ID, cacheDuration and validUntil attributes. -->
-                <bean parent="GenerateIdStage"/>
-                <bean parent="SetCacheDurationStage" p:cacheDuration="PT6H"/>
-                <bean parent="SetValidUntilStage" p:validityDuration="P14D"/>
+                <bean parent="mda.GenerateIdStage"/>
+                <bean parent="mda.SetCacheDurationStage" p:cacheDuration="PT6H"/>
+                <bean parent="mda.SetValidUntilStage" p:validityDuration="P14D"/>
 
                 <!-- Identity transform fixes signing issues. -->
-                <bean parent="XSLTransformationStage"
+                <bean parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:identity.xsl"/>
 
                 <!-- Sign each item. -->
-                <bean id="perform.signature" parent="XMLSignatureSigningStage">
+                <bean id="perform.signature" parent="mda.XMLSignatureSigningStage">
                     <property name="privateKey">
                         <bean parent="PKCS11PrivateKeyFactoryBean"
                             p:pkcs11Config="${sign.pkcs11Config}"
@@ -79,12 +79,12 @@
                 <!-- Write individual entity documents to files. -->
                 <bean id="write.perentity" parent="MultiOutputSerializationStage">
                     <property name="outputStrategy">
-                        <bean parent="FilesInDirectoryMultiOutputStrategy" p:nameSuffix=".xml">
+                        <bean parent="mda.FilesInDirectoryMultiOutputStrategy" p:nameSuffix=".xml">
                             <property name="directory">
                                 <bean class="java.io.File" c:_="${mdq.output}"/>
                             </property>
                             <property name="nameTransformer">
-                                <bean parent="PathSegmentStringTransformer"/>
+                                <bean parent="mda.PathSegmentStringTransformer"/>
                             </property>
                         </bean>
                     </property>

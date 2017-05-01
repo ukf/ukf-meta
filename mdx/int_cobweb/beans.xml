@@ -47,7 +47,7 @@
     <!--
         Fetch the production entities as a collection.
     -->
-    <bean id="int_cobweb_productionEntities" parent="CompositeStage">
+    <bean id="int_cobweb_productionEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="int_cobweb_productionAggregate"/>

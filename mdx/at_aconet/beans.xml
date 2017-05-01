@@ -95,7 +95,7 @@
     <!--
         Fetch the production entities as a collection.
     -->
-    <bean id="at_aconet_productionEntities" parent="CompositeStage">
+    <bean id="at_aconet_productionEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="at_aconet_productionAggregate"/>
@@ -117,7 +117,7 @@
     <!--
         Fetch the eduGAIN export entities as a collection.
     -->
-    <bean id="at_aconet_edugainEntities" parent="CompositeStage">
+    <bean id="at_aconet_edugainEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="at_aconet_edugainAggregate"/>

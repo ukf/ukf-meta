@@ -30,7 +30,7 @@
         </property>
     </bean>
     
-    <bean id="importProduction" parent="SimplePipeline">
+    <bean id="importProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_productionEntities"/>
@@ -41,7 +41,7 @@
         </property>
     </bean>
 
-    <bean id="importProductionRaw" parent="SimplePipeline">
+    <bean id="importProductionRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_productionAggregate"/>
@@ -50,7 +50,7 @@
         </property>
     </bean>
     
-    <bean id="importEdugain" parent="SimplePipeline">
+    <bean id="importEdugain" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_edugainEntities"/>
@@ -61,7 +61,7 @@
         </property>
     </bean>
     
-    <bean id="importEdugainRaw" parent="SimplePipeline">
+    <bean id="importEdugainRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_edugainAggregate"/>
@@ -70,17 +70,17 @@
         </property>
     </bean>
     
-    <bean id="verifyEdugain" parent="SimplePipeline">
+    <bean id="verifyEdugain" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="at_aconet_edugainEntities"/>
                 <ref bean="standardImportActions"/>
 
-                <bean id="checkCertificates" parent="X509ValidationStage">
+                <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509RSAKeyLengthValidator"
+                            <bean parent="mda.X509RSAKeyLengthValidator"
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                         </list>
                     </property>
@@ -90,8 +90,7 @@
                     Remove a specific entity we know has a problem that it will take
                     a while to resolve.
                 -->
-                <bean id="filterEntities" parent="stage_parent"
-                    class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
+                <bean id="filterEntities" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="false">
                     <property name="designatedEntities">
                         <set>

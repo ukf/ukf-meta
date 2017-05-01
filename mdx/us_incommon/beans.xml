@@ -84,7 +84,7 @@
     <!--
         Fetch the production entities as a collection.
     -->
-    <bean id="us_incommon_productionEntities" parent="CompositeStage">
+    <bean id="us_incommon_productionEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
@@ -106,7 +106,7 @@
     <!--
         Synthesise an export collection by filtering the production entities.
     -->
-    <bean id="us_incommon_exportedEntities" parent="CompositeStage">
+    <bean id="us_incommon_exportedEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
@@ -133,8 +133,7 @@
                 <!--
                     Filter out all entities not involved in the pilot.
                 -->
-                <bean id="us_incommon_pilot_filterEntities" parent="stage_parent"
-                    class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
+                <bean id="us_incommon_pilot_filterEntities" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="true">
                     <property name="designatedEntities">
                         <set>
@@ -147,8 +146,7 @@
                 <!--
                     Remove all contact information.
                 -->
-                <bean id="us_incommon_remove_contacts" parent="stage_parent"
-                    class="net.shibboleth.metadata.dom.saml.ContactPersonFilterStage"
+                <bean id="us_incommon_remove_contacts" parent="mda.ContactPersonFilterStage"
                     p:whitelistingTypes="true">
                     <property name="designatedTypes">
                         <set>
@@ -175,7 +173,7 @@
     <!--
         Fake an export aggregate by aggregating the exported entities.
     -->
-    <bean id="us_incommon_exportedAggregate" parent="CompositeStage">
+    <bean id="us_incommon_exportedAggregate" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="us_incommon_exportedEntities"/>

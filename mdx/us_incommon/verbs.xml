@@ -33,7 +33,7 @@
         </property>
     </bean>
     
-    <bean id="importProduction" parent="SimplePipeline">
+    <bean id="importProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_productionEntities"/>
@@ -44,7 +44,7 @@
         </property>
     </bean>
 
-    <bean id="importProductionRaw" parent="SimplePipeline">
+    <bean id="importProductionRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
@@ -53,7 +53,7 @@
         </property>
     </bean>
     
-    <bean id="importExported" parent="SimplePipeline">
+    <bean id="importExported" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_exportedEntities"/>
@@ -64,7 +64,7 @@
         </property>
     </bean>
     
-    <bean id="importExportedRaw" parent="SimplePipeline">
+    <bean id="importExportedRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="us_incommon_exportedAggregate"/>

@@ -30,7 +30,7 @@
         </property>
     </bean>
 
-    <bean id="collect" parent="SimplePipeline">
+    <bean id="collect" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>

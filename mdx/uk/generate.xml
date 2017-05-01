@@ -43,7 +43,7 @@
         Remove entity-level Scope elements, leaving only the ones associated
         with role descriptors.    
     -->
-    <bean id="stripEntityScopes" parent="XSLTransformationStage"
+    <bean id="stripEntityScopes" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/entity_scopes.xsl"/>
     
     <!--
@@ -52,7 +52,7 @@
         Template for a stage used in each output pipeline which performs
         final tweaks on the document.
     -->
-    <bean id="finalise_parent" abstract="true" parent="XSLTransformationStage"
+    <bean id="finalise_parent" abstract="true" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/final_tweak.xsl">
         <property name="transformParameters">
             <map>
@@ -69,7 +69,7 @@
         export flows, for which we desire the closest possible correspondence to
         the registered metadata.
     -->
-    <bean id="checkPublishable" parent="CompositeStage">
+    <bean id="checkPublishable" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="checkSchemas"/>
@@ -92,7 +92,7 @@
     <!--
         Entity attribute matcher for the SIRTFI assurance certification.
     -->
-    <bean id="SIRTFI.entity.attribute.matcher" parent="MultiPredicateMatcher">
+    <bean id="SIRTFI.entity.attribute.matcher" parent="mda.MultiPredicateMatcher">
         <property name="nameFormatPredicate">
             <bean class="com.google.common.base.Predicates"
                 factory-method="equalTo"
@@ -116,24 +116,24 @@
     <!--
         Remove the REFEDS metadata namespace.
     -->
-    <bean id="strip.remd.namespace" parent="NamespaceStrippingStage"
+    <bean id="strip.remd.namespace" parent="mda.NamespaceStrippingStage"
         p:namespace-ref="remd_namespace"/>
 
     <!--
         Strip SIRTFI information.
     -->
-    <bean id="strip.SIRTFI" parent="CompositeStage">
+    <bean id="strip.SIRTFI" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <!-- remove REFEDS contacts associated with SIRTFI -->
-                <bean id="strip.SIRTFI.contacts" parent="XSLTransformationStage"
+                <bean id="strip.SIRTFI.contacts" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/strip_sirtfi_contacts.xsl"/>
 
                 <!-- remove the REFEDS metadata namespace -->
                 <ref bean="strip.remd.namespace"/>
 
                 <!-- remove the SIRTFI entity attribute -->
-                <bean id="entityAttributes" parent="EntityAttributeFilteringStage"
+                <bean id="entityAttributes" parent="mda.EntityAttributeFilteringStage"
                     p:whitelisting="false">
                     <property name="rules">
                         <list>
@@ -161,7 +161,7 @@
         from another registrar or metadata exchange as they may be
         old versions of entities we have deregistered, or spoofed.
     -->
-    <bean id="removeUKEntities" parent="EntityRegistrationAuthorityFilterStage">
+    <bean id="removeUKEntities" parent="mda.EntityRegistrationAuthorityFilterStage">
         <property name="designatedRegistrationAuthorities">
             <list>
                 <ref bean="uk_ukf_registrar"/>
@@ -176,8 +176,7 @@
         
         Filter out entities which are included in our global import blacklist.
     -->
-    <bean id="removeBlacklistedEntities" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.EntityFilterStage"
+    <bean id="removeBlacklistedEntities" parent="mda.EntityFilterStage"
         p:whitelistingEntities="false"
         p:designatedEntities-ref="importEntityBlacklist"/>
 
@@ -186,7 +185,7 @@
         
         Common actions to be performed on each import pipeline.
     -->
-    <bean id="importCommonTail" parent="CompositeStage">
+    <bean id="importCommonTail" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="removeUKEntities"/>
@@ -204,22 +203,22 @@
         </property>
     </bean>
 
-    <bean id="entityAttributes.blacklist" parent="EntityAttributeFilteringStage">
+    <bean id="entityAttributes.blacklist" parent="mda.EntityAttributeFilteringStage">
         <property name="whitelisting" value="false"/>
         <property name="rules">
             <list>
                 <!-- Deny "InCommon registration" attribute (duplicates mdrpi:registrationAuthority) -->
-                <bean parent="EntityCategoryMatcher"
+                <bean parent="mda.EntityCategoryMatcher"
                     c:category="http://id.incommon.org/category/registered-by-incommon"/>
 
                 <!-- Deny InCommon "supports InCommon R+S" attribute (duplicates REFEDS variant) -->
-                <bean parent="EntityCategorySupportMatcher"
+                <bean parent="mda.EntityCategorySupportMatcher"
                     c:category="http://id.incommon.org/category/research-and-scholarship"/>
             </list>
         </property>
     </bean>
 
-    <bean id="uk_int_edugain_importPipeline" parent="SimplePipeline">
+    <bean id="uk_int_edugain_importPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
@@ -259,7 +258,7 @@
         </property>
     </bean>
 
-    <bean id="uk_productionPipeline" parent="SimplePipeline">
+    <bean id="uk_productionPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -296,7 +295,7 @@
     	   * identity providers, and
     	   * members of the "hide from discovery" entity category.
     -->
-    <bean id="uk_wayfSelector" parent="XPathItemSelectionStrategy">
+    <bean id="uk_wayfSelector" parent="mda.XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[not(md:IDPSSODescriptor and
             md:Extensions[mdattr:EntityAttributes/saml:Attribute
                 [@Name = 'http://macedir.org/entity-category']
@@ -314,7 +313,7 @@
         </property>
     </bean>
     
-    <bean id="uk_wayfPipeline" parent="SimplePipeline">
+    <bean id="uk_wayfPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -365,7 +364,7 @@
         normal metadata in order to do its job.  This stage
         removes everything it does not need.
     -->
-    <bean id="CDSStripUnwanted" parent="CompositeStage">
+    <bean id="CDSStripUnwanted" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="stripComments"/>
@@ -404,7 +403,7 @@
         </property>
     </bean>
     
-    <bean id="CDSNormaliseNamespaces" parent="XSLTransformationStage"
+    <bean id="CDSNormaliseNamespaces" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/ns_norm_cds.xsl"/>
 
     <!--
@@ -419,7 +418,7 @@
         Entities in the CDSALL aggregate are restricted to those entities registered by the
         UK federation plus all identity providers from whatever source.
     -->
-    <bean id="CDSAllSelector" parent="XPathItemSelectionStrategy">
+    <bean id="CDSAllSelector" parent="mda.XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[md:IDPSSODescriptor or
             md:Extensions/mdrpi:RegistrationInfo/@registrationAuthority = 'http://ukfederation.org.uk']"/>
         <constructor-arg ref="commonNamespaces"/>
@@ -433,7 +432,7 @@
         </property>
     </bean>
     
-    <bean id="CDSAllPipeline" parent="SimplePipeline">
+    <bean id="CDSAllPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -484,7 +483,7 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseFallback" parent="XSLTransformationStage"
+    <bean id="uk_normaliseFallback" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/ns_norm_back.xsl"/>
     
     <bean id="serializeUnsignedFallbackAggregate" parent="SerializationStage">
@@ -495,7 +494,7 @@
         </property>
     </bean>
     
-    <bean id="uk_fallbackPipeline" parent="SimplePipeline">
+    <bean id="uk_fallbackPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -536,7 +535,7 @@
         </property>
     </bean>
     
-    <bean id="uk_normaliseTest" parent="XSLTransformationStage"
+    <bean id="uk_normaliseTest" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/ns_norm_test.xsl"/>
     
     <bean id="serializeUnsignedTestAggregate" parent="SerializationStage">
@@ -547,7 +546,7 @@
         </property>
     </bean>
     
-    <bean id="uk_testPipeline" parent="CompositeStage">
+    <bean id="uk_testPipeline" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <!--
@@ -587,7 +586,7 @@
         </property>
     </bean>
     
-    <bean id="uk_exportSelector" parent="XPathItemSelectionStrategy">
+    <bean id="uk_exportSelector" parent="mda.XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[not(md:Extensions/ukfedlabel:ExportOptOut)]"/>
         <constructor-arg ref="commonNamespaces"/>
     </bean>
@@ -600,7 +599,7 @@
         </property>
     </bean>
     
-    <bean id="uk_exportPipeline" parent="SimplePipeline">
+    <bean id="uk_exportPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -612,11 +611,11 @@
                     have the ExportOptIn label: in other words, a rule in this section
                     can always be overridden by an explicit ExportOptIn.
                 -->
-                <bean id="exclusion" parent="SplitMergeStage">
+                <bean id="exclusion" parent="mda.SplitMergeStage">
                     
                     <!-- select entities with ExportOptIn label -->
                     <property name="selectionStrategy">
-                        <bean parent="XPathItemSelectionStrategy">
+                        <bean parent="mda.XPathItemSelectionStrategy">
                             <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:ExportOptIn]"/>
                             <constructor-arg ref="commonNamespaces"/>
                         </bean>
@@ -627,7 +626,7 @@
                         matching specific rules.
                     -->
                     <property name="nonselectedItemPipeline">
-                        <bean id="nonSelectedItemPipeline" parent="SimplePipeline">
+                        <bean id="nonSelectedItemPipeline" parent="mda.SimplePipeline">
                             <property name="stages">
                                 <list>
                                     
@@ -650,7 +649,7 @@
                                     <bean id="syntheticScopes" parent="XPathFilteringStage"
                                         p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
                                     <!-- Specific providers not caught by the previous condition -->
-                                    <bean id="GlowScotland" parent="EntityFilterStage">
+                                    <bean id="GlowScotland" parent="mda.EntityFilterStage">
                                         <property name="designatedEntities">
                                             <set>
                                                 <value>https://idp.glowscotland.org.uk/shibboleth</value>
@@ -680,7 +679,7 @@
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
 
-                <bean id="uk_normaliseExport" parent="XSLTransformationStage"
+                <bean id="uk_normaliseExport" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/ns_norm_export.xsl"/>
 
                 <!--
@@ -707,12 +706,12 @@
         ***********************************************************
     -->
     
-    <bean id="uk_exportPreviewSelector" parent="XPathItemSelectionStrategy">
+    <bean id="uk_exportPreviewSelector" parent="mda.XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[not(md:Extensions/ukfedlabel:ExportOptOut)]"/>
         <constructor-arg ref="commonNamespaces"/>
     </bean>
     
-    <bean id="uk_exportPreviewPipeline" parent="SimplePipeline">
+    <bean id="uk_exportPreviewPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -724,11 +723,11 @@
                     have the ExportOptIn label: in other words, a rule in this section
                     can always be overridden by an explicit ExportOptIn.
                 -->
-                <bean id="exclusion" parent="SplitMergeStage">
+                <bean id="exclusion" parent="mda.SplitMergeStage">
 
                     <!-- select entities with ExportOptIn label -->
                     <property name="selectionStrategy">
-                        <bean parent="XPathItemSelectionStrategy">
+                        <bean parent="mda.XPathItemSelectionStrategy">
                             <constructor-arg value="/md:EntityDescriptor[md:Extensions/ukfedlabel:ExportOptIn]"/>
                             <constructor-arg ref="commonNamespaces"/>
                         </bean>
@@ -739,7 +738,7 @@
                         matching specific rules.
                     -->
                     <property name="nonselectedItemPipeline">
-                        <bean id="nonSelectedItemPipeline" parent="SimplePipeline">
+                        <bean id="nonSelectedItemPipeline" parent="mda.SimplePipeline">
                             <property name="stages">
                                 <list>
 
@@ -762,7 +761,7 @@
                                     <bean id="syntheticScopes" parent="XPathFilteringStage"
                                         p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
                                     <!-- Specific providers not caught by the previous condition -->
-                                    <bean id="GlowScotland" parent="EntityFilterStage">
+                                    <bean id="GlowScotland" parent="mda.EntityFilterStage">
                                         <property name="designatedEntities">
                                             <set>
                                                 <value>https://idp.glowscotland.org.uk/shibboleth</value>
@@ -792,7 +791,7 @@
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
 
-                <bean id="uk_normaliseExportPreview" parent="XSLTransformationStage"
+                <bean id="uk_normaliseExportPreview" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/ns_norm_export_preview.xsl"/>
 
                 <!--
@@ -827,7 +826,7 @@
         *************************************
     -->
     
-    <bean id="generate" parent="SimplePipeline">
+    <bean id="generate" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--

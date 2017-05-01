@@ -87,8 +87,7 @@
         yet expired.  Sets a bound of 30 days on the validity interval; 14 days is the
         expected value.
     -->
-    <bean id="uk_check_validUntil" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage">
+    <bean id="uk_check_validUntil" parent="mda.ValidateValidUntilStage">
         <!--
             The validUntil attribute must be present.
         -->
@@ -108,8 +107,7 @@
         Each fragment file contains a single EntityDescriptor.  The name of each
         eligible file matches a particular regular expression.
     -->
-    <bean id="uk_fetchFragmentFiles" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.DOMFilesystemSourceStage">
+    <bean id="uk_fetchFragmentFiles" parent="mda.DOMFilesystemSourceStage">
         <property name="parserPool" ref="parserPool"/>
         <property name="source">
             <bean class="java.io.File">
@@ -165,7 +163,7 @@
         
         Adds "mailto:" to md:EmailAddress elements which don't already have it.
     -->
-    <bean id="uk_fix_mailto" parent="XSLTransformationStage"
+    <bean id="uk_fix_mailto" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/fix_mailto.xsl"/>
     
     
@@ -174,7 +172,7 @@
         
         Checks specific to the UK registrar function.
     -->
-    <bean id="check_ukreg" parent="XSLValidationStage"
+    <bean id="check_ukreg" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_ukreg.xsl"/>
     
     <!--
@@ -189,28 +187,28 @@
     <!--
         check_uk_keydesc_key
     -->
-    <bean id="check_uk_keydesc_key" parent="XSLValidationStage"
+    <bean id="check_uk_keydesc_key" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_uk_keydesc_key.xsl"/>
 
 
     <!--
         check_uk_mdattr
     -->
-    <bean id="check_uk_mdattr" parent="XSLValidationStage"
+    <bean id="check_uk_mdattr" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_uk_mdattr.xsl"/>
     
     
     <!--
         check_uk_mdrps
     -->
-    <bean id="check_uk_mdrps" parent="XSLValidationStage"
+    <bean id="check_uk_mdrps" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_uk_mdrps.xsl"/>
     
     
     <!--
         check_uk_urlenc
     -->
-    <bean id="check_uk_urlenc" parent="XSLValidationStage"
+    <bean id="check_uk_urlenc" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_uk_urlenc.xsl"/>
     
 
@@ -219,7 +217,7 @@
         
         This stage performs any standard cleanup required for UK federation fragment files.
     -->
-    <bean id="uk_processFragment" parent="XSLTransformationStage"
+    <bean id="uk_processFragment" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/fragment.xsl"/>
     
     
@@ -228,8 +226,7 @@
         
         Remove any md:ContactPerson elements with contactType of "administrative".
     -->
-    <bean id="uk_stripAdminContacts" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.ContactPersonFilterStage">
+    <bean id="uk_stripAdminContacts" parent="mda.ContactPersonFilterStage">
         <property name="designatedTypes">
             <list>
                 <value>administrative</value>
@@ -251,8 +248,7 @@
         
         Name attribute is set to the federation URI.  UK ordering is applied.
     -->
-    <bean id="uk_assemble" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage">
+    <bean id="uk_assemble" parent="mda.EntitiesDescriptorAssemblerStage">
         <property name="descriptorName" ref="uk_federation_uri"/>
         <property name="itemOrderingStrategy">
             <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
@@ -265,8 +261,7 @@
         
         Name attribute is not set.  UK ordering is applied.
     -->
-    <bean id="uk_assembleUnnamed" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.EntitiesDescriptorAssemblerStage">
+    <bean id="uk_assembleUnnamed" parent="mda.EntitiesDescriptorAssemblerStage">
         <property name="itemOrderingStrategy">
             <bean class="uk.org.ukfederation.mda.UKEntityOrderingStrategy"/>
         </property>
@@ -276,7 +271,7 @@
     <!--
         Fetch and process the registered entities as a collection.
     -->
-    <bean id="uk_registeredEntities" parent="CompositeStage">
+    <bean id="uk_registeredEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="uk_fetchFragmentFiles"/>
@@ -286,7 +281,7 @@
                     Make all three potential scope lists equivalent (on the entity, on
                     the IDPSSODescriptor and on the AttributeAuthority).
                 -->
-                <bean id="scopes_copy" parent="XSLTransformationStage"
+                <bean id="scopes_copy" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/scopes_copy.xsl"/>
 
                 <!--
@@ -305,17 +300,17 @@
                     Add REFEDS Hide from Discovery category as a standardised
                     equivalent to our HideFromWAYF element.
                 -->
-                <bean id="uk_addHideFromDiscovery" parent="SplitMergeStage">
+                <bean id="uk_addHideFromDiscovery" parent="mda.SplitMergeStage">
                     <!-- select entities with HideFromWayf label -->
                     <property name="selectionStrategy">
-                        <bean parent="XPathItemSelectionStrategy">
+                        <bean parent="mda.XPathItemSelectionStrategy">
                             <constructor-arg value="/md:EntityDescriptor[md:Extensions/wayf:HideFromWAYF]"/>
                             <constructor-arg ref="commonNamespaces"/>
                         </bean>
                     </property>
                     
                     <property name="selectedItemPipeline">
-                        <bean id="selectedItemPipeline" parent="SimplePipeline">
+                        <bean id="selectedItemPipeline" parent="mda.SimplePipeline">
                             <property name="stages">
                                 <bean id="addHideFromDiscovery" parent="EntityAttributeAddingStage"
                                     p:attributeValue="http://refeds.org/category/hide-from-discovery"
@@ -328,7 +323,7 @@
                 
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
-                <bean id="check_ukfedlabel" parent="XSLValidationStage"
+                <bean id="check_ukfedlabel" parent="mda.XSLValidationStage"
                     p:XSLResource="classpath:uk/check_ukfedlabel.xsl"/>
                 <ref bean="check_ukreg"/>
                 <ref bean="check_owner"/>
@@ -340,14 +335,14 @@
                 <ref bean="mdui_dn_en_match"/>
                 <ref bean="check_dup_display"/>
                 
-                <bean id="checkCertificates" parent="X509ValidationStage">
+                <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509RSAKeyLengthValidator"
+                            <bean parent="mda.X509RSAKeyLengthValidator"
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                             <!-- Error on small RSA public exponents. -->
-                            <bean parent="X509RSAExponentValidator"/>
+                            <bean parent="mda.X509RSAExponentValidator"/>
                             <!-- Error on inconsistent subjectAltNames. -->
                             <bean parent="X509ConsistentNameValidator"/>
                             
@@ -381,7 +376,7 @@
         
         Strip those UK federation extensions which we never publish.
     -->
-    <bean id="uk_stripExtensions" parent="XSLTransformationStage"
+    <bean id="uk_stripExtensions" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/strip_extensions.xsl"/>
     
 
@@ -400,7 +395,7 @@
         used in an XML document.  This one is UK-specific, as it makes specific choices
         in order to limit the number of prefixes used.
     -->
-    <bean id="uk_normaliseNamespaces" parent="XSLTransformationStage"
+    <bean id="uk_normaliseNamespaces" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/ns_norm_uk.xsl"/>
     
     <!--
@@ -466,7 +461,7 @@
         
         Input is an aggregate of all registered entities, output is the HTML statistics.
     -->
-    <bean id="uk_generateStatistics" parent="XSLTransformationStage"
+    <bean id="uk_generateStatistics" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/statistics.xsl">
         <property name="transformParameters">
             <map>
@@ -483,7 +478,7 @@
         resulting HTML output is written into the appropriate file in the production
         XML directory.
     -->
-    <bean id="uk_statisticsPipeline" parent="SimplePipeline">
+    <bean id="uk_statisticsPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="assemble"/>
@@ -504,7 +499,7 @@
     <!--
         Fetch the export entities as a collection.
     -->
-    <bean id="uk_exportedEntities" parent="CompositeStage">
+    <bean id="uk_exportedEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="uk_exportAggregate"/>

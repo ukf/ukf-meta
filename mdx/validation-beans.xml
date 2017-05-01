@@ -37,61 +37,61 @@
     <!--
         check_future_0
     -->
-    <bean id="check_future_0" parent="XSLValidationStage"
+    <bean id="check_future_0" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_0.xsl"/>
     
     <!--
         check_future_1
     -->
-    <bean id="check_future_1" parent="XSLValidationStage"
+    <bean id="check_future_1" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_1.xsl"/>
     
     <!--
         check_future_2
     -->
-    <bean id="check_future_2" parent="XSLValidationStage"
+    <bean id="check_future_2" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_2.xsl"/>
     
     <!--
         check_future_3
     -->
-    <bean id="check_future_3" parent="XSLValidationStage"
+    <bean id="check_future_3" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_3.xsl"/>
     
     <!--
         check_future_4
     -->
-    <bean id="check_future_4" parent="XSLValidationStage"
+    <bean id="check_future_4" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_4.xsl"/>
     
     <!--
         check_future_5
     -->
-    <bean id="check_future_5" parent="XSLValidationStage"
+    <bean id="check_future_5" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_5.xsl"/>
     
     <!--
         check_future_6
     -->
-    <bean id="check_future_6" parent="XSLValidationStage"
+    <bean id="check_future_6" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_6.xsl"/>
     
     <!--
         check_future_7
     -->
-    <bean id="check_future_7" parent="XSLValidationStage"
+    <bean id="check_future_7" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_7.xsl"/>
     
     <!--
         check_future_8
     -->
-    <bean id="check_future_8" parent="XSLValidationStage"
+    <bean id="check_future_8" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_8.xsl"/>
     
     <!--
         check_future_9
     -->
-    <bean id="check_future_9" parent="XSLValidationStage"
+    <bean id="check_future_9" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_9.xsl"/>
     
     <!--
@@ -99,7 +99,7 @@
         
         Combines all check_future_N stages.
     -->
-    <bean id="check_future" parent="CompositeStage">
+    <bean id="check_future" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="check_future_0"/>
@@ -128,7 +128,7 @@
     <!--
         check_algsupport
     -->
-    <bean id="check_algsupport" parent="XSLValidationStage"
+    <bean id="check_algsupport" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_algsupport.xsl"/>
 
 
@@ -143,7 +143,7 @@
     <!--
         check_mdattr
     -->
-    <bean id="check_mdattr" parent="XSLValidationStage"
+    <bean id="check_mdattr" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_mdattr.xsl"/>
 
     
@@ -160,7 +160,7 @@
         
         Miscellaneous MDRPI tests, in XSLT.
     -->
-    <bean id="check_mdrpi_xslt" parent="XSLValidationStage"
+    <bean id="check_mdrpi_xslt" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_mdrpi.xsl"/>
     
     <!--
@@ -168,7 +168,7 @@
         
         Composite check for the MDRPI specification.
     -->
-    <bean id="check_mdrpi" parent="CompositeStage">
+    <bean id="check_mdrpi" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="check_mdrpi_xslt"/>
@@ -184,7 +184,7 @@
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
-    <bean id="check_regauth_parent" abstract="true" parent="XSLValidationStage"
+    <bean id="check_regauth_parent" abstract="true" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_regauth.xsl"/>
     
     <!--
@@ -192,7 +192,7 @@
         
         Check that each entity has an mdrpi:RegistrationInfo element.
     -->
-    <bean id="check_hasreginfo" parent="XSLValidationStage"
+    <bean id="check_hasreginfo" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_hasreginfo.xsl"/>
 
     
@@ -218,7 +218,7 @@
         
         Miscellaneous MDUI tests, in XSLT.
     -->
-    <bean id="check_mdui_xslt" parent="XSLValidationStage"
+    <bean id="check_mdui_xslt" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_mdui.xsl"/>
     
     <!--
@@ -229,7 +229,7 @@
         
         UKFTS 1.4 section 3.3
     -->
-    <bean id="mdui_dn_en_match" parent="XSLValidationStage"
+    <bean id="mdui_dn_en_match" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/mdui_dn_en_match.xsl"/>
     
     <!--
@@ -238,7 +238,7 @@
         If an entity has mdui:UIInfo, then that must include at least an
         mdui:DisplayName with an English name.
     -->
-    <bean id="mdui_dn_en_present" parent="XSLValidationStage"
+    <bean id="mdui_dn_en_present" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/mdui_dn_en_present.xsl"/>
     
     <!--
@@ -252,7 +252,7 @@
             mdui_dn_en_present
             mdui_dn_en_match
     -->
-    <bean id="check_mdui" parent="CompositeStage">
+    <bean id="check_mdui" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="check_mdui_iphint"/>
@@ -273,7 +273,7 @@
     <!--
         check_incmd
     -->
-    <bean id="check_incmd" parent="XSLValidationStage"
+    <bean id="check_incmd" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_incmd.xsl"/>
 
     
@@ -285,13 +285,13 @@
         ***********************************************************
     -->
 
-    <bean id="check_rands_member" parent="XSLValidationStage"
+    <bean id="check_rands_member" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_rands_member.xsl"/>
 
-    <bean id="check_rands_support" parent="XSLValidationStage"
+    <bean id="check_rands_support" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_rands_support.xsl"/>
 
-    <bean id="check_rands" parent="CompositeStage">
+    <bean id="check_rands" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="check_rands_member"/>
@@ -315,7 +315,7 @@
         Check for regular expressions in Shibboleth Scope elements.  Applied very selectively,
         because we do permit this in certain circumstances.
     -->
-    <bean id="check_shib_regscope" parent="XSLValidationStage"
+    <bean id="check_shib_regscope" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_shib_regscope.xsl"/>
 
     <!--
@@ -325,13 +325,13 @@
         problems with signature generation and validation because the schema includes
         a default value.
     -->
-    <bean id="check_shib_noregscope" parent="XSLValidationStage"
+    <bean id="check_shib_noregscope" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_shib_noregscope.xsl"/>
 
     <!--
         check_shibboleth
     -->
-    <bean id="check_shibboleth" parent="XSLValidationStage"
+    <bean id="check_shibboleth" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_shibboleth.xsl"/>
 
 
@@ -346,7 +346,7 @@
     <!--
         check_sirtfi
     -->
-    <bean id="check_sirtfi" parent="XSLValidationStage"
+    <bean id="check_sirtfi" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_sirtfi.xsl"/>
 
 
@@ -361,19 +361,19 @@
     <!--
         check_uk_algorithms
     -->
-    <bean id="check_uk_algorithms" parent="XSLValidationStage"
+    <bean id="check_uk_algorithms" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_uk_algorithms.xsl"/>
     
     <!--
         check_uk_trust
     -->
-    <bean id="check_uk_trust" parent="XSLValidationStage"
+    <bean id="check_uk_trust" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_uk_trust.xsl"/>
     
     <!--
         check_uk_wayf
     -->
-    <bean id="check_uk_wayf" parent="XSLValidationStage"
+    <bean id="check_uk_wayf" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_uk_wayf.xsl"/>
 
 
@@ -397,7 +397,7 @@
         
         It is assumed that the entities are wrapped in a single EntitiesDescriptor.
     -->
-    <bean id="check_aggregate" parent="XSLValidationStage"
+    <bean id="check_aggregate" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_aggregate.xsl"/>
     
     <!--
@@ -425,15 +425,15 @@
         Debian weak key blacklists.
     -->
 
-    <bean id="debian.1024" parent="X509RSAOpenSSLBlacklistValidator"
+    <bean id="debian.1024" parent="mda.X509RSAOpenSSLBlacklistValidator"
         p:keySize="1024"
         p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-1024.txt"/>
 
-    <bean id="debian.2048" parent="X509RSAOpenSSLBlacklistValidator"
+    <bean id="debian.2048" parent="mda.X509RSAOpenSSLBlacklistValidator"
         p:keySize="2048"
         p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-2048.txt"/>
 
-    <bean id="debian.4096" parent="X509RSAOpenSSLBlacklistValidator"
+    <bean id="debian.4096" parent="mda.X509RSAOpenSSLBlacklistValidator"
         p:keySize="4096"
         p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/debian-4096.txt"/>
 
@@ -441,7 +441,7 @@
         Blacklist of known compromised 1024-bit keys, e.g., "dummy" keys shipped with
         SAML products that are sometimes deployed by accident.
     -->
-    <bean id="compromised.1024" parent="X509RSAOpenSSLBlacklistValidator"
+    <bean id="compromised.1024" parent="mda.X509RSAOpenSSLBlacklistValidator"
         p:keySize="1024"
         p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/compromised-1024.txt"/>
 
@@ -449,7 +449,7 @@
         Blacklist of known compromised 2048-bit keys, e.g., "dummy" keys shipped with
         SAML products that are sometimes deployed by accident.
     -->
-    <bean id="compromised.2048" parent="X509RSAOpenSSLBlacklistValidator"
+    <bean id="compromised.2048" parent="mda.X509RSAOpenSSLBlacklistValidator"
         p:keySize="2048"
         p:blacklistResource="classpath:net/shibboleth/metadata/validate/x509/compromised-2048.txt"/>
 
@@ -465,49 +465,49 @@
     <!--
         check_adfs
     -->
-    <bean id="check_adfs" parent="XSLValidationStage"
+    <bean id="check_adfs" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_adfs.xsl"/>
     
     <!--
         check_bindings
     -->
-    <bean id="check_bindings" parent="XSLValidationStage"
+    <bean id="check_bindings" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_bindings.xsl"/>
     
     <!--
         check_filtered
     -->
-    <bean id="check_filtered" parent="XSLValidationStage"
+    <bean id="check_filtered" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_filtered.xsl"/>
     
     <!--
         check_hoksso
     -->
-    <bean id="check_hoksso" parent="XSLValidationStage"
+    <bean id="check_hoksso" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_hoksso.xsl"/>
         
     <!--
         check_idpdisc
     -->
-    <bean id="check_idpdisc" parent="XSLValidationStage"
+    <bean id="check_idpdisc" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_idpdisc.xsl"/>
     
     <!--
         check_imported
     -->
-    <bean id="check_imported" parent="XSLValidationStage"
+    <bean id="check_imported" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_imported.xsl"/>
     
     <!--
         check_init
     -->
-    <bean id="check_init" parent="XSLValidationStage"
+    <bean id="check_init" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_init.xsl"/>
     
     <!--
         check_mdiop
     -->
-    <bean id="check_mdiop" parent="XSLValidationStage"
+    <bean id="check_mdiop" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_mdiop.xsl"/>
 
     <!--
@@ -516,66 +516,66 @@
         Check for the presence of CR characters in text content or attribute values.
         This protects against SSPCPP-684 in the Shibboleth SP.
     -->
-    <bean id="check_cr" parent="CRDetectionStage"/>
+    <bean id="check_cr" parent="mda.CRDetectionStage"/>
 
     <!--
         check_entityid_prefix
     -->
-    <bean id="check_entityid_prefix" parent="XSLValidationStage"
+    <bean id="check_entityid_prefix" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_entityid_prefix.xsl"/>
 
     <!--
         check_idp_tls
     -->
-    <bean id="check_idp_tls" parent="XSLValidationStage"
+    <bean id="check_idp_tls" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_idp_tls.xsl"/>
 
     <!--
         check_sp_tls
     -->
-    <bean id="check_sp_tls" parent="XSLValidationStage"
+    <bean id="check_sp_tls" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_sp_tls.xsl"/>
 
     <!--
         check_misc
     -->
-    <bean id="check_misc" parent="XSLValidationStage"
+    <bean id="check_misc" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_misc.xsl"/>
     
     <!--
         check_namespaces
     -->
-    <bean id="check_namespaces" parent="XSLValidationStage"
+    <bean id="check_namespaces" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_namespaces.xsl"/>
     
     <!--
         check_reqattr
     -->
-    <bean id="check_reqattr" parent="XSLValidationStage"
+    <bean id="check_reqattr" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_reqattr.xsl"/>
     
     <!--
         check_saml2int
     -->
-    <bean id="check_saml2int" parent="XSLValidationStage"
+    <bean id="check_saml2int" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_saml2int.xsl"/>
 
     <!--
         check_saml1
     -->
-    <bean id="check_saml1" parent="XSLValidationStage"
+    <bean id="check_saml1" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_saml1.xsl"/>
     
     <!--
         check_saml2
     -->
-    <bean id="check_saml2" parent="XSLValidationStage"
+    <bean id="check_saml2" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_saml2.xsl"/>
     
     <!--
         check_saml2meta
     -->
-    <bean id="check_saml2meta" parent="XSLValidationStage"
+    <bean id="check_saml2meta" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_saml2meta.xsl"/>
     
     <!--
@@ -611,15 +611,14 @@
         Check that an aggregate has a validUntil instant specified, and that it has not
         yet expired.  Does not put an upper bound on validUntil intervals.
     -->
-    <bean id="check_validUntil" parent="stage_parent"
-        class="net.shibboleth.metadata.dom.saml.ValidateValidUntilStage">
+    <bean id="check_validUntil" parent="mda.ValidateValidUntilStage">
         <!--
             The validUntil attribute must be present.
         -->
         <property name="requireValidUntil" value="true"/>
         <!--
             Do not constrain the validity interval in this general stage.
-            Constrain in necessary on a per-channel basis.
+            Constrain if necessary on a per-channel basis.
         -->
         <property name="maxValidityInterval" value="0"/>
     </bean>
@@ -627,7 +626,7 @@
     <!--
         check_vhosts
     -->
-    <bean id="check_vhosts" parent="XSLValidationStage"
+    <bean id="check_vhosts" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_vhosts.xsl"/>
 
 
@@ -642,7 +641,7 @@
     <!--
         CHECK_std
     -->
-    <bean id="CHECK_std" parent="CompositeStage">
+    <bean id="CHECK_std" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="check_adfs"/>

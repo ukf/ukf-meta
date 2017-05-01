@@ -30,7 +30,7 @@
         </property>
     </bean>
     
-    <bean id="importProduction" parent="SimplePipeline">
+    <bean id="importProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
@@ -41,7 +41,7 @@
         </property>
     </bean>
 
-    <bean id="importProductionRaw" parent="SimplePipeline">
+    <bean id="importProductionRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionAggregate"/>
@@ -50,7 +50,7 @@
         </property>
     </bean>
     
-    <bean id="importTest" parent="SimplePipeline">
+    <bean id="importTest" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_testEntities"/>
@@ -69,11 +69,11 @@
         blacklist are ignored, so that we only need to deal with each entity
         entering an error state once.
     -->
-    <bean id="verify" parent="SimplePipeline">
+    <bean id="verify" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
-                <bean id="removeBlacklistedEntities" parent="EntityFilterStage"
+                <bean id="removeBlacklistedEntities" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="false"
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
 
@@ -88,11 +88,11 @@
         
         Live verify, but adding "new" checks that we don't impose on the live import.
     -->
-    <bean id="verify.new" parent="SimplePipeline">
+    <bean id="verify.new" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
-                <bean id="removeBlacklistedEntities" parent="EntityFilterStage"
+                <bean id="removeBlacklistedEntities" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="false"
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
                 
@@ -108,7 +108,7 @@
         Looks for eduGAIN entities which *were* in an error state, as shown by
         their inclusion in our verification blacklist, but have now recovered.
     -->
-    <bean id="verify.recovered" parent="SimplePipeline">
+    <bean id="verify.recovered" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
@@ -118,12 +118,12 @@
                 <ref bean="errorRemover"/>
                 
                 <!-- remove all entities *other* than the ones in the blacklist -->
-                <bean id="removeAllButBlacklistedEntities" parent="EntityFilterStage"
+                <bean id="removeAllButBlacklistedEntities" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="true"
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
                 
                 <!-- flag up any remaining entities -->
-                <bean id="check_recovered" parent="XSLValidationStage"
+                <bean id="check_recovered" parent="mda.XSLValidationStage"
                     p:XSLResource="classpath:int_edugain/check_recovered.xsl"/>
 
                 <ref bean="errorTerminatingFilter"/>
@@ -140,7 +140,7 @@
         Output also includes any warnings attached to entities, although
         these do not result in an error termination.
     -->
-    <bean id="verify.all" parent="SimplePipeline">
+    <bean id="verify.all" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>

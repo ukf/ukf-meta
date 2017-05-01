@@ -30,7 +30,7 @@
         </property>
     </bean>
     
-    <bean id="importProduction" parent="SimplePipeline">
+    <bean id="importProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_cobweb_productionEntities"/>
@@ -41,7 +41,7 @@
         </property>
     </bean>
     
-    <bean id="verifyProduction" parent="SimplePipeline">
+    <bean id="verifyProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_cobweb_productionEntities"/>
@@ -51,7 +51,7 @@
         </property>
     </bean>
     
-    <bean id="importProductionRaw" parent="SimplePipeline">
+    <bean id="importProductionRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="int_cobweb_productionAggregate"/>

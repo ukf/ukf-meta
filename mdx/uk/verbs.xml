@@ -35,7 +35,7 @@
         
         Stand-alone statistics generation.
     -->
-    <bean id="statistics" parent="SimplePipeline">
+    <bean id="statistics" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -51,12 +51,12 @@
         
         Stand-along statistics generation for charting.
     -->
-    <bean id="statistics.charting" parent="SimplePipeline">
+    <bean id="statistics.charting" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
                 <ref bean="assemble"/>
-                <bean parent="XSLTransformationStage"
+                <bean parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/statistics-charting.xsl">
                     <property name="transformParameters">
                         <map>
@@ -81,12 +81,12 @@
         Generates a page of links to discovery services, for each SP that
         has mdui:uiinfo metadata.
     -->
-    <bean id="sp_mdui_test" parent="SimplePipeline">
+    <bean id="sp_mdui_test" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
                 <ref bean="assemble"/>
-                <bean id="process" parent="XSLTransformationStage"
+                <bean id="process" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/sp_mdui_test.xsl"/>
                 <bean id="serialize" parent="SerializationStage">
                     <property name="outputFile">
@@ -107,7 +107,7 @@
         ***********************
     -->
     
-    <bean id="verify" parent="SimplePipeline">
+    <bean id="verify" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!--
@@ -138,7 +138,7 @@
         *********************************
     -->
     
-    <bean id="checkPorts" parent="SimplePipeline">
+    <bean id="checkPorts" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -170,7 +170,7 @@
         ***********************************
     -->
     
-    <bean id="checkFuture" parent="SimplePipeline">
+    <bean id="checkFuture" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
@@ -192,7 +192,7 @@
                     Additional X.509 certificate checks, over and above those
                     performed in uk_registeredEntities.
                 -->
-                <bean id="checkCertificates" parent="X509ValidationStage">
+                <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
                         <list>
                             <!-- none at present -->
@@ -248,7 +248,7 @@
         
         For now, just the head of that pipeline.
     -->
-    <bean id="import.metadata" parent="SimplePipeline">
+    <bean id="import.metadata" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <!-- fetch the input file -->
@@ -263,11 +263,11 @@
                 <ref bean="uk_fix_mailto"/>
                 
                 <!-- transform into a fragment using our local conventions -->
-                <bean id="importTransform" parent="XSLTransformationStage"
+                <bean id="importTransform" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/import.xsl"/>
                 
                 <!-- normalise namespaces in a specific way -->
-                <bean id="normalizeFragment" parent="XSLTransformationStage"
+                <bean id="normalizeFragment" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/ns_norm_fragment.xsl"/>
                 
                 <!-- check the transformed input -->
@@ -302,14 +302,14 @@
                 <ref bean="check_sp_tls"/>
                 <ref bean="check_uk_trust"/>
                 
-                <bean id="checkCertificates" parent="X509ValidationStage">
+                <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
                         <list>
                             <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean parent="X509RSAKeyLengthValidator"
+                            <bean parent="mda.X509RSAKeyLengthValidator"
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                             <!-- Error on small RSA public exponents. -->
-                            <bean parent="X509RSAExponentValidator"/>
+                            <bean parent="mda.X509RSAExponentValidator"/>
                             <!-- Error on inconsistent subjectAltNames. -->
                             <bean parent="X509ConsistentNameValidator"/>
 
@@ -360,7 +360,7 @@
         </property>
     </bean>
     
-    <bean id="importExported" parent="SimplePipeline">
+    <bean id="importExported" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_exportedEntities"/>
@@ -371,7 +371,7 @@
         </property>
     </bean>
     
-    <bean id="importExportedRaw" parent="SimplePipeline">
+    <bean id="importExportedRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
                 <ref bean="uk_exportAggregate"/>
