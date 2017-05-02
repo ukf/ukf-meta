@@ -31,10 +31,9 @@
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
 	
-	exclude-result-prefixes="alg md ukfedlabel wayf xenc"
+	exclude-result-prefixes="alg md ukfedlabel xenc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">

@@ -75,7 +75,6 @@
             urn:mace:shibboleth:metadata:1.0 shibboleth-metadata-1.0.xsd
             http://ukfederation.org.uk/2006/11/label uk-fed-label.xsd
             http://refeds.org/metadata refeds-metadata.xsd
-            http://sdss.ac.uk/2006/06/WAYF uk-wayf.xsd
             http://www.w3.org/2001/04/xmlenc# xenc-schema.xsd
             http://www.w3.org/2009/xmlenc11# xenc-schema-11.xsd
             http://www.w3.org/2000/09/xmldsig# xmldsig-core-schema.xsd">

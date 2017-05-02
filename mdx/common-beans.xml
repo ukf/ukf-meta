@@ -170,7 +170,6 @@
     <bean id="samlp_namespace"      parent="String" c:_="urn:oasis:names:tc:SAML:2.0:protocol"/>
     <bean id="shibmd_namespace"     parent="String" c:_="urn:mace:shibboleth:metadata:1.0"/>
     <bean id="ukfedlabel_namespace" parent="String" c:_="http://ukfederation.org.uk/2006/11/label"/>
-    <bean id="wayf_namespace"       parent="String" c:_="http://sdss.ac.uk/2006/06/WAYF"/>
     <bean id="xenc_namespace"       parent="String" c:_="http://www.w3.org/2001/04/xmlenc#"/>
     <bean id="xenc11_namespace"     parent="String" c:_="http://www.w3.org/2009/xmlenc11#"/>
     <bean id="xml_namespace"        parent="String" c:_="http://www.w3.org/XML/1998/namespace"/>
@@ -203,7 +202,6 @@
                 <entry key="samlp"      value-ref="samlp_namespace"/>
                 <entry key="shibmd"     value-ref="shibmd_namespace"/>
                 <entry key="ukfedlabel" value-ref="ukfedlabel_namespace"/>
-                <entry key="wayf"       value-ref="wayf_namespace"/>
                 <entry key="xenc"       value-ref="xenc_namespace"/>
                 <entry key="xenc11"     value-ref="xenc11_namespace"/>
                 <entry key="xs"         value-ref="xs_namespace"/>
@@ -260,14 +258,6 @@
     -->
     <bean id="stripUkfedlabelNamespace" parent="mda.NamespaceStrippingStage"
         p:namespace-ref="ukfedlabel_namespace"/>
-    
-    <!--
-        stripWayfNamespace
-        
-        Remove the UK federation WAYF namespace.
-    -->
-    <bean id="stripWayfNamespace" parent="mda.NamespaceStrippingStage"
-        p:namespace-ref="wayf_namespace"/>
     
     <!--
         normaliseNamespaces
@@ -856,10 +846,6 @@
         <bean parent="ClassPathResource">
             <!-- no imports -->
             <constructor-arg value="schema/uk-fed-label.xsd"/>
-        </bean>
-        <bean parent="ClassPathResource">
-            <!-- no imports -->
-            <constructor-arg value="schema/uk-wayf.xsd"/>
         </bean>
         <bean parent="ClassPathResource">
             <!-- imports xenc-schema.xsd -->

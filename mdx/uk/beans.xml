@@ -284,31 +284,6 @@
                 <ref bean="uk_default_regauth"/>
                 <ref bean="populateRegistrationAuthorities"/>
                 
-                <!--
-                    Add REFEDS Hide from Discovery category as a standardised
-                    equivalent to our HideFromWAYF element.
-                -->
-                <bean id="uk_addHideFromDiscovery" parent="mda.SplitMergeStage">
-                    <!-- select entities with HideFromWayf label -->
-                    <property name="selectionStrategy">
-                        <bean parent="mda.XPathItemSelectionStrategy">
-                            <constructor-arg value="/md:EntityDescriptor[md:Extensions/wayf:HideFromWAYF]"/>
-                            <constructor-arg ref="commonNamespaces"/>
-                        </bean>
-                    </property>
-                    
-                    <property name="selectedItemPipeline">
-                        <bean id="selectedItemPipeline" parent="mda.SimplePipeline">
-                            <property name="stages">
-                                <bean id="addHideFromDiscovery" parent="ukf.EntityAttributeAddingStage"
-                                    p:attributeValue="http://refeds.org/category/hide-from-discovery"
-                                    p:addingFirstChild="true"/>
-                            </property>
-                        </bean>
-                    </property>
-
-                </bean>
-                
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <bean id="check_ukfedlabel" parent="mda.XSLValidationStage"

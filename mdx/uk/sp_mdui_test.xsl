@@ -16,13 +16,12 @@
     xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:members="http://ukfederation.org.uk/2007/01/members"
-    xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
     xmlns:math="http://exslt.org/math"
     xmlns:date="http://exslt.org/dates-and-times"
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    exclude-result-prefixes="xsl ds md mdui xsi members wayf math date dyn set idpdisc"
+    exclude-result-prefixes="xsl ds md mdui xsi members math date dyn set idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>

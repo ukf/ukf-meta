@@ -269,7 +269,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="stripWayfNamespace"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
                 
@@ -376,7 +375,6 @@
                 <ref bean="stripMdattrNamespace"/>
                 <ref bean="stripMdrpiNamespace"/>
                 <ref bean="stripUkfedlabelNamespace"/>
-                <ref bean="stripWayfNamespace"/>
                 
                 <ref bean="stripArtifactResolutionService"/>
                 <ref bean="stripAttributeAuthorityDescriptor"/>
@@ -508,7 +506,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="stripWayfNamespace"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
@@ -561,7 +558,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="uk_assemble"/>
-                <ref bean="stripWayfNamespace"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
                 
@@ -683,7 +679,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="stripUkfedlabelNamespace"/>
-                <ref bean="stripWayfNamespace"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
@@ -799,7 +794,6 @@
                 <ref bean="errorTerminatingFilter"/>
                 
                 <ref bean="stripUkfedlabelNamespace"/>
-                <ref bean="stripWayfNamespace"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>

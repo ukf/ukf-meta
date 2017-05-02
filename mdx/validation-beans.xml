@@ -368,12 +368,6 @@
     -->
     <bean id="check_uk_trust" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_uk_trust.xsl"/>
-    
-    <!--
-        check_uk_wayf
-    -->
-    <bean id="check_uk_wayf" parent="mda.XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_uk_wayf.xsl"/>
 
 
     <!--
@@ -670,7 +664,6 @@
                 <ref bean="check_sp_tls"/>
                 <ref bean="check_uk_algorithms"/>
                 <ref bean="check_uk_trust"/>
-                <ref bean="check_uk_wayf"/>
             </list>
         </property>
     </bean>

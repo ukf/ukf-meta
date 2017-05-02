@@ -17,7 +17,6 @@
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:set="http://exslt.org/sets"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
 

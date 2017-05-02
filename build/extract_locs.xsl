@@ -14,8 +14,7 @@
 	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:wayf="http://sdss.ac.uk/2006/06/WAYF"
-	exclude-result-prefixes="md ds wayf">
+	exclude-result-prefixes="md ds">
 
 	<!-- Output is plain text -->
 	<xsl:output method="text"/>
