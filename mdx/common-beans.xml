@@ -27,7 +27,7 @@
     <!--
         Pick up UK federation MDA beans.
     -->
-    <import resource="ukf-beans.xml"/>
+    <import resource="classpath:uk/org/ukfederation/mda/beans.xml"/>
 
     <!--
         ***********************************
