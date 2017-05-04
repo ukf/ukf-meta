@@ -58,7 +58,11 @@
                 <ref bean="populateItemIds"/>
 
                 <!-- Set ID, cacheDuration and validUntil attributes. -->
-                <bean parent="mda.GenerateIdStage"/>
+                <bean parent="mda.GenerateIdStage">
+                    <constructor-arg>
+                        <bean parent="ukf.FixedStringIdentifierGenerationStrategy" c:_="_"/>
+                    </constructor-arg>
+                </bean>
                 <bean parent="mda.SetCacheDurationStage" p:cacheDuration="PT6H"/>
                 <bean parent="mda.SetValidUntilStage" p:validityDuration="P14D"/>
 
