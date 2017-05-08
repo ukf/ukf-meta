@@ -557,6 +557,7 @@
                 <ref bean="check_dup_display"/>
                 <ref bean="errorTerminatingFilter"/>
                 
+                <ref bean="uk_strip_UKFederationMember"/>
                 <ref bean="uk_assemble"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>

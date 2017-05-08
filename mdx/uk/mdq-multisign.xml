@@ -51,6 +51,9 @@
                     </property>
                 </bean>
 
+                <!-- Remove UKFederationLabel elements. -->
+                <ref bean="uk_strip_UKFederationMember"/>
+
                 <!-- Break down into individual entities. -->
                 <ref bean="disassemble"/>
 
