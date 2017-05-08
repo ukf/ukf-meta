@@ -31,6 +31,20 @@
         </property>
     </bean>
     
+    <!--
+        removeUKEntities
+
+        Filter out entities which declare themselves as registered
+        by the UK federation, as we don't need to verify those.
+    -->
+    <bean id="removeUKEntities" parent="mda.EntityRegistrationAuthorityFilterStage">
+        <property name="designatedRegistrationAuthorities">
+            <list>
+                <ref bean="uk_ukf_registrar"/>
+            </list>
+        </property>
+    </bean>
+
     <bean id="importProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -74,6 +88,7 @@
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
+                <ref bean="removeUKEntities"/>
                 <bean id="removeBlacklistedEntities" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="false"
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
@@ -93,6 +108,7 @@
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
+                <ref bean="removeUKEntities"/>
                 <bean id="removeBlacklistedEntities" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="false"
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
@@ -113,6 +129,7 @@
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
+                <ref bean="removeUKEntities"/>
                 
                 <!-- remove all entities which still have errors -->
                 <ref bean="standardImportActions"/>
@@ -145,6 +162,7 @@
         <property name="stages">
             <list>
                 <ref bean="int_edugain_productionEntities"/>
+                <ref bean="removeUKEntities"/>
                 
                 <ref bean="standardImportActions"/>
                 <ref bean="warningAndErrorAnnouncer"/>
