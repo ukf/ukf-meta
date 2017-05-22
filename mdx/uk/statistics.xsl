@@ -134,11 +134,12 @@
                 
                 <h2><a name="members">Member Statistics</a></h2>
                 <p>Number of members: <xsl:value-of select="$memberCount"/></p>
-                <p>The following table shows the canonical name of each member organisation and 
-                   the number of entities belonging to that member.
-                   The canonical name for a member is derived from the member's legal name. 
-                   Ownership  of an entity is established by the OrganizationName field of an entity exactly 
-                   matching the canonical name of the member organisation. 
+                <p>
+                    The following table shows the canonical name of each member organisation,
+                    the Jisc organization ID and the number of entities belonging to that member.
+                    The canonical name for a member is derived from the member's legal name.
+                    Ownership  of an entity is established by the OrganizationName field of an entity exactly
+                    matching the canonical name of the member organisation.
                 </p>
                 <p>
                    Many organisations have no entities in the federation. 
@@ -153,6 +154,7 @@
                 <table border="1" cellspacing="2" cellpadding="4">
                     <tr>
                         <th align="left">Member</th>
+                        <th>orgID</th>
                         <th>Entities</th>
                         <th>IdPs</th>
                         <th>SPs</th>
@@ -1118,6 +1120,18 @@
                     <xsl:value-of select="members:NameComment"/>
                     <xsl:text>)</xsl:text>
                 </xsl:if>
+            </td>
+            <td>
+                <xsl:choose>
+                    <!-- remove a prefix 'ukforg' if present (currently always the case) -->
+                    <xsl:when test="starts-with(@ID, 'ukforg')">
+                        <xsl:value-of select="substring-after(@ID, 'ukforg')"/>
+                    </xsl:when>
+                    <!-- otherwise just use the whole of the ID -->
+                    <xsl:otherwise>
+                        <xsl:value-of select="@ID"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </td>
             <!-- count total entities -->
             <td align="center">
