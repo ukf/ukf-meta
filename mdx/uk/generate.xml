@@ -80,6 +80,17 @@
         </property>
     </bean>
 
+    <!--
+        setStaticID
+
+        Set the item's ID attribute to the static string "_".
+    -->
+    <bean id="setStaticID" parent="mda.GenerateIdStage">
+        <constructor-arg>
+            <bean parent="ukf.FixedStringIdentifierGenerationStrategy" c:_="_"/>
+        </constructor-arg>
+    </bean>
+
     
     <!--
         *****************************************
@@ -800,6 +811,7 @@
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
+                <ref bean="setStaticID"/>
 
                 <bean id="uk_normaliseExportPreview" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/ns_norm_export_preview.xsl"/>
