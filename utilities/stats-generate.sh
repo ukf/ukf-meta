@@ -587,7 +587,7 @@ if [[ "$timeperiod" != "day" ]]; then
     
     
     # Top 10 queries and how many downloads / total data shipped
-    mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* $logslocation/md/md-ne-01/mdq.uou-access_log* $logslocation/md/md-ne-02/mdq.uou-access_log* $logslocation/md/md-we-01/mdq.uou-access_log* $logslocation/md/md-we-02/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer|monitis)" | grep /entities/ | grep -v 404 | grep -v "/entities/ " | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | sort | uniq -c | xargs -0 printf "%b" | sort -nr | head -10)
+    mdqtoptenqueriesbycount=$(grep $apachesearchterm $logslocation/md/md1/mdq.uou-access_log* $logslocation/md/md2/mdq.uou-access_log* $logslocation/md/md3/mdq.uou-access_log* $logslocation/md/md-ne-01/mdq.uou-access_log* $logslocation/md/md-ne-02/mdq.uou-access_log* $logslocation/md/md-we-01/mdq.uou-access_log* $logslocation/md/md-we-02/mdq.uou-access_log* | grep -Ev "(Sensu-HTTP-Check|dummy|check_http|Balancer|monitis)" | grep /entities/ | grep -v 404 | grep -v "/entities/ " | grep -v "/entities/ " | awk '{print $7}' | cut -f 3 -d "/" | sed "s@+@ @g;s@%@\\\\x@g" | printf "%b\n" $(</dev/stdin) | sort | uniq -c | sort -nr | head -10)
 fi
 
 # =====
