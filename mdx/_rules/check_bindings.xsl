@@ -131,6 +131,7 @@
 	
 	<xsl:template match="md:SingleSignOnService
 		[@Binding != 'urn:mace:shibboleth:1.0:profiles:AuthnRequest']
+		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
