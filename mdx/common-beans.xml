@@ -512,17 +512,19 @@
     <!--
         QNames for SAML metadata elements.
     -->
-    <bean id="md-Company"                 parent="QName" c:_0-ref="md_namespace" c:_1="Company"/>
-    <bean id="md-EmailAddress"            parent="QName" c:_0-ref="md_namespace" c:_1="EmailAddress"/>
-    <bean id="md-GivenName"               parent="QName" c:_0-ref="md_namespace" c:_1="GivenName"/>
-    <bean id="md-NameIDFormat"            parent="QName" c:_0-ref="md_namespace" c:_1="NameIDFormat"/>
-    <bean id="md-OrganizationDisplayName" parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationDisplayName"/>
-    <bean id="md-OrganizationName"        parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationName"/>
-    <bean id="md-OrganizationURL"         parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationURL"/>
-    <bean id="md-ServiceDescription"      parent="QName" c:_0-ref="md_namespace" c:_1="ServiceDescription"/>
-    <bean id="md-ServiceName"             parent="QName" c:_0-ref="md_namespace" c:_1="ServiceName"/>
-    <bean id="md-SurName"                 parent="QName" c:_0-ref="md_namespace" c:_1="SurName"/>
-    <bean id="md-TelephoneNumber"         parent="QName" c:_0-ref="md_namespace" c:_1="TelephoneNumber"/>
+    <bean id="md-AdditionalMetadataLocation"  parent="QName" c:_0-ref="md_namespace" c:_1="AdditionalMetadataLocation"/>
+    <bean id="md-AttributeProfile"            parent="QName" c:_0-ref="md_namespace" c:_1="AttributeProfile"/>
+    <bean id="md-Company"                     parent="QName" c:_0-ref="md_namespace" c:_1="Company"/>
+    <bean id="md-EmailAddress"                parent="QName" c:_0-ref="md_namespace" c:_1="EmailAddress"/>
+    <bean id="md-GivenName"                   parent="QName" c:_0-ref="md_namespace" c:_1="GivenName"/>
+    <bean id="md-NameIDFormat"                parent="QName" c:_0-ref="md_namespace" c:_1="NameIDFormat"/>
+    <bean id="md-OrganizationDisplayName"     parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationDisplayName"/>
+    <bean id="md-OrganizationName"            parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationName"/>
+    <bean id="md-OrganizationURL"             parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationURL"/>
+    <bean id="md-ServiceDescription"          parent="QName" c:_0-ref="md_namespace" c:_1="ServiceDescription"/>
+    <bean id="md-ServiceName"                 parent="QName" c:_0-ref="md_namespace" c:_1="ServiceName"/>
+    <bean id="md-SurName"                     parent="QName" c:_0-ref="md_namespace" c:_1="SurName"/>
+    <bean id="md-TelephoneNumber"             parent="QName" c:_0-ref="md_namespace" c:_1="TelephoneNumber"/>
 
     <!--
         Basic EntitiesDescriptor disassembler pipeline stage.
@@ -626,14 +628,15 @@
         ***********************************************
     -->
 
-    <bean id="mdui-Description"     parent="QName" c:_0-ref="mdui_namespace" c:_1="Description"/>
-    <bean id="mdui-DisplayName"     parent="QName" c:_0-ref="mdui_namespace" c:_1="DisplayName"/>
-    <bean id="mdui-DomainHint"      parent="QName" c:_0-ref="mdui_namespace" c:_1="DomainHint"/>
-    <bean id="mdui-GeolocationHint" parent="QName" c:_0-ref="mdui_namespace" c:_1="GeolocationHint"/>
-    <bean id="mdui-InformationURL"  parent="QName" c:_0-ref="mdui_namespace" c:_1="InformationURL"/>
-    <bean id="mdui-IPHint"          parent="QName" c:_0-ref="mdui_namespace" c:_1="IPHint"/>
-    <bean id="mdui-Keywords"        parent="QName" c:_0-ref="mdui_namespace" c:_1="Keywords"/>
-    <bean id="mdui-Logo"            parent="QName" c:_0-ref="mdui_namespace" c:_1="Logo"/>
+    <bean id="mdui-Description"         parent="QName" c:_0-ref="mdui_namespace" c:_1="Description"/>
+    <bean id="mdui-DisplayName"         parent="QName" c:_0-ref="mdui_namespace" c:_1="DisplayName"/>
+    <bean id="mdui-DomainHint"          parent="QName" c:_0-ref="mdui_namespace" c:_1="DomainHint"/>
+    <bean id="mdui-GeolocationHint"     parent="QName" c:_0-ref="mdui_namespace" c:_1="GeolocationHint"/>
+    <bean id="mdui-InformationURL"      parent="QName" c:_0-ref="mdui_namespace" c:_1="InformationURL"/>
+    <bean id="mdui-IPHint"              parent="QName" c:_0-ref="mdui_namespace" c:_1="IPHint"/>
+    <bean id="mdui-Keywords"            parent="QName" c:_0-ref="mdui_namespace" c:_1="Keywords"/>
+    <bean id="mdui-Logo"                parent="QName" c:_0-ref="mdui_namespace" c:_1="Logo"/>
+    <bean id="mdui-PrivacyStatementURL" parent="QName" c:_0-ref="mdui_namespace" c:_1="PrivacyStatementURL"/>
 
     <bean id="stripMDUIDiscoHints" parent="mda.ElementStrippingStage"
         p:elementName="DiscoHints"
@@ -936,12 +939,23 @@
     <bean id="trimImportElementWhitespace" parent="mda.ElementWhitespaceTrimmingStage">
         <property name="elementNames">
             <set>
+                <ref bean="md-AdditionalMetadataLocation"/>
+                <ref bean="md-AttributeProfile"/>
+                <ref bean="md-Company"/>
                 <ref bean="md-EmailAddress"/>
+                <ref bean="md-GivenName"/>
                 <ref bean="md-NameIDFormat"/>
                 <ref bean="md-OrganizationDisplayName"/>
+                <ref bean="md-OrganizationName"/>
                 <ref bean="md-OrganizationURL"/>
+                <ref bean="md-ServiceDescription"/>
+                <ref bean="md-ServiceName"/>
+                <ref bean="md-SurName"/>
+                <ref bean="md-TelephoneNumber"/>
+                <ref bean="mdui-GeolocationHint"/>
                 <ref bean="mdui-InformationURL"/>
                 <ref bean="mdui-Logo"/>
+                <ref bean="mdui-PrivacyStatementURL"/>
             </set>
         </property>
     </bean>
