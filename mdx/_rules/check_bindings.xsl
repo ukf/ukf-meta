@@ -136,6 +136,7 @@
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:profiles:holder-of-key:SSO:browser']
+		[@Binding != 'http://schemas.xmlsoap.org/ws/2003/07/secext']
 		">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
