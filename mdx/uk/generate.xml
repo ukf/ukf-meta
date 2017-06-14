@@ -696,6 +696,7 @@
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
+                <ref bean="setStaticID"/>
 
                 <bean id="uk_normaliseExport" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/ns_norm_export.xsl"/>
