@@ -2,10 +2,10 @@
 <!--
 
 	check_int.xsl
-	
+
 	Checking ruleset containing rules associated with the
 	Service Provider Request Initiation Protocol and Profile Version 1.0.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -24,19 +24,19 @@
 	<!--
 		Checks on the RequestInitiator extension.
 	-->
-	
+
 	<xsl:template match="init:RequestInitiator[not(@Binding)]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">missing Binding attribute on RequestInitiator</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="init:RequestInitiator[@Binding]
 		[@Binding!='urn:oasis:names:tc:SAML:profiles:SSO:request-init']">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">incorrect Binding value on RequestInitiator</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
+
+
 </xsl:stylesheet>

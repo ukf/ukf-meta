@@ -2,11 +2,11 @@
 <!--
 
 	scopes.xsl
-	
+
 	XSL stylesheet that takes a SAML 2.0 metadata file and extracts
 	a list of scopes used.  Regular expression scopes are ignored.
 	Duplicates are not removed, and the result is unsorted.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->

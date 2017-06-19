@@ -522,7 +522,7 @@
         fs.tar.mdqcache">
         <echo>Stage 4 Success: MDQ cache created; all files comitted to data repository.</echo>
     </target>
-    
+
     <!--
         Stage 4.2 of md process: Copy files from keymaster, push.
 
@@ -549,7 +549,7 @@
         Runs on: orchestrator
             * Git: Create New Tag
             * Git: Push to origin
-            * SCP: Copy mdq cache to repo 
+            * SCP: Copy mdq cache to repo
             * Jenkins: Trigger publish task
     -->
     <target name="process.bagandtag" depends="
@@ -1187,7 +1187,7 @@
             <delete file="${temp.xml}" quiet="true" verbose="false"/>
         </sequential>
     </macrodef>
-    
+
     <!--
         Verify a metadata file held on the master distribution site, using the ukfederation-mdq.pem key
     -->
@@ -1706,7 +1706,7 @@
             </XMLSECTOOL>
         </sequential>
     </macrodef>
-    
+
     <macrodef name="XMLSECTOOL.VFY.MDQ.uk">
         <attribute name="i"/><!-- input file -->
         <sequential>
@@ -2322,7 +2322,7 @@
         <CHANNEL.do channel="uk" verb="statistics"/>
         <fixcrlf file="${output.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
     </target>
-    
+
     <!--
         This variant generates a much simpler file, intended for use when building the
         monthly chart pack.

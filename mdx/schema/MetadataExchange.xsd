@@ -2,7 +2,7 @@
 <!--
 (c) 2004-2006 BEA Systems Inc., Computer Associates International, Inc.,
 International Business Machines Corporation, Microsoft Corporation,
-Inc., SAP AG, Sun Microsystems, and webMethods. All rights reserved. 
+Inc., SAP AG, Sun Microsystems, and webMethods. All rights reserved.
 
 Permission to copy and display the WS-MetadataExchange Specification
 (the "Specification"), in any medium without fee or royalty is hereby
@@ -90,8 +90,8 @@ No other rights are granted by implication, estoppel or otherwise.
       <xs:anyAttribute namespace='##other' processContents='lax' />
     </xs:complexType>
   </xs:element>
-  
-  <!-- 
+
+  <!--
        Ideally, the type of the MetadataReference would have been
        the union of wsa04:EndpointReferenceType and
        wsa10:EndpointReferenceType but unfortunately xs:union only
@@ -102,7 +102,7 @@ No other rights are granted by implication, estoppel or otherwise.
   <xs:element name='MetadataReference'>
     <xs:complexType>
       <xs:sequence>
-        <xs:any minOccurs='1' maxOccurs='unbounded' 
+        <xs:any minOccurs='1' maxOccurs='unbounded'
                 processContents='lax' namespace='##other' />
       </xs:sequence>
     </xs:complexType>

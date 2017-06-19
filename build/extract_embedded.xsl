@@ -2,14 +2,14 @@
 <!--
 
 	extract_embedded.xsl
-	
+
 	XSL stylesheet that takes a SAML 2.0 metadata file and extracts
 	all embedded certificates on entities in the form of a series of
 	PEM certificate blocks.
-	
+
 	A descriptive comment is added to indicate the entity in question and
 	the KeyName used (if any) so that later processing can distinguish.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->

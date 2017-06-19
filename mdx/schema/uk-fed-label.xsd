@@ -4,17 +4,17 @@
     targetNamespace="http://ukfederation.org.uk/2006/11/label"
     version="2016-09-15"
     elementFormDefault="qualified">
-    
+
     <annotation>
         <documentation>
             This schema describes the UK federation label namespace.
-            
+
             For additional information, see the Federation Technical Specification.
-            
+
             This version of the schema follows FTS edition 1.1 of 1-June-2007.
         </documentation>
     </annotation>
-    
+
     <complexType name="basicLabel">
         <annotation>
             <documentation>
@@ -28,7 +28,7 @@
             neither text nor nested elements.
         -->
     </complexType>
-    
+
     <complexType name="datedLabel">
         <annotation>
             <documentation>
@@ -84,7 +84,7 @@
             </complexContent>
         </complexType>
     </element>
-    
+
     <element name="AccountableUsers" type="ukfedlabel:basicLabel">
         <annotation>
             <documentation>
@@ -95,7 +95,7 @@
             </documentation>
         </annotation>
     </element>
-    
+
     <element name="Software">
         <annotation>
             <documentation>
@@ -104,7 +104,7 @@
                 version of software used.  This information is added to
                 an entity only if it has been received from the deployer
                 of the entity on the indicated date.
-                
+
                 This information is used in entity fragment files only,
                 and is not included in the metadata published by the
                 UK federation.  Its principal use is in classifying
@@ -124,7 +124,7 @@
                             </documentation>
                         </annotation>
                     </attribute>
-                    
+
                     <attribute name="version" use="optional" type="token">
                         <annotation>
                             <documentation>
@@ -135,7 +135,7 @@
                             </documentation>
                         </annotation>
                     </attribute>
-                    
+
                     <attribute name="fullVersion" use="optional" type="token">
                         <annotation>
                             <documentation>
@@ -147,7 +147,7 @@
             </complexContent>
         </complexType>
     </element>
-    
+
     <element name="ExportOptIn" type="ukfedlabel:datedLabel">
         <annotation>
             <documentation>
@@ -156,7 +156,7 @@
             </documentation>
         </annotation>
     </element>
-    
+
     <element name="ExportOptOut" type="ukfedlabel:datedLabel">
         <annotation>
             <documentation>
@@ -165,5 +165,5 @@
             </documentation>
         </annotation>
     </element>
-    
+
 </schema>

@@ -2,10 +2,10 @@
 <!--
 
 	mdui_dn_en_present.xsl
-	
+
     If an entity has mdui:UIInfo, then that must include at least an
     mdui:DisplayName with an English name.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -27,5 +27,5 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

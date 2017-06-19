@@ -2,10 +2,10 @@
 <!--
 
 	check_uk_urlenc.xsl
-	
+
     UKf-specific check for endpoint locations that include a '%' character,
     which is symptomatic of their being URL-encoded instead of entity-encoded.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -27,6 +27,6 @@
 			<xsl:with-param name="m">URL-encoded Location attribute; should be entity-encoded</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
+
+
 </xsl:stylesheet>

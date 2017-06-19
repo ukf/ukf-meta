@@ -2,9 +2,9 @@
 <!--
 
 	check_uk_mdrps.xsl
-	
+
     UKf-specific check for appropriate RegistrationPolicy values.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -35,8 +35,8 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
+
+
 	<!--
 		Restrict registrationAuthority values for UK federation entities, if present,
 		to previously used MDRPS document URLs.
@@ -52,6 +52,6 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
+
+
 </xsl:stylesheet>

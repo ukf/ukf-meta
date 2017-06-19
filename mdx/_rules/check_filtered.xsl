@@ -5,7 +5,7 @@
 
 	This checking ruleset verifies that certain constructs have been removed from the
 	metadata before it is published.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -24,7 +24,7 @@
 	-->
 	<xsl:import href="check_framework.xsl"/>
 
-	
+
 	<xsl:template match="ds:X509SerialNumber">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">ds:X509SerialNumber should have been filtered out</xsl:with-param>

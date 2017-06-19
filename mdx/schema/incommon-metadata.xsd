@@ -7,13 +7,13 @@
   attributeFormDefault="unqualified"
   blockDefault="substitution"
   version="2.0">
-  
+
   <xs:annotation>
     <xs:documentation>
       Document title: Schema for InCommon Federation metadata extensions
       Document identifier: Metadata Extension Schema
       Location: https://spaces.internet2.edu/x/iIuVAQ
-      Revision history: 
+      Revision history:
       V1.2 (3 May 2013):
       Make schema itself schema-valid.
       V1.1 (2 May 2013):
@@ -22,7 +22,7 @@
       Initial version. Added contactType attribute.
     </xs:documentation>
   </xs:annotation>
-  
+
   <xs:attribute name="contactType" type="xs:anyURI"/>
-  
+
 </xs:schema>

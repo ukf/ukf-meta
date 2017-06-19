@@ -11,17 +11,17 @@
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-    
+
     <!--
         Import commonly used beans.
     -->
     <import resource="classpath:common-beans.xml"/>
-        
+
     <!--
         Import channel-specific beans.
     -->
     <import resource="classpath:us_incommon/beans.xml"/>
-    
+
     <!--
         Serialise into this channel's "imported" aggregate file.
     -->
@@ -33,7 +33,7 @@
             </bean>
         </property>
     </bean>
-    
+
     <bean id="importProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -53,7 +53,7 @@
             </list>
         </property>
     </bean>
-    
+
     <bean id="importExported" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -64,7 +64,7 @@
             </list>
         </property>
     </bean>
-    
+
     <bean id="importExportedRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -73,7 +73,7 @@
             </list>
         </property>
     </bean>
-    
+
     <alias alias="import"    name="importExported"/>
     <alias alias="importRaw" name="importExportedRaw"/>
 </beans>

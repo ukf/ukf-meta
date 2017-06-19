@@ -2,14 +2,14 @@
 <!--
 
 	check_mdrpi.xsl
-	
+
 	Checking ruleset containing rules associated with the SAML V2.0 Metadata
 	Extensions for Registration and Publication Information Version 1.0, see:
 
 		http://wiki.oasis-open.org/security/SAML2MetadataDRI
-		
+
 	This ruleset reflects WD08, 12-Dec-2011.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -26,10 +26,10 @@
 		Common support functions.
 	-->
 	<xsl:import href="check_framework.xsl"/>
-	
+
 	<!--
 		Section 2.1
-		
+
 		RegistrationInfo MUST appear within the Extensions of either
 		EntitiesDescriptor or EntityDescriptor.
 	-->
@@ -44,10 +44,10 @@
 			<xsl:with-param name="m">RegistrationInfo must only appear within Extensions of EntityDescriptor or EntitiesDescriptor</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 2.1
-		
+
 		<mdrpi:RegistrationInfo> MUST NOT appear more than once within a given <md:Extensions> element.
 	-->
 	<xsl:template match="md:Extensions/mdrpi:RegistrationInfo[position()>1]">
@@ -55,10 +55,10 @@
 			<xsl:with-param name="m">more than one RegistrationInfo element in one Extensions element</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 2.1
-		
+
 		If RegistrationInfo appears on an EntitiesDescriptor, that precludes any appearance on nested
 		EntitiesDescriptor or EntityDescriptor elements.
 	-->
@@ -66,12 +66,12 @@
 		[md:EntityDescriptor//mdrpi:RegistrationInfo | md:EntitiesDescriptor//mdrpi:RegistrationInfo]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">RegistrationInfo may not appear on both EntitiesDescriptor and child elements</xsl:with-param>
-		</xsl:call-template>        
+		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 2.1.1
-		
+
 		registrationInstant values MUST be expressed in the UTC timezone using the 'Z' timezone identifier.
 	-->
 	<xsl:template match="mdrpi:RegistrationInfo[@registrationInstant]
@@ -81,12 +81,12 @@
 				<xsl:text>registrationInstant does not end with 'Z': </xsl:text>
 				<xsl:value-of select="@registrationInstant"/>
 			</xsl:with-param>
-		</xsl:call-template>        
+		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 2.1.1
-		
+
 		RegistrationPolicy elements are required to have unique xml:lang values within a given container.
 	-->
 	<xsl:template match="mdrpi:RegistrationInfo">
@@ -94,7 +94,7 @@
 		<xsl:call-template name="uniqueLang">
 			<xsl:with-param name="e" select="mdrpi:RegistrationPolicy"/>
 		</xsl:call-template>
-		
+
 		<!-- handle individual elements -->
 		<xsl:apply-templates select="*"/>
 	</xsl:template>
@@ -113,10 +113,10 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-	
+
 	<!--
         Section 2.2
-        
+
         PublicationInfo MUST appear within the Extensions of either
         EntitiesDescriptor or EntityDescriptor.
     -->
@@ -131,12 +131,12 @@
 			<xsl:with-param name="m">PublicationInfo must only appear within Extensions of EntityDescriptor or EntitiesDescriptor</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 2.2
-		
+
 		PublicationInfo SHOULD NOT appear except on the document element.
-		
+
 		Interpreted as a MUST NOT for now.
 	-->
 	<xsl:template match="mdrpi:PublicationInfo[parent::md:Extensions/parent::md:*/parent::*]">
@@ -144,10 +144,10 @@
 			<xsl:with-param name="m">PublicationInfo must be within document element's Extensions</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Section 2.2
-        
+
         <mdrpi:PublicationInfo> MUST NOT appear more than once within a given <md:Extensions> element.
     -->
 	<xsl:template match="md:Extensions/mdrpi:PublicationInfo[position()>1]">
@@ -155,10 +155,10 @@
 			<xsl:with-param name="m">more than one PublicationInfo element in one Extensions element</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Section 2.1, 2.2
-        
+
         Restrict the elements in this namespace which can appear directly within md:Extensions
         to the two defined container elements.  This will catch mis-spelled containers.
     -->
@@ -171,5 +171,5 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

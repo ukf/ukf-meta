@@ -24,7 +24,7 @@
         silently discards entities containing errors anyway.
     -->
     <util:set id="importEntityBlacklist">
-        
+
     </util:set>
-    
+
 </beans>

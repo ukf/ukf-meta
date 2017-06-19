@@ -2,9 +2,9 @@
 <!--
 
 	check_uk_mdattr.xsl
-	
+
     UKf-specific check for appropriate entity attributes in fragment files.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -12,11 +12,11 @@
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
 	xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-	
+
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
-	
+
 	<!--
 		Common support functions.
 	-->
@@ -31,7 +31,7 @@
 			<xsl:with-param name="m">Assertion not permitted within EntityAttributes</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		All entity attributes should have the standard SAML 2.0 URI name format.
 	-->
@@ -72,7 +72,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Validate entity category values.
 	-->
@@ -89,7 +89,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Validate entity category support values.
     -->

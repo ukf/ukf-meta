@@ -11,17 +11,17 @@
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-    
+
     <!--
         Import commonly used beans.
     -->
     <import resource="classpath:common-beans.xml"/>
-        
+
     <!--
         Import channel-specific beans.
     -->
     <import resource="classpath:at_aconet/beans.xml"/>
-    
+
     <bean id="serializeImported" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
@@ -30,7 +30,7 @@
             </bean>
         </property>
     </bean>
-    
+
     <bean id="importProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -50,7 +50,7 @@
             </list>
         </property>
     </bean>
-    
+
     <bean id="importEdugain" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -61,7 +61,7 @@
             </list>
         </property>
     </bean>
-    
+
     <bean id="importEdugainRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -70,7 +70,7 @@
             </list>
         </property>
     </bean>
-    
+
     <bean id="verifyEdugain" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -86,7 +86,7 @@
                         </list>
                     </property>
                 </bean>
-                
+
                 <!--
                     Remove a specific entity we know has a problem that it will take
                     a while to resolve.
@@ -104,7 +104,7 @@
             </list>
         </property>
     </bean>
-    
+
     <alias alias="import"    name="importEdugain"/>
     <alias alias="importRaw" name="importEdugainRaw"/>
 </beans>

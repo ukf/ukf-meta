@@ -16,11 +16,11 @@
 	xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
 	xmlns:remd="http://refeds.org/metadata"
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-	
+
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
-	
+
 	<!--
 		Common support functions.
 	-->

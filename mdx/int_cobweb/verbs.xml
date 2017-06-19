@@ -11,17 +11,17 @@
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-    
+
     <!--
         Import commonly used beans.
     -->
     <import resource="classpath:common-beans.xml"/>
-        
+
     <!--
         Import channel-specific beans.
     -->
     <import resource="classpath:int_cobweb/beans.xml"/>
-    
+
     <bean id="serializeImported" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
@@ -30,7 +30,7 @@
             </bean>
         </property>
     </bean>
-    
+
     <bean id="importProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -41,7 +41,7 @@
             </list>
         </property>
     </bean>
-    
+
     <bean id="verifyProduction" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -51,7 +51,7 @@
             </list>
         </property>
     </bean>
-    
+
     <bean id="importProductionRaw" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
@@ -60,7 +60,7 @@
             </list>
         </property>
     </bean>
-    
+
     <alias alias="import"    name="importProduction"/>
     <alias alias="importRaw" name="importProductionRaw"/>
 </beans>

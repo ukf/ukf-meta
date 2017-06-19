@@ -2,7 +2,7 @@
 <!--
 
 	check_recovered.xsl
-	
+
 	Checking ruleset which labels every entity as having recovered from a previous
 	error condition.
 -->
@@ -22,5 +22,5 @@
 			<xsl:with-param name="m">entity has recovered from a previous error condition</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

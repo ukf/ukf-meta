@@ -2,9 +2,9 @@
 <!--
 
 	check_bindings.xsl
-	
+
 	Checking ruleset that checks SAML 2.0 metadata Binding values.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -32,7 +32,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="md:AssertionConsumerService
 		[@Binding != 'http://schemas.xmlsoap.org/ws/2003/07/secext']
 		[@Binding != 'urn:oasis:names:tc:SAML:1.0:profiles:artifact-01']
@@ -52,7 +52,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="md:AssertionIDRequestService
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:URI']
@@ -80,7 +80,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="md:ManageNameIDService
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST']
@@ -97,7 +97,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="md:NameIDMappingService
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP']
 		">
@@ -128,7 +128,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="md:SingleSignOnService
 		[@Binding != 'urn:mace:shibboleth:1.0:profiles:AuthnRequest']
 		[@Binding != 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact']
@@ -148,7 +148,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Issue warnings for all Bindings on elements other than the ones
 		called out above, as they may well be accurate but need additional
@@ -174,5 +174,5 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

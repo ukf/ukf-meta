@@ -2,11 +2,11 @@
 <!--
 
 	extract_cert_locs.xsl
-	
+
 	XSL stylesheet that takes a SAML 2.0 metadata file and extracts
 	a list of service locations that require certificates to be
 	presented to them.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -23,7 +23,7 @@
 		<xsl:value-of select="@Location"/>
 		<xsl:text>&#x0a;</xsl:text>
 	</xsl:template>
-	
+
 	<!--
 		ArtifactResolutionService endpoints on IdPs are assumed to be
 		authenticated by TLS; those on SPs are assumed to be authenticated
@@ -33,7 +33,7 @@
 		<xsl:value-of select="@Location"/>
 		<xsl:text>&#x0a;</xsl:text>
 	</xsl:template>
-	
+
 	<xsl:template match="text()">
 		<!-- do nothing -->
 	</xsl:template>

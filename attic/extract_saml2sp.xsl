@@ -2,10 +2,10 @@
 <!--
 
 	extract_saml2sp.xsl
-	
+
 	XSL stylesheet that takes a SAML 2.0 metadata aggregate and extracts
 	SAML 2.0 support information for each SP entity.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -18,7 +18,7 @@
 
 	<!-- Output is plain text -->
 	<xsl:output method="text"/>
-	
+
 	<xsl:template match="//md:EntityDescriptor[md:SPSSODescriptor]">
 		<xsl:value-of select="@ID"/>
 		<xsl:text> </xsl:text>
@@ -29,9 +29,9 @@
 		</xsl:choose>
 		<xsl:text>&#x0a;</xsl:text>
 	</xsl:template>
-	
+
 	<xsl:template match="text()">
 		<!-- do nothing -->
 	</xsl:template>
-	
+
 </xsl:stylesheet>

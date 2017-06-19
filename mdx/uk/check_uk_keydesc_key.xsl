@@ -2,9 +2,9 @@
 <!--
 
 	check_uk_keydesc_key.xsl
-	
+
     UKf-specific check that all KeyDescriptor elements contain an embedded key.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -29,5 +29,5 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

@@ -20,12 +20,12 @@
         ***********************************
     -->
 
-    <!--        
+    <!--
         The tests in this section are not applied to the UK federation metadata at the moment,
         but will be in the future.  Usually, the delay is due to the presence of the specific
         case in the current metadata, and the test will be moved into production once that
         has been cleaned up.  In some cases, this can be a lengthy process.
-        
+
         The main check_future test is broken down into a number of sub-tests rather than
         just writing it as one long XSLT ruleset so that overlapping failures can all be
         seen at the same time.  This isn't so important in production, where any failure
@@ -33,70 +33,70 @@
         it's less productive to clear up one problem only to have another one emerge from
         hiding.
     -->
-    
+
     <!--
         check_future_0
     -->
     <bean id="check_future_0" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_0.xsl"/>
-    
+
     <!--
         check_future_1
     -->
     <bean id="check_future_1" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_1.xsl"/>
-    
+
     <!--
         check_future_2
     -->
     <bean id="check_future_2" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_2.xsl"/>
-    
+
     <!--
         check_future_3
     -->
     <bean id="check_future_3" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_3.xsl"/>
-    
+
     <!--
         check_future_4
     -->
     <bean id="check_future_4" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_4.xsl"/>
-    
+
     <!--
         check_future_5
     -->
     <bean id="check_future_5" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_5.xsl"/>
-    
+
     <!--
         check_future_6
     -->
     <bean id="check_future_6" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_6.xsl"/>
-    
+
     <!--
         check_future_7
     -->
     <bean id="check_future_7" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_7.xsl"/>
-    
+
     <!--
         check_future_8
     -->
     <bean id="check_future_8" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_8.xsl"/>
-    
+
     <!--
         check_future_9
     -->
     <bean id="check_future_9" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_future_9.xsl"/>
-    
+
     <!--
         check_future
-        
+
         Combines all check_future_N stages.
     -->
     <bean id="check_future" parent="mda.CompositeStage">
@@ -115,7 +115,7 @@
             </list>
         </property>
     </bean>
-    
+
 
     <!--
         ***********************************************************
@@ -146,7 +146,7 @@
     <bean id="check_mdattr" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_mdattr.xsl"/>
 
-    
+
     <!--
         *************************************************
         ***                                           ***
@@ -154,18 +154,18 @@
         ***                                           ***
         *************************************************
     -->
-    
+
     <!--
         check_mdrpi_xslt
-        
+
         Miscellaneous MDRPI tests, in XSLT.
     -->
     <bean id="check_mdrpi_xslt" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_mdrpi.xsl"/>
-    
+
     <!--
         check_mdrpi
-        
+
         Composite check for the MDRPI specification.
     -->
     <bean id="check_mdrpi" parent="mda.CompositeStage">
@@ -175,27 +175,27 @@
             </list>
         </property>
     </bean>
-    
+
     <!--
         check_regauth_parent
-        
+
         Parent (template) for per-channel beans.
-        
+
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
     <bean id="check_regauth_parent" abstract="true" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_regauth.xsl"/>
-    
+
     <!--
         check_hasreginfo
-        
+
         Check that each entity has an mdrpi:RegistrationInfo element.
     -->
     <bean id="check_hasreginfo" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_hasreginfo.xsl"/>
 
-    
+
     <!--
         ***********************************************
         ***                                         ***
@@ -203,51 +203,51 @@
         ***                                         ***
         ***********************************************
     -->
-    
+
     <!--
         check_mdui_iphint
-        
+
         Checks for the mdui:IPHint element.
     -->
     <bean id="check_mdui_iphint" parent="ukf.IPHintValidationStage"
         p:checkingNetworks="true"/>
-    
+
     <!--
         check_mdui_xslt
-        
+
         Miscellaneous MDUI tests, in XSLT.
     -->
     <bean id="check_mdui_xslt" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_mdui.xsl"/>
-    
+
     <!--
         mdui_dn_en_match
-        
+
         If an IdP has both an OrganizationDisplayName in English, and an
         mdui:DisplayName in English, they must be identical.
-        
+
         UKFTS 1.4 section 3.3
     -->
     <bean id="mdui_dn_en_match" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/mdui_dn_en_match.xsl"/>
-    
+
     <!--
         mdui_dn_en_present
-        
+
         If an entity has mdui:UIInfo, then that must include at least an
         mdui:DisplayName with an English name.
     -->
     <bean id="mdui_dn_en_present" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/mdui_dn_en_present.xsl"/>
-    
+
     <!--
         check_mdui
-        
+
         Composite check for the MDUI specification.
-        
+
         Omitted the following, which are only applied to
         UK-registered metadata:
-        
+
             mdui_dn_en_present
             mdui_dn_en_match
     -->
@@ -275,7 +275,7 @@
     <bean id="check_incmd" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_incmd.xsl"/>
 
-    
+
     <!--
         ***********************************************************
         ***                                                     ***
@@ -310,7 +310,7 @@
 
     <!--
         check_shib_regscope
-        
+
         Check for regular expressions in Shibboleth Scope elements.  Applied very selectively,
         because we do permit this in certain circumstances.
     -->
@@ -319,7 +319,7 @@
 
     <!--
         check_shib_noregscope
-        
+
         Check for Shibboleth Scope elements lacking a regexp attribute, which can cause
         problems with signature generation and validation because the schema includes
         a default value.
@@ -356,13 +356,13 @@
         ***                                                             ***
         *******************************************************************
     -->
-    
+
     <!--
         check_uk_algorithms
     -->
     <bean id="check_uk_algorithms" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_uk_algorithms.xsl"/>
-    
+
     <!--
         check_uk_trust
     -->
@@ -377,7 +377,7 @@
         ***                                                 ***
         *******************************************************
     -->
-    
+
     <!--
         These checks are for consistency across a collection of entities
         rather than on each entity independently.
@@ -385,19 +385,19 @@
 
     <!--
         check_aggregate
-        
+
         Checks for duplicate entityID values across a set of entities.
-        
+
         It is assumed that the entities are wrapped in a single EntitiesDescriptor.
     -->
     <bean id="check_aggregate" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_aggregate.xsl"/>
-    
+
     <!--
         check_dup_display
-        
+
         Checks for duplicate identity provider display names across a set of entities.
-        
+
         It is assumed that the entities are independently represented as EntityDescriptor
         items in the item collection.
     -->
@@ -412,7 +412,7 @@
         ***                                         ***
         ***********************************************
     -->
-    
+
     <!--
         Debian weak key blacklists.
     -->
@@ -459,43 +459,43 @@
     -->
     <bean id="check_adfs" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_adfs.xsl"/>
-    
+
     <!--
         check_bindings
     -->
     <bean id="check_bindings" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_bindings.xsl"/>
-    
+
     <!--
         check_filtered
     -->
     <bean id="check_filtered" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_filtered.xsl"/>
-    
+
     <!--
         check_hoksso
     -->
     <bean id="check_hoksso" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_hoksso.xsl"/>
-        
+
     <!--
         check_idpdisc
     -->
     <bean id="check_idpdisc" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_idpdisc.xsl"/>
-    
+
     <!--
         check_imported
     -->
     <bean id="check_imported" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_imported.xsl"/>
-    
+
     <!--
         check_init
     -->
     <bean id="check_init" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_init.xsl"/>
-    
+
     <!--
         check_mdiop
     -->
@@ -504,7 +504,7 @@
 
     <!--
         check_cr
-        
+
         Check for the presence of CR characters in text content or attribute values.
         This protects against SSPCPP-684 in the Shibboleth SP.
     -->
@@ -533,19 +533,19 @@
     -->
     <bean id="check_misc" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_misc.xsl"/>
-    
+
     <!--
         check_namespaces
     -->
     <bean id="check_namespaces" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_namespaces.xsl"/>
-    
+
     <!--
         check_reqattr
     -->
     <bean id="check_reqattr" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_reqattr.xsl"/>
-    
+
     <!--
         check_saml2int
     -->
@@ -557,19 +557,19 @@
     -->
     <bean id="check_saml1" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_saml1.xsl"/>
-    
+
     <!--
         check_saml2
     -->
     <bean id="check_saml2" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_saml2.xsl"/>
-    
+
     <!--
         check_saml2meta
     -->
     <bean id="check_saml2meta" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_saml2meta.xsl"/>
-    
+
     <!--
         check_saml_strings
     -->
@@ -599,7 +599,7 @@
 
     <!--
         check_validUntil
-        
+
         Check that an aggregate has a validUntil instant specified, and that it has not
         yet expired.  Does not put an upper bound on validUntil intervals.
     -->
@@ -614,7 +614,7 @@
         -->
         <property name="maxValidityInterval" value="0"/>
     </bean>
-    
+
     <!--
         check_vhosts
     -->
@@ -629,7 +629,7 @@
         ***                                       ***
         *********************************************
     -->
-    
+
     <!--
         CHECK_std
     -->
@@ -667,5 +667,5 @@
             </list>
         </property>
     </bean>
-    
+
 </beans>

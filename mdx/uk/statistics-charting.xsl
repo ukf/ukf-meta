@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    
+
     statistics.xsl
-    
+
     XSL stylesheet taking a UK Federation metadata file and resulting in an HTML document
     giving statistics.
-    
+
     Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -30,16 +30,16 @@
     version="1.0">
 
     <xsl:output method="xml" omit-xml-declaration="yes" indent="no"/>
-    
+
     <!--
         memberDocument
-        
+
         The members.xml file, as a DOM document, is passed as a parameter.
     -->
     <xsl:param name="memberDocument"/>
-    
+
     <xsl:template match="md:EntitiesDescriptor">
-        
+
         <!--
             Break down the "members" document.
         -->
@@ -47,33 +47,33 @@
         <xsl:variable name="members" select="$memberDocument//members:Member"/>
         <xsl:variable name="memberCount" select="count($members)"/>
         <xsl:variable name="memberNames" select="$members/members:Name"/>
-        
+
         <xsl:variable name="entities" select="//md:EntityDescriptor"/>
         <xsl:variable name="entityCount" select="count($entities)"/>
 
         <xsl:variable name="idps" select="$entities[md:IDPSSODescriptor]"/>
         <xsl:variable name="idps.saml1"
             select="$idps[contains(md:IDPSSODescriptor/@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]"/>
-        
+
         <xsl:variable name="idpCount" select="count($idps)"/>
         <xsl:variable name="idps.saml1.count" select="count($idps.saml1)"/>
-        
+
         <xsl:variable name="sps" select="$entities[md:SPSSODescriptor]"/>
         <xsl:variable name="sps.saml1"
             select="$sps[contains(md:SPSSODescriptor/@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]"/>
-        
+
         <xsl:variable name="spCount" select="count($sps)"/>
         <xsl:variable name="sps.saml1.count" select="count($sps.saml1)"/>
-        
+
         <xsl:variable name="entities.saml1" select="set:distinct($idps.saml1 | $sps.saml1)"/>
         <xsl:variable name="entities.saml1.count" select="count($entities.saml1)"/>
-        
+
         <xsl:variable name="dualEntities" select="$entities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
         <xsl:variable name="dualEntityCount" select="count($dualEntities)"/>
-        
+
         <xsl:variable name="federationMemberEntityCount"
             select="count($entities[md:Extensions/ukfedlabel:UKFederationMember])"/>
-        
+
         <xsl:variable name="memberEntities"
             select="dyn:closure($members/members:Name, '$entities[md:Organization/md:OrganizationName = current()]')"/>
         <xsl:variable name="memberEntityCount"
@@ -92,7 +92,7 @@
         <xsl:variable name="sps.artifact.saml1.count" select="count($sps.artifact.saml1)"/>
         <xsl:variable name="entities.artifact.saml1" select="set:distinct($idps.artifact.saml1 | $sps.artifact.saml1)"/>
         <xsl:variable name="entities.artifact.saml1.count" select="count($entities.artifact.saml1)"/>
-        
+
         <pre>
 
             <!--
@@ -111,7 +111,7 @@
             <xsl:text>Entities: </xsl:text>
             <xsl:value-of select="$entityCount"/>
             <xsl:text>&#10;</xsl:text>
-            
+
             <xsl:text>   IdPs: </xsl:text>
             <xsl:value-of select="$idpCount"/>
             <xsl:text>&#10;</xsl:text>
@@ -119,18 +119,18 @@
             <xsl:text>   SPs: </xsl:text>
             <xsl:value-of select="$spCount"/>
             <xsl:text>&#10;</xsl:text>
-            
+
             <xsl:text>Entities per member: </xsl:text>
             <xsl:value-of select="format-number($entityCount div $memberCount, '0.000000')"/>
             <xsl:text>&#10;</xsl:text>
-            
+
             <xsl:variable name="charting.entities.algsupport" select="$entities[descendant::alg:* or descendant::md:EncryptionMethod]"/>
             <xsl:variable name="charting.entities.algsupport.count" select="count($charting.entities.algsupport)"/>
             <xsl:text>Algorithm support: </xsl:text>
             <xsl:value-of select="format-number($charting.entities.algsupport.count div $entityCount, '0.00%')"/>
             <xsl:text> of all entities</xsl:text>
             <xsl:text>&#10;</xsl:text>
-            
+
             <xsl:variable name="charting.entities.algsupport.gcm"
                 select="$charting.entities.algsupport[
                 descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes128-gcm' or
@@ -141,14 +141,14 @@
             <xsl:value-of select="format-number($charting.entities.algsupport.gcm.count div $entityCount, '0.00%')"/>
             <xsl:text> of all entities</xsl:text>
             <xsl:text>&#10;</xsl:text>
-            
+
             <xsl:variable name="charting.sps.algsupport" select="$sps[descendant::alg:* or descendant::md:EncryptionMethod]"/>
             <xsl:variable name="charting.sps.algsupport.count" select="count($charting.sps.algsupport)"/>
             <xsl:text>Algorithm support:</xsl:text>
             <xsl:value-of select="format-number($charting.sps.algsupport.count div $spCount, '0.00%')"/>
             <xsl:text> of SP entities</xsl:text>
             <xsl:text>&#10;</xsl:text>
-            
+
             <xsl:variable name="charting.idp3" select="$idps[
                 md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '3']
                 ]"/>
@@ -167,7 +167,7 @@
             <xsl:text>SPs without SAML 2.0 support: </xsl:text>
             <xsl:value-of select="$nosaml2.sps.count"/>
             <xsl:text>&#10;</xsl:text>
-            
+
             <xsl:for-each select="$nosaml2.sps">
                 <xsl:sort select="descendant::md:OrganizationName"/>
                 <xsl:text>   </xsl:text>
@@ -202,14 +202,14 @@
             <xsl:text>IdPs without SAML 2.0 support: </xsl:text>
             <xsl:value-of select="$nosaml2.idps.count"/>
             <xsl:text>&#10;</xsl:text>
-            
+
             <xsl:call-template name="entity.breakdown.by.software">
                 <xsl:with-param name="entities" select="$nosaml2.idps"/>
             </xsl:call-template>
 
         </pre>
     </xsl:template>
-    
+
 
     <!--
         Break down a set of entities by the software used.
@@ -226,7 +226,7 @@
             ***   C L A S S I F Y   E N T I T I E S   B Y   S O F T W A R E   ***
             ***                                                               ***
             *********************************************************************
-            
+
             The classification algorithms used here are chained together so that
             each classification step works only on those entities not already
             classified.  This means that entities won't be counted twice, but
@@ -234,10 +234,10 @@
             shouldn't be changed without careful thought.  In general, more
             specific algorithms should appear before more general ones.
         -->
-        
+
         <!--
             Classify miscellaneous entities.
-            
+
             Here we pull off a list of entities labelled with explicit
             Software labels that aren't for the software we address
             in more detail below.  The result is, as it were, a list of
@@ -259,7 +259,7 @@
             ]"/>
         <xsl:variable name="entities.misc.out"
             select="set:difference($entities.misc.in, $entities.misc)"/>
-        
+
         <!--
             Classify EZproxy SPs
         -->
@@ -277,7 +277,7 @@
             select="$entities.simplesamlphp.in[md:Extensions/ukfedlabel:Software/@name='simpleSAMLphp']"/>
         <xsl:variable name="entities.simplesamlphp.out"
             select="set:difference($entities.simplesamlphp.in, $entities.simplesamlphp)"/>
-        
+
         <!--
             Classify Atypon SAML SP entities.
         -->
@@ -286,7 +286,7 @@
             select="$entities.atyponsamlsp.in[md:Extensions/ukfedlabel:Software/@name='Atypon SAML SP 1.1/2.0']"/>
         <xsl:variable name="entities.atyponsamlsp.out"
             select="set:difference($entities.atyponsamlsp.in, $entities.atyponsamlsp)"/>
-        
+
         <!--
             Classify OpenAthens entities.
         -->
@@ -295,7 +295,7 @@
             select="$entities.openathens.in[md:Extensions/ukfedlabel:Software/@name='OpenAthens']"/>
         <xsl:variable name="entities.openathens.out"
             select="set:difference($entities.openathens.in, $entities.openathens)"/>
-        
+
         <!--
             Classify Shibboleth 3 IdPs entities.
         -->
@@ -306,7 +306,7 @@
             ]"/>
         <xsl:variable name="entities.shib.3.out"
             select="set:difference($entities.shib.3.in, $entities.shib.3)"/>
-        
+
         <!--
             Classify Shibboleth 2.0 IdPs and SPs.
         -->
@@ -328,7 +328,7 @@
             select="$entities.gateways.in[md:Extensions/ukfedlabel:Software/@name='Eduserv Gateway']"/>
         <xsl:variable name="entities.gateways.out"
             select="set:difference($entities.gateways.in, $entities.gateways)"/>
-        
+
         <!--
             Classify OpenAthens virtual IdPs.
         -->
@@ -342,7 +342,7 @@
                 ]"/>
         <xsl:variable name="entities.openathens.virtual.out"
             select="set:difference($entities.openathens.virtual.in, $entities.openathens.virtual)"/>
-        
+
         <!--
             Classify Guanxi entities.
         -->
@@ -351,7 +351,7 @@
             select="$entities.guanxi.in[md:Extensions/ukfedlabel:Software/@name='Guanxi']"/>
         <xsl:variable name="entities.guanxi.out"
             select="set:difference($entities.guanxi.in, $entities.guanxi)"/>
-        
+
         <!--
             Classify AthensIM entities.
         -->
@@ -360,14 +360,14 @@
             select="$entities.athensim.in[md:Extensions/ukfedlabel:Software/@name='AthensIM']"/>
         <xsl:variable name="entities.athensim.out"
             select="set:difference($entities.athensim.in, $entities.athensim)"/>
-        
+
         <!--
             Remaining entities are unknown.
         -->
         <xsl:variable name="entities.unclassified" select="$entities.athensim.out"/>
         <xsl:variable name="unknownSoftwareEntities"
             select="$entities.unclassified | $entities.misc"/>
-        
+
         <!--
             ***************************************************************
             ***                                                         ***
@@ -375,13 +375,13 @@
             ***                                                         ***
             ***************************************************************
         -->
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.shib.3"/>
             <xsl:with-param name="name">Shibboleth 3.x</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.shib.2"/>
             <xsl:with-param name="name">Shibboleth 2.x</xsl:with-param>
@@ -401,13 +401,13 @@
             <xsl:with-param name="name">Other than Shibboleth</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.ezproxy"/>
             <xsl:with-param name="name">EZproxy</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.simplesamlphp"/>
             <xsl:with-param name="name">simpleSAMLphp</xsl:with-param>
@@ -425,31 +425,31 @@
             <xsl:with-param name="name">AthensIM</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.guanxi"/>
             <xsl:with-param name="name">Guanxi</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.gateways"/>
             <xsl:with-param name="name">Athens/Shibboleth gateway</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.openathens.virtual"/>
             <xsl:with-param name="name">OpenAthens Virtual IdP</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$entities.openathens"/>
             <xsl:with-param name="name">OpenAthens</xsl:with-param>
             <xsl:with-param name="total" select="$entityCount"/>
         </xsl:call-template>
-        
+
         <xsl:call-template name="entity.breakdown.by.software.line">
             <xsl:with-param name="entities" select="$unknownSoftwareEntities"/>
             <xsl:with-param name="name">Unknown or other</xsl:with-param>
@@ -496,5 +496,5 @@
             </xsl:if>
         </xsl:if>
     </xsl:template>
-    
+
 </xsl:stylesheet>

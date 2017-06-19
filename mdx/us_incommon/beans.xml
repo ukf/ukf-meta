@@ -11,7 +11,7 @@
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-    
+
     <!--
         Location of various resources.
     -->
@@ -27,7 +27,7 @@
     <bean id="us_incommon_legacyAggregate_url" parent="String">
         <constructor-arg value="http://wayf.incommonfederation.org/InCommon/InCommon-metadata.xml"/>
     </bean>
-    
+
     <!--
         Fetch the production aggregate.
     -->
@@ -40,13 +40,13 @@
             </bean>
         </property>
     </bean>
-    
+
     <!--
         InCommon signing certificate.
     -->
     <bean id="us_incommon_signingCertificate" parent="X509CertificateFactoryBean"
     	p:resource="classpath:us_incommon/inc-md-cert.pem"/>
-    
+
     <!--
         Check InCommon signing signature.
     -->
@@ -56,7 +56,7 @@
 
     <!--
         us_incommon_check_regauth
-        
+
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
@@ -67,10 +67,10 @@
             </map>
         </property>
     </bean>
-    
+
     <!--
         us_incommon_default_regauth
-        
+
         Provide a default registrationAuthority appropriate to
         this channel.
     -->
@@ -81,7 +81,7 @@
             </map>
         </property>
     </bean>
-    
+
     <!--
         Fetch the production entities as a collection.
     -->
@@ -98,12 +98,12 @@
                 <ref bean="check_validUntil"/>
                 <ref bean="us_incommon_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
-                
+
                 <ref bean="disassemble"/>
             </list>
         </property>
     </bean>
-    
+
     <!--
         Synthesise an export collection by filtering the production entities.
     -->
@@ -111,7 +111,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
-                
+
                 <!--
                     Check for fatal errors at the aggregate level:
                         missing or expired validUntil attribute
@@ -120,9 +120,9 @@
                 <ref bean="check_validUntil"/>
                 <ref bean="us_incommon_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
-                
+
                 <ref bean="disassemble"/>
-                
+
                 <!--
                     ***********************************
                     ***                             ***
@@ -130,7 +130,7 @@
                     ***                             ***
                     ***********************************
                 -->
-                    
+
                 <!--
                     Filter out all entities not involved in the pilot.
                 -->
@@ -143,7 +143,7 @@
                         </set>
                     </property>
                 </bean>
-                
+
                 <!--
                     Remove all contact information.
                 -->
@@ -153,9 +153,9 @@
                         <set>
                             <!-- no whitelisted types implies remove everything -->
                         </set>
-                    </property>                    
+                    </property>
                 </bean>
-                
+
                 <!--
                     ******************************
                     ***                        ***
@@ -163,14 +163,14 @@
                     ***                        ***
                     ******************************
                 -->
-                
+
                 <!-- default and check registrar -->
                 <ref bean="us_incommon_default_regauth"/>
                 <ref bean="us_incommon_check_regauth"/>
             </list>
         </property>
     </bean>
-    
+
     <!--
         Fake an export aggregate by aggregating the exported entities.
     -->

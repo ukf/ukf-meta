@@ -2,11 +2,11 @@
 <!--
 
 	extract_nocert_locs.xsl
-	
+
 	XSL stylesheet that takes a SAML 2.0 metadata file and extracts
 	a list of service locations that do not require certificates to be
 	presented to them.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->

@@ -2,12 +2,12 @@
 <!--
 
 	mdui_dn_en_match.xsl
-	
+
     If an IdP has both an OrganizationDisplayName in English, and an
     mdui:DisplayName in English, they must be identical.
-    
+
     UKFTS 1.4 section 3.3
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -37,5 +37,5 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

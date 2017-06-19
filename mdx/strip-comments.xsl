@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	
+
 	strip-comments.xsl
-	
+
 	Remove all comment nodes from a document.
-	
+
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -17,12 +17,12 @@
 	<xsl:template match="text()|@*">
 		<xsl:copy/>
 	</xsl:template>
-	
+
 	<!-- Copy all elements from the input to the output, along with their attributes and contents. -->
 	<xsl:template match="*">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

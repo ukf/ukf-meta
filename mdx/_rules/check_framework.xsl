@@ -2,9 +2,9 @@
 <!--
 
 	check_framework.xsl
-	
+
 	XSL stylesheet providing a framework for use by rule checking files.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -19,7 +19,7 @@
 		xsl:message element.
 	-->
 	<xsl:output method="text"/>
-	
+
 
 	<!--
 		Common template to call to report an error on some element within an entity.
@@ -81,8 +81,8 @@
 			<xsl:value-of select="$m"/>
 		</xsl:message>
 	</xsl:template>
-	
-	
+
+
 	<!--
 		Common template to call to report an informational message on some element within an entity.
 	-->
@@ -112,13 +112,13 @@
 			<xsl:value-of select="$m"/>
 		</xsl:message>
 	</xsl:template>
-	
-	
+
+
 	<!-- Recurse down through all elements by default. -->
 	<xsl:template match="*">
 		<xsl:apply-templates select="node()|@*"/>
 	</xsl:template>
-	
+
 
 	<!-- Discard text blocks, comments and attributes by default. -->
 	<xsl:template match="text()|comment()|@*">

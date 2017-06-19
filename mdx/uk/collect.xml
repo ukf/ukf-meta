@@ -16,7 +16,7 @@
         Import commonly used beans.
     -->
     <import resource="classpath:common-beans.xml"/>
-    
+
     <!--
         Import channel-specific beans.
     -->

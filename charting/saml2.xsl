@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	
+
 	saml2.xsl
-	
+
 	XSL stylesheet that takes a SAML 2.0 metadata file and extracts
 	statistics about the level of SAML 2 protocol support within the
 	included entities.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
-	
+
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -16,10 +16,10 @@
 	xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	exclude-result-prefixes="md mdrpi">
-	
+
 	<!-- Output is plain text -->
 	<xsl:output method="text"/>
-	
+
 	<xsl:template match="md:EntitiesDescriptor">
 		<xsl:variable name="entities" select="//md:EntityDescriptor
 		[descendant::mdrpi:RegistrationInfo/@registrationAuthority='http://ukfederation.org.uk']"/>
@@ -45,7 +45,7 @@
 			])"/>
 		<xsl:text>&#10;</xsl:text>
 	</xsl:template>
-	
+
 	<xsl:template match="text()">
 		<!-- do nothing -->
 	</xsl:template>

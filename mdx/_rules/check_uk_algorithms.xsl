@@ -2,7 +2,7 @@
 <!--
 
 	check_uk_algorithms.xsl
-	
+
 	Checking ruleset for cryptographic algorithms. This is named as a UK
 	ruleset because the division between acceptable and unacceptable algorithms
 	is sometimes a judgement call; however, it should be generally
@@ -11,7 +11,7 @@
 	The best reference for *all* URIs used as algorithm identifiers is the
 	XML Security Algorithm Cross-Reference at http://www.w3.org/TR/xmlsec-algorithms/
 	Algorithm lists here are in the same order as in that document.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 -->
 <xsl:stylesheet version="1.0"
@@ -33,7 +33,7 @@
         ***                               ***
         *************************************
     -->
-	
+
 	<!--
         Check for known BAD SigningMethod algorithms.
     -->
@@ -48,7 +48,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Check for known GOOD SigningMethod algorithms.
     -->
@@ -69,7 +69,7 @@
 		]">
 		<!-- do nothing -->
 	</xsl:template>
-	
+
 	<!--
         Misspelled or otherwise not known SigningMethod algorithms.
     -->
@@ -82,7 +82,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         ***********************************
         ***                             ***
@@ -105,7 +105,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Check for known GOOD DigestMethod algorithms.
     -->
@@ -119,7 +119,7 @@
 		]">
 		<!-- do nothing -->
 	</xsl:template>
-	
+
 	<!--
         Misspelled or otherwise not known DigestMethod algorithms.
     -->
@@ -143,7 +143,7 @@
 
 	<!--
         Check for known BAD EncryptionMethod algorithms.
-		
+
 		This list is of symmetric key encryption algorithms *and*
 		key transport algorithms.
     -->
@@ -158,10 +158,10 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Check for known GOOD EncryptionMethod algorithms.
-		
+
 		This list is of symmetric key encryption algorithms *and*
 		key transport algorithms.
 	-->
@@ -178,7 +178,7 @@
 		]">
 		<!-- do nothing -->
 	</xsl:template>
-	
+
 	<!--
 		Misspelled or otherwise not known EncryptionMethod algorithms.
 	-->

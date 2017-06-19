@@ -4,7 +4,7 @@
 	default_regauth.xsl
 
 	Apply a default registrationAuthority to entities which don't have one already.
-	
+
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -15,11 +15,11 @@
 
 	<!--
         defaultAuthority
-        
+
         Set this parameter from the calling context.
     -->
 	<xsl:param name="defaultAuthority">(value not set)</xsl:param>
-	
+
 	<!--
 		EntityDescriptor with no Extensions doesn't have a RegistrationInfo,
 		by definition.
@@ -37,7 +37,7 @@
 			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!--
 		EntityDescriptor with Extensions but without RegistrationInfo needs to have one
 		injected into the existing Extensions.
@@ -48,7 +48,7 @@
 			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!--
 		Default RegistrationInfo element, with associated white space.
 	-->
@@ -61,17 +61,17 @@
 			</xsl:attribute>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
 	</xsl:template>
-	
+
 	<!--By default, copy all elements from the input to the output, along with their attributes and contents.-->
 	<xsl:template match="*">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
 	</xsl:template>
-		
+
 </xsl:stylesheet>

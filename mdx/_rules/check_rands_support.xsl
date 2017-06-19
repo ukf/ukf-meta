@@ -2,14 +2,14 @@
 <!--
 
 	check_rands_support.xsl
-	
+
 	Checking ruleset containing rules associated with the REFEDS
 	Research and Scholarship entity support category, see:
 
 		https://refeds.org/category/research-and-scholarship/
-		
+
 	This ruleset reflects v1.3, 8-Sep-2016.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -41,7 +41,7 @@
 			<xsl:when test="not(md:IDPSSODescriptor)">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">REFEDS R+S support only applies to identity provider entities</xsl:with-param>
-				</xsl:call-template>        
+				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

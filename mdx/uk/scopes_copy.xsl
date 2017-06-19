@@ -2,10 +2,10 @@
 <!--
 
 	scopes_copy.xsl
-	
+
 	Make all three potential scope lists equivalent (on the entity, on
 	the IDPSSODescriptor and on the AttributeAuthority).
-	
+
 -->
 <xsl:stylesheet version="1.0"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
@@ -38,7 +38,7 @@
 			<xsl:apply-templates select="node()"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!--
 		If an IdP's SSO or AA roles already includes an Extensions element, this may
 		already contain extensions other than scopes.  We need to make sure that
@@ -56,7 +56,7 @@
 					<xsl:copy-of select="."/>
 					<xsl:text>&#10;        </xsl:text>
 				</xsl:for-each>
-			</xsl:if>			
+			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
 
@@ -67,18 +67,18 @@
         ***                                       ***
         *********************************************
     -->
-    
-    
+
+
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
 	</xsl:template>
-	
+
 	<!--By default, copy all elements from the input to the output, along with their attributes and contents.-->
 	<xsl:template match="*">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

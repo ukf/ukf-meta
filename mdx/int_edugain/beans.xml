@@ -11,13 +11,13 @@
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-    
+
     <!--
         Import additional channel-local beans.
     -->
     <import resource="file:${edugain.dir}/entity-blacklist.xml"/>
     <import resource="file:${edugain.dir}/verify-blacklist.xml"/>
-    
+
     <!--
         Location of various resources.
     -->
@@ -42,7 +42,7 @@
             </bean>
         </property>
     </bean>
-    
+
     <!--
         Fetch the eduGAIN test aggregate.
     -->
@@ -55,13 +55,13 @@
             </bean>
         </property>
     </bean>
-    
+
     <!--
         eduGAIN signing certificate.
     -->
     <bean id="int_edugain_signingCertificate" parent="X509CertificateFactoryBean"
         p:resource="classpath:int_edugain/mds-2014.cer"/>
-    
+
     <!--
         Check a signature against the eduGAIN signing certificate.
     -->
@@ -92,9 +92,9 @@
                 <ref bean="check_validUntil"/>
                 <ref bean="int_edugain_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
-                
+
                 <ref bean="disassemble"/>
-                
+
                 <ref bean="int_edugain_removeBlacklistedEntities"/>
 
                 <!--
@@ -105,7 +105,7 @@
             </list>
         </property>
     </bean>
-    
+
     <!--
         Fetch the test entities as a collection.
     -->
@@ -122,11 +122,11 @@
                 <ref bean="check_validUntil"/>
                 <ref bean="int_edugain_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
-                
+
                 <ref bean="disassemble"/>
 
                 <ref bean="int_edugain_removeBlacklistedEntities"/>
-                
+
                 <!--
                     All eduGAIN entities should have mdrpi:RegistrationInfo elements, but
                     we can't check the actual values.
@@ -135,5 +135,5 @@
             </list>
         </property>
     </bean>
-    
+
 </beans>

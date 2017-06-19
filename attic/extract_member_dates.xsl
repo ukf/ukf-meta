@@ -2,10 +2,10 @@
 <!--
 
 	extract_member_dates.xsl
-	
+
 	XSL stylesheet that takes the UK federation members.xml file ane extracts
 	member names and joining dates in a format suitable for updating.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -16,7 +16,7 @@
 
 	<!-- Output is plain text -->
 	<xsl:output method="text"/>
-	
+
 	<xsl:template match="ukfm:Member">
 		<xsl:value-of select="ukfm:JoinDate"/>
 		<xsl:text>,"</xsl:text>
@@ -30,5 +30,5 @@
 	<xsl:template match="text()">
 		<!-- do nothing -->
 	</xsl:template>
-	
+
 </xsl:stylesheet>

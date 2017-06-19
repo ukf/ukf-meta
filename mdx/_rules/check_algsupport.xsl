@@ -2,9 +2,9 @@
 <!--
 
 	check_algsupport.xsl
-	
+
 	Checking ruleset for the SAML V2.0 Metadata Profile for Algorithm Support.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -29,16 +29,16 @@
 			<xsl:with-param name="m">EncryptionMethod should not be present on 'signing' KeyDescriptor</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Check for duplicate SigningMethod or DigestMethod algorithms in any given list.
 	-->
 	<xsl:template match="md:Extensions[alg:*]">
-		
+
 		<!-- check individual alg:SigningMethod and alg:DigestMethod elements -->
-		<xsl:apply-templates/>  
+		<xsl:apply-templates/>
 	</xsl:template>
-	
+
 	<!--
 		2.4 Check for misplaced SigningMethod or DigestMethod elements.
 	-->
@@ -51,14 +51,14 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Check for duplicate EncryptionMethod elements in any given list.
 	-->
 	<xsl:template match="md:KeyDescriptor[md:EncryptionMethod]">
-		
+
 		<!-- check individual md:EncryptionMethod elements -->
-		<xsl:apply-templates/>	
+		<xsl:apply-templates/>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    
+
     sp_mdui_test.xsl
-    
+
     XSL stylesheet taking a UK Federation metadata aggregate and resulting in an HTML document
     giving discovery links for each mdui-supporting SP entity.
-    
+
     Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -25,19 +25,19 @@
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
-    
+
     <xsl:template match="md:EntitiesDescriptor">
-        
+
         <xsl:variable name="entities" select="//md:EntityDescriptor"/>
         <xsl:variable name="sps" select="$entities[md:SPSSODescriptor/md:Extensions/mdui:UIInfo]"/>
-        
+
         <html>
             <head>
                 <title>UK Federation SP discovery UI test</title>
             </head>
             <body>
                 <h1>UK Federation SP discovery UI test</h1>
-                
+
                 <ul>
                     <xsl:for-each select="$sps">
                         <xsl:variable name="acs"
@@ -46,9 +46,9 @@
                             <xsl:value-of select="@ID"/>
                             <xsl:text>: </xsl:text>
                             <xsl:value-of select="@entityID"/>
-                            
+
                             <ul>
-                                
+
                                 <li>
                                     <xsl:choose>
                                         <xsl:when test="descendant::mdui:DisplayName">
@@ -86,7 +86,7 @@
 
                                 <xsl:variable name="parms" select="concat('?shire=',
                                     $acs, '&amp;providerId=', @entityID, '&amp;target=cookie')"/>
-                                
+
                                 <li>
                                     <xsl:variable name="prod" select="concat(
                                         'https://wayf.ukfederation.org.uk/WAYF',
@@ -99,7 +99,7 @@
                                         Production DS (as WAYF)
                                     </xsl:element>
                                 </li>
-                                
+
                                 <li>
                                     <xsl:variable name="rod" select="concat(
                                         'https://dlib-adidp.ucs.ed.ac.uk/discovery/ukfull.wayf',
@@ -125,14 +125,14 @@
                                         Test DS (ukfed4, as WAYF)
                                     </xsl:element>
                                 </li>
-                                
+
                             </ul>
                         </li>
                     </xsl:for-each>
                 </ul>
-                
+
             </body>
         </html>
     </xsl:template>
-    
+
 </xsl:stylesheet>

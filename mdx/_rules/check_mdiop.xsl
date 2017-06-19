@@ -2,7 +2,7 @@
 <!--
 
 	check_mdiop.xsl
-	
+
 	Checking ruleset containing rules associated with the SAML V2.0 Metadata
 	Interoperability Profile, see:
 
@@ -33,7 +33,7 @@
 			<xsl:with-param name="m">KeyDescriptor does not contain a key representation</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 2.5.1: only one X.509 certificate may appear in any KeyDescriptor.
 	-->
@@ -42,5 +42,5 @@
 			<xsl:with-param name="m">KeyDescriptor contains more than one X509Certificate</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

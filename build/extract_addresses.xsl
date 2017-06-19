@@ -2,11 +2,11 @@
 <!--
 
 	extract_addresses.xsl
-	
+
 	XSL stylesheet that takes a SAML 2.0 metadata file and extracts
 	a list of contact e-mail addresses.  Only administrative and
 	technical addresses are used; all others are dropped.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -25,15 +25,15 @@
 			<xsl:apply-templates select="md:EntityDescriptor/md:ContactPerson"/>
 		</Addresses>
 	</xsl:template>
-	
+
 	<xsl:template match="md:ContactPerson[@contactType='support']">
 		<!-- do nothing -->
 	</xsl:template>
-	
+
 	<xsl:template match="md:ContactPerson">
 		<xsl:apply-templates select="md:EmailAddress"/>
 	</xsl:template>
-	
+
 	<xsl:template match="md:EmailAddress">
 		<EmailAddress><xsl:value-of select="."/></EmailAddress>
 	</xsl:template>
@@ -41,5 +41,5 @@
 	<xsl:template match="text()|@*">
 		<xsl:copy/>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

@@ -21,18 +21,18 @@
     <bean id="uk_exportAggregate_url" parent="String">
         <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-export.xml"/>
     </bean>
-    
-    
+
+
     <!--
         uk_federation_uri
-        
+
         URI for the UK federation.  Used in several contexts:
-        
+
         * as the Name attribute for the main EntitiesDescriptor in UK federation metadata
           (not always the document element)
-          
+
         * in mdrpi:PublicationInfo, as the unique identifier for the UK federation publisher
-        
+
         It is the same as the URI used to indicate the UK federation as a registrar, so is made
         an alias of that bean.
     -->
@@ -47,12 +47,12 @@
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" ref="uk_exportAggregate_url"/>        
+                <constructor-arg name="url" ref="uk_exportAggregate_url"/>
             </bean>
         </property>
     </bean>
-    
-    
+
+
     <!--
         Fetch the production aggregate.
     -->
@@ -61,30 +61,30 @@
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" ref="uk_productionAggregate_url"/>        
+                <constructor-arg name="url" ref="uk_productionAggregate_url"/>
             </bean>
         </property>
     </bean>
-    
-    
+
+
     <!--
         Metadata signing certificate.
     -->
     <bean id="uk_signingCertificate" parent="X509CertificateFactoryBean"
         p:resource="classpath:uk/ukfederation-2014.pem"/>
-    
-    
+
+
     <!--
         Check the signature on a document.
     -->
     <bean id="uk_checkSignature" parent="XMLSignatureValidationStage">
         <property name="verificationCertificate" ref="uk_signingCertificate"/>
     </bean>
-    
-    
+
+
     <!--
         uk_check_validUntil
-        
+
         Check that an aggregate has a validUntil instant specified, and that it has not
         yet expired.  Sets a bound of 30 days on the validity interval; 14 days is the
         expected value.
@@ -99,13 +99,13 @@
         -->
         <property name="maxValidityInterval" value="#{ 1000L * 60 * 60 * 24 * 30 }"/>
     </bean>
-    
-    
+
+
     <!--
         uk_fetchFragmentFiles
-        
+
         Collects all the UK metadata "fragment files" from the /entities directory.
-        
+
         Each fragment file contains a single EntityDescriptor.  The name of each
         eligible file matches a particular regular expression.
     -->
@@ -122,11 +122,11 @@
             </bean>
         </property>
     </bean>
-    
-    
+
+
     <!--
         uk_membersDocument
-        
+
         This bean contains the contents of the members.xml file as a DOM Document.
     -->
     <bean id="uk_membersDocument" parent="DOMDocumentFactoryBean">
@@ -135,11 +135,11 @@
         </property>
         <property name="parserPool" ref="parserPool"/>
     </bean>
-    
-    
+
+
     <!--
         uk_membersSchemaDocument
-        
+
         This bean loads the schema for the members.xml file as a DOM Document.
     -->
     <bean id="uk_membersSchemaDocument" parent="DOMDocumentFactoryBean">
@@ -148,43 +148,43 @@
         </property>
         <property name="parserPool" ref="parserPool"/>
     </bean>
-    
+
 
     <!--
         uk_members
-        
+
         This bean implements an API for access to the contents of the members.xml document.
     -->
     <bean id="uk_members" class="uk.org.ukfederation.members.Members"
         c:_0-ref="uk_membersDocument"
         c:_1-ref="uk_membersSchemaDocument"/>
-    
-    
+
+
     <!--
         uk_fix_mailto
-        
+
         Adds "mailto:" to md:EmailAddress elements which don't already have it.
     -->
     <bean id="uk_fix_mailto" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/fix_mailto.xsl"/>
-    
-    
+
+
     <!--
         check_ukreg
-        
+
         Checks specific to the UK registrar function.
     -->
     <bean id="check_ukreg" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_ukreg.xsl"/>
-    
+
     <!--
         check_owner
-        
+
         Checks that entities are owned by UK federation members.
     -->
     <bean id="check_owner" parent="ukf.EntityOwnerCheckingStage"
         p:members-ref="uk_members"/>
-    
+
     <!--
         check_uk_keydesc_key
     -->
@@ -197,34 +197,34 @@
     -->
     <bean id="check_uk_mdattr" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_uk_mdattr.xsl"/>
-    
-    
+
+
     <!--
         check_uk_mdrps
     -->
     <bean id="check_uk_mdrps" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_uk_mdrps.xsl"/>
-    
-    
+
+
     <!--
         check_uk_urlenc
     -->
     <bean id="check_uk_urlenc" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_uk_urlenc.xsl"/>
-    
+
 
     <!--
         uk_processFragment
-        
+
         This stage performs any standard cleanup required for UK federation fragment files.
     -->
     <bean id="uk_processFragment" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/fragment.xsl"/>
-    
-    
+
+
     <!--
         uk_stripAdminContacts
-        
+
         Remove any md:ContactPerson elements with contactType of "administrative".
     -->
     <bean id="uk_stripAdminContacts" parent="mda.ContactPersonFilterStage">
@@ -235,17 +235,17 @@
         </property>
         <property name="whitelistingTypes" value="false"/>
     </bean>
-    
-    
+
+
     <!--
         Populate UKId values from entities.
     -->
     <bean id="uk_populateIds" parent="ukf.EntityDescriptorUKIdPopulationStage"/>
-    
+
 
     <!--
         UK federation named EntitiesDescriptor assembler pipeline stage.
-        
+
         Name attribute is set to the federation URI.  UK ordering is applied.
     -->
     <bean id="uk_assemble" parent="mda.EntitiesDescriptorAssemblerStage">
@@ -254,7 +254,7 @@
             <bean parent="ukf.UKEntityOrderingStrategy"/>
         </property>
     </bean>
-    
+
 
 
     <!--
@@ -283,7 +283,7 @@
                 <ref bean="uk_populateIds"/>
                 <ref bean="uk_default_regauth"/>
                 <ref bean="populateRegistrationAuthorities"/>
-                
+
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <bean id="check_ukfedlabel" parent="mda.XSLValidationStage"
@@ -297,7 +297,7 @@
                 <ref bean="mdui_dn_en_present"/>
                 <ref bean="mdui_dn_en_match"/>
                 <ref bean="check_dup_display"/>
-                
+
                 <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
                         <list>
@@ -308,18 +308,18 @@
                             <bean parent="mda.X509RSAExponentValidator"/>
                             <!-- Error on inconsistent subjectAltNames. -->
                             <bean parent="ukf.X509ConsistentNameValidator"/>
-                            
+
                             <!--
                                 Debian weak key blacklists.
-                                
+
                                 Don't need to check for keys below our minimum key size.
                             -->
                             <ref bean="debian.2048"/>
                             <ref bean="debian.4096"/>
-                            
+
                             <!--
                                 Compromised key blacklists.
-                                
+
                                 Again, don't need to check for keys below our minimum key size.
                             -->
                             <ref bean="compromised.2048"/>
@@ -332,16 +332,16 @@
             </list>
         </property>
     </bean>
-    
-    
+
+
     <!--
         uk_stripExtensions
-        
+
         Strip those UK federation extensions which we never publish.
     -->
     <bean id="uk_stripExtensions" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/strip_extensions.xsl"/>
-    
+
 
     <!--
         uk_strip_UKFederationMember
@@ -357,17 +357,17 @@
         ***                                         ***
         ***********************************************
     -->
-    
+
     <!--
         uk_normaliseNamespaces
-        
+
         A pipeline stage that can be used before serialisation to normalise the namespaces
         used in an XML document.  This one is UK-specific, as it makes specific choices
         in order to limit the number of prefixes used.
     -->
     <bean id="uk_normaliseNamespaces" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/ns_norm_uk.xsl"/>
-    
+
     <!--
         *************************************************
         ***                                           ***
@@ -375,10 +375,10 @@
         ***                                           ***
         *************************************************
     -->
-    
+
     <!--
         uk_check_regauth
-        
+
         Any registrationAuthority already present on an entity in this
         channel must match the known registration authority value.
     -->
@@ -389,10 +389,10 @@
             </map>
         </property>
     </bean>
-    
+
     <!--
         uk_default_regauth
-        
+
         Provide a default registrationAuthority appropriate to
         this channel.
     -->
@@ -403,7 +403,7 @@
             </map>
         </property>
     </bean>
-    
+
     <!--
         *********************************************
         ***                                       ***
@@ -411,10 +411,10 @@
         ***                                       ***
         *********************************************
     -->
-    
+
     <!--
         uk_serializeStatistics
-        
+
         Serialise the (assumed HTML) DomDocumentItem into the UK federation statistics
         output file in the production XML directory.
     -->
@@ -426,10 +426,10 @@
             </bean>
         </property>
     </bean>
-    
+
     <!--
         uk_generateStatistics
-        
+
         Input is an aggregate of all registered entities, output is the HTML statistics.
     -->
     <bean id="uk_generateStatistics" parent="mda.XSLTransformationStage"
@@ -440,10 +440,10 @@
             </map>
         </property>
     </bean>
-    
+
     <!--
         uk_statisticsPipeline
-        
+
         Pipeline to generate the registrar statistics for the UK federation's
         registered entities.  Input is assumed to be a collection of the entities in question;
         resulting HTML output is written into the appropriate file in the production
@@ -458,7 +458,7 @@
             </list>
         </property>
     </bean>
-    
+
     <!--
         #################################################
         ###                                           ###
@@ -466,7 +466,7 @@
         ###                                           ###
         #################################################
     -->
-    
+
     <!--
         Fetch the export entities as a collection.
     -->
@@ -474,7 +474,7 @@
         <property name="composedStages">
             <list>
                 <ref bean="uk_exportAggregate"/>
-                
+
                 <!--
                     Check for fatal errors at the aggregate level:
                         missing or expired validUntil attribute
@@ -483,13 +483,13 @@
                 <ref bean="uk_check_validUntil"/>
                 <ref bean="uk_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
-                
+
                 <ref bean="disassemble"/>
-                
+
                 <ref bean="uk_default_regauth"/>
                 <ref bean="uk_check_regauth"/>
             </list>
         </property>
     </bean>
-    
+
 </beans>

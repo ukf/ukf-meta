@@ -2,12 +2,12 @@
 <!--
 
 	check_adfs.xsl
-	
+
 	Checking ruleset containing rules associated with the ADFS metadata profile,
 	as described here:
 
 		https://spaces.internet2.edu/display/SHIB/ADFSMetadataProfile
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -33,7 +33,7 @@
 			<xsl:with-param name="m">ADFS IdP role lacks SSO service with appropriate Binding</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		An SP's SSO descriptor must contain an AssertionConsumerService element with
 		the appropriate binding.
@@ -45,7 +45,7 @@
 			<xsl:with-param name="m">ADFS SP role lacks SSO service with appropriate Binding</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		If the ADFS binding appears on any service, the parent role's protocol support
 		enumeration must include the appropruate URI.
@@ -57,7 +57,7 @@
 			<xsl:with-param name="m">ADFS SingleSignOnService requires appropriate protocolSupportEnumeration</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="md:AssertionConsumerService
 		[@Binding='http://schemas.xmlsoap.org/ws/2003/07/secext']
 		[not(contains(../@protocolSupportEnumeration, 'http://schemas.xmlsoap.org/ws/2003/07/secext'))]">
@@ -65,7 +65,7 @@
 			<xsl:with-param name="m">ADFS AssertionConsumerService requires appropriate protocolSupportEnumeration</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="md:SingleLogoutService
 		[@Binding='http://schemas.xmlsoap.org/ws/2003/07/secext']
 		[not(contains(../@protocolSupportEnumeration, 'http://schemas.xmlsoap.org/ws/2003/07/secext'))]">
@@ -73,5 +73,5 @@
 			<xsl:with-param name="m">ADFS SingleLogoutService requires appropriate protocolSupportEnumeration</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

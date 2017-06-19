@@ -2,9 +2,9 @@
 <!--
 
 	ns_norm_cds.xsl
-	
+
 	Normalise the namespaces in a metadata file for publication to the UKf CDS.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -20,7 +20,7 @@
 	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
-	
+
 	exclude-result-prefixes="alg ds init md mdattr saml shibmd ukfedlabel xsi"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -31,13 +31,13 @@
 		Import templates for basic normalisation.
 	-->
 	<xsl:import href="../ns_norm.xsl"/>
-	
+
 
 	<!--
 		Force UTF-8 encoding for the output.
 	-->
 	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8"/>
-	
+
 
 	<!--
 		*******************************************
@@ -46,16 +46,16 @@
 		***                                     ***
 		*******************************************
 	-->
-	
-	
+
+
 	<!--
 		We need to handle the document element specially in order to arrange
 		for all appropriate namespace prefix definitions to appear on it.
-		
+
 		There are only two possible document elements in SAML metadata.
 	-->
-	
-	
+
+
 	<!--
 		Document element is <EntityDescriptor>.
 	-->
@@ -64,7 +64,7 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</EntityDescriptor>
 	</xsl:template>
-	
+
 	<!--
 		Document element is <EntitiesDescriptor>.
 	-->
@@ -73,5 +73,5 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</EntitiesDescriptor>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

@@ -2,9 +2,9 @@
 <!--
 
 	check_idpdisc.xsl
-	
+
 	Checking ruleset containing rules associated with the SAML IdP Discovery Protocol.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -25,7 +25,7 @@
 		"index" attributes on DiscoveryResponse elements should all be different
 		for any given entity.
 	-->
-	
+
 	<xsl:template match="md:EntityDescriptor[descendant::idpdisc:DiscoveryResponse]">
 		<xsl:variable name="indices" select="descendant::idpdisc:DiscoveryResponse/@index"/>
 		<xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
@@ -37,29 +37,29 @@
 		<!-- check individual DiscoveryResponse elements for correctness as well -->
 		<xsl:apply-templates/>
 	</xsl:template>
-	
+
 	<!--
 		Checks on the DiscoveryResponse extension.
 	-->
-	
+
 	<xsl:template match="idpdisc:DiscoveryResponse[not(@index)]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">missing index attribute on DiscoveryResponse</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="idpdisc:DiscoveryResponse[not(@Binding)]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">missing Binding attribute on DiscoveryResponse</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="idpdisc:DiscoveryResponse[@Binding]
 		[@Binding!='urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol']">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">incorrect Binding value on DiscoveryResponse</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
+
+
 </xsl:stylesheet>

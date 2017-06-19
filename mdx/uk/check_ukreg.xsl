@@ -2,10 +2,10 @@
 <!--
 
 	check_ukreg.xsl
-	
+
 	Checking ruleset containing rules that only apply to metadata registered
 	by the UK federation's registrar function.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -24,7 +24,7 @@
 	-->
 	<xsl:import href="../_rules/check_framework.xsl"/>
 
-	
+
 	<!--
 		Check for badly formatted e-mail addresses.
 	-->
@@ -33,8 +33,8 @@
 			<xsl:with-param name="m">badly formatted e-mail address: '<xsl:value-of select='.'/>'</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
+
+
 	<!--
 		Check for https:// locations that use an explicit but redundant port specifier.
 	-->
@@ -49,5 +49,5 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

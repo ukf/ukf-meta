@@ -2,9 +2,9 @@
 <!--
 
 	check_imported.xsl
-	
-	Checking ruleset containing rules associated with imported metadata.	
-	
+
+	Checking ruleset containing rules associated with imported metadata.
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -36,7 +36,7 @@
 			<xsl:call-template name="error">
 				<xsl:with-param name="m">this IdP does not have any Scope elements</xsl:with-param>
 			</xsl:call-template>
-		</xsl:if>		
+		</xsl:if>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

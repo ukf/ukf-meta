@@ -2,10 +2,10 @@
 <!--
 
 	check_future_8.xsl
-	
+
     Checking ruleset containing rules that we don't currently implement,
     but which we may implement in the future.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->

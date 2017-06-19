@@ -2,11 +2,11 @@
 <!--
 
 	extract_nk_nocert_locs.xsl
-	
+
 	XSL stylesheet that takes a SAML 2.0 metadata file and extracts
 	a list of service locations that do not require certificates to be
 	presented to them.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -22,13 +22,13 @@
 
 	<!--
         Exclude entities which have embedded certificates.
-        
+
         I.e., restrict output to entities which only have PKIX trust.
     -->
 	<xsl:template match="md:EntityDescriptor[descendant::ds:X509Data]">
 		<!-- do nothing -->
 	</xsl:template>
-	
+
 	<xsl:template match="//md:SingleSignOnService">
 		<xsl:value-of select="ancestor::md:EntityDescriptor/@ID"/>
 		<xsl:text> </xsl:text>

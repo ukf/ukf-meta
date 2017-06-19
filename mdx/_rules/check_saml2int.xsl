@@ -2,11 +2,11 @@
 <!--
 
 	check_saml2int.xsl
-	
+
 	Checking ruleset for the Interoperable SAML 2.0 Web Browser SSO Deployment Profile.
-	
+
 	See: http://saml2int.org/
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -23,10 +23,10 @@
 	-->
 	<xsl:import href="check_framework.xsl"/>
 
-	
+
 	<!--
 		Section 6.
-		
+
 		Check for SAML 2.0 SPs which exclude both transient and persistent SAML 2 name identifier formats.
 	-->
 	<xsl:template match="md:SPSSODescriptor
@@ -38,10 +38,10 @@
 			<xsl:with-param name="m">SP excludes both SAML 2 name identifier formats</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 6.
-		
+
 		Check for SAML 2.0 IdPs which exclude the transient SAML 2 name identifier format.
 	-->
 	<xsl:template match="md:IDPSSODescriptor
@@ -60,14 +60,14 @@
 			<xsl:with-param name="m">SAML 2.0 AttributeAuthorityDescriptor excludes SAML 2 transient name identifier format</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Section 6.1.
-        
+
         "The <saml2p:AuthnRequest> message issued by a Service Provider MUST be
         communicated to the Identity Provider using the HTTP-REDIRECT binding
         [SAML2Bind]."
-        
+
         Therefore, metadata for this binding MUST be present.
     -->
 	<xsl:template match="md:IDPSSODescriptor
@@ -80,7 +80,7 @@
 
 	<!--
 		Section 7.
-		
+
 		Check for correct NameFormat on Attribute elements.
 	-->
 	<xsl:template match="saml:Attribute[not(@NameFormat)]">
@@ -102,10 +102,10 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 9.1
-		
+
 		Responses MUST use the HTTP-POST binding, so metadata for that MUST be present.
 	-->
 	<xsl:template match="md:SPSSODescriptor
@@ -115,10 +115,10 @@
 			<xsl:with-param name="m">no HTTP-POST support on SAML 2.0 SP</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Section 9.1
-		
+
 		Responses MUST be signed, so appropriate IdP roles MUST include embedded key material
 		suitable for signing those responses.
 	-->
@@ -138,5 +138,5 @@
 			<xsl:with-param name="m">SAML 2.0 AttributeAuthority has no embedded signing key</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

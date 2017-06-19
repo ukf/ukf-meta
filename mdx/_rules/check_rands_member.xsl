@@ -2,12 +2,12 @@
 <!--
 
 	check_rands_member.xsl
-	
+
 	Checking ruleset containing rules associated with membership of the REFEDS
 	Research and Scholarship entity category, see:
 
 		https://refeds.org/category/research-and-scholarship/
-		
+
 	This ruleset reflects v1.3, 8-Sep-2016.
 
 	Author: Ian A. Young <ian@iay.org.uk>
@@ -42,7 +42,7 @@
 			<xsl:when test="not(md:SPSSODescriptor)">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">REFEDS R+S only applies to service provider entities</xsl:with-param>
-				</xsl:call-template>        
+				</xsl:call-template>
 			</xsl:when>
 			<!--
 		        4.3.1
@@ -53,22 +53,22 @@
 				[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'])">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">REFEDS R+S requires SAML 2.0 POST support</xsl:with-param>
-				</xsl:call-template>        
+				</xsl:call-template>
 			</xsl:when>
 			<!--
 				4.3.3
-				
+
 				The Service Provider provides an mdui:DisplayName and mdui:InformationURL in metadata.
 			-->
 			<xsl:when test="not(md:SPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:DisplayName)">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">REFEDS R+S requires mdui:DisplayName</xsl:with-param>
-				</xsl:call-template>        
+				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="not(md:SPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:InformationURL)">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">REFEDS R+S requires mdui:InformationURL</xsl:with-param>
-				</xsl:call-template>        
+				</xsl:call-template>
 			</xsl:when>
 			<!--
 				4.3.4
@@ -78,7 +78,7 @@
 			<xsl:when test="not(md:ContactPerson[@contactType='technical'])">
 				<xsl:call-template name="error">
 					<xsl:with-param name="m">REFEDS R+S requires one or more technical contacts</xsl:with-param>
-				</xsl:call-template>        
+				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

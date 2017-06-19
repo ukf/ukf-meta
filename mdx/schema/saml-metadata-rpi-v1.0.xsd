@@ -12,10 +12,10 @@
     xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
-    elementFormDefault="unqualified" 
-    attributeFormDefault="unqualified" 
-    blockDefault="substitution" 
-    version="1.0"> 
+    elementFormDefault="unqualified"
+    attributeFormDefault="unqualified"
+    blockDefault="substitution"
+    version="1.0">
 
     <annotation>
         <documentation>
@@ -24,17 +24,17 @@
             Location: http://docs.oasis-open.org/security/saml/Post2.0/
             Revision history:
               21 March 2011
-                Correct minOccurs on elements that were meant to be optional              
+                Correct minOccurs on elements that were meant to be optional
               17 December 2010
                 Change of document title and namespace
               24 November 2010
                 Initial Submission
         </documentation>
     </annotation>
-    
+
     <import namespace="urn:oasis:names:tc:SAML:2.0:metadata" schemaLocation="saml-schema-metadata-2.0.xsd"/>
     <import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
-    
+
     <element name="RegistrationInfo" type="mdrpi:RegistrationInfoType" />
     <complexType name="RegistrationInfoType">
         <sequence>
@@ -45,9 +45,9 @@
         <attribute name="registrationInstant" type="dateTime" />
         <anyAttribute namespace="##other" processContents="lax" />
     </complexType>
-    
+
     <element name="RegistrationPolicy" type="md:localizedURIType" />
-    
+
     <element name="PublicationInfo" type="mdrpi:PublicationInfoType" />
     <complexType name="PublicationInfoType">
         <sequence>
@@ -59,21 +59,21 @@
         <attribute name="publicationId" type="string" />
         <anyAttribute namespace="##other" processContents="lax" />
     </complexType>
-    
+
     <element name="UsagePolicy" type="md:localizedURIType" />
-    
+
     <element name="PublicationPath" type="mdrpi:PublicationPathType" />
     <complexType name="PublicationPathType">
         <sequence>
             <element ref="mdrpi:Publication" minOccurs="0" maxOccurs="unbounded" />
         </sequence>
     </complexType>
-    
+
     <element name="Publication" type="mdrpi:PublicationType" />
     <complexType name="PublicationType">
         <attribute name="publisher" type="string" use="required" />
         <attribute name="creationInstant" type="dateTime" />
         <attribute name="publicationId" type="string" />
     </complexType>
-    
+
 </schema>

@@ -2,9 +2,9 @@
 <!--
 
 	check_aggregate.xsl
-	
+
 	Checking ruleset containing aggregate-level checks.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -26,7 +26,7 @@
 		Checks across the whole of the document are defined here.
 	-->
 	<xsl:template match="/">
-		
+
 		<!-- check for duplicate entityID values -->
 		<xsl:variable name="distinct.entityIDs" select="set:distinct($entities/@entityID)"/>
 		<xsl:variable name="dup.entityIDs"
@@ -39,7 +39,7 @@
 				</xsl:call-template>
 			</xsl:for-each>
 		</xsl:for-each>
-		
+
 	</xsl:template>
-	
+
 </xsl:stylesheet>

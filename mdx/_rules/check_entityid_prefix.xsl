@@ -2,9 +2,9 @@
 <!--
 
 	check_entityid_prefix.xsl
-	
+
 	Checking that entityID attributes start with one of a whitelist of prefixes.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->

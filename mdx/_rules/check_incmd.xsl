@@ -2,12 +2,12 @@
 <!--
 
 	check_incmd.xsl
-	
+
 	Checking ruleset for the InCommon Federation metadata extensions,
 	the schema for which can be found here:
 
         https://spaces.internet2.edu/x/iIuVAQ
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -27,13 +27,13 @@
 	<!--
 		Checks for the contactType attribute.
 	-->
-	
+
 	<xsl:template match="@incmd:contactType[not(parent::md:ContactPerson)]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">incmd:contactType should only appear on md:ContactPerson</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="md:ContactPerson[@incmd:contactType][@contactType != 'other']">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
@@ -43,13 +43,13 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="@incmd:contactType[not(starts-with(.,'http://'))][not(starts-with(.,'https://'))]">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">incmd:contactType must be an absolute URI</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
 		Check for specific values.  This test is probably over-specific in the long term.
 	-->
@@ -63,19 +63,19 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="@incmd:contactType">
 		<!-- otherwise, fine -->
 	</xsl:template>
-	
+
 	<!--
 		Additional schema checks.
-		
+
 		The schema itself doesn't help very much as most contexts in which the incmd
 		namespace is used are subject to "lax" checking.  These checks duplicate some
 		aspects of XML Schema checking as we'd like it to behave.
 	-->
-	
+
 	<xsl:template match="incmd:*">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
@@ -84,7 +84,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<xsl:template match="@incmd:*">
 		<xsl:call-template name="error">
 			<xsl:with-param name="m">
@@ -93,5 +93,5 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

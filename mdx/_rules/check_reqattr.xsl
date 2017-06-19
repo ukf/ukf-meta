@@ -2,33 +2,33 @@
 <!--
 
 	check_reqattr.xsl
-	
+
 	Checking ruleset for RequestedAttribute elements in SAML 2.0 metadata.
 
 	The main check being performed here is that the Name and NameFormat attributes
 	of a RequestedAttribute element together designate a real SAML attribute, either
 	explicitly or implicitly covered by some specification.  Other combinations
 	of Name+NameFormat are presumptively erroneous.
-	
+
 	Attribute profiles we make use of here:
-	
+
 	* eduPerson 2008
-	
+
 	* MACE-Dir SAML Attribute Profiles, April 2008
-	
+
 	* SWITCHaai Attribute Specification, 2010-06-23
-	
+
 	* grEduPerson
 		from http://aai.grnet.gr/static/grEduPerson.schema
 		and http://aai.grnet.gr/static/policy/policy-en.pdf
-	
+
 	* SCHAC
 		Only very basic coverage, most attributes to come later.
 		http://www.terena.org/activities/tf-emc2/docs/schac/schac-schema-IAD-1.4.1.pdf
 		http://www.terena.org/registry/terena.org/attribute-def/
 		http://www.terena.org/registry/terena.org/schac/
 		Assuming encoding rules equivalent to MACEAttr.
-    
+
 
 	Author: Ian A. Young <ian@iay.org.uk>
 
@@ -49,7 +49,7 @@
 		Lack of NameFormat is equivalent to an explicit NameFormat of
 		'urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified',
 		see http://tools.oasis-open.org/issues/browse/SECURITY-11
-		
+
 		This is almost certainly not correct, as an implicit
 		NameFormat of 'unspecified' is not the same as saying that
 		any NameFormat will match.
@@ -85,8 +85,8 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
-	
+
+
 	<!--
 		If NameFormat is "urn:mace:shibboleth:1.0:attributeNamespace:uri", then we are
 		dealing with a SAML 1.x attribute.
@@ -94,12 +94,12 @@
 	<xsl:template match="md:RequestedAttribute
 		[@NameFormat='urn:mace:shibboleth:1.0:attributeNamespace:uri']">
 		<xsl:choose>
-			
+
 			<!--
 				MACE-Dir Attribute Profile for SAML 1.x
-				
+
 				2.2.1: Legacy names that are explicitly permitted.
-				
+
 				Taken from MACE-Dir SAML Attribute Profiles, April 2008
 			-->
 			<xsl:when test="
@@ -154,29 +154,29 @@
 				">
 				<!-- OK -->
 			</xsl:when>
-			
+
 			<!--
 				Legacy name for eduPersonAssurance (from eduPerson 2008)
 			-->
 			<xsl:when test="@Name='urn:mace:dir:attribute-def:eduPersonAssurance'">
 				<!-- OK -->
 			</xsl:when>
-			
+
 			<!--
 				MACE-Dir Attribute Profile for SAML 1.x
-				
+
 				2.3.2.1.1: Recommended name and syntax for eduPersonTargetedID.
 			-->
 			<xsl:when test="@Name='urn:oid:1.3.6.1.4.1.5923.1.1.1.10'">
 				<!-- OK -->
 			</xsl:when>
-			
+
 			<!--
 				MACE-Dir Attribute Profile for SAML 1.x
-				
+
 				'urn:oid:' equivalents of legacy names should NOT appear.
 				If they do, they are probably intended to be a SAML 2.0 mapping.
-				
+
 				The list is in same order as the list of legacy names above, and
 				includes the OID for eduPersonAssurance at the end.
 			-->
@@ -245,10 +245,10 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!--
 				SWITCHaai SAML 1.x names are prefixed by 'urn:mace:switch.ch:attribute-def:'
-				
+
 				Arranged in order of appearance in the specification.
 			-->
 			<xsl:when test="
@@ -267,11 +267,11 @@
 				">
 				<!-- OK -->
 			</xsl:when>
-			
+
 			<!--
 				SWITCHaai SAML 2.0 names are oid-based, and should not appear
 				with the SAML 1.x NameFormat.
-				
+
 				Arranged in order of appearance in the specification.
 			-->
 			<xsl:when test="
@@ -302,14 +302,14 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!--
 				grEduPerson SAML 1.x binding
 			-->
 			<xsl:when test="@Name='urn:mace:grnet.gr:grEduPerson:attribute-def:grEduPersonUndergraduateBranch'">
 				<!-- OK -->
 			</xsl:when>
-			
+
 			<!--
 				grEduPerson SAML 2.0 names should not appear.
 			-->
@@ -327,7 +327,7 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!--
                 SCHAC SAML 1.x binding
             -->
@@ -337,7 +337,7 @@
 				">
 				<!-- OK -->
 			</xsl:when>
-			
+
 			<!--
                 SCHAC SAML 2.0 names should not appear.
             -->
@@ -358,19 +358,19 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!--
 				MACE-Dir Attribute Profile for SAML 1.x
-				
+
 				Forward-looking "urn:oid:" names are permitted, which is to say
 				any "urn:oid" name which does not correspond to a legacy name.
-				
+
 				(Any erroneous OIDs have been eliminated above.)
 			-->
 			<xsl:when test="starts-with(@Name, 'urn:oid:')">
 				<!-- OK -->
 			</xsl:when>
-			
+
 			<!--
 				Otherwise unknown attribute names.
 			-->
@@ -388,10 +388,10 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:otherwise>
-			
+
 		</xsl:choose>
 	</xsl:template>
-	
+
 
 	<!--
 		If NameFormat is "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", then we are
@@ -418,7 +418,7 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!--
 				Common error: using the legacy SWITCHaai name with the SAML 2.0 NameFormat.
 			-->
@@ -436,7 +436,7 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!--
                 Common error: using the legacy grEduPerson name with the SAML 2.0 NameFormat.
             -->
@@ -454,7 +454,7 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!--
                 Common error: using the legacy SCHAC name with the SAML 2.0 NameFormat.
             -->
@@ -472,17 +472,17 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:when>
-			
+
 			<!--
 				MACE-Dir Attribute Profile for SAML 2.0
-				
+
 				Attributes are named per the X.500/LDAP attribute profile in [SAML2Prof].
 			-->
 			<xsl:when test="starts-with(@Name, 'urn:oid:')">
 				<!-- OK -->
 			</xsl:when>
-			
-			
+
+
 			<!--
 				Otherwise unknown attribute names.
 			-->
@@ -500,8 +500,8 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:otherwise>
-			
+
 		</xsl:choose>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

@@ -4,7 +4,7 @@
 	check_saml1.xsl
 
 	Checking ruleset containing rules associated with the SAML 1.x specification.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -28,7 +28,7 @@
 			<xsl:with-param name="m">no POST support on SAML 1.1 SP</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-		
+
 	<!--
         An IdP with a SAML 1.1 AttributeAuthority needs an AttributeService with an appropriate Binding.
     -->
@@ -40,7 +40,7 @@
 			<xsl:with-param name="m">SAML 1.1 AttributeAuthority missing appropriately bound AttributeService</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
     -->
@@ -53,7 +53,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
     -->
@@ -66,7 +66,7 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 	<!--
         Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
     -->
@@ -79,5 +79,5 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

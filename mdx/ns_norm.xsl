@@ -2,20 +2,20 @@
 <!--
 
 	ns_norm.xsl
-	
+
 	XSL stylesheet that takes a SAML 2 metadata file and normalises
 	the namespaces used.  In general, this means assigning a standard
 	prefix to each known namespace and ensuring that those namespaces
 	are declared on the document element.
-	
+
 	The exception is the SAML 2.0 metadata namespace, which is established
 	as the default namespace for the document and therefore does not
 	require a prefix.
-	
+
 	The stylesheet operates by matching every element node in the document
 	and rebuilding it from scratch.  This has the side-effect of discarding
 	any unwanted namespace definitions from intermediate nodes.
-	
+
 	The result is a document with a large number of namespaces declared
 	with associated prefixes on the document element, and with few
 	(hopefully no) namespace prefix declarations elsewhere.  For any
@@ -29,7 +29,7 @@
 	after normalisation, some *de*normalisation will be required or at
 	least desirable prior to publication.  The responsibility for this
 	lies further down the processing pipeline.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -46,7 +46,7 @@
 	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
 	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 	xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
-	
+
 	exclude-result-prefixes="md"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -65,16 +65,16 @@
 		***                                     ***
 		*******************************************
 	-->
-	
-	
+
+
 	<!--
 		We need to handle the document element specially in order to arrange
 		for all appropriate namespace prefix definitions to appear on it.
-		
+
 		There are only two possible document elements in SAML metadata.
 	-->
-	
-	
+
+
 	<!--
 		Document element is <EntityDescriptor>.
 	-->
@@ -83,7 +83,7 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</EntityDescriptor>
 	</xsl:template>
-	
+
 	<!--
 		Document element is <EntitiesDescriptor>.
 	-->
@@ -92,8 +92,8 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</EntitiesDescriptor>
 	</xsl:template>
-	
-	
+
+
 	<!--
 		*********************************************
 		***                                       ***
@@ -101,15 +101,15 @@
 		***                                       ***
 		*********************************************
 	-->
-	
-	
+
+
 	<xsl:template match="md:*">
 		<xsl:element name="{local-name()}" namespace="urn:oasis:names:tc:SAML:2.0:metadata">
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
-	
+
+
 	<!--
 		*************************************************************
 		***                                                       ***
@@ -117,7 +117,7 @@
 		***                                                       ***
 		*************************************************************
 	-->
-	
+
 
 	<xsl:template match="alg:*">
 		<xsl:element name="alg:{local-name()}">
@@ -130,43 +130,43 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template match="idpdisc:*">
 		<xsl:element name="idpdisc:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template match="init:*">
 		<xsl:element name="init:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template match="mdattr:*">
 		<xsl:element name="mdattr:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template match="mdrpi:*">
 		<xsl:element name="mdrpi:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template match="mdui:*">
 		<xsl:element name="mdui:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template match="saml:*">
 		<xsl:element name="saml:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template match="shibmd:*">
 		<xsl:element name="shibmd:{local-name()}">
 			<xsl:apply-templates select="node()|@*"/>
@@ -184,8 +184,8 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
-	
-		
+
+
 	<!--
 		*********************************************
 		***                                       ***
@@ -193,20 +193,20 @@
 		***                                       ***
 		*********************************************
 	-->
-	
-	
+
+
 	<!--
 		Copy text blocks, comments and attributes unchanged.
 	-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
 	</xsl:template>
-	
-	
+
+
 	<!--
 		Copy all other elements from the input to the output, along with their
 		attributes and contents.
-		
+
 		Note that this will also copy across their namespaces and namespace prefix
 		declarations, which can result in denormalised output.  If that turns out
 		to be a problem in practice, this should be changed to reconstruct the
@@ -218,5 +218,5 @@
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

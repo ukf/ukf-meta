@@ -4,7 +4,7 @@
 	check_regauth.xsl
 
 	Check that the registration authority on an entity is the expected one.
-	
+
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -17,14 +17,14 @@
 		Common support functions.
 	-->
 	<xsl:import href="check_framework.xsl"/>
-	
+
 	<!--
         expectedAuthority
-        
+
         Set this parameter from the calling context.
     -->
 	<xsl:param name="expectedAuthority">(value not set)</xsl:param>
-	
+
 	<xsl:template match="mdrpi:RegistrationInfo">
 		<xsl:if test="@registrationAuthority != $expectedAuthority">
 			<xsl:call-template name="error">
@@ -38,5 +38,5 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

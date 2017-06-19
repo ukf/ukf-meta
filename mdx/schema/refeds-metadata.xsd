@@ -7,14 +7,14 @@
   attributeFormDefault="unqualified"
   blockDefault="substitution"
   version="2.0">
-  
+
   <xs:annotation>
     <xs:documentation>
       Unofficial schema for REFEDS metadata;
       specifically the contactType extension required for SIRTFI.
     </xs:documentation>
   </xs:annotation>
-  
+
   <xs:attribute name="contactType" type="xs:anyURI"/>
-  
+
 </xs:schema>

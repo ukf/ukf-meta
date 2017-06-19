@@ -2,9 +2,9 @@
 <!--
 
 	check_idp_tls.xsl
-	
+
 	Checking that all IdP endpoints are TLS-protected.
-	
+
 	Author: Ian A. Young <ian@iay.org.uk>
 
 -->
@@ -42,5 +42,5 @@
 			<xsl:with-param name="m"><xsl:value-of select='local-name()'/> ResponseLocation does not start with https://</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

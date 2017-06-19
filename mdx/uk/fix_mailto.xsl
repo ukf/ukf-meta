@@ -4,7 +4,7 @@
 	fix_mailto.xsl
 
 	Add "mailto:" scheme to e-mail addresses if not already present.
-	
+
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
@@ -24,17 +24,17 @@
 			<xsl:value-of select="."/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!--By default, copy text blocks, comments and attributes unchanged.-->
 	<xsl:template match="text()|comment()|@*">
 		<xsl:copy/>
 	</xsl:template>
-	
+
 	<!--By default, copy all elements from the input to the output, along with their attributes and contents.-->
 	<xsl:template match="*">
 		<xsl:copy>
 			<xsl:apply-templates select="node()|@*"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

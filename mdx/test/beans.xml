@@ -11,14 +11,14 @@
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-    
+
     <!--
         Fetch the aggregate aggregate.
     -->
     <bean id="test_aggregate" parent="mda.DOMResourceSourceStage"
         p:parserPool-ref="parserPool"
         p:DOMResource="classpath:test/input.xml"/>
-    
+
     <!--
         Fetch and process the entities as a collection.
     -->
@@ -30,5 +30,5 @@
             </list>
         </property>
     </bean>
-    
+
 </beans>
