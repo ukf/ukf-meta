@@ -21,29 +21,29 @@ INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN
 MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   -->
 <xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'
-		   xmlns:sp='http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702'
-		   xmlns:tns='http://docs.oasis-open.org/wsfed/federation/200706'
-		   xmlns:wsa='http://www.w3.org/2005/08/addressing'
+           xmlns:sp='http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702'
+           xmlns:tns='http://docs.oasis-open.org/wsfed/federation/200706'
+           xmlns:wsa='http://www.w3.org/2005/08/addressing'
        xmlns:mex='http://schemas.xmlsoap.org/ws/2004/09/mex'
        xmlns:wsse='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'
-		   xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'
+           xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'
        xmlns:md='urn:oasis:names:tc:SAML:2.0:metadata'
        xmlns:auth='http://docs.oasis-open.org/wsfed/authorization/200706'
-		   targetNamespace='http://docs.oasis-open.org/wsfed/federation/200706'
-		   elementFormDefault='qualified' >
+           targetNamespace='http://docs.oasis-open.org/wsfed/federation/200706'
+           elementFormDefault='qualified' >
 
   <xs:import namespace='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'
-			 schemaLocation='oasis-200401-wss-wssecurity-secext-1.0.xsd' />
+             schemaLocation='oasis-200401-wss-wssecurity-secext-1.0.xsd' />
   <xs:import namespace='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'
-			 schemaLocation='oasis-200401-wss-wssecurity-utility-1.0.xsd' />
+             schemaLocation='oasis-200401-wss-wssecurity-utility-1.0.xsd' />
   <xs:import namespace='http://www.w3.org/2005/08/addressing'
-			 schemaLocation='ws-addr.xsd' />
+             schemaLocation='ws-addr.xsd' />
   <xs:import namespace='http://schemas.xmlsoap.org/ws/2004/09/mex'
-			 schemaLocation='MetadataExchange.xsd' />
+             schemaLocation='MetadataExchange.xsd' />
   <xs:import namespace='urn:oasis:names:tc:SAML:2.0:metadata'
-			 schemaLocation='saml-schema-metadata-2.0.xsd' />
+             schemaLocation='saml-schema-metadata-2.0.xsd' />
   <xs:import namespace='http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702'
-			 schemaLocation='ws-securitypolicy-1.2.xsd'/>
+             schemaLocation='ws-securitypolicy-1.2.xsd'/>
   <xs:import namespace='http://docs.oasis-open.org/wsfed/authorization/200706'
              schemaLocation='ws-authorization.xsd'/>
 
@@ -53,22 +53,22 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
   <xs:complexType name='FederationMetadataType' >
     <xs:sequence>
-	  <!--
-		  *** Accurate content model is nondeterministic ***
-		  <xs:element name='Federation' type='tns:FederationType' minOccurs='1' maxOccurs='unbounded' />
-		  <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	  -->
-	  <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+      <!--
+          *** Accurate content model is nondeterministic ***
+          <xs:element name='Federation' type='tns:FederationType' minOccurs='1' maxOccurs='unbounded' />
+          <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+      -->
+      <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:complexType name='FederationType' >
-	<xs:sequence>
-	  <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:attribute name='FederationID' type='xs:anyURI' />
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:attribute name='FederationID' type='xs:anyURI' />
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 3.1.2.1 -->
@@ -170,15 +170,15 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <!--<xs:element name='LogicalServiceNamesOffered' type='tns:LogicalServiceNamesOfferedType' />-->
 
   <xs:complexType name='LogicalServiceNamesOfferedType' >
-	<xs:sequence>
-	  <xs:element name='IssuerName' type='tns:IssuerNameType' minOccurs='1' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:element name='IssuerName' type='tns:IssuerNameType' minOccurs='1' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:complexType name='IssuerNameType' >
-	<xs:attribute name='Uri' type='xs:anyURI' use='required' />
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:attribute name='Uri' type='xs:anyURI' use='required' />
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 3.1.4 -->
@@ -202,29 +202,29 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <!-- Defined above -->
   <!--<xs:element name='TokenTypesOffered' type='tns:TokenTypesOfferedType' />-->
   <xs:complexType name='TokenTypesOfferedType' >
-	<xs:sequence>
-	  <xs:element name='TokenType' type='tns:TokenType' minOccurs='1' maxOccurs='unbounded' />
-	  <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:element name='TokenType' type='tns:TokenType' minOccurs='1' maxOccurs='unbounded' />
+      <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:complexType name='TokenType' >
-	<xs:sequence>
-	  <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:attribute name='Uri' type='xs:anyURI' />
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:attribute name='Uri' type='xs:anyURI' />
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 3.1.9 -->
   <!-- Defined above -->
   <!-- <xs:element name='ClaimTypesOffered' type='tns:ClaimTypesOfferedType' /> -->
   <xs:complexType name='ClaimTypesOfferedType'>
-	<xs:sequence>
-	  <xs:element ref='auth:ClaimType' minOccurs='1' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:element ref='auth:ClaimType' minOccurs='1' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 3.1.10 -->
@@ -269,26 +269,26 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <!-- Section 3.2.4 -->
   <xs:element name='FederationMetadataHandler' type='tns:FederationMetadataHandlerType' />
   <xs:complexType name='FederationMetadataHandlerType' >
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 4.1 -->
   <xs:element name='SignOut' type='tns:SignOutType' />
   <xs:complexType name='SignOutType' >
-	<xs:sequence>
-	  <xs:element ref='tns:Realm' minOccurs='0' />
-	  <xs:element name='SignOutBasis' type='tns:SignOutBasisType' minOccurs='1' maxOccurs='1' />
-	  <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:attribute ref='wsu:Id' use='optional' />
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:element ref='tns:Realm' minOccurs='0' />
+      <xs:element name='SignOutBasis' type='tns:SignOutBasisType' minOccurs='1' maxOccurs='1' />
+      <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:attribute ref='wsu:Id' use='optional' />
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:complexType name='SignOutBasisType' >
-	<xs:sequence>
-	  <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 4.2 -->
@@ -297,98 +297,98 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <!-- Section 6.1 -->
   <xs:element name='FilterPseudonyms' type='tns:FilterPseudonymsType' />
   <xs:complexType name='FilterPseudonymsType' >
-	<xs:sequence>
-	  <xs:element ref='tns:PseudonymBasis' minOccurs='0' maxOccurs='1' />
-	  <xs:element ref='tns:RelativeTo' minOccurs='0' maxOccurs='1' />
-	  <xs:any namespace='##other' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:element ref='tns:PseudonymBasis' minOccurs='0' maxOccurs='1' />
+      <xs:element ref='tns:RelativeTo' minOccurs='0' maxOccurs='1' />
+      <xs:any namespace='##other' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:element name='PseudonymBasis' type='tns:PseudonymBasisType' />
   <xs:complexType name='PseudonymBasisType' >
- 	<xs:sequence>
-	  <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:element name='RelativeTo' type='tns:RelativeToType' />
   <xs:complexType name='RelativeToType' >
-	<xs:sequence>
-	  <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 6.2  -->
   <xs:element name='Pseudonym' type='tns:PseudonymType' />
 
   <xs:complexType name='PseudonymType' >
-	<xs:sequence>
-	  <!--
-		  *** Accurate content model is nondeterministic ***
-		  <xs:element ref='tns:PseudonymBasis' minOccurs='1' maxOccurs='1' />
-		  <xs:element ref='tns:RelativeTo' minOccurs='1' maxOccurs='1' />
-		  <xs:element ref='wsu:Expires' minOccurs='0' maxOccurs='1' />
-		  <xs:element ref='tns:SecurityToken' minOccurs='0' maxOccurs='unbounded' />
-		  <xs:element ref='tns:ProofToken' minOccurs='0' maxOccurs='unbounded' />
-		  <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	  -->
+    <xs:sequence>
+      <!--
+          *** Accurate content model is nondeterministic ***
+          <xs:element ref='tns:PseudonymBasis' minOccurs='1' maxOccurs='1' />
+          <xs:element ref='tns:RelativeTo' minOccurs='1' maxOccurs='1' />
+          <xs:element ref='wsu:Expires' minOccurs='0' maxOccurs='1' />
+          <xs:element ref='tns:SecurityToken' minOccurs='0' maxOccurs='unbounded' />
+          <xs:element ref='tns:ProofToken' minOccurs='0' maxOccurs='unbounded' />
+          <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+      -->
 
-	  <xs:element ref='tns:PseudonymBasis' minOccurs='1' maxOccurs='1' />
-	  <xs:element ref='tns:RelativeTo' minOccurs='1' maxOccurs='1' />
-	  <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+      <xs:element ref='tns:PseudonymBasis' minOccurs='1' maxOccurs='1' />
+      <xs:element ref='tns:RelativeTo' minOccurs='1' maxOccurs='1' />
+      <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:element name='SecurityToken' type='tns:SecurityTokenType' />
   <xs:complexType name='SecurityTokenType' >
- 	<xs:sequence>
-	  <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:element name='ProofToken' type='tns:ProofTokenType' />
   <xs:complexType name='ProofTokenType' >
- 	<xs:sequence>
-	  <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 7.1 -->
   <xs:element name='RequestPseudonym' type='tns:RequestPseudonymType' />
   <xs:complexType name='RequestPseudonymType' >
-	<xs:sequence>
-	  <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:attribute name='SingleUse' type='xs:boolean' use='optional' />
-	<xs:attribute name='Lookup' type='xs:boolean' use='optional' />
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:attribute name='SingleUse' type='xs:boolean' use='optional' />
+    <xs:attribute name='Lookup' type='xs:boolean' use='optional' />
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 8.1 -->
   <xs:element name='ReferenceToken' type='tns:ReferenceTokenType' />
   <xs:complexType name='ReferenceTokenType'>
-	<xs:sequence>
-	  <xs:element name='ReferenceEPR' type='wsa:EndpointReferenceType' minOccurs='1' maxOccurs='unbounded' />
-	  <xs:element name='ReferenceDigest' type='tns:ReferenceDigestType' minOccurs='0' maxOccurs='1' />
-	  <xs:element name='ReferenceType' type='tns:AttributeExtensibleURI' minOccurs='0' maxOccurs='1' />
-	  <xs:element name='SerialNo' type='tns:AttributeExtensibleURI' minOccurs='0' maxOccurs='1' />
-	  <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:element name='ReferenceEPR' type='wsa:EndpointReferenceType' minOccurs='1' maxOccurs='unbounded' />
+      <xs:element name='ReferenceDigest' type='tns:ReferenceDigestType' minOccurs='0' maxOccurs='1' />
+      <xs:element name='ReferenceType' type='tns:AttributeExtensibleURI' minOccurs='0' maxOccurs='1' />
+      <xs:element name='SerialNo' type='tns:AttributeExtensibleURI' minOccurs='0' maxOccurs='1' />
+      <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:complexType name='ReferenceDigestType' >
-	<xs:simpleContent>
-	  <xs:extension base='xs:base64Binary' >
-		<xs:anyAttribute namespace='##other' processContents='lax' />
-	  </xs:extension>
-	</xs:simpleContent>
+    <xs:simpleContent>
+      <xs:extension base='xs:base64Binary' >
+        <xs:anyAttribute namespace='##other' processContents='lax' />
+      </xs:extension>
+    </xs:simpleContent>
   </xs:complexType>
   <xs:complexType name='AttributeExtensibleURI' >
     <xs:simpleContent>
@@ -404,41 +404,41 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <!-- Section 8.3 -->
   <xs:element name='RequestProofToken' type='tns:RequestProofTokenType' />
   <xs:complexType name='RequestProofTokenType' >
-	<xs:sequence>
-	  <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 8.4 -->
   <xs:element name='ClientPseudonym' type='tns:ClientPseudonymType' />
   <xs:complexType name='ClientPseudonymType' >
-	<xs:sequence>
-	  <xs:element name='PPID' type='tns:AttributeExtensibleString' minOccurs='0' />
-	  <xs:element name='DisplayName' type='tns:AttributeExtensibleString' minOccurs='0' />
-	  <xs:element name='EMail' type='tns:AttributeExtensibleString' minOccurs='0' />
-	  <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:element name='PPID' type='tns:AttributeExtensibleString' minOccurs='0' />
+      <xs:element name='DisplayName' type='tns:AttributeExtensibleString' minOccurs='0' />
+      <xs:element name='EMail' type='tns:AttributeExtensibleString' minOccurs='0' />
+      <xs:any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:complexType name='AttributeExtensibleString' >
-	<xs:simpleContent>
-	  <xs:extension base='xs:string' >
-		<xs:anyAttribute namespace='##other' processContents='lax' />
-	  </xs:extension>
-	</xs:simpleContent>
+    <xs:simpleContent>
+      <xs:extension base='xs:string' >
+        <xs:anyAttribute namespace='##other' processContents='lax' />
+      </xs:extension>
+    </xs:simpleContent>
   </xs:complexType>
 
   <!-- Section 8.5 -->
   <xs:element name='Freshness' type='tns:Freshness' />
   <xs:complexType name='Freshness'>
-	<xs:simpleContent>
-	  <xs:extension base='xs:unsignedInt' >
-		<xs:attribute name='AllowCache' type='xs:boolean' use='optional' />
-		<xs:anyAttribute namespace='##other' processContents='lax' />
-	  </xs:extension>
-	</xs:simpleContent>
+    <xs:simpleContent>
+      <xs:extension base='xs:unsignedInt' >
+        <xs:attribute name='AllowCache' type='xs:boolean' use='optional' />
+        <xs:anyAttribute namespace='##other' processContents='lax' />
+      </xs:extension>
+    </xs:simpleContent>
   </xs:complexType>
 
   <!-- Section 14.1 -->
@@ -446,10 +446,10 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <xs:element name='ReferenceToken11' type='tns:AssertionType' />
 
   <xs:complexType name='AssertionType' >
-	<xs:sequence>
-	  <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
-	</xs:sequence>
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:sequence>
+      <xs:any namespace='##any' processContents='lax' minOccurs='0' maxOccurs='unbounded' />
+    </xs:sequence>
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 14.2 -->

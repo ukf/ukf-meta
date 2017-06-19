@@ -27,7 +27,7 @@
     <xsl:template match="/md:EntitiesDescriptor">
 
         <xsl:variable name="entities" select="//md:EntityDescriptor
-		[descendant::mdrpi:RegistrationInfo/@registrationAuthority='http://ukfederation.org.uk']"/>
+        [descendant::mdrpi:RegistrationInfo/@registrationAuthority='http://ukfederation.org.uk']"/>
         <xsl:variable name="idps" select="$entities[md:IDPSSODescriptor]"/>
         <xsl:variable name="sps" select="$entities[md:SPSSODescriptor]"/>
 

@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	ns_norm_cds.xsl
+    ns_norm_cds.xsl
 
-	Normalise the namespaces in a metadata file for publication to the UKf CDS.
+    Normalise the namespaces in a metadata file for publication to the UKf CDS.
 
-	Author: Ian A. Young <ian@iay.org.uk>
+    Author: Ian A. Young <ian@iay.org.uk>
 
 -->
 <xsl:stylesheet version="1.0"
-	xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
-	xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
-	xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-	xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
-	xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-	xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
-	xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
-	xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
-	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
-	xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
+    xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+    xmlns:init="urn:oasis:names:tc:SAML:profiles:SSO:request-init"
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
+    xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
+    xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
+    xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 
-	exclude-result-prefixes="alg ds init md mdattr saml shibmd ukfedlabel xsi"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
-
-
-	<!--
-		Import templates for basic normalisation.
-	-->
-	<xsl:import href="../ns_norm.xsl"/>
+    exclude-result-prefixes="alg ds init md mdattr saml shibmd ukfedlabel xsi"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
 
-	<!--
-		Force UTF-8 encoding for the output.
-	-->
-	<xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8"/>
+    <!--
+        Import templates for basic normalisation.
+    -->
+    <xsl:import href="../ns_norm.xsl"/>
 
 
-	<!--
-		*******************************************
-		***                                     ***
-		***   D O C U M E N T   E L E M E N T   ***
-		***                                     ***
-		*******************************************
-	-->
+    <!--
+        Force UTF-8 encoding for the output.
+    -->
+    <xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8"/>
 
 
-	<!--
-		We need to handle the document element specially in order to arrange
-		for all appropriate namespace prefix definitions to appear on it.
+    <!--
+        *******************************************
+        ***                                     ***
+        ***   D O C U M E N T   E L E M E N T   ***
+        ***                                     ***
+        *******************************************
+    -->
 
-		There are only two possible document elements in SAML metadata.
-	-->
+
+    <!--
+        We need to handle the document element specially in order to arrange
+        for all appropriate namespace prefix definitions to appear on it.
+
+        There are only two possible document elements in SAML metadata.
+    -->
 
 
-	<!--
-		Document element is <EntityDescriptor>.
-	-->
-	<xsl:template match="/md:EntityDescriptor">
-		<EntityDescriptor>
-			<xsl:apply-templates select="node()|@*"/>
-		</EntityDescriptor>
-	</xsl:template>
+    <!--
+        Document element is <EntityDescriptor>.
+    -->
+    <xsl:template match="/md:EntityDescriptor">
+        <EntityDescriptor>
+            <xsl:apply-templates select="node()|@*"/>
+        </EntityDescriptor>
+    </xsl:template>
 
-	<!--
-		Document element is <EntitiesDescriptor>.
-	-->
-	<xsl:template match="/md:EntitiesDescriptor">
-		<EntitiesDescriptor>
-			<xsl:apply-templates select="node()|@*"/>
-		</EntitiesDescriptor>
-	</xsl:template>
+    <!--
+        Document element is <EntitiesDescriptor>.
+    -->
+    <xsl:template match="/md:EntitiesDescriptor">
+        <EntitiesDescriptor>
+            <xsl:apply-templates select="node()|@*"/>
+        </EntitiesDescriptor>
+    </xsl:template>
 
 </xsl:stylesheet>

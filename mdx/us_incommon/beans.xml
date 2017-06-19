@@ -45,7 +45,7 @@
         InCommon signing certificate.
     -->
     <bean id="us_incommon_signingCertificate" parent="X509CertificateFactoryBean"
-    	p:resource="classpath:us_incommon/inc-md-cert.pem"/>
+        p:resource="classpath:us_incommon/inc-md-cert.pem"/>
 
     <!--
         Check InCommon signing signature.

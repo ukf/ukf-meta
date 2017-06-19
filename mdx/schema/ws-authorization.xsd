@@ -23,9 +23,9 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 <xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'
        xmlns:xenc='http://www.w3.org/2001/04/xmlenc#'
-		   xmlns:tns='http://docs.oasis-open.org/wsfed/authorization/200706'
-		   targetNamespace='http://docs.oasis-open.org/wsfed/authorization/200706'
-		   elementFormDefault='qualified' >
+           xmlns:tns='http://docs.oasis-open.org/wsfed/authorization/200706'
+           targetNamespace='http://docs.oasis-open.org/wsfed/authorization/200706'
+           elementFormDefault='qualified' >
   <xs:import namespace='http://www.w3.org/2001/04/xmlenc#'
              schemaLocation='xenc-schema.xsd'/>
 
@@ -45,8 +45,8 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
       <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
     </xs:choice>
     <xs:attribute name='Name' type='xs:anyURI' use='required' />
-	<xs:attribute name='Scope' type='xs:anyURI' use='optional' />
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:attribute name='Scope' type='xs:anyURI' use='optional' />
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <!-- Section 9.3 -->
@@ -57,16 +57,16 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
       <xs:element name="Description" type="tns:DescriptionType" minOccurs="0" maxOccurs="1" />
       <xs:element name="DisplayValue" type="tns:DisplayValueType" minOccurs="0" maxOccurs="1" />
       <xs:choice minOccurs='0'>
-	      <xs:element name='Value' type='xs:string' minOccurs='1' maxOccurs='1' />
+          <xs:element name='Value' type='xs:string' minOccurs='1' maxOccurs='1' />
         <xs:element name='EncryptedValue' type='tns:EncryptedValueType' minOccurs='1' maxOccurs='1' />
         <xs:element name='StructuredValue' type='tns:StructuredValueType' minOccurs='1' maxOccurs='1' />
         <xs:element name='ConstrainedValue' type='tns:ConstrainedValueType' minOccurs='1' maxOccurs='1' />
- 	      <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
-	    </xs:choice>
+          <xs:any namespace='##other' processContents='lax' minOccurs='1' maxOccurs='1' />
+        </xs:choice>
     </xs:sequence>
-	<xs:attribute name='Uri' type='xs:anyURI' use='required' />
-	<xs:attribute name='Optional' type='xs:boolean' use='optional' />
-	<xs:anyAttribute namespace='##other' processContents='lax' />
+    <xs:attribute name='Uri' type='xs:anyURI' use='required' />
+    <xs:attribute name='Optional' type='xs:boolean' use='optional' />
+    <xs:anyAttribute namespace='##other' processContents='lax' />
   </xs:complexType>
 
   <xs:complexType name="DisplayNameType">

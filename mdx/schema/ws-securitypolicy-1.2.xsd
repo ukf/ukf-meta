@@ -21,19 +21,19 @@ INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN
 MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 -->
 <xs:schema
-	targetNamespace='http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702'
+    targetNamespace='http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702'
   xmlns:tns='http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702'
-	xmlns:wsa="http://www.w3.org/2005/08/addressing"
+    xmlns:wsa="http://www.w3.org/2005/08/addressing"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	elementFormDefault="qualified"
-	blockDefault="#all" >
+    elementFormDefault="qualified"
+    blockDefault="#all" >
 
   <xs:import namespace="http://www.w3.org/2005/08/addressing"
-		schemaLocation="ws-addr.xsd" />
+        schemaLocation="ws-addr.xsd" />
 
   <!--
-	4. Protection Assertions
-	-->
+    4. Protection Assertions
+    -->
   <xs:element name="SignedParts" type="tns:SePartsType">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -95,8 +95,8 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   </xs:complexType>
 
   <!--
-	5. Token Assertions
-	-->
+    5. Token Assertions
+    -->
   <xs:attribute name="IncludeToken" type="tns:IncludeTokenOpenType" >
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -131,9 +131,9 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
         <xs:element name="IssuerName" type="xs:anyURI" />
       </xs:choice>
       <!--
-			Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
-			<xs:element ref="wsp:Policy" minOccurs="0" />
-			-->
+            Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
+            <xs:element ref="wsp:Policy" minOccurs="0" />
+            -->
       <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax"/>
     </xs:sequence>
     <xs:attribute ref="tns:IncludeToken" use="optional" />
@@ -191,9 +191,9 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
       </xs:choice>
       <xs:element name="RequestSecurityTokenTemplate" type="tns:RequestSecurityTokenTemplateType" />
       <!--
-			Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
-			<xs:element ref="wsp:Policy" minOccurs="0" />
-			-->
+            Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
+            <xs:element ref="wsp:Policy" minOccurs="0" />
+            -->
       <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
     </xs:sequence>
     <xs:attribute ref="tns:IncludeToken" use="optional" />
@@ -373,9 +373,9 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
         <xs:element name="IssuerName" type="xs:anyURI" />
       </xs:choice>
       <!--
-			Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
-			<xs:element ref="wsp:Policy" minOccurs="0" />
-			-->
+            Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
+            <xs:element ref="wsp:Policy" minOccurs="0" />
+            -->
       <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
     </xs:sequence>
     <xs:attribute ref="tns:IncludeToken" use="optional" />
@@ -446,9 +446,9 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
         <xs:element name="IssuerName" type="xs:anyURI" />
       </xs:choice>
       <!--
-			Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
-			<xs:element ref="wsp:Policy" minOccurs="0" />
-			-->
+            Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
+            <xs:element ref="wsp:Policy" minOccurs="0" />
+            -->
       <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
     </xs:sequence>
     <xs:attribute ref="tns:IncludeToken" use="optional" />
@@ -585,9 +585,9 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <xs:complexType name="KeyValueTokenType">
     <xs:sequence>
       <!--
-			Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
-			<xs:element ref="wsp:Policy" minOccurs="0" />
-			-->
+            Actual content model is non-deterministic, hence wildcard. The following shows intended content model:
+            <xs:element ref="wsp:Policy" minOccurs="0" />
+            -->
       <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
     </xs:sequence>
     <xs:attribute ref="tns:IncludeToken" use="optional" />
@@ -602,8 +602,8 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   </xs:element>
 
   <!--
-	7. Security Binding Assertions
-	-->
+    7. Security Binding Assertions
+    -->
   <xs:element name="AlgorithmSuite" type="tns:NestedPolicyType" >
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -961,8 +961,8 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <!-- OnlySignEntireHeadersAndBody defined above. -->
 
   <!--
-	8. Supporting Tokens
-	-->
+    8. Supporting Tokens
+    -->
   <xs:element name="SupportingTokens" type="tns:NestedPolicyType">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -1068,8 +1068,8 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   <!-- EncryptedElements defined above. -->
 
   <!--
-	9. WSS: SOAP Message Security Options
-	-->
+    9. WSS: SOAP Message Security Options
+    -->
   <xs:element name="Wss10" type="tns:NestedPolicyType">
     <xs:annotation>
       <xs:documentation xml:lang="en">
@@ -1142,8 +1142,8 @@ MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
   </xs:element>
 
   <!--
-	10. WS-Trust Options
-	-->
+    10. WS-Trust Options
+    -->
   <xs:element name="Trust13" type="tns:NestedPolicyType">
     <xs:annotation>
       <xs:documentation xml:lang="en">

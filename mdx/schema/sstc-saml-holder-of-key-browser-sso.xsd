@@ -14,10 +14,10 @@
       Document identifier: sstc-saml-holder-of-key-browser-sso.xsd
       Location: http://www.oasis-open.org/committees/documents.php?wg_abbrev=security
       Revision history:
-	V1.2 (2 November 2008):
-	  Renamed attribute from protocol to ProtocolBinding; targetNamespace changed in accordance with new conventions
-	V1.1 (6 August 2008):
-	  string type changed to anyURI to match original SAML2Meta schema
+    V1.2 (2 November 2008):
+      Renamed attribute from protocol to ProtocolBinding; targetNamespace changed in accordance with new conventions
+    V1.1 (6 August 2008):
+      string type changed to anyURI to match original SAML2Meta schema
         V1.0 (4 August 2008):
           Initial version.
     </xs:documentation>

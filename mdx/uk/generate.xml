@@ -301,10 +301,10 @@
     -->
 
     <!--
-    	Select all entities which are not both:
+        Select all entities which are not both:
 
-    	   * identity providers, and
-    	   * members of the "hide from discovery" entity category.
+           * identity providers, and
+           * members of the "hide from discovery" entity category.
     -->
     <bean id="uk_wayfSelector" parent="mda.XPathItemSelectionStrategy">
         <constructor-arg value="/md:EntityDescriptor[not(md:IDPSSODescriptor and

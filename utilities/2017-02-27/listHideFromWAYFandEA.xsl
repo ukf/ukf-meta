@@ -9,8 +9,8 @@
         <xsl:output method="text" encoding="UTF-8"/>
 
         <xsl:template match="md:EntityDescriptor
-		                    [md:Extensions/mdattr:EntityAttributes]
-		                    [md:Extensions/wayf:HideFromWAYF]">
+                            [md:Extensions/mdattr:EntityAttributes]
+                            [md:Extensions/wayf:HideFromWAYF]">
                 <xsl:value-of select="@entityID"/>
                 <xsl:text>&#10;</xsl:text>
         </xsl:template>

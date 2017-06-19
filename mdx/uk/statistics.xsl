@@ -1173,16 +1173,16 @@
             <td align="center">
                 <xsl:choose>
 
-                	<!-- Special case: Eduserv does NOT outsource -->
+                    <!-- Special case: Eduserv does NOT outsource -->
                     <xsl:when test="members:Name = 'Eduserv'">
                         &#160;
                     </xsl:when>
 
                     <!--
-                    	Anyone pushing scopes to an entity is assumed to
-                    	be outsourcing.  Strictly speaking, this should be
-                    	anyone pushing scopes to an entity owned by another
-                    	member.
+                        Anyone pushing scopes to an entity is assumed to
+                        be outsourcing.  Strictly speaking, this should be
+                        anyone pushing scopes to an entity owned by another
+                        member.
                     -->
                     <xsl:when test="members:Scopes/members:Entity">
                         *
