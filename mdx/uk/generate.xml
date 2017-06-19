@@ -572,6 +572,7 @@
                 <ref bean="uk_assemble"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="uk_finaliseTest"/>
+                <ref bean="setStaticID"/>
                 <ref bean="uk_normaliseTest"/>
                 
                 <!-- test aggregate MUST pass publishability test -->
