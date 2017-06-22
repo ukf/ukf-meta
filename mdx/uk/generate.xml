@@ -350,6 +350,7 @@
 
                 <ref bean="stripMdattrNamespace"/>
                 <ref bean="uk_finaliseProduction"/>
+                <ref bean="setStaticID"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- WAYF aggregate MUST pass publishability test -->
@@ -467,6 +468,7 @@
                 <ref bean="stripEmptyExtensions"/>
 
                 <ref bean="CDSFinalise"/>
+                <ref bean="setStaticID"/>
                 <ref bean="CDSNormaliseNamespaces"/>
 
                 <!-- schema validity check MUST pass -->
