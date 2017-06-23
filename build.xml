@@ -874,7 +874,7 @@
       Checks out master branch of data repository
     -->
     <target name="git.data.masterbranch.checkout">
-        <echo>Switching to deferred branch in data repository.</echo>
+        <echo>Switching to master branch in data repository.</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
             <arg value="master"/>
