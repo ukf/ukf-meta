@@ -1091,6 +1091,30 @@
                 <p>
                     IdPs: <xsl:value-of select="$nosaml2.idps.count"/>
                 </p>
+                <xsl:if test="$nosaml2.idps.count != 0">
+                    <ul>
+                        <xsl:for-each select="$nosaml2.idps">
+                            <xsl:sort select="descendant::md:OrganizationName"/>
+                            <li>
+                                <xsl:value-of select="@ID"/>
+                                <xsl:text>: </xsl:text>
+                                <xsl:value-of select="descendant::md:OrganizationName"/>
+                                <xsl:text>: </xsl:text>
+                                <xsl:choose>
+                                    <xsl:when test="descendant::mdui:DisplayName">
+                                        <xsl:value-of select="descendant::mdui:DisplayName"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:text>(</xsl:text>
+                                        <xsl:value-of select="descendant::md:OrganizationDisplayName"/>
+                                        <xsl:text>)</xsl:text>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                                <xsl:apply-templates select="md:Extensions/ukfedlabel:Software" mode="short"/>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
                 <xsl:call-template name="entity.breakdown.by.software">
                     <xsl:with-param name="entities" select="$nosaml2.idps"/>
                 </xsl:call-template>
