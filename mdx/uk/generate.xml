@@ -522,6 +522,7 @@
                 <ref bean="uk_assemble"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
+                <ref bean="setStaticID"/>
                 <ref bean="uk_normaliseFallback"/>
 
                 <!-- fallback aggregate MUST pass publishability test -->
