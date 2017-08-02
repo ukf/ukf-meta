@@ -48,20 +48,7 @@
 
     <xsl:variable name="now" select="date:date-time()"/>
     <xsl:variable name="validUntil" select="mdxDates:dateAdd($now, $validityDays)"/>
-
-    <!--
-        documentID
-
-        This value is generated from a normalised version of the aggregation instant,
-        transformed so that it can be used as an XML ID value.
-
-        Strict conformance to the SAML 2.0 metadata specification (section 3.1.2) requires
-        that the signature explicitly references an identifier attribute in the element
-        being signed, in this case the document element.
-    -->
     <xsl:variable name="normalisedNow" select="mdxDates:dateAdd($now, 0)"/>
-    <xsl:variable name="documentID"
-        select="concat('uk', translate($normalisedNow, ':-', ''))"/>
 
     <!--
         Document root.
@@ -78,9 +65,6 @@
         <EntitiesDescriptor>
             <xsl:attribute name="validUntil">
                 <xsl:value-of select="$validUntil"/>
-            </xsl:attribute>
-            <xsl:attribute name="ID">
-                <xsl:value-of select="$documentID"/>
             </xsl:attribute>
             <xsl:apply-templates select="@*"/>
             <xsl:call-template name="document.comment"/>
