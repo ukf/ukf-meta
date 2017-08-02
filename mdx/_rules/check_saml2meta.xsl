@@ -37,9 +37,9 @@
             </xsl:call-template>
         </xsl:if>
 
-        <xsl:variable name="indices" select="md:AssertionConsumerService/@index"/>
-        <xsl:variable name="distinct.indices" select="set:distinct($indices)"/>
-        <xsl:if test="count($indices) != count($distinct.indices)">
+        <xsl:variable name="indices2" select="md:AssertionConsumerService/@index"/>
+        <xsl:variable name="distinct.indices2" select="set:distinct($indices2)"/>
+        <xsl:if test="count($indices2) != count($distinct.indices2)">
             <xsl:call-template name="error">
                 <xsl:with-param name="m">AssertionConsumerService index values not all different</xsl:with-param>
             </xsl:call-template>
