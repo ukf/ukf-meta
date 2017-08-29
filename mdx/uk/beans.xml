@@ -306,8 +306,6 @@
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                             <!-- Error on small RSA public exponents. -->
                             <bean parent="mda.X509RSAExponentValidator"/>
-                            <!-- Error on inconsistent subjectAltNames. -->
-                            <bean parent="ukf.X509ConsistentNameValidator"/>
 
                             <!--
                                 Debian weak key blacklists.
