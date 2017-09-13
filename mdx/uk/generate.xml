@@ -53,13 +53,7 @@
         final tweaks on the document.
     -->
     <bean id="finalise_parent" abstract="true" parent="mda.XSLTransformationStage"
-        p:XSLResource="classpath:uk/final_tweak.xsl">
-        <property name="transformParameters">
-            <map>
-                <entry key="publisher" value-ref="uk_federation_uri"/>
-            </map>
-        </property>
-    </bean>
+        p:XSLResource="classpath:uk/final_tweak.xsl"/>
 
     <!--
         checkPublishable
@@ -257,6 +251,7 @@
         <property name="transformParameters">
             <map>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
+                <entry key="validityDays" value="${validUntil.aggregate.days}"/>
             </map>
         </property>
     </bean>
@@ -412,6 +407,7 @@
                 <entry key="extraText"
                     value="Central Discovery Service metadata; not for end entity use"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
+                <entry key="validityDays" value="${validUntil.aggregate.days}"/>
             </map>
         </property>
     </bean>
@@ -494,6 +490,7 @@
             <map>
                 <entry key="extraText" value="Feature fallback metadata; not for production use"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
+                <entry key="validityDays" value="${validUntil.aggregate.days}"/>
             </map>
         </property>
     </bean>
@@ -547,6 +544,7 @@
             <map>
                 <entry key="extraText" value="Feature test metadata; not for production use"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
+                <entry key="validityDays" value="${validUntil.aggregate.days}"/>
             </map>
         </property>
     </bean>
@@ -601,6 +599,7 @@
             <map>
                 <entry key="extraText" value="Export metadata for use by partner federations"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
+                <entry key="validityDays" value="${validUntil.aggregate.days}"/>
             </map>
         </property>
     </bean>

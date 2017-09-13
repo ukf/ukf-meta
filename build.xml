@@ -101,6 +101,27 @@
     <property file="default.properties"/>
 
     <!--
+        *******************************************************
+        ***                                                 ***
+        ***   S A M L   O U T P U T   P R O P E R T I E S   ***
+        ***                                                 ***
+        *******************************************************
+    -->
+
+    <!-- Default validUntil duration for all generated metadata, in days. -->
+    <property name="validUntil.default.days" value="14"/>
+
+    <!-- Specific validUntil duration for aggregates, in days. -->
+    <property name="validUntil.aggregate.days" value="${validUntil.default.days}"/>
+    <!-- Same value, as an ISO 8601 duration. -->
+    <property name="validUntil.aggregate.duration" value="P${validUntil.aggregate.days}D"/>
+
+    <!-- Specific validUntil duration for per-entity metadata, in days. -->
+    <property name="validUntil.perEntity.days" value="${validUntil.default.days}"/>
+    <!-- Same value, as an ISO 8601 duration. -->
+    <property name="validUntil.perEntity.duration" value="P${validUntil.perEntity.days}D"/>
+
+    <!--
         ***************************************************************
         ***                                                         ***
         ***   G I T   I N T E G R A T I O N   P R O P E R T I E S   ***
@@ -1449,6 +1470,8 @@
     <property name="mda.sign.keyAlias" value="${sign.uk.keyAlias}"/>
     <property name="mda.sign.pkcs11Config" value="${sign.uk.pkcs11Config}"/>
     <property name="mda.mdq.output" value="${mdq.output.dir}"/>
+    <property name="mda.validUntil.aggregate.days" value="${validUntil.aggregate.days}"/>
+    <property name="mda.validUntil.perEntity.duration" value="${validUntil.perEntity.duration}"/>
 
     <!--
         Build a property set of all the properties to be passed through, with
