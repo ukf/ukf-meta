@@ -71,13 +71,23 @@
     <!--
         assembleAggregate
 
-        Assemble a UK-style aggregate with an appropriate validUntil.
+        Assemble a UK-style aggregate with an appropriate validUntil and ID.
     -->
     <bean id="assembleAggregate" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="uk_assemble"/>
                 <bean parent="mda.SetValidUntilStage" p:validityDuration="${validUntil.aggregate.duration}"/>
+                <!--
+                    setStaticID
+
+                    Set the item's ID attribute to the static string "_".
+                -->
+                <bean id="setStaticID" parent="mda.GenerateIdStage">
+                    <constructor-arg>
+                        <bean parent="ukf.FixedStringIdentifierGenerationStrategy" c:_="_"/>
+                    </constructor-arg>
+                </bean>
             </list>
         </property>
     </bean>
@@ -99,17 +109,6 @@
                 <ref bean="check_namespaces"/>
             </list>
         </property>
-    </bean>
-
-    <!--
-        setStaticID
-
-        Set the item's ID attribute to the static string "_".
-    -->
-    <bean id="setStaticID" parent="mda.GenerateIdStage">
-        <constructor-arg>
-            <bean parent="ukf.FixedStringIdentifierGenerationStrategy" c:_="_"/>
-        </constructor-arg>
     </bean>
 
 
@@ -303,7 +302,6 @@
 
                 <ref bean="assembleAggregate"/>
                 <ref bean="uk_finaliseProduction"/>
-                <ref bean="setStaticID"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- production aggregate MUST pass publishability test -->
@@ -373,7 +371,6 @@
 
                 <ref bean="stripMdattrNamespace"/>
                 <ref bean="uk_finaliseProduction"/>
-                <ref bean="setStaticID"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- WAYF aggregate MUST pass publishability test -->
@@ -492,7 +489,6 @@
                 <ref bean="stripEmptyExtensions"/>
 
                 <ref bean="CDSFinalise"/>
-                <ref bean="setStaticID"/>
                 <ref bean="CDSNormaliseNamespaces"/>
 
                 <!-- schema validity check MUST pass -->
@@ -546,7 +542,6 @@
                 <ref bean="assembleAggregate"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
-                <ref bean="setStaticID"/>
                 <ref bean="uk_normaliseFallback"/>
 
                 <!-- fallback aggregate MUST pass publishability test -->
@@ -601,7 +596,6 @@
                 <ref bean="assembleAggregate"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="uk_finaliseTest"/>
-                <ref bean="setStaticID"/>
                 <ref bean="uk_normaliseTest"/>
 
                 <!-- test aggregate MUST pass publishability test -->
@@ -727,7 +721,6 @@
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
-                <ref bean="setStaticID"/>
 
                 <bean id="uk_normaliseExport" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/ns_norm_export.xsl"/>
@@ -843,7 +836,6 @@
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
-                <ref bean="setStaticID"/>
 
                 <bean id="uk_normaliseExportPreview" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/ns_norm_export_preview.xsl"/>
