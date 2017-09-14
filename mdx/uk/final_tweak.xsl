@@ -47,27 +47,20 @@
     <xsl:param name="validityDays"/>
 
     <xsl:variable name="now" select="date:date-time()"/>
-    <xsl:variable name="validUntil" select="mdxDates:dateAdd($now, $validityDays)"/>
     <xsl:variable name="normalisedNow" select="mdxDates:dateAdd($now, 0)"/>
-
-    <!--
-        Document root.
-    -->
-    <xsl:template match="/">
-        <xsl:call-template name="document.comment"/>
-        <xsl:apply-templates/>
-    </xsl:template>
 
     <!--
         Document element.
     -->
     <xsl:template match="/md:EntitiesDescriptor">
+        <xsl:call-template name="document.comment">
+            <xsl:with-param name="validUntil" select="@validUntil"/>
+        </xsl:call-template>
         <EntitiesDescriptor>
-            <xsl:attribute name="validUntil">
-                <xsl:value-of select="$validUntil"/>
-            </xsl:attribute>
             <xsl:apply-templates select="@*"/>
-            <xsl:call-template name="document.comment"/>
+            <xsl:call-template name="document.comment">
+                <xsl:with-param name="validUntil" select="@validUntil"/>
+            </xsl:call-template>
 
             <!--
                 Add an Extensions element if there isn't one, but we need one
@@ -92,6 +85,7 @@
         Comment to be added to the top of the document, and just inside the document element.
     -->
     <xsl:template name="document.comment">
+        <xsl:param name="validUntil"/>
         <xsl:text>&#10;</xsl:text>
         <xsl:comment>
             <xsl:text>&#10;&#9;U K   F E D E R A T I O N   M E T A D A T A&#10;</xsl:text>

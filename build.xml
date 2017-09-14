@@ -1471,6 +1471,7 @@
     <property name="mda.sign.pkcs11Config" value="${sign.uk.pkcs11Config}"/>
     <property name="mda.mdq.output" value="${mdq.output.dir}"/>
     <property name="mda.validUntil.aggregate.days" value="${validUntil.aggregate.days}"/>
+    <property name="mda.validUntil.aggregate.duration" value="${validUntil.aggregate.duration}"/>
     <property name="mda.validUntil.perEntity.duration" value="${validUntil.perEntity.duration}"/>
 
     <!--

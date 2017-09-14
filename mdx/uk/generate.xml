@@ -37,6 +37,19 @@
         *****************************
     -->
 
+    <!-- This bean MUST be called "conversionService" to work properly. -->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="net.shibboleth.ext.spring.config.DurationToLongConverter" />
+                <bean class="net.shibboleth.ext.spring.config.StringToIPRangeConverter" />
+                <bean class="net.shibboleth.ext.spring.config.BooleanToPredicateConverter" />
+                <bean class="net.shibboleth.ext.spring.config.StringBooleanToPredicateConverter" />
+                <bean class="net.shibboleth.ext.spring.config.StringToResourceConverter" />
+            </set>
+        </property>
+    </bean>
+
     <!--
         stripEntityScopes
 
@@ -54,6 +67,20 @@
     -->
     <bean id="finalise_parent" abstract="true" parent="mda.XSLTransformationStage"
         p:XSLResource="classpath:uk/final_tweak.xsl"/>
+
+    <!--
+        assembleAggregate
+
+        Assemble a UK-style aggregate with an appropriate validUntil.
+    -->
+    <bean id="assembleAggregate" parent="mda.CompositeStage">
+        <property name="composedStages">
+            <list>
+                <ref bean="uk_assemble"/>
+                <bean parent="mda.SetValidUntilStage" p:validityDuration="${validUntil.aggregate.duration}"/>
+            </list>
+        </property>
+    </bean>
 
     <!--
         checkPublishable
@@ -274,7 +301,7 @@
                 <ref bean="check_dup_display"/>
                 <ref bean="errorTerminatingFilter"/>
 
-                <ref bean="uk_assemble"/>
+                <ref bean="assembleAggregate"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="setStaticID"/>
                 <ref bean="uk_normaliseNamespaces"/>
@@ -335,7 +362,7 @@
                 <ref bean="check_dup_display"/>
                 <ref bean="errorTerminatingFilter"/>
 
-                <ref bean="uk_assemble"/>
+                <ref bean="assembleAggregate"/>
 
                 <!--
                     Remove embedded images used in mdui:Logo elements.
@@ -452,7 +479,7 @@
                 <ref bean="errorTerminatingFilter"/>
 
                 <!-- make an aggregate first so that we're only traversing one item -->
-                <ref bean="uk_assemble"/>
+                <ref bean="assembleAggregate"/>
 
                 <!-- remove many things that the CDS doesn't look at -->
                 <ref bean="CDSStripUnwanted"/>
@@ -516,7 +543,7 @@
                 <ref bean="check_dup_display"/>
                 <ref bean="errorTerminatingFilter"/>
 
-                <ref bean="uk_assemble"/>
+                <ref bean="assembleAggregate"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="setStaticID"/>
@@ -571,7 +598,7 @@
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="uk_strip_UKFederationMember"/>
-                <ref bean="uk_assemble"/>
+                <ref bean="assembleAggregate"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="setStaticID"/>
@@ -696,7 +723,7 @@
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="stripUkfedlabelNamespace"/>
-                <ref bean="uk_assemble"/>
+                <ref bean="assembleAggregate"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
@@ -812,7 +839,7 @@
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="stripUkfedlabelNamespace"/>
-                <ref bean="uk_assemble"/>
+                <ref bean="assembleAggregate"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
