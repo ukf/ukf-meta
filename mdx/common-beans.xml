@@ -284,17 +284,20 @@
     <!--
         Federation registrationAuthority URIs.
     -->
-    <bean id="ar_mate_registrar"         parent="String" c:_="http://www.federacionmate.gob.ar"/>
     <bean id="am_afire_registrar"        parent="String" c:_="https://aai.asnet.am"/>
+    <bean id="ar_mate_registrar"         parent="String" c:_="http://www.federacionmate.gob.ar"/>
     <bean id="at_aconet_registrar"       parent="String" c:_="http://eduid.at"/>
     <bean id="au_aaf_registrar"          parent="String" c:_="https://aaf.edu.au"/>
     <bean id="be_belnet_registrar"       parent="String" c:_="http://federation.belnet.be/"/>
+    <bean id="bg_bif_registrar"          parent="String" c:_="http://bif.bren.bg"/>
     <bean id="br_cafe_registrar"         parent="String" c:_="http://cafe.rnp.br"/>
     <bean id="by_febas_registrar"        parent="String" c:_="http://febas.basnet.by/"/>
     <bean id="ca_caf_registrar"          parent="String" c:_="http://www.canarie.ca"/>
     <bean id="ch_switchaai_registrar"    parent="String" c:_="http://rr.aai.switch.ch/"/>
     <bean id="cl_cofre_registrar"        parent="String" c:_="http://cofre.reuna.cl"/>
+    <bean id="cn_carsi_registrar"        parent="String" c:_="http://carsi.edu.cn"/>
     <bean id="co_colfire_registrar"      parent="String" c:_="http://colfire.co"/>
+    <bean id="cy_cynet_registrar"        parent="String" c:_="http://cynet.ac.cy"/>
     <bean id="cz_eduid_registrar"        parent="String" c:_="http://www.eduid.cz/"/>
     <bean id="de_dfnaai_registrar"       parent="String" c:_="https://www.aai.dfn.de"/>
     <bean id="dk_wayf_registrar"         parent="String" c:_="https://www.wayf.dk"/>
@@ -306,6 +309,7 @@
     <bean id="fr_renater_registrar"      parent="String" c:_="https://federation.renater.fr/"/>
     <bean id="ge_gif_registrar"          parent="String" c:_="https://mtd.gif.grena.ge"/>
     <bean id="gr_grnet_registrar"        parent="String" c:_="http://aai.grnet.gr/"/>
+    <bean id="hk_hkaf_registrar"         parent="String" c:_="https://hkaf.edu.hk"/>
     <bean id="hr_eduhr_registrar"        parent="String" c:_="http://www.srce.hr"/>
     <bean id="hu_eduid_registrar"        parent="String" c:_="http://eduid.hu"/>
     <bean id="ie_edugate_registrar"      parent="String" c:_="http://www.heanet.ie"/>
@@ -318,14 +322,17 @@
     <bean id="lt_litnet_registrar"       parent="String" c:_="https://fedi.litnet.lt"/>
     <bean id="lu_eduid_registrar"        parent="String" c:_="http://eduid.lu"/>
     <bean id="lv_laife_registrar"        parent="String" c:_="http://laife.lanet.lv/"/>
-    <bean id="mk_aaiedumk_registrar"     parent="String" c:_="https://rr.aaiedu.mk"/>
     <bean id="md_leaf_registrar"         parent="String" c:_="http://federations.renam.md/"/>
+    <bean id="mk_aaiedumk_registrar"     parent="String" c:_="https://rr.aaiedu.mk"/>
     <bean id="nl_surfconext_registrar"   parent="String" c:_="http://www.surfconext.nl/"/>
     <bean id="no_feide_registrar"        parent="String" c:_="http://feide.no/"/>
+    <bean id="om_omankid_registrar"      parent="String" c:_="https://home.trc.gov.om"/>
     <bean id="pl_pionier_registrar"      parent="String" c:_="https://aai.pionier.net.pl"/>
     <bean id="pt_rctsaai_registrar"      parent="String" c:_="https://www.fccn.pt"/>
     <bean id="se_swamid_registrar"       parent="String" c:_="http://www.swamid.se/"/>
+    <bean id="sg_sgaf_registrar"         parent="String" c:_="https://ds.sgaf.org.sg"/>
     <bean id="si_arnes_registrar"        parent="String" c:_="http://aai.arnes.si"/>
+    <bean id="sk_safeid_registrar"       parent="String" c:_="http://safeid.sk"/>
     <bean id="ua_peano_registrar"        parent="String" c:_="https://peano.uran.ua"/>
     <bean id="ug_rif_registrar"          parent="String" c:_="https://www.renu.ac.ug"/>
     <bean id="uk_ukf_registrar"          parent="String" c:_="http://ukfederation.org.uk"/>
@@ -354,9 +361,12 @@
 
                     http://www.edugain.org/technical/status.php
                 -->
+                <entry key-ref="dz_arnaai_registrar"          value="DZ"/>
+                <entry key-ref="ar_mate_registrar"            value="AR"/>
                 <entry key-ref="am_afire_registrar"           value="AM"/>
                 <entry key-ref="au_aaf_registrar"             value="AU"/>
                 <entry key-ref="at_aconet_registrar"          value="AT"/>
+                <entry key-ref="by_febas_registrar"           value="BY"/>
                 <entry key-ref="be_belnet_registrar"          value="BE"/>
                 <entry key-ref="br_cafe_registrar"            value="BR"/>
                 <entry key-ref="ca_caf_registrar"             value="CA"/>
@@ -385,6 +395,7 @@
                 <entry key-ref="mk_aaiedumk_registrar"        value="MK"/>
                 <entry key-ref="md_leaf_registrar"            value="MD"/>
                 <entry key-ref="no_feide_registrar"           value="NO"/>
+                <entry key-ref="om_omankid_registrar"         value="OM"/>
                 <entry key-ref="pl_pionier_registrar"         value="PL"/>
                 <entry key-ref="pt_rctsaai_registrar"         value="PT"/>
                 <entry key-ref="si_arnes_registrar"           value="SI"/>
@@ -398,12 +409,15 @@
                 <entry key-ref="uk_ukf_registrar"             value="UK"/>
 
                 <!-- eduGAIN voting-only members -->
-                <entry key-ref="ar_mate_registrar"            value="AR"/>
-                <entry key-ref="by_febas_registrar"           value="BY"/>
+                <entry key-ref="cy_cynet_registrar"           value="CY"/>
                 <entry key-ref="it_gridp_registrar"           value="IT-GRIDP"/>
+                <entry key-ref="sg_sgaf_registrar"            value="SG"/>
 
                 <!-- eduGAIN candidates -->
-                <entry key-ref="dz_arnaai_registrar"          value="DZ"/>
+                <entry key-ref="bg_bif_registrar"             value="BG"/>
+                <entry key-ref="cn_carsi_registrar"           value="CN"/>
+                <entry key-ref="hk_hkaf_registrar"            value="HK"/>
+                <entry key-ref="sk_safeid_registrar"          value="SK"/>
                 <entry key-ref="ug_rif_registrar"             value="UG"/>
             </map>
         </property>
