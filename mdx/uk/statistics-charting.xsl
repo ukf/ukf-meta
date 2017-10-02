@@ -144,7 +144,7 @@
 
             <xsl:variable name="charting.sps.algsupport" select="$sps[descendant::alg:* or descendant::md:EncryptionMethod]"/>
             <xsl:variable name="charting.sps.algsupport.count" select="count($charting.sps.algsupport)"/>
-            <xsl:text>Algorithm support:</xsl:text>
+            <xsl:text>Algorithm support: </xsl:text>
             <xsl:value-of select="format-number($charting.sps.algsupport.count div $spCount, '0.00%')"/>
             <xsl:text> of SP entities</xsl:text>
             <xsl:text>&#10;</xsl:text>
