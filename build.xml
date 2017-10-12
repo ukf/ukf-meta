@@ -1615,7 +1615,7 @@
                     <arg value="${git.repo.project.data}"/>
                     <arg value="${git.repo.project.products}"/>
                 </exec>
-                <SLACK.send conf="${tools.slacktee}/conf/aggr-ant.conf" colour="good" channel="events-publications"
+                <SLACK.send conf="${tools.slacktee}/conf/aggr-ant.conf" colour="good" channel="ukf-events-publish"
                     message="${diff.between.publications}"/>
             </then>
         </if>
