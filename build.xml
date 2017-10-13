@@ -1153,7 +1153,7 @@
             <arg value="${utilities.dir}/stats-generate.sh"/>
             <arg value="day"/>
         </exec>
-        <SLACK.send conf="${tools.slacktee}/conf/repo-jenkins.conf" colour="good" channel="stats"
+        <SLACK.send conf="${tools.slacktee}/conf/repo-jenkins.conf" colour="good" channel="ukf-stats"
             message="${stats.daily.output}"/>
     </target>
 
