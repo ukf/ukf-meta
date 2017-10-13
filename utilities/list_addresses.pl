@@ -9,8 +9,15 @@
 #
 # Parameters
 #
+
+# An EntitiesDescriptor of all UKF-registered entities
 $metadata = '../mdx/uk/collected.xml';
+
+# A file of email addresses for people who have opted-in to the list
 $extra_addresses = '../../ukf-data/members/extra_addresses.txt';
+
+# Default list of contacts from Salesforce, processed by contacts-from-sf.sh
+$sf_contacts = '../../ukf-data/contacts/sf-contacts-mc.txt';
 
 #
 # Subroutines
@@ -21,11 +28,13 @@ use XML::LibXML;
 sub usage {
     print <<EOF;
 
-    $0 [-h] [-f <metadata file>]
+    $0 [-h] [-f <metadata file>] [--security] [--mc] [-c <management contacts>]
     
-    -h - prints this help text and exits
-    -f <metadata file> - takes metadata from this file, not the pre-defined file.
-    --security - also extract the security contacts
+    -h                       - prints this help text and exits
+    -f <metadata file>       - takes metadata from this file, not the pre-defined file
+    --security               - also extract the security contacts
+    --mc                     - add Management Contacts from a well-known location
+    -c <management contacts> - Use this contacts file not the well-known location
         
     Extracts email addresses of contacts in a metadata file.
     
@@ -41,9 +50,13 @@ EOF
 my $help;
 my $file;
 my $security;
+my $mc;
+my $contacts = $sf_contacts;
 GetOptions( "help" => \$help,
             "file=s" => \$file,
-            "security" => \$security
+            "security" => \$security,
+            "mc" => \$mc,
+            "c:s" => \$contacts
             );
 
 if ( $help ) {
@@ -125,6 +138,21 @@ foreach $addr (keys %extras) {
 }
 foreach $addr (keys %metadata) {
 	$wanted{lc $addr} = $addr;
+}
+
+#
+# And if we want to include Management Contact emails too
+#
+if ( $mc ) {
+    open(SFCONTACTS, "$contacts") || die "could not open contacts file $contacts";
+    while (<SFCONTACTS>) {
+        chomp;
+        $sfcontacts{$_} = 1 unless $_ eq '';
+    }
+    close SFCONTACTS;
+    foreach $addr (keys %sfcontacts) {
+	    $wanted{lc $addr} = $addr;
+    }
 }
 
 #
