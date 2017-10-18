@@ -306,6 +306,8 @@
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
                             <!-- Error on small RSA public exponents. -->
                             <bean parent="mda.X509RSAExponentValidator"/>
+                            <!-- Error on keys vulnerable to ROCA. -->
+                            <bean p:id="ROCA" parent="ukf.X509ROCAValidator"/>
 
                             <!--
                                 Debian weak key blacklists.
