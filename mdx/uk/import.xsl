@@ -317,6 +317,17 @@
 
 
     <!--
+        *************************************
+        ***                               ***
+        ***   X S I   N A M E S P A C E   ***
+        ***                               ***
+        *************************************
+    -->
+
+    <!-- Remove xsi:type from any entity attribute values. -->
+    <xsl:template match="saml:AttributeValue/@xsi:type"/>
+
+    <!--
         *********************************************
         ***                                       ***
         ***   D E F A U L T   T E M P L A T E S   ***
