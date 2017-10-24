@@ -260,6 +260,14 @@
         p:namespace-ref="ukfedlabel_namespace"/>
 
     <!--
+        stripXsiNamespace
+
+        Strip the XML Schema Instance namespace.
+    -->
+    <bean id="stripXsiNamespace" parent="mda.NamespaceStrippingStage"
+        p:namespace-ref="xsi_namespace"/>
+
+    <!--
         normaliseNamespaces
 
         A pipeline stage that can be used before serialisation to normalise the namespaces
