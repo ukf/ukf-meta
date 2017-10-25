@@ -113,6 +113,46 @@
 
 
     <!--
+        *************************************
+        ***                               ***
+        ***   M D U I   H A N D L I N G   ***
+        ***                               ***
+        *************************************
+    -->
+
+
+    <!--
+        odn_to_mdui
+
+        Ensure that all UKf-registered identity providers have
+        mdui:DisplayName elements.
+    -->
+    <bean id="odn_to_mdui" parent="mda.SplitMergeStage">
+
+        <!-- Select UKf-registered entities only. -->
+        <property name="selectionStrategy">
+            <bean parent="mda.XPathItemSelectionStrategy"
+                c:_0 = "/md:EntityDescriptor/md:Extensions/mdrpi:RegistrationInfo/@registrationAuthority =
+                    'http://ukfederation.org.uk'"
+                c:_1-ref="commonNamespaces"
+            />
+        </property>
+
+        <!-- Process selected entities. -->
+        <property name="selectedItemPipeline">
+            <bean parent="mda.SimplePipeline">
+                <property name="stages">
+                    <list>
+                        <bean parent="mda.XSLTransformationStage"
+                            p:XSLResource="classpath:uk/odn_to_mdui.xsl"/>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+
+    <!--
         *****************************************
         ***                                   ***
         ***   S I R T F I   H A N D L I N G   ***
@@ -587,6 +627,12 @@
         <property name="composedStages">
             <list>
                 <!--
+                    Ensure that all UKf-registered identity providers have
+                    mdui:DisplayName elements.
+                -->
+                <ref bean="odn_to_mdui"/>
+
+                <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
                 <ref bean="check_dup_display"/>
@@ -824,6 +870,12 @@
                         </bean>
                     </property>
                 </bean>
+
+                <!--
+                    Ensure that all UKf-registered identity providers have
+                    mdui:DisplayName elements.
+                -->
+                <ref bean="odn_to_mdui"/>
 
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate

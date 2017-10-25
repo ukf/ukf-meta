@@ -28,9 +28,10 @@ before being included in the `export` version consumed by interfederation partne
 
 ### Export Preview Aggregate vs. Export Aggregate
 
-Status (2017-02-14):
+Status (2017-10-25):
 
-* These aggregates are currently identical.
+* The export preview aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
+metadata by copying data from `md:OrganizationDisplayName` if required.
 
 ## Production Maturity Pipeline
 
@@ -59,9 +60,10 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 
 ### Test Aggregate vs. Production Aggregate
 
-Status (2017-03-02):
+Status (2017-10-25):
 
-* These aggregates are currently identical.
+* The test aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
+metadata by copying data from `md:OrganizationDisplayName` if required.
 
 ### Fallback Aggregate vs. Production Aggregate
 
