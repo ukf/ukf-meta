@@ -158,9 +158,7 @@ if ( $mc ) {
 #
 # List all wanted addresses.
 #
-print "--- LIST BEGIN ---\n";
 foreach $addr (sort keys %wanted) {
 	my $a = $wanted{$addr};
 	print "$a\n";
 }
-print "--- LIST END ---\n";
