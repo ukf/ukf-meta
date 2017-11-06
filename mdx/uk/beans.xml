@@ -12,6 +12,68 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+
+    <!--
+        *****************************
+        ***                       ***
+        ***   U T I L I T I E S   ***
+        ***                       ***
+        *****************************
+    -->
+
+
+    <!--
+        uk_fix_mailto
+
+        Adds "mailto:" to md:EmailAddress elements which don't already have it.
+    -->
+    <bean id="uk_fix_mailto" parent="mda.XSLTransformationStage"
+        p:XSLResource="classpath:uk/fix_mailto.xsl"/>
+
+
+    <!--
+        uk_stripAdminContacts
+
+        Remove any md:ContactPerson elements with contactType of "administrative".
+    -->
+    <bean id="uk_stripAdminContacts" parent="mda.ContactPersonFilterStage">
+        <property name="designatedTypes">
+            <list>
+                <value>administrative</value>
+            </list>
+        </property>
+        <property name="whitelistingTypes" value="false"/>
+    </bean>
+
+
+    <!--
+        Populate UKId values from entities.
+    -->
+    <bean id="uk_populateIds" parent="ukf.EntityDescriptorUKIdPopulationStage"/>
+
+
+    <!--
+        UK federation named EntitiesDescriptor assembler pipeline stage.
+
+        Name attribute is set to the federation URI.  UK ordering is applied.
+    -->
+    <bean id="uk_assemble" parent="mda.EntitiesDescriptorAssemblerStage">
+        <property name="descriptorName" ref="uk_federation_uri"/>
+        <property name="itemOrderingStrategy">
+            <bean parent="ukf.UKEntityOrderingStrategy"/>
+        </property>
+    </bean>
+
+
+    <!--
+        ***********************************************
+        ***                                         ***
+        ***   A G G R E G A T E   H A N D L I N G   ***
+        ***                                         ***
+        ***********************************************
+    -->
+
+
     <!--
         Location of various resources.
     -->
@@ -102,26 +164,12 @@
 
 
     <!--
-        uk_fetchFragmentFiles
-
-        Collects all the UK metadata "fragment files" from the /entities directory.
-
-        Each fragment file contains a single EntityDescriptor.  The name of each
-        eligible file matches a particular regular expression.
+        *******************************************
+        ***                                     ***
+        ***   M E M B E R S   D O C U M E N T   ***
+        ***                                     ***
+        *******************************************
     -->
-    <bean id="uk_fetchFragmentFiles" parent="mda.DOMFilesystemSourceStage">
-        <property name="parserPool" ref="parserPool"/>
-        <property name="source">
-            <bean parent="File">
-                <constructor-arg value="${entities.dir}"/>
-            </bean>
-        </property>
-        <property name="sourceFileFilter">
-            <bean parent="ukf.RegexFileFilter">
-                <constructor-arg value="uk\d{6}.xml"/>
-            </bean>
-        </property>
-    </bean>
 
 
     <!--
@@ -161,12 +209,12 @@
 
 
     <!--
-        uk_fix_mailto
-
-        Adds "mailto:" to md:EmailAddress elements which don't already have it.
+        *************************************************
+        ***                                           ***
+        ***   U K f - S P E C I F I C   C H E C K S   ***
+        ***                                           ***
+        *************************************************
     -->
-    <bean id="uk_fix_mailto" parent="mda.XSLTransformationStage"
-        p:XSLResource="classpath:uk/fix_mailto.xsl"/>
 
 
     <!--
@@ -214,6 +262,15 @@
 
 
     <!--
+        ***************************************
+        ***                                 ***
+        ***   F R A G M E N T   F I L E S   ***
+        ***                                 ***
+        ***************************************
+    -->
+
+
+    <!--
         uk_processFragment
 
         This stage performs any standard cleanup required for UK federation fragment files.
@@ -223,38 +280,26 @@
 
 
     <!--
-        uk_stripAdminContacts
+        uk_fetchFragmentFiles
 
-        Remove any md:ContactPerson elements with contactType of "administrative".
+        Collects all the UK metadata "fragment files" from the /entities directory.
+
+        Each fragment file contains a single EntityDescriptor.  The name of each
+        eligible file matches a particular regular expression.
     -->
-    <bean id="uk_stripAdminContacts" parent="mda.ContactPersonFilterStage">
-        <property name="designatedTypes">
-            <list>
-                <value>administrative</value>
-            </list>
+    <bean id="uk_fetchFragmentFiles" parent="mda.DOMFilesystemSourceStage">
+        <property name="parserPool" ref="parserPool"/>
+        <property name="source">
+            <bean parent="File">
+                <constructor-arg value="${entities.dir}"/>
+            </bean>
         </property>
-        <property name="whitelistingTypes" value="false"/>
-    </bean>
-
-
-    <!--
-        Populate UKId values from entities.
-    -->
-    <bean id="uk_populateIds" parent="ukf.EntityDescriptorUKIdPopulationStage"/>
-
-
-    <!--
-        UK federation named EntitiesDescriptor assembler pipeline stage.
-
-        Name attribute is set to the federation URI.  UK ordering is applied.
-    -->
-    <bean id="uk_assemble" parent="mda.EntitiesDescriptorAssemblerStage">
-        <property name="descriptorName" ref="uk_federation_uri"/>
-        <property name="itemOrderingStrategy">
-            <bean parent="ukf.UKEntityOrderingStrategy"/>
+        <property name="sourceFileFilter">
+            <bean parent="ukf.RegexFileFilter">
+                <constructor-arg value="uk\d{6}.xml"/>
+            </bean>
         </property>
     </bean>
-
 
 
     <!--
