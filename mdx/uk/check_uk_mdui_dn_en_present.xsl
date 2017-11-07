@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    mdui_dn_en_present.xsl
+    check_uk_mdui_dn_en_present.xsl
 
     If an entity has mdui:UIInfo, then that must include at least an
     mdui:DisplayName with an English name.
@@ -18,7 +18,7 @@
     <!--
         Common support functions.
     -->
-    <xsl:import href="check_framework.xsl"/>
+    <xsl:import href="../_rules/check_framework.xsl"/>
 
     <xsl:template match="mdui:UIInfo[not(mdui:DisplayName[@xml:lang='en'])]">
         <xsl:call-template name="error">

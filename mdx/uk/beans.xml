@@ -262,6 +262,28 @@
 
 
     <!--
+        check_uk_mdui_dn_en_match
+
+        If an IdP has both an OrganizationDisplayName in English, and an
+        mdui:DisplayName in English, they must be identical.
+
+        UKFTS 1.4 section 3.3
+    -->
+    <bean id="check_uk_mdui_dn_en_match" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_mdui_dn_en_match.xsl"/>
+
+
+    <!--
+        check_uk_mdui_dn_en_present
+
+        If an entity has mdui:UIInfo, then that must include at least an
+        mdui:DisplayName with an English name.
+    -->
+    <bean id="check_uk_mdui_dn_en_present" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_mdui_dn_en_present.xsl"/>
+
+
+    <!--
         ***************************************
         ***                                 ***
         ***   F R A G M E N T   F I L E S   ***
@@ -339,8 +361,8 @@
                 <ref bean="check_uk_mdattr"/>
                 <ref bean="check_uk_mdrps"/>
                 <ref bean="check_uk_urlenc"/>
-                <ref bean="mdui_dn_en_present"/>
-                <ref bean="mdui_dn_en_match"/>
+                <ref bean="check_uk_mdui_dn_en_present"/>
+                <ref bean="check_uk_mdui_dn_en_match"/>
                 <ref bean="check_dup_display"/>
 
                 <bean id="checkCertificates" parent="mda.X509ValidationStage">

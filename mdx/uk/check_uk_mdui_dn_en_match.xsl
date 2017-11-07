@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    mdui_dn_en_match.xsl
+    check_uk_mdui_dn_en_match.xsl
 
     If an IdP has both an OrganizationDisplayName in English, and an
     mdui:DisplayName in English, they must be identical.
@@ -20,7 +20,7 @@
     <!--
         Common support functions.
     -->
-    <xsl:import href="check_framework.xsl"/>
+    <xsl:import href="../_rules/check_framework.xsl"/>
 
     <xsl:template match="md:EntityDescriptor[md:IDPSSODescriptor]">
         <xsl:variable name="mdui" select="md:IDPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:DisplayName[@xml:lang='en']"/>
