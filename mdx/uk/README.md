@@ -31,7 +31,8 @@ before being included in the `export` version consumed by interfederation partne
 Status (2017-10-25):
 
 * The export preview aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
-metadata by copying data from `md:OrganizationDisplayName` if required.
+metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
+generates `mdui:Description` elements with the same content.
 
 ## Production Maturity Pipeline
 
@@ -63,7 +64,8 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 Status (2017-10-25):
 
 * The test aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
-metadata by copying data from `md:OrganizationDisplayName` if required.
+metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
+generates `mdui:Description` elements with the same content.
 
 ### Fallback Aggregate vs. Production Aggregate
 

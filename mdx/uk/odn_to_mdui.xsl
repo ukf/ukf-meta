@@ -4,7 +4,8 @@
     odn_to_mdui.xsl
 
     If an identity provider does not have at least one MDUI-based discovery
-    name, give it one by copying data from its md:OrganizationDisplayName.
+    name, give it mdui:DisplayName and mdui:Description by copying data from
+    its md:OrganizationDisplayName.
 
     This transform will only be applied to UKf-registered entities.
 
@@ -39,8 +40,8 @@
         Match the md:IDPSSODescriptor/md:Extensions element of an identity provider
         which does not have mdui:UIInfo.
 
-        We must fabricate the mdui:UIInfo as well as the mdui:DisplayName
-        elements.
+        We must fabricate the mdui:UIInfo as well as the mdui:DisplayName and
+        mdui:Description elements.
     -->
     <xsl:template match="/md:EntityDescriptor/md:IDPSSODescriptor/md:Extensions[not(mdui:UIInfo)]">
         <xsl:variable name="odns" select="../../md:Organization/md:OrganizationDisplayName"/>
@@ -57,8 +58,8 @@
     </xsl:template>
 
     <!--
-        Make a new mdui:DisplayName for each of the md:OrganizationDisplayName
-        elements in the $odns parameter.
+        Make a new mdui:DisplayName and mdui:Description for each of the
+        md:OrganizationDisplayName elements in the $odns parameter.
 
         Each of the new elements copies the value and xml:lang attribute of
         the md:OrganizationDisplayName, and is indented appropriately to
@@ -66,6 +67,7 @@
     -->
     <xsl:template name="generateDisplayNames">
         <xsl:param name="odns"/>
+        <!-- Generate mdui:DisplayName elements. -->
         <xsl:for-each select="$odns">
             <xsl:text>&#10;&#9;&#9;&#9;&#9;</xsl:text>
             <mdui:DisplayName>
@@ -74,6 +76,16 @@
                 </xsl:attribute>
                 <xsl:value-of select="."/>
             </mdui:DisplayName>
+        </xsl:for-each>
+        <!-- Generate mdui:Description elements. -->
+        <xsl:for-each select="$odns">
+            <xsl:text>&#10;&#9;&#9;&#9;&#9;</xsl:text>
+            <mdui:Description>
+                <xsl:attribute name="xml:lang">
+                    <xsl:value-of select="@xml:lang"/>
+                </xsl:attribute>
+                <xsl:value-of select="."/>
+            </mdui:Description>
         </xsl:for-each>
     </xsl:template>
 
