@@ -195,7 +195,7 @@
     <property name="www.user" value="wwwscp"/>
     <property name="www.hostname" value="www-ne-01.infr.ukfederation.org.uk"/>
     <property name="www.path.stats" value="/var/www/www-prod/html/fed"/>
-    <property name="www.path.members" value="/var/www/www-prod/externals"/>
+    <property name="www.path.members" value="/var/www/externals"/>
     <property name="www.url.stats" value="${www.user}@${www.hostname}:${www.path.stats}"/>
     <property name="www.url.members" value="${www.user}@${www.hostname}:${www.path.members}"/>
 
