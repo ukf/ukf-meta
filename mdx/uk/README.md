@@ -67,9 +67,17 @@ Status (2017-10-25):
 metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
 generates `mdui:Description` elements with the same content.
 
+### `cds-all` Aggregate vs. Production Aggregate
+
+Status (2017-11-22):
+
+* The `cds-all` aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
+  metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
+  generates `mdui:Description` elements with the same content.
+
 ### Fallback Aggregate vs. Production Aggregate
 
 Status (2017-03-14):
 
-* the production aggregate implements a _blacklisting_ approach to entity attributes imported from eduGAIN,
+* The production aggregate implements a _blacklisting_ approach to entity attributes imported from eduGAIN,
 while the production aggregate implements the traditional entity attribute _whitelist_. (2017-03-02)
