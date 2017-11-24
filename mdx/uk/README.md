@@ -77,7 +77,6 @@ Status (2017-11-22):
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2017-03-14):
+Status (2017-04-10):
 
-* The production aggregate implements a _blacklisting_ approach to entity attributes imported from eduGAIN,
-while the production aggregate implements the traditional entity attribute _whitelist_. (2017-03-02)
+* These aggregates are currently identical.
