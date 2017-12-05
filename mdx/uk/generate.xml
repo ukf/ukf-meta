@@ -125,7 +125,7 @@
         odn_to_mdui
 
         Ensure that all UKf-registered identity providers have
-        mdui:DisplayName elements.
+        mdui:DisplayName and mdui:Description elements.
     -->
     <bean id="odn_to_mdui" parent="mda.SplitMergeStage">
 
@@ -335,6 +335,12 @@
         <property name="stages">
             <list>
                 <!--
+                    Ensure that all UKf-registered identity providers have
+                    mdui:DisplayName elements.
+                -->
+                <ref bean="odn_to_mdui"/>
+
+                <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
                 <ref bean="check_dup_display"/>
@@ -393,6 +399,12 @@
                     Remove SIRTFI metadata.
                 -->
                 <ref bean="strip.SIRTFI"/>
+
+                <!--
+                    Ensure that all UKf-registered identity providers have
+                    mdui:DisplayName and mdui:Description elements.
+                -->
+                <ref bean="odn_to_mdui"/>
 
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
@@ -510,12 +522,6 @@
         <property name="stages">
             <list>
                 <!--
-                    Ensure that all UKf-registered identity providers have
-                    mdui:DisplayName elements.
-                -->
-                <ref bean="odn_to_mdui"/>
-
-                <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
                 <ref bean="check_dup_display"/>
@@ -632,12 +638,6 @@
     <bean id="uk_testPipeline" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
-                <!--
-                    Ensure that all UKf-registered identity providers have
-                    mdui:DisplayName elements.
-                -->
-                <ref bean="odn_to_mdui"/>
-
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
@@ -763,6 +763,12 @@
                 </bean>
 
                 <!--
+                    Ensure that all UKf-registered identity providers have
+                    mdui:DisplayName and mdui:Description elements.
+                -->
+                <ref bean="odn_to_mdui"/>
+
+                <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
                 <ref bean="check_dup_display"/>
@@ -879,7 +885,7 @@
 
                 <!--
                     Ensure that all UKf-registered identity providers have
-                    mdui:DisplayName elements.
+                    mdui:DisplayName and mdui:Description elements.
                 -->
                 <ref bean="odn_to_mdui"/>
 
@@ -1110,6 +1116,12 @@
                     entities received through both production-status
                     and pre-production-status MDX relationships.
                 -->
+
+                <!--
+                    Ensure that beyond this point, UKf-registered identity providers
+                    have mdui:DisplayName and mdui:Description elements.
+                -->
+                <ref bean="odn_to_mdui"/>
 
                 <!--
                     Fork into new pipelines for additional aggregates.

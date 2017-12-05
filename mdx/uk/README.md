@@ -28,11 +28,9 @@ before being included in the `export` version consumed by interfederation partne
 
 ### Export Preview Aggregate vs. Export Aggregate
 
-Status (2017-10-25):
+Status (2017-12-05):
 
-* The export preview aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
-metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
-generates `mdui:Description` elements with the same content.
+* These aggregates are currently identical.
 
 ## Production Maturity Pipeline
 
@@ -61,22 +59,25 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 
 ### Test Aggregate vs. Production Aggregate
 
-Status (2017-10-25):
+Status (2017-12-05):
 
-* The test aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
-metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
-generates `mdui:Description` elements with the same content.
+* The `test` aggregate does not include the `<UKFederationMember>` label (`ukf-meta#34`).
+
+* The `test` aggregate does not include the entity-level copy of the scopes for an
+  identity provider (`ukf-meta#49`) 
 
 ### `cds-all` Aggregate vs. Production Aggregate
 
-Status (2017-11-22):
+Status (2017-12-05):
 
-* The `cds-all` aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
-  metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
-  generates `mdui:Description` elements with the same content.
+* The `cdsall` aggregate omits many elements not necessary for the generation of a discovery feed.
+
+* Otherwise, these aggregates are currently identical.
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2017-04-10):
+Status (2017-12-05):
 
-* These aggregates are currently identical.
+* The production aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
+  metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
+  generates `mdui:Description` elements with the same content.
