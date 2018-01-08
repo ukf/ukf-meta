@@ -334,7 +334,7 @@
         be more than some invocations require, but there's no harm in having a higher
         limit for all of them.
     -->
-    <property name="java.max.memory" value="1024m"/>
+    <property name="java.max.memory" value="1280m"/>
 
 
     <!--
