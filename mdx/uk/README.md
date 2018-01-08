@@ -76,8 +76,6 @@ Status (2017-12-05):
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2017-12-05):
+Status (2018-01-08):
 
-* The production aggregate ensures that all UKf-registered identity providers have `mdui:DisplayName`
-  metadata by copying data from `md:OrganizationDisplayName` if required. The copying process also
-  generates `mdui:Description` elements with the same content.
+* These aggregates are currently identical.

@@ -586,6 +586,12 @@
         <property name="stages">
             <list>
                 <!--
+                    Ensure that all UKf-registered identity providers have
+                    mdui:DisplayName elements.
+                -->
+                <ref bean="odn_to_mdui"/>
+
+                <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
                 <ref bean="check_dup_display"/>
