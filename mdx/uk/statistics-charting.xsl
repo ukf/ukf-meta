@@ -207,6 +207,37 @@
                 <xsl:with-param name="entities" select="$nosaml2.idps"/>
             </xsl:call-template>
 
+            <!-- MDUI statistics -->
+            <xsl:text>&#10;</xsl:text>
+
+            <xsl:variable name="entities.mdui" select="$entities[descendant::mdui:UIInfo]"/>
+            <xsl:variable name="entities.mdui.count" select="count($entities.mdui)"/>
+            <xsl:text>Entities with mdui:UIInfo: </xsl:text>
+            <xsl:value-of select="$entities.mdui.count"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="format-number($entities.mdui.count div $entityCount, '0.0%')"/>
+            <xsl:text>)</xsl:text>
+            <xsl:text>&#10;</xsl:text>
+
+            <xsl:variable name="idps.mdui" select="$idps[descendant::mdui:UIInfo]"/>
+            <xsl:variable name="idps.mdui.count" select="count($idps.mdui)"/>
+            <xsl:text>IdPs with mdui:UIInfo: </xsl:text>
+            <xsl:value-of select="$idps.mdui.count"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="format-number($idps.mdui.count div $idpCount, '0.0%')"/>
+            <xsl:text>)</xsl:text>
+            <xsl:text>&#10;</xsl:text>
+
+            <xsl:variable name="sps.mdui" select="$sps[descendant::mdui:UIInfo]"/>
+            <xsl:variable name="sps.mdui.count" select="count($sps.mdui)"/>
+            <xsl:text>SPs with mdui:UIInfo: </xsl:text>
+            <xsl:value-of select="$sps.mdui.count"/>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="format-number($sps.mdui.count div $spCount, '0.0%')"/>
+            <xsl:text>)</xsl:text>
+            <xsl:text>&#10;</xsl:text>
+
+            <xsl:text>&#10;</xsl:text>
         </pre>
     </xsl:template>
 
