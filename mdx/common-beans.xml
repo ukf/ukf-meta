@@ -424,6 +424,7 @@
                 <entry key-ref="ch_switchaai_registrar"       value="CH"/>
                 <entry key-ref="nl_surfconext_registrar"      value="NL"/>
                 <entry key-ref="us_incommon_registrar"        value="US"/>
+                <entry key-ref="ug_rif_registrar"             value="UG"/>
                 <entry key-ref="ua_peano_registrar"           value="UA"/>
                 <entry key-ref="uk_ukf_registrar"             value="UK"/>
 
@@ -444,7 +445,6 @@
                 <entry key-ref="ru_fedurus_registrar"         value="RU"/>
                 <entry key-ref="rs_amres_registrar"           value="RS"/>
                 <entry key-ref="sk_safeid_registrar"          value="SK"/>
-                <entry key-ref="ug_rif_registrar"             value="UG"/>
             </map>
         </property>
     </bean>
