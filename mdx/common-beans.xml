@@ -299,7 +299,7 @@
     <bean id="be_belnet_registrar"       parent="String" c:_="http://federation.belnet.be/"/>
     <bean id="bg_bif_registrar"          parent="String" c:_="http://bif.bren.bg"/>
     <bean id="br_cafe_registrar"         parent="String" c:_="http://cafe.rnp.br"/>
-    <bean id="by_febas_registrar"        parent="String" c:_="http://febas.basnet.by/"/>
+    <bean id="by_febas_registrar"        parent="String" c:_="https://febas.basnet.by/"/>
     <bean id="ca_caf_registrar"          parent="String" c:_="http://www.canarie.ca"/>
     <bean id="ch_switchaai_registrar"    parent="String" c:_="http://rr.aai.switch.ch/"/>
     <bean id="cl_cofre_registrar"        parent="String" c:_="http://cofre.reuna.cl"/>
