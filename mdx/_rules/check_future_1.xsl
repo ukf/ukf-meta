@@ -27,4 +27,31 @@
     -->
     <xsl:import href="check_framework.xsl"/>
 
+    <!--
+
+        It does not make sense for an IdP to have more than one SingleLogoutService
+        with any of a list of SAML 2.0 front-channel bindings.
+
+        See ukf/ukf-meta#155
+
+    -->
+    <xsl:template match="md:SingleLogoutService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST'][position()>1]">
+        <xsl:call-template name="error">
+            <xsl:with-param name="m">more than one SingleLogoutService with SAML 2.0 HTTP-POST binding</xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="md:SingleLogoutService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign'][position()>1]">
+        <xsl:call-template name="error">
+            <xsl:with-param name="m">more than one SingleLogoutService with SAML 2.0 HTTP-POST-SimpleSign binding</xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="md:SingleLogoutService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect'][position()>1]">
+        <xsl:call-template name="error">
+            <xsl:with-param name="m">more than one SingleLogoutService with SAML 2.0 HTTP-Redirect binding</xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+
 </xsl:stylesheet>
