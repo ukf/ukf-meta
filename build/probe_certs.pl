@@ -1,10 +1,9 @@
 #!/usr/bin/perl -w
 
 use ExtractCert;
-use Xalan;
 
 print "Loading endpoint locations...\n";
-open(XML, xalanCall . " -IN ../xml/ukfederation-metadata.xml -XSL extract_cert_locs.xsl|") || die "could not open input file";
+open(XML, "xsltproc extract_cert_locs.xsl ../xml/ukfederation-metadata.xml|") || die "could not open input file";
 while (<XML>) {
 	if (/^http:/) {
 		print "skipping http location: $_";
@@ -37,7 +36,7 @@ foreach $loc (sort keys %locations) {
 	# Remove any old copy of the DER file.
 	#
 	unlink $temp_der;
-	
+
 	#
 	# Separate location into host and port.
 	#
@@ -58,7 +57,7 @@ foreach $loc (sort keys %locations) {
 		$failed{$loc} = 1;
 		next;
 	}
-	
+
 	#
 	# Use openssl to convert the certificate to text
 	#
@@ -75,7 +74,7 @@ foreach $loc (sort keys %locations) {
 			$subject = $1;
 		}
 	}
-	
+
 	if ($subject eq $issuer) {
 		$issuer = "(self-signed certificate)";
 	}
@@ -101,7 +100,7 @@ foreach $issuer (sort keys %issuers) {
 	print "$n: $issuer\n";
 	foreach $loc (sort keys %locs) {
 		print "   $loc\n";
-	} 
+	}
 }
 
 #
