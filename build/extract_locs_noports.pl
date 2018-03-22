@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-open(XML, xalanCall . "xsltproc extract_locs.xsl ../mdx/uk/collected.xml|") || die "could not open input file";
+open(XML, "xsltproc extract_locs.xsl ../mdx/uk/collected.xml|") || die "could not open input file";
 while (<XML>) {
     chop;
     if (/^https:\/\/([^\/:]+)(:\d+)?(\/|$)/) {

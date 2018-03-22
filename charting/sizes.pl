@@ -49,7 +49,7 @@ foreach $month (@months) {
 	my $command = "xsltproc --output temp.tmp just_ours.xsl $fn";
 	# print "command is $command\n";
 	system($command); # || print "ignoring claimed failure in sub command\n";
-	# print "Xalan run on $fn\n";
+	# print "xsltproc run on $fn\n";
 
 	#
 	# Process the reduced version of the archived file.
