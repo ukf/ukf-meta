@@ -1,8 +1,5 @@
 #!/usr/bin/perl
 
-use lib "../build";
-use Xalan;
-
 #
 # Load extra addresses.
 #
@@ -24,7 +21,7 @@ close EXTRAS;
 #
 # UK addresses
 #
-open(XML, xalanCall . " -IN ../mdx/uk/collected.xml -XSL ../build/extract_addresses.xsl|") || die "could not open input file";
+open(XML, "xsltproc ../build/extract_addresses.xsl ../mdx/uk/collected.xml|") || die "could not open input file";
 while (<XML>) {
 	if (/<EmailAddress>(mailto:)?(.*)<\/EmailAddress>/) {
 		$metadata{$2} = 1;
