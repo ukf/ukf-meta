@@ -17,8 +17,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <!-- Output is plain text -->
     <xsl:output method="text"/>
@@ -49,7 +48,7 @@
                 </xsl:choose>
                 <xsl:text>&#x0a;</xsl:text>
                 <xsl:text>-----BEGIN CERTIFICATE-----&#x0a;</xsl:text>
-                <xsl:value-of select="mdxTextUtils:wrapBase64($cert)"/>
+                <xsl:value-of select="translate(normalize-space($cert),' ','&#x0a;')"/>
                 <xsl:text>&#x0a;</xsl:text>
                 <xsl:text>-----END CERTIFICATE-----&#x0a;</xsl:text>
             </xsl:if>

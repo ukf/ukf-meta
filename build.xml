@@ -264,7 +264,6 @@
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
     <property name="tools.slacktee" value="${tools.dir}/slacktee"/>
     <property name="tools.xmlsectool" value="${tools.dir}/xmlsectool-2.0.0"/>
-    <property name="tools.xalan" value="${tools.dir}/xalan"/>
 
     <!--
         Full path to a commonly used temporary file.
@@ -1748,64 +1747,6 @@
     </macrodef>
 
     <!--
-        *******************************
-        ***                         ***
-        ***   X A L A N   T O O L   ***
-        ***                         ***
-        *******************************
-    -->
-
-    <!--
-        Macro to run the Xalan XSLT engine, taking files from arbitrary
-        locations.
-    -->
-    <macrodef name="XALAN">
-        <attribute name="i"/>
-        <attribute name="o"/>
-        <attribute name="x"/>
-        <sequential>
-            <java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="org.apache.xalan.xslt.Process">
-                <classpath>
-                    <fileset dir="${tools.xalan}/lib">
-                        <include name="*.jar"/>
-                    </fileset>
-                </classpath>
-                <jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
-                <arg value="-IN"/>
-                <arg value="@{i}"/>
-                <arg value="-OUT"/>
-                <arg value="@{o}"/>
-                <arg value="-XSL"/>
-                <arg value="@{x}"/>
-            </java>
-        </sequential>
-    </macrodef>
-
-    <!--
-        Macro to run the Xalan XSLT engine, taking files from arbitrary
-        locations.  No output specified, so the result of the transform
-        will be sent to standard output.
-    -->
-    <macrodef name="XALAN.noout">
-        <attribute name="i"/>
-        <attribute name="x"/>
-        <sequential>
-            <java fork="true" maxmemory="${java.max.memory}" failonerror="true" classname="org.apache.xalan.xslt.Process">
-                <classpath>
-                    <fileset dir="${tools.xalan}/lib">
-                        <include name="*.jar"/>
-                    </fileset>
-                </classpath>
-                <jvmarg value="-Djava.endorsed.dirs=${tools.xalan}/endorsed"/>
-                <arg value="-IN"/>
-                <arg value="@{i}"/>
-                <arg value="-XSL"/>
-                <arg value="@{x}"/>
-            </java>
-        </sequential>
-    </macrodef>
-
-    <!--
         *******************************************
         ***                                     ***
         ***   M E T A D A T A   S I G N I N G   ***
@@ -2320,8 +2261,10 @@
 
     <target name="uiinfo.list">
         <CHANNEL.do channel="uk" verb="collect"/>
-        <XALAN.noout i="${mdx.dir}/uk/collected.xml"
-               x="${build.dir}/list_uiinfo.xsl"/>
+        <exec executable="xsltproc" failonerror="true">
+            <arg value="${build.dir}/list_uiinfo.xsl"/>
+            <arg value="${mdx.dir}/uk/collected.xml"/>
+        </exec>
     </target>
 
     <!--
@@ -2477,10 +2420,12 @@
     -->
     <target name="extract.embedded" depends="flow.uk.collect">
         <echo>Extracting embedded certificates</echo>
-        <XALAN
-            i="${uk.collected}"
-            o="${temp.dir}/embedded.pem"
-            x="${build.dir}/extract_embedded.xsl"/>
+        <exec executable="xsltproc" failonerror="true">
+            <arg value="--output"/>
+            <arg value="${temp.dir}/embedded.pem"/>
+            <arg value="${build.dir}/extract_embedded.xsl"/>
+            <arg value="${uk.collected}"/>
+        </exec>
     </target>
 
     <!--
@@ -2505,10 +2450,12 @@
     -->
     <target name="check.embedded.all">
         <echo>Extracting embedded certificates</echo>
-        <XALAN
-            i="${aggregates.dir}/${mdaggr.prod.signed}"
-            o="${temp.dir}/embedded.pem"
-            x="${build.dir}/extract_embedded.xsl"/>
+        <exec executable="xsltproc" failonerror="true">
+            <arg value="--output"/>
+            <arg value="${temp.dir}/embedded.pem"/>
+            <arg value="${build.dir}/extract_embedded.xsl"/>
+            <arg value="${aggregates.dir}/${mdaggr.prod.signed}"/>
+        </exec>
         <echo>Checking embedded certificates</echo>
         <echo>Note: ignore expiry on eduGAIN entities</echo>
         <exec executable="perl" dir="${utilities.dir}"
