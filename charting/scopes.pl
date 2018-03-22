@@ -6,8 +6,7 @@
 # Extracts statistics about number of scopes from the published metadata.
 #
 use warnings;
-use lib "../build";
-use Xalan;
+use lib ".";
 use Months;
 
 # Parse command line arguments
@@ -31,7 +30,7 @@ if ($allMonths) {
 foreach $month (@months) {
 	my $fn = "cache/$month.xml";
 	my %scopes;
-	open(TXT, xalanCall . " -IN $fn -XSL scopes.xsl|") || die "could not open input file";
+	open(TXT, "xsltproc scopes.xsl $fn|") || die "could not open input file";
 	while (<TXT>) {
 		chop;
 		my $scope = $_;
