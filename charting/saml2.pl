@@ -6,8 +6,7 @@
 # Extracts statistics about SAML 2 adoption from the published metadata.
 #
 use warnings;
-use lib "../build";
-use Xalan;
+use lib ".";
 use Months;
 
 # Parse command line arguments
@@ -25,7 +24,7 @@ if (!$allMonths) {
 # ingest files
 foreach $month (@months) {
 	my $fn = "cache/$month.xml";
-	open(TXT, xalanCall . " -IN $fn -XSL saml2.xsl|") || die "could not open input file";
+	open(TXT, "xsltproc saml2.xsl $fn|") || die "could not open input file";
 	$_ = <TXT>;
 	chop;
 	# print "$month: $_\n";

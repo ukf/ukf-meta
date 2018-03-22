@@ -4,8 +4,7 @@
 # mdui.pl
 #
 use warnings;
-use lib "../build";
-use Xalan;
+use lib '.';
 use Months;
 
 # Parse command line arguments
@@ -29,7 +28,7 @@ if ($allMonths) {
 foreach $month (@months) {
 	print "Processing $month\n";
 
-	my $command = xalanCall . " -IN cache/$month.xml -XSL statistics_mdui.xsl";
+	my $command = "xsltproc statistics_mdui.xsl cache/$month.xml";
 	# print "command is $command\n";
 	system($command); # || print "ignoring claimed failure in sub command\n";
 	# print "Xalan run on $fn\n";

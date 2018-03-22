@@ -4,9 +4,8 @@
 # sizes.pl
 #
 use warnings;
-use lib "../build";
+use lib ".";
 use File::stat;
-use Xalan;
 use Months;
 
 # Parse command line arguments
@@ -47,7 +46,7 @@ foreach $month (@months) {
 	# Now generate a reduced version of the archived
 	# file that contains only UK federation registered entities.
 	#
-	my $command = xalanCall . " -IN $fn -XSL just_ours.xsl -OUT temp.tmp";
+	my $command = "xsltproc --output temp.tmp just_ours.xsl $fn";
 	# print "command is $command\n";
 	system($command); # || print "ignoring claimed failure in sub command\n";
 	# print "Xalan run on $fn\n";
