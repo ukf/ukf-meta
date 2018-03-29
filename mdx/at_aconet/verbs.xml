@@ -88,14 +88,13 @@
                 </bean>
 
                 <!--
-                    Remove a specific entity we know has a problem that it will take
+                    Remove any specific entities we know have problems that it will take
                     a while to resolve.
                 -->
                 <bean id="filterEntities" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="false">
                     <property name="designatedEntities">
                         <set>
-                            <value>https://zididp.uni-graz.at/idp/shibboleth</value>
                         </set>
                     </property>
                 </bean>
