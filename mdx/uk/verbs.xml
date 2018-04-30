@@ -259,6 +259,32 @@
                 <ref bean="fetchImportMetadata"/>
                 <ref bean="populateItemIds"/>
 
+                <!--
+                    Strip all elements and attributes that are in namespaces
+                    we don't accept from registrants.
+                -->
+                <bean id="whitelistImportedNamespaces" parent="mda.NamespacesStrippingStage"
+                    p:whitelisting="true">
+                    <property name="namespaces">
+                        <set>
+                            <ref bean="alg_namespace"/>
+                            <ref bean="ds_namespace"/>
+                            <ref bean="hoksso_namespace"/>
+                            <ref bean="idpdisc_namespace"/>
+                            <ref bean="init_namespace"/>
+                            <ref bean="md_namespace"/>
+                            <ref bean="mdattr_namespace"/>
+                            <ref bean="mdrpi_namespace"/>
+                            <ref bean="mdui_namespace"/>
+                            <ref bean="remd_namespace"/>
+                            <ref bean="saml_namespace"/>
+                            <ref bean="shibmd_namespace"/>
+                            <ref bean="xenc_namespace"/>
+                            <ref bean="xml_namespace"/>
+                        </set>
+                    </property>
+                </bean>
+
                 <!-- perform schema validation and stop immediately if this fails -->
                 <ref bean="checkSchemas"/>
                 <ref bean="errorTerminatingFilter"/>
