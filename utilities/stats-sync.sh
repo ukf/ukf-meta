@@ -28,6 +28,7 @@ rsync -at --exclude modsec* stats@www-we-01:/var/log/httpd/* $logslocation/www/w
 # Logs from Wugen
 rsync -at --exclude modsec* stats@wugen:/var/log/httpd/* $logslocation/wugen/
 rsync -at stats@wugen:/opt/wugen/logs/urlgenerator-* $logslocation/wugen/
+rsync -at stats@wugen:/opt/wugen/logs/wayfless-* $logslocation/wugen/
 
 # Logs from Test IdP
 rsync -at --exclude modsec* stats@test-idp:/var/log/httpd/* $logslocation/test-idp/

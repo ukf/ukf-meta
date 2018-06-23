@@ -635,10 +635,10 @@ cdswayfcount=$(grep $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log
 # =====
 
 # Total WAYFless URLs generated
-wugencount=$(grep $date $logslocation/wugen/urlgenerator-audit.* | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+wugencount=$(grep $date $logslocation/wugen/urlgenerator-audit.* $logslocation/wugen/wayfless-url-generator-audit.* | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # New subscribers to WAYFless URLs
-wugennewsubs=$(grep $date $logslocation/wugen/urlgenerator-process.* | grep "Subscribing user and service provider" | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+wugennewsubs=$(grep $date $logslocation/wugen/urlgenerator-process.* $logslocation/wugen/wayfless-url-generator-process.* | grep "Subscribing user and service provider" | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 
 # =====
