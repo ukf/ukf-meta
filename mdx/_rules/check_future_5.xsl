@@ -13,6 +13,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
+    xmlns:mdxURL="xalan://uk.ac.sdss.xalan.md.URLchecker"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
     xmlns:set="http://exslt.org/sets"
@@ -22,5 +23,17 @@
         Common support functions.
     -->
     <xsl:import href="check_framework.xsl"/>
+
+    <xsl:template match="md:IDPSSODescriptor/@errorURL[mdxURL:invalidURL(.)]">
+        <xsl:call-template name="error">
+            <xsl:with-param name="m">
+                <xsl:value-of select='local-name()'/>
+                <xsl:text> '</xsl:text>
+                <xsl:value-of select="."/>
+                <xsl:text>' is not a valid URL: </xsl:text>
+                <xsl:value-of select="mdxURL:whyInvalid(.)"/>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
 
 </xsl:stylesheet>
