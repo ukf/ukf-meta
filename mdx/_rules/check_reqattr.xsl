@@ -28,6 +28,10 @@
         http://www.terena.org/registry/terena.org/attribute-def/
         http://www.terena.org/registry/terena.org/schac/
         Assuming encoding rules equivalent to MACEAttr.
+    
+    * eduroam.cz
+        Currently only a single attribute, documented at:
+        https://www.eduroam.cz/attributes/eduroamUID
 
 
     Author: Ian A. Young <ian@iay.org.uk>
@@ -482,6 +486,12 @@
                 <!-- OK -->
             </xsl:when>
 
+            <!--
+                eduroam.cz SAML 2.x binding
+            -->
+            <xsl:when test="@Name='http://eduroam.cz/attributes/eduroamUID'">
+                <!-- OK -->
+            </xsl:when>
 
             <!--
                 Otherwise unknown attribute names.
