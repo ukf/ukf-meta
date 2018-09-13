@@ -576,7 +576,6 @@
         git.products.masterbranch.pushtoorigin,
         git.products.createtagandpushtoorigin,
         fs.scp.mdqcache.to.repo,
-        fs.clear.outputdir,
         jenkins.triggerjob.publish">
         <echo>Stage 5 Success: Master branch pushed to origin, new tag created and pushed, mdq cache sent to repo, message sent to start publication.</echo>
     </target>
