@@ -669,12 +669,12 @@ fi
 testsplogincount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # And from how many unique IdPs?
-testspidpcount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | cut -f 12 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+testspidpcount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | cut -f 13 -d " " | sort | uniq | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
 
 # Don't count these for daily stats
 if [[ "$timeperiod" != "day" ]]; then
     # Top 10 IdPs used to log into the Test SP
-    testsptoptenidpsbycount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | awk '{print $12}' | cut -d "(" -f 2 | cut -d ")" -f 1 | sort | uniq -c | sort -nr | head -10)
+    testsptoptenidpsbycount=$(grep $date $logslocation/test-sp/shibd.log* | grep "new session created" | awk '{print $13}' | cut -d "(" -f 2 | cut -d ")" -f 1 | sort | uniq -c | sort -nr | head -10)
 fi
 
 
