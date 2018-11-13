@@ -173,6 +173,13 @@
     <property name="mdq.dist.name" value="mdq.ukfederation.org.uk"/>
     <property name="md.dist.path.name" value="/"/>
 
+    <property name="cdi-master.user" value="rsync"/>
+    <property name="cdi-master.name" value="cdi-master.ci.ti.ja.net"/>
+    <property name="cdi-master.ssh.port" value="8822"/>
+    <property name="cdi-master.temploc.name" value="/tmp/legacy-ukf"/>
+    <property name="cdi-master.md.path.name" value="/legacy-ukf-md/"/>
+    <property name="cdi-master.mdq.path.name" value="/legacy-ukf-mdq/"/>
+
     <!--
         Middlebox server properties.
     -->
@@ -1289,6 +1296,22 @@
         <checksum file="${aggregates.dir}/${mdaggr.export.preview.signed}"
             property="mdaggr.export.preview.signed.checksum"/>
 
+        <echo>Verifying metadata held at ${cdi-master.name}</echo>
+        <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.prod.signed}"
+            checksum="${mdaggr.prod.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.wayf.signed}"
+            checksum="${mdaggr.wayf.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.cdsall.signed}"
+            checksum="${mdaggr.cdsall.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.test.signed}"
+            checksum="${mdaggr.test.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.back.signed}"
+            checksum="${mdaggr.back.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.export.signed}"
+            checksum="${mdaggr.export.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.export.preview.signed}"
+            checksum="${mdaggr.export.preview.signed.checksum}"/>
+
         <echo>Verifying metadata held at ${md.dist.host-ne-01.name}</echo>
         <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
@@ -1360,10 +1383,14 @@
         Verify a few select mdq files held on the master distribution site.
     -->
     <target name="samlmd.mdq.verify.remote">
-        <echo>Verifying MDQ held at ${mdq.dist.name}</echo>
-        <VFY.MDQ.remote i="http://${mdq.dist.name}/entities"/>
-        <VFY.MDQ.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest-idp.ukfederation.org.uk%2Fidp%2Fshibboleth"/>
-        <VFY.MDQ.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest.ukfederation.org.uk%2Fentity"/>
+      <echo>Verifying MDQ held at ${cdi-master.name}${cdi-master.mdq.path.name}</echo>
+      <VFY.MDQ.remote i="http://${cdi-master.name}${cdi-master.mdq.path.name}entities"/>
+      <VFY.MDQ.remote i="http://${cdi-master.name}${cdi-master.mdq.path.name}entities/https%3A%2F%2Ftest-idp.ukfederation.org.uk%2Fidp%2Fshibboleth"/>
+      <VFY.MDQ.remote i="http://${cdi-master.name}${cdi-master.mdq.path.name}entities/https%3A%2F%2Ftest.ukfederation.org.uk%2Fentity"/>
+      <echo>Verifying MDQ held at ${mdq.dist.name}</echo>
+      <VFY.MDQ.remote i="http://${mdq.dist.name}/entities"/>
+      <VFY.MDQ.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest-idp.ukfederation.org.uk%2Fidp%2Fshibboleth"/>
+      <VFY.MDQ.remote i="http://${mdq.dist.name}/entities/https%3A%2F%2Ftest.ukfederation.org.uk%2Fentity"/>
     </target>
 
 
@@ -2021,6 +2048,12 @@
             Push metadata files for the UK Federation to the MD dist servers
         -->
         <echo>Pushing UK Federation metadata files to MD dist.</echo>
+        <echo>-> CDI-master</echo>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+            <arg value="push"/>
+            <arg value="cdi-master"/>
+            <arg value="master"/>
+        </exec>
         <echo>-> MD-NE-01</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="push"/>
@@ -2052,6 +2085,12 @@
             Push mdq cache tar to the MD dist servers
         -->
         <echo>Pushing UK Federation mdq cache to MD dist.</echo>
+        <echo>-> CDI-master</echo>
+        <scp failonerror="true" remoteTodir="${cdi-master.user}@${cdi-master.name}:${cdi-master.temploc.name}" port="${cdi-master.ssh.port}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdq.cache}"/>
+            </fileset>
+        </scp>
         <echo>-> MD-NE-01</echo>
         <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${output.dir}">
