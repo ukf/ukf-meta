@@ -465,6 +465,21 @@
     </bean>
 
     <!--
+        warningAnnouncer
+
+        A pipeline stage that logs any warnings present,
+        but takes no action on them.
+    -->
+    <bean id="warningAnnouncer" parent="mda.StatusMetadataLoggingStage">
+        <property name="identificationStrategy" ref="identificationStrategy"/>
+        <property name="selectionRequirements">
+            <list>
+                <value>#{T(net.shibboleth.metadata.WarningStatus)}</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--
         warningAndErrorAnnouncer
 
         A pipeline stage that logs any errors and warnings present,
