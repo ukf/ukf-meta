@@ -418,12 +418,16 @@ if ($distinct_certs > 1) {
         print "Distinct RSA moduli: $distinct_moduli\n";
     }
 
+    if (%expiry_whitelist) {
+        print "\n";
+        my $nwhite = scalar(keys(%expiry_whitelist));
+        print "Expiry whitelist size: $nwhite\n";
+    }
     my $first = 1;
     foreach $fingerprint (sort keys %expiry_whitelist) {
         if ($expiry_whitelist{$fingerprint} eq 'unused') {
             if ($first) {
                 $first = 0;
-                print "\n";
                 print "Unused expiry whitelist fingerprints:\n";
             }
             print "   $fingerprint\n";
