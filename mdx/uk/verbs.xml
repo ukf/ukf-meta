@@ -335,6 +335,9 @@
                 <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
                         <list>
+                            <!-- Error on DSA keys. -->
+                            <bean p:id="DSA" parent="ukf.X509DSADetector"/>
+
                             <!-- Error on RSA key length less than 2048 bits. -->
                             <bean p:id="RSAKeyLength" parent="mda.X509RSAKeyLengthValidator"
                                 p:warningBoundary="0" p:errorBoundary="2048"/>
