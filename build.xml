@@ -2328,6 +2328,7 @@
         <fixcrlf file="${output.dir}/${mdaggr.stats}" eol="lf" encoding="UTF-8"/>
     </target>
 
+
     <!--
         This variant generates a much simpler file, intended for use when building the
         monthly chart pack.
@@ -2525,6 +2526,35 @@
         <echo>Check complete.</echo>
     </target>
 
+    <!--
+        compare.members
+
+        Runs the compare-members.sh script, comparing Salesforce and UKf member data
+    -->
+    <target name="compare.members" depends="extract.members.to.csv">
+        <echo>Running compare.members</echo>
+        <exec executable="bash" failonerror="true">
+            <arg value="${utilities.dir}/compare-members.sh"/>
+            <arg value="${temp.dir}/ukf-members.csv"/>
+        </exec>
+        <delete file="${temp.dir}/ukf-members.csv" quiet="true" verbose="false"/>
+    </target>
+
+    <!--
+        extract.members.to.csv
+
+        Extract the ID and Name elements in UKf members to a CSV file for compare-members.sh to use
+    -->
+    <target name="extract.members.to.csv">
+        <echo>Running extract.members.to.csv</echo>
+        <exec executable="xsltproc" failonerror="true">
+            <arg value="--output"/>
+            <arg value="${temp.dir}/ukf-members.csv"/>
+            <arg value="${utilities.dir}/members-to-csv.xsl"/>
+            <arg value="../ukf-data/members/members.xml"/>
+        </exec>
+    </target>
+    
     <!--
         echoproperties
 
