@@ -364,6 +364,7 @@
                     </property>
                 </bean>
 
+                <ref bean="check_uk_extensions"/>
                 <ref bean="check_uk_mdrps"/>
                 <ref bean="check_uk_urlenc"/>
                 <ref bean="check_future"/>

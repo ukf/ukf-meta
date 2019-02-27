@@ -241,6 +241,13 @@
 
 
     <!--
+        check_uk_extensions
+    -->
+    <bean id="check_uk_extensions" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_extensions.xsl"/>
+
+
+    <!--
         check_uk_mdattr
     -->
     <bean id="check_uk_mdattr" parent="mda.XSLValidationStage"
@@ -359,6 +366,7 @@
                 <ref bean="check_owner"/>
                 <ref bean="check_uk_keydesc_key"/>
                 <ref bean="check_uk_mdattr"/>
+                <ref bean="check_uk_extensions"/>
                 <ref bean="check_uk_mdrps"/>
                 <ref bean="check_uk_urlenc"/>
                 <ref bean="check_uk_mdui_dn_en_present"/>
