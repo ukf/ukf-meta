@@ -27,27 +27,4 @@
     -->
     <xsl:import href="check_framework.xsl"/>
 
-    <!--
-
-        Check whether md:OrganizationDisplayname matches mdui:DisplayName for SPs
-
-        See ukf/ukf-data#325
-
-    -->
-    <xsl:template match="md:EntityDescriptor[md:SPSSODescriptor]">
-        <xsl:variable name="mdui" select="md:SPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:DisplayName[@xml:lang='en']"/>
-        <xsl:variable name="odn" select="md:Organization/md:OrganizationDisplayName[@xml:lang='en']"/>
-        <xsl:if test="$mdui and $odn and $mdui != $odn">
-            <xsl:call-template name="error">
-                <xsl:with-param name="m">
-                    <xsl:text>mismatched xml:lang='en' DisplayNames: '</xsl:text>
-                    <xsl:value-of select="$mdui"/>
-                    <xsl:text>' in mdui vs. '</xsl:text>
-                    <xsl:value-of select="$odn"/>
-                    <xsl:text>' in ODN</xsl:text>
-                </xsl:with-param>
-            </xsl:call-template>
-        </xsl:if>
-    </xsl:template>
-
 </xsl:stylesheet>
