@@ -6,9 +6,6 @@
     Checking ruleset containing rules that we don't currently implement,
     but which we may implement in the future.
 
-    This is to warn if an SP suggests that it wants signed assertions.
-    Typically, it is the response that should be signed.
-
 -->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -23,12 +20,5 @@
         Common support functions.
     -->
     <xsl:import href="check_framework.xsl"/>
-
-    <xsl:template match="md:EntityDescriptor[md:SPSSODescriptor[@WantAssertionsSigned='true']]">
-        <xsl:call-template name="warning">
-            <xsl:with-param name="m">SP sets WantAssertionsSigned, although typically you would want Responses signed not Assertions</xsl:with-param>
-        </xsl:call-template>
-    </xsl:template>
-
 
 </xsl:stylesheet>
