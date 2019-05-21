@@ -23,7 +23,7 @@
     -->
     <!-- production aggregate -->
     <bean id="int_edugain_productionAggregate_url" parent="String">
-        <constructor-arg value="http://mds.edugain.org/"/>
+        <constructor-arg value="https://mds.edugain.org/edugain-v1.xml"/>
     </bean>
     <!-- test aggregate -->
     <bean id="int_edugain_testAggregate_url" parent="String">
@@ -60,7 +60,7 @@
         eduGAIN signing certificate.
     -->
     <bean id="int_edugain_signingCertificate" parent="X509CertificateFactoryBean"
-        p:resource="classpath:int_edugain/mds-2014.cer"/>
+        p:resource="classpath:int_edugain/mds-v1.cer"/>
 
     <!--
         Check a signature against the eduGAIN signing certificate.
