@@ -146,6 +146,7 @@
     <property name="git.repo.project.data" value="ukf-data"/>
     <property name="git.repo.project.products" value="ukf-products"/>
     <property name="git.repo.project.tooling" value="ukf-meta"/>
+    <property name="git.repo.project.tooling.config" value="ukf-meta-config"/>
 
     <!--
         Build access URLs for each repository.
@@ -153,6 +154,7 @@
     <property name="git.repo.data.url" value="${git.repo.user}@${git.repo.host}:${git.repo.group}/${git.repo.project.data}"/>
     <property name="git.repo.products.url" value="${git.repo.user}@${git.repo.host}:${git.repo.group}/${git.repo.project.products}"/>
     <property name="git.repo.tooling.url" value="${git.repo.user}@${git.repo.host}:${git.repo.group}/${git.repo.project.tooling}"/>
+    <property name="git.repo.tooling.config.url" value="${git.repo.user}@${git.repo.host}:${git.repo.group}/${git.repo.project.tooling.config}"/>
 
     <!--
         *********************************************
@@ -271,6 +273,12 @@
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
     <property name="tools.slacktee" value="${tools.dir}/slacktee"/>
     <property name="tools.xmlsectool" value="${tools.dir}/xmlsectool-2.0.0"/>
+
+    <!--
+        Location of configuration for externally supplied tool bundles.
+    -->
+    <property name="tools.config.dir" value="${shared.ws.dir}/${git.repo.project.tooling.config}/tools"/>
+    <property name="tools.slacktee.config" value="${tools.config.dir}/slacktee"/>
 
     <!--
         Full path to a commonly used temporary file.
@@ -1158,7 +1166,7 @@
             <arg value="${utilities.dir}/stats-generate.sh"/>
             <arg value="day"/>
         </exec>
-        <SLACK.send conf="${tools.slacktee}/conf/repo-jenkins.conf" colour="good" channel="ukf-stats"
+        <SLACK.send conf="${tools.slacktee.config}/repo-jenkins.conf" colour="good" channel="ukf-stats"
             message="${stats.daily.output}"/>
     </target>
 
@@ -1640,7 +1648,7 @@
                     <arg value="${git.repo.project.data}"/>
                     <arg value="${git.repo.project.products}"/>
                 </exec>
-                <SLACK.send conf="${tools.slacktee}/conf/aggr-ant.conf" colour="good" channel="ukf-events-publish"
+                <SLACK.send conf="${tools.slacktee.config}/aggr-ant.conf" colour="good" channel="ukf-events-publish"
                     message="${diff.between.publications}"/>
             </then>
         </if>
