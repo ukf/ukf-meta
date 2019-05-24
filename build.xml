@@ -760,6 +760,14 @@
             <arg value="reset"/>
             <arg value="--hard"/>
         </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
+            <arg value="fetch"/>
+            <arg value="origin"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
+            <arg value="reset"/>
+            <arg value="--hard"/>
+        </exec>
         <echo>All branches on all repositories, reset HARD.</echo>
     </target>
 
@@ -793,6 +801,9 @@
             <arg value="pull"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
+            <arg value="pull"/>
+        </exec>
+        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
             <arg value="pull"/>
         </exec>
     </target>
