@@ -701,74 +701,129 @@
         *********************************
      -->
 
+     <!--
+         Full hard reset of all repositories
+     -->
+     <target name="git.hardreset.all">
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="checkout"/>
+             <arg value="master"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="fetch"/>
+             <arg value="origin"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="reset"/>
+             <arg value="--hard"/>
+             <arg value="origin/master"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="checkout"/>
+             <arg value="immediate"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="fetch"/>
+             <arg value="origin"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="reset"/>
+             <arg value="--hard"/>
+             <arg value="origin/immediate"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="checkout"/>
+             <arg value="deferred"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="fetch"/>
+             <arg value="origin"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
+             <arg value="reset"/>
+             <arg value="--hard"/>
+             <arg value="deferred"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+             <arg value="fetch"/>
+             <arg value="origin"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
+             <arg value="reset"/>
+             <arg value="--hard"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
+             <arg value="fetch"/>
+             <arg value="origin"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
+             <arg value="reset"/>
+             <arg value="--hard"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
+             <arg value="fetch"/>
+             <arg value="origin"/>
+         </exec>
+         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
+             <arg value="reset"/>
+             <arg value="--hard"/>
+         </exec>
+         <echo>All branches on all repositories, reset HARD.</echo>
+     </target>
+
     <!--
-        Full hard reset of all repositories
+        Full clean of all repositories
     -->
-    <target name="git.hardreset.all">
+    <target name="git.clean.all">
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
             <arg value="master"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
-            <arg value="fetch"/>
-            <arg value="origin"/>
-        </exec>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
-            <arg value="reset"/>
-            <arg value="--hard"/>
-            <arg value="origin/master"/>
+            <arg value="clean"/>
+            <arg value="--xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
             <arg value="immediate"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
-            <arg value="fetch"/>
-            <arg value="origin"/>
-        </exec>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
-            <arg value="reset"/>
-            <arg value="--hard"/>
-            <arg value="origin/immediate"/>
+            <arg value="clean"/>
+            <arg value="--xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
             <arg value="deferred"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
-            <arg value="fetch"/>
-            <arg value="origin"/>
-        </exec>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
-            <arg value="reset"/>
-            <arg value="--hard"/>
-            <arg value="deferred"/>
+            <arg value="clean"/>
+            <arg value="--xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="fetch"/>
             <arg value="origin"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
-            <arg value="reset"/>
-            <arg value="--hard"/>
+            <arg value="clean"/>
+            <arg value="--xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
             <arg value="fetch"/>
             <arg value="origin"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
-            <arg value="reset"/>
-            <arg value="--hard"/>
+            <arg value="clean"/>
+            <arg value="--xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
-            <arg value="fetch"/>
-            <arg value="origin"/>
+            <arg value="clean"/>
+            <arg value="--xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
-            <arg value="reset"/>
-            <arg value="--hard"/>
+            <arg value="clean"/>
+            <arg value="--xdf"/>
         </exec>
-        <echo>All branches on all repositories, reset HARD.</echo>
+        <echo>All branches on all repositories, cleaned.</echo>
     </target>
 
     <!--
@@ -2557,7 +2612,7 @@
             <arg value="../ukf-data/members/members.xml"/>
         </exec>
     </target>
-    
+
     <!--
         echoproperties
 
