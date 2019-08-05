@@ -781,7 +781,7 @@
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="clean"/>
-            <arg value="--xdf"/>
+            <arg value="-xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
@@ -789,7 +789,7 @@
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="clean"/>
-            <arg value="--xdf"/>
+            <arg value="-xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
@@ -797,7 +797,7 @@
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="clean"/>
-            <arg value="--xdf"/>
+            <arg value="-xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="fetch"/>
@@ -805,7 +805,7 @@
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="clean"/>
-            <arg value="--xdf"/>
+            <arg value="-xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
             <arg value="fetch"/>
@@ -813,15 +813,15 @@
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
             <arg value="clean"/>
-            <arg value="--xdf"/>
+            <arg value="-xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
             <arg value="clean"/>
-            <arg value="--xdf"/>
+            <arg value="-xdf"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
             <arg value="clean"/>
-            <arg value="--xdf"/>
+            <arg value="-xdf"/>
         </exec>
         <echo>All branches on all repositories, cleaned.</echo>
     </target>
