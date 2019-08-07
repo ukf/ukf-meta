@@ -459,7 +459,7 @@
                 <entry key-ref="bg_bif_registrar"             value="BG"/>
                 <entry key-ref="it_gridp_registrar"           value="IT-GRIDP"/>
                 <entry key-ref="nz_tuakiri_registrar"         value="NZ"/>
-                <entry key-ref="ro_roedunetid_registrar"      value="RO"/>
+                <entry key-ref="ro_edunetid_registrar"        value="RO"/>
 
                 <!-- eduGAIN candidates -->
                 <entry key-ref="cn_cstcloud_registrar"        value="CN-CSTCLOUD"/>
