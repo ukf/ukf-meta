@@ -331,7 +331,7 @@
     <bean id="jp_gakunin_registrar"      parent="String" c:_="https://www.gakunin.jp"/>
     <bean id="kr_kafe_registrar"         parent="String" c:_="http://kafe.kreonet.net"/>
     <bean id="lb_life_registrar"         parent="String" c:_="http://life.aub.edu.lb"/><!-- A guess -->
-    <bean id="lk_liaf_registrar"         parent="String" c:_="http://laife.lanet.lv/"/>
+    <bean id="lk_liaf_registrar"         parent="String" c:_="https://liaf.ac.lk"/>
     <bean id="lt_litnet_registrar"       parent="String" c:_="https://fedi.litnet.lt"/>
     <bean id="lu_eduid_registrar"        parent="String" c:_="http://eduid.lu"/>
     <bean id="lv_laife_registrar"        parent="String" c:_="http://laife.lanet.lv/"/>
