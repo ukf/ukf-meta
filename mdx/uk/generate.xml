@@ -211,29 +211,6 @@
         p:whitelistingEntities="false"
         p:designatedEntities-ref="importEntityBlacklist"/>
 
-    <!--
-        importCommonTail
-
-        Common actions to be performed on each import pipeline.
-    -->
-    <bean id="importCommonTail" parent="mda.CompositeStage">
-        <property name="composedStages">
-            <list>
-                <ref bean="removeUKEntities"/>
-                <ref bean="removeBlacklistedEntities"/>
-                <ref bean="standardImportActions"/>
-
-                <!--
-                    Silently remove entities which are marked as
-                    having errors.
-                -->
-                <ref bean="errorRemover"/>
-
-                <ref bean="uk_fix_mailto"/>
-            </list>
-        </property>
-    </bean>
-
     <bean id="entityAttributes.blacklist" parent="mda.EntityAttributeFilteringStage">
         <property name="whitelisting" value="false"/>
         <property name="rules">
@@ -259,7 +236,17 @@
                 -->
                 <ref bean="entityAttributes.blacklist"/>
 
-                <ref bean="importCommonTail"/>
+                <ref bean="removeUKEntities"/>
+                <ref bean="removeBlacklistedEntities"/>
+                <ref bean="standardImportActions"/>
+
+                <!--
+                    Silently remove entities which are marked as
+                    having errors.
+                -->
+                <ref bean="errorRemover"/>
+
+                <ref bean="uk_fix_mailto"/>
             </list>
         </property>
     </bean>
