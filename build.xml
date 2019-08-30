@@ -347,8 +347,16 @@
         This is used as the max heap setting for all Java invocations.  This amount will
         be more than some invocations require, but there's no harm in having a higher
         limit for all of them.
+
+        Note that this value is often overridden in production contexts (see, for example,
+        prod.properties) to give the production environment extra headroom. The value is
+        kept lower here so that we'll get warnings in development before the production
+        environment is affected.
+
+		The overrides for production environments should be updated in step with the
+		value here whenever this is necessary.
     -->
-    <property name="java.max.memory" value="1280m"/>
+    <property name="java.max.memory" value="1536m"/>
 
 
     <!--
