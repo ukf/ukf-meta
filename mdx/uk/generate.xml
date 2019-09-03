@@ -657,13 +657,6 @@
                             <property name="stages">
                                 <list>
 
-                                    <!-- Identity providers lacking support for SAML 2.0 -->
-                                    <bean id="SAML1onlyIdPs" parent="mda.XPathFilteringStage"
-                                        p:namespaceContext-ref="commonNamespaces"
-                                        p:XPathExpression="md:IDPSSODescriptor
-                                        [not(contains(@protocolSupportEnumeration,'urn:oasis:names:tc:SAML:2.0:protocol'))]">
-                                    </bean>
-
                                     <!-- Aggregated schools sector identity providers -->
                                     <!--
                                         Preferred implementation:
@@ -678,14 +671,6 @@
                                     <bean id="syntheticScopes" parent="mda.XPathFilteringStage"
                                         p:namespaceContext-ref="commonNamespaces"
                                         p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
-                                    <!-- Specific providers not caught by the previous condition -->
-                                    <bean id="GlowScotland" parent="mda.EntityFilterStage">
-                                        <property name="designatedEntities">
-                                            <set>
-                                                <value>https://idp.glowscotland.org.uk/shibboleth</value>
-                                            </set>
-                                        </property>
-                                    </bean>
 
                                     <!-- Identity providers with regular expression scopes -->
                                     <bean id="regexScopes" parent="mda.XPathFilteringStage"
@@ -772,13 +757,6 @@
                             <property name="stages">
                                 <list>
 
-                                    <!-- Identity providers lacking support for SAML 2.0 -->
-                                    <bean id="SAML1onlyIdPs" parent="mda.XPathFilteringStage"
-                                        p:namespaceContext-ref="commonNamespaces"
-                                        p:XPathExpression="md:IDPSSODescriptor
-                                            [not(contains(@protocolSupportEnumeration,'urn:oasis:names:tc:SAML:2.0:protocol'))]">
-                                    </bean>
-
                                     <!-- Aggregated schools sector identity providers -->
                                     <!--
                                         Preferred implementation:
@@ -793,14 +771,6 @@
                                     <bean id="syntheticScopes" parent="mda.XPathFilteringStage"
                                         p:namespaceContext-ref="commonNamespaces"
                                         p:XPathExpression="//shibmd:Scope[contains(., '.eng.ukfederation.org.uk')]"/>
-                                    <!-- Specific providers not caught by the previous condition -->
-                                    <bean id="GlowScotland" parent="mda.EntityFilterStage">
-                                        <property name="designatedEntities">
-                                            <set>
-                                                <value>https://idp.glowscotland.org.uk/shibboleth</value>
-                                            </set>
-                                        </property>
-                                    </bean>
 
                                     <!-- Identity providers with regular expression scopes -->
                                     <bean id="regexScopes" parent="mda.XPathFilteringStage"
