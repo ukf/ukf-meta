@@ -324,8 +324,9 @@ while (<>) {
         #print "   text lines: $#lines\n";
 
         #
-        # Deal with certificate expiry.
+        # Deal with certificate expiry for CA-issued certificates.
         #
+        if ($issuer ne $subject) {
         if ($days < -$longExpiredDays) {
             my $d = floor(-$days);
             if (defined($expiry_whitelist{$fingerprint})) {
@@ -348,7 +349,7 @@ while (<>) {
             $days = int($days);
             warning("expires in $days days ($notAfter)");
         }
-
+	}
 
         #
         # Handle public key size.
