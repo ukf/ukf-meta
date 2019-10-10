@@ -1617,6 +1617,9 @@
                     <fileset dir="${tools.dir}/xalan/lib">
                         <include name="sdss-xalan-md-*.jar"/>
                     </fileset>
+                    <fileset dir="${tools.dir}/inc-mda">
+                        <include name="*.jar"/>
+                    </fileset>
                 </classpath>
                 <syspropertyset>
                     <propertyset refid="mda.properties"/>
