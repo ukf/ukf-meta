@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+        edugainPolicy
+
+        Applies policy to entities sourced from eduGAIN.
+
+        Entities may be transformed by policy, or marked as being in error.
+
+        Entities with errors are NOT removed here, so that this policy can be
+        used in contexts where reporting is more appropriate than just removal.
+
+        This is not the only policy applied to entities sourced from
+        eduGAIN, but that may change over time.
+
+        This policy is partially derived from Incommon's Interfederation
+        policy.
+
+        Rule number references are to the Interfederation Technical Policy
+        pages on the Internet2 wiki. There are two versions:
+
+        * Interfederation Technical Policy Development
+            * at https://spaces.internet2.edu/x/ugDABg
+            * documents the expected *next* deployment
+            * updated as changes are made in the master branch
+            * use this if you want to cross-reference numbers against
+              the development tooling
+
+        * Interfederation Technical Policy
+            * at https://spaces.internet2.edu/x/TgCNBQ
+            * documents the *current* deployment
+            * to cross-reference against this page, check out the specific
+              release mentioned there
+
+    -->
+    <bean id="edugainPolicy" parent="mda.CompositeStage">
+        <property name="composedStages">
+            <list>
+
+                <!--
+                    *************************************
+                    ***                               ***
+                    ***   P O L I C Y   R U L E   4   ***
+                    ***                               ***
+                    *************************************
+
+                    "Remove (and log the removal of) all imported
+                    entities matching one or more of the following conditions:"
+
+                    This rule is performed by the error-detecting beans below
+                    in combination with the caller of this CompositeStage
+                    taking action on any resulting ErrorStatus objects in
+                    item metadata.
+                -->
+
+                <!--
+                    Sub-rule c.ii.
+
+                    Perform detailed scope checking.
+                -->
+                <bean id="checkScopes" parent="inc.stage_parent"
+                    class="uk.org.iay.incommon.mda.dom.saml.shib.ScopeValidationStage">
+                    <property name="validators">
+                        <list>
+                            <bean p:id="empty" parent="inc.RejectStringRegexValidator"
+                                p:regex="" p:message="scope element must not be empty"/>
+                            <bean p:id="whiteSpace" parent="inc.RejectStringRegexValidator"
+                                p:regex=".*\s.*" p:message="scope '%s' includes white space"/>
+                            <bean p:id="domainName" parent="inc.AsDomainNameStringValidator"
+                                p:message="scope is not a valid domain name: %s">
+                                <property name="validators">
+                                    <list>
+                                        <!-- DNS name validators -->
+                                        <bean p:id="publicSuffix" parent="inc.RejectDomainNamePublicSuffixValidator"
+                                            p:message="scope is a public suffix: '%s'"/>
+                                        <bean p:id="noPublicSuffix" parent="inc.RejectDomainNameNotUnderPublicSuffixValidator"
+                                            p:message="scope is not under a public suffix: '%s'"/>
+                                    </list>
+                                </property>
+                            </bean>
+                        </list>
+                    </property>
+                    <property name="regexpValidators">
+                        <list>
+                            <bean p:id="empty" parent="inc.RejectStringRegexValidator"
+                                p:regex="" p:message="regex scope element must not be empty"/>
+                            <bean p:id="whiteSpace" parent="inc.RejectStringRegexValidator"
+                                p:regex=".*\s.*" p:message="regex scope '%s' includes white space"/>
+                            <bean p:id="endAnchor" parent="inc.RejectStringRegexValidator"
+                                p:regex=".*[^$]" p:message="regex scope '%s' does not end with an anchor ('$')"/>
+                            <bean p:id="literalTail" parent="inc.AsLiteralTailStringValidator"
+                                p:message="regular expression '%s' does not end with a literal tail">
+                                <property name="validators">
+                                    <!-- validators to apply to the literal tail -->
+                                    <list>
+                                        <bean p:id="domainName" parent="inc.AsDomainNameStringValidator"
+                                            p:message="literal tail is not a valid domain name: %s">
+                                            <property name="validators">
+                                                <list>
+                                                    <!-- DNS name validators for the literal tail -->
+                                                    <bean p:id="publicSuffix" parent="inc.RejectDomainNamePublicSuffixValidator"
+                                                        p:message="literal tail is a public suffix: '%s'"/>
+                                                    <bean p:id="noPublicSuffix" parent="inc.RejectDomainNameNotUnderPublicSuffixValidator"
+                                                        p:message="literal tail is not under a public suffix: '%s'"/>
+                                                </list>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+
+            </list>
+        </property>
+    </bean>
+
+</beans>

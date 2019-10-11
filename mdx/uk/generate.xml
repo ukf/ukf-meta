@@ -34,6 +34,16 @@
     <import resource="file:${blocklists.dir}/fallback-blocklist.xml"/>
 
     <!--
+        Import inc-mda beans.
+    -->
+    <import resource="classpath:uk/org/iay/incommon/mda/beans.xml"/>
+
+    <!--
+        Import UK federation ingress policy for eduGAIN.
+    -->
+    <import resource="classpath:uk/edugain-policy.xml"/>
+
+    <!--
         *****************************
         ***                       ***
         ***   U T I L I T I E S   ***
@@ -243,6 +253,7 @@
                 <ref bean="removeUKEntities"/>
                 <ref bean="removeBlacklistedEntities"/>
                 <ref bean="standardImportActions"/>
+                <ref bean="edugainPolicy"/>
 
                 <!--
                     Silently remove entities which are marked as
