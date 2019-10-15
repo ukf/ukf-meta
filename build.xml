@@ -249,6 +249,7 @@
         External specialised directories.
     -->
     <property name="aggregates.dir" value="${shared.ws.dir}/${git.repo.project.products}/aggregates"/>
+    <property name="blocklists.dir" value="${shared.ws.dir}/${git.repo.project.data}/blocklists"/>
     <property name="edugain.dir" value="${shared.ws.dir}/${git.repo.project.data}/edugain"/>
     <property name="entities.dir" value="${shared.ws.dir}/${git.repo.project.data}/entities"/>
     <property name="members.dir" value="${shared.ws.dir}/${git.repo.project.data}/members"/>
@@ -1569,6 +1570,7 @@
         by properties defined in the external properties files, e.g., build.properties.
     -->
     <property name="mda.java.endorsed.dirs" value="${tools.dir}/endorsed"/>
+    <property name="mda.blocklists.dir" value="${blocklists.dir}"/>
     <property name="mda.edugain.dir" value="${edugain.dir}"/>
     <property name="mda.entities.dir" value="${entities.dir}"/>
     <property name="mda.mdx.dir" value="${mdx.dir}"/>

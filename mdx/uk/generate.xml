@@ -28,6 +28,10 @@
     -->
     <import resource="classpath:int_edugain/beans.xml"/>
 
+    <!--
+        Import beans for blocklists.
+    -->
+    <import resource="file:${blocklists.dir}/fallback-blocklist.xml"/>
 
     <!--
         *****************************
@@ -520,6 +524,10 @@
     <bean id="uk_fallbackPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <bean id="removeFallbackBlocklist" parent="mda.EntityFilterStage"
+                    p:whitelistingEntities="false"
+                    p:designatedEntities-ref="fallbackEntityBlocklist"/>
+
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
