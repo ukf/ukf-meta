@@ -33,6 +33,8 @@
         Currently only a single attribute, documented at:
         https://www.eduroam.cz/attributes/eduroamUID
 
+    * SAML V2.0 Subject Identifier Attributes Profile
+        https://docs.oasis-open.org/security/saml-subject-id-attr/v1.0/cs01/saml-subject-id-attr-v1.0-cs01.pdf
 
     Author: Ian A. Young <ian@iay.org.uk>
 
@@ -490,6 +492,16 @@
                 eduroam.cz SAML 2.x binding
             -->
             <xsl:when test="@Name='http://eduroam.cz/attributes/eduroamUID'">
+                <!-- OK -->
+            </xsl:when>
+
+            <!--
+                SAML V2.0 Subject Identifier Attributes Profile Version 1.0
+            -->
+            <xsl:when test="
+                @Name = 'urn:oasis:names:tc:SAML:attribute:subject-id' or
+                @Name = 'urn:oasis:names:tc:SAML:attribute:pairwise-id'
+                ">
                 <!-- OK -->
             </xsl:when>
 
