@@ -292,7 +292,7 @@
     <!--
         Federation registrationAuthority URIs.
     -->
-    <bean id="al_rash_registrar"         parent="String" c:_="https://eduid.rash.al/"/>
+    <bean id="al_rash_registrar"         parent="String" c:_="https://eduid.rash.al"/>
     <bean id="am_afire_registrar"        parent="String" c:_="https://aai.asnet.am"/>
     <bean id="ar_mate_registrar"         parent="String" c:_="http://www.federacionmate.gob.ar"/>
     <bean id="at_aconet_registrar"       parent="String" c:_="http://eduid.at"/>
