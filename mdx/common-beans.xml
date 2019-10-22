@@ -41,6 +41,7 @@
         Java class parent shorthand beans.
     -->
     <bean id="File" abstract="true" class="java.io.File"/>
+    <bean id="Instant" abstract="true" class="java.time.Instant"/>
     <bean id="String" abstract="true" class="java.lang.String"/>
     <bean id="QName" abstract="true" class="javax.xml.namespace.QName"/>
 
@@ -140,6 +141,34 @@
 
     <!-- *** Default Shibboleth component bean id property from Spring bean id *** -->
     <bean class="net.shibboleth.ext.spring.config.IdentifiableBeanPostProcessor" lazy-init="false"/>
+
+    <!--
+        *******************************************************
+        ***                                                 ***
+        ***   D A T E   A N D   T I M E   H A N D L I N G   ***
+        ***                                                 ***
+        *******************************************************
+    -->
+
+    <!--
+        Approximately when the Spring context was initialised,
+        as a java.time.Instant.
+    -->
+    <bean id="now_instant_raw" parent="Instant" factory-method="now"/>
+
+    <!--
+        now_instant_raw can have any precision. To get somewhat consistent
+        output, derive a new now_instant that truncates that to the second.
+    -->
+    <bean id="now_instant" parent="Instant" factory-method="from"
+        c:_="#{ now_instant_raw.truncatedTo(T(java.time.temporal.ChronoUnit).SECONDS) }"/>
+
+    <!--
+        Strings representing now_instant as an ISO 8601 UTC date/time
+        and as an ISO 8601 date.
+    -->
+    <bean id="now_ISO" parent="String" c:_="#{ now_instant.toString() }"/>
+    <bean id="now_date_ISO" parent="String" c:_="#{ now_ISO.substring(0,10) }"/>
 
     <!--
         ***********************************************

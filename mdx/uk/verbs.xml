@@ -294,7 +294,14 @@
 
                 <!-- transform into a fragment using our local conventions -->
                 <bean id="importTransform" parent="mda.XSLTransformationStage"
-                    p:XSLResource="classpath:uk/import.xsl"/>
+                    p:XSLResource="classpath:uk/import.xsl">
+                    <property name="transformParameters">
+                        <map>
+                            <entry key="now_ISO" value-ref="now_ISO"/>
+                            <entry key="now_date_ISO" value-ref="now_date_ISO"/>
+                        </map>
+                    </property>
+                </bean>
 
                 <!-- normalise namespaces in a specific way -->
                 <bean id="normalizeFragment" parent="mda.XSLTransformationStage"
