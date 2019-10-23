@@ -384,7 +384,7 @@
     <bean id="mz_cafmoz_registrar"       parent="String" c:_="http://cafmoz.morenet.ac.mz"/>
     <bean id="nl_surfconext_registrar"   parent="String" c:_="http://www.surfconext.nl/"/>
     <bean id="no_feide_registrar"        parent="String" c:_="http://feide.no/"/>
-    <bean id="nz_tuakiri_registrar"      parent="String" c:_="http://tuakiri.ac.nz/"/><!-- A guess -->
+    <bean id="nz_tuakiri_registrar"      parent="String" c:_="https://tuakiri.ac.nz/"/>
     <bean id="om_omankid_registrar"      parent="String" c:_="https://home.trc.gov.om"/>
     <bean id="om_omren_registrar"        parent="String" c:_="http://www.omren.om"/>
     <bean id="pk_pkifed_registrar"       parent="String" c:_="https://pkifed.pk"/>
@@ -470,6 +470,7 @@
                 <entry key-ref="ma_eduidm_registrar"          value="MA"/>
                 <entry key-ref="mz_cafmoz_registrar"          value="MZ"/>
                 <entry key-ref="no_feide_registrar"           value="NO"/>
+                <entry key-ref="nz_tuakiri_registrar"         value="NZ"/>
                 <entry key-ref="om_omankid_registrar"         value="OM-KID"/>
                 <entry key-ref="om_omren_registrar"           value="OM-REN"/>
                 <entry key-ref="pk_pkifed_registrar"          value="PK"/>
@@ -497,7 +498,6 @@
                 <entry key-ref="al_rash_registrar"            value="AL"/>
                 <entry key-ref="bg_bif_registrar"             value="BG"/>
                 <entry key-ref="it_gridp_registrar"           value="IT-GRIDP"/>
-                <entry key-ref="nz_tuakiri_registrar"         value="NZ"/>
                 <entry key-ref="ro_edunetid_registrar"        value="RO"/>
 
                 <!-- eduGAIN candidates -->
