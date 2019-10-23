@@ -171,6 +171,16 @@
     <bean id="now_date_ISO" parent="String" c:_="#{ now_ISO.substring(0,10) }"/>
 
     <!--
+        The now_instant as a local date/time (in the system default
+        timezone), and as an ISO 8601 representation of that.
+    -->
+    <bean id="now_local" class="java.time.LocalDateTime"
+        factory-method="ofInstant"
+        c:_0-ref="now_instant"
+        c:_1="#{ T(java.time.ZoneId).systemDefault() }"/>
+    <bean id="now_local_ISO" parent="String" c:_="#{ now_local.toString() }"/>
+
+    <!--
         ***********************************************
         ***                                         ***
         ***   N A M E S P A C E   H A N D L I N G   ***

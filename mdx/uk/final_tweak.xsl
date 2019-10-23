@@ -10,10 +10,6 @@
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
 
-    xmlns:date="http://exslt.org/dates-and-times"
-    xmlns:mdxDates="xalan://uk.ac.sdss.xalan.md.Dates"
-    extension-element-prefixes="date mdxDates"
-
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -46,8 +42,25 @@
     -->
     <xsl:param name="validityDays"/>
 
-    <xsl:variable name="now" select="date:date-time()"/>
-    <xsl:variable name="normalisedNow" select="mdxDates:dateAdd($now, 0)"/>
+    <!--
+        now_ISO
+
+        This parameter is an ISO8601 representation of the UTC instant
+        at which the aggregate generation started.
+
+        Example: 2019-10-23T10:25:11Z
+    -->
+    <xsl:param name="now_ISO"/>
+
+    <!--
+        now_local_ISO
+
+        This parameter is an ISO8601 representation of the local time
+        at which the aggregate generation started.
+
+        Example: 2019-10-23T11:25:11
+    -->
+    <xsl:param name="now_local_ISO"/>
 
     <!--
         Document element.
@@ -97,10 +110,14 @@
                 <xsl:text>&#10;</xsl:text>
             </xsl:if>
             <xsl:text>&#9;Aggregate built </xsl:text>
-            <xsl:value-of select="$normalisedNow"/>
-            <xsl:if test="string($normalisedNow) != string($now)">
+            <xsl:value-of select="$now_ISO"/>
+            <!--
+                Show local time if DST is in effect (indicated by the local
+                hour and UTC hour being different), otherwise omit.
+            -->
+            <xsl:if test="substring($now_ISO, 12, 2) != substring($now_local_ISO, 12, 2)">
                 <xsl:text> (</xsl:text>
-                <xsl:value-of select="$now"/>
+                <xsl:value-of select="$now_local_ISO"/>
                 <xsl:text> local)</xsl:text>
             </xsl:if>
             <xsl:text>&#10;</xsl:text>
@@ -141,7 +158,7 @@
                 <xsl:value-of select="$publisher"/>
             </xsl:attribute>
             <xsl:attribute name="creationInstant">
-                <xsl:value-of select="$normalisedNow"/>
+                <xsl:value-of select="$now_ISO"/>
             </xsl:attribute>
         </xsl:element>
     </xsl:template>

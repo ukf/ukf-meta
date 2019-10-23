@@ -280,6 +280,8 @@
             <map>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
+                <entry key="now_ISO" value-ref="now_ISO"/>
+                <entry key="now_local_ISO" value-ref="now_local_ISO"/>
             </map>
         </property>
     </bean>
@@ -434,6 +436,8 @@
                     value="Central Discovery Service metadata; not for end entity use"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
+                <entry key="now_ISO" value-ref="now_ISO"/>
+                <entry key="now_local_ISO" value-ref="now_local_ISO"/>
             </map>
         </property>
     </bean>
@@ -516,6 +520,8 @@
                 <entry key="extraText" value="Feature fallback metadata; not for production use"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
+                <entry key="now_ISO" value-ref="now_ISO"/>
+                <entry key="now_local_ISO" value-ref="now_local_ISO"/>
             </map>
         </property>
     </bean>
@@ -573,6 +579,8 @@
                 <entry key="extraText" value="Feature test metadata; not for production use"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
+                <entry key="now_ISO" value-ref="now_ISO"/>
+                <entry key="now_local_ISO" value-ref="now_local_ISO"/>
             </map>
         </property>
     </bean>
@@ -627,6 +635,8 @@
                 <entry key="extraText" value="Export metadata for use by partner federations"/>
                 <entry key="publisher" value-ref="uk_federation_uri"/>
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
+                <entry key="now_ISO" value-ref="now_ISO"/>
+                <entry key="now_local_ISO" value-ref="now_local_ISO"/>
             </map>
         </property>
     </bean>
