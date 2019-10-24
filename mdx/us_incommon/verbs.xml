@@ -39,6 +39,7 @@
             <list>
                 <ref bean="us_incommon_productionEntities"/>
                 <ref bean="standardImportActions"/>
+                <ref bean="check_shib_regscope"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -59,6 +60,7 @@
             <list>
                 <ref bean="us_incommon_exportedEntities"/>
                 <ref bean="standardImportActions"/>
+                <ref bean="check_shib_regscope"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>

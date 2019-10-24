@@ -36,6 +36,7 @@
             <list>
                 <ref bean="test_entities"/>
                 <ref bean="standardImportActions"/>
+                <ref bean="check_shib_regscope"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>

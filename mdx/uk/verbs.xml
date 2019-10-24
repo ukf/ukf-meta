@@ -410,6 +410,7 @@
             <list>
                 <ref bean="uk_exportedEntities"/>
                 <ref bean="standardImportActions"/>
+                <ref bean="check_shib_regscope"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>

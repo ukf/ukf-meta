@@ -36,6 +36,7 @@
             <list>
                 <ref bean="at_aconet_productionEntities"/>
                 <ref bean="standardImportActions"/>
+                <ref bean="check_shib_regscope"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -56,6 +57,7 @@
             <list>
                 <ref bean="at_aconet_edugainEntities"/>
                 <ref bean="standardImportActions"/>
+                <ref bean="check_shib_regscope"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -76,6 +78,7 @@
             <list>
                 <ref bean="at_aconet_edugainEntities"/>
                 <ref bean="standardImportActions"/>
+                <ref bean="check_shib_regscope"/>
 
                 <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
