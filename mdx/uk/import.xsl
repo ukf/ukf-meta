@@ -37,9 +37,6 @@
     xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 
-    xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
-    extension-element-prefixes="mdxTextUtils"
-
     xmlns:xalan="http://xml.apache.org/xalan"
 
     exclude-result-prefixes="idpdisc init md mdui xalan"
@@ -258,18 +255,6 @@
     -->
     <xsl:template match="ds:KeyName">
         <!-- do nothing -->
-    </xsl:template>
-
-
-    <!--
-        Normalise whitespace in X509Certificate elements.
-    -->
-    <xsl:template match="ds:X509Certificate">
-        <xsl:element name="ds:X509Certificate">
-            <xsl:text>&#10;</xsl:text>
-            <xsl:value-of select="mdxTextUtils:wrapBase64(.)"/>
-            <xsl:text>&#10;</xsl:text>
-        </xsl:element>
     </xsl:template>
 
 

@@ -329,6 +329,9 @@
                     </property>
                 </bean>
 
+                <!-- Normalise the text in ds:X509Certificate elements. -->
+                <ref bean="wrapX509Certificates"/>
+
                 <!-- normalise namespaces in a specific way -->
                 <bean id="normalizeFragment" parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/ns_norm_fragment.xsl"/>

@@ -9,12 +9,10 @@
 <xsl:stylesheet version="1.0"
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-    xmlns:mdxTextUtils="xalan://uk.ac.sdss.xalan.md.TextUtils"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-    extension-element-prefixes="mdxTextUtils">
+    xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
     <!--Force UTF-8 encoding for the output.-->
     <xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8" indent="yes"/>
@@ -44,17 +42,6 @@
 
     <!-- Remove xsi:type from any entity attribute values. -->
     <xsl:template match="saml:AttributeValue/@xsi:type"/>
-
-    <!--
-        Normalise whitespace in X509Certificate elements.
-    -->
-    <xsl:template match="ds:X509Certificate">
-        <xsl:element name="ds:X509Certificate">
-            <xsl:text>&#10;</xsl:text>
-            <xsl:value-of select="mdxTextUtils:wrapBase64(.)"/>
-            <xsl:text>&#10;</xsl:text>
-        </xsl:element>
-    </xsl:template>
 
     <!--
         Discard various ds:X509 elements.  Several of these are known to

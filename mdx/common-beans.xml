@@ -877,6 +877,9 @@
         ***************************
     -->
 
+    <bean id="ds-X509Certificate" parent="QName" c:_0-ref="ds_namespace"
+        c:_1="X509Certificate"/>
+
     <!--
         stripKeyNames
 
@@ -886,6 +889,15 @@
         p:elementName="KeyName"
         p:elementNamespace-ref="ds_namespace"/>
 
+    <!--
+        wrapX509Certificates
+
+        Normalise the text inside ds:X509Certificate elements by
+        removing all white space, then reformatting for 64 characters
+        per line.
+    -->
+    <bean id="wrapX509Certificates" parent="ukf.ElementBase64WrappingStage"
+        p:elementName-ref="ds-X509Certificate"/>
 
 
     <!--
@@ -1182,6 +1194,7 @@
                 </bean>
 
                 <ref bean="cleanImport"/>
+                <ref bean="wrapX509Certificates"/>
                 <ref bean="stripAAMDUI"/>
                 <ref bean="stripMDUILogoHttp"/>
                 <ref bean="trimImportElementWhitespace"/>
