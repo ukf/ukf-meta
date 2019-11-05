@@ -608,6 +608,7 @@
 
                 <ref bean="uk_strip_UKFederationMember"/>
                 <ref bean="assembleAggregate"/>
+                <bean parent="mda.SetCacheDurationStage" p:cacheDuration="PT6H"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
