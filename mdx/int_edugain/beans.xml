@@ -25,16 +25,31 @@
     <bean id="int_edugain_productionAggregate_url" parent="String">
         <constructor-arg value="https://mds.edugain.org/edugain-v1.xml"/>
     </bean>
+    <!-- beta (test) aggregate -->
+    <bean id="int_edugain_betaAggregate_url" parent="String">
+        <constructor-arg value="https://mds.edugain.org/edugain-v1-beta.xml"/>
+    </bean>
 
     <!--
         Fetches the eduGAIN production aggregate.
+
+        Other aggregates may be substituted if their location exists as a bean
+        named "int_edugain_<ID>Aggregate_url" above, and the property
+        "int.edugain.aggregate.name" is set to "<ID>". "production" is used
+        as the default.
+
+        If a flow is being run from build.xml using ant, the property name
+        needs to be prefixed with "mda.", as "mda.int.edugain.aggregate.name":
+
+            ant -Dmda.int.edugain.aggregate.name=beta ...		
     -->
     <bean id="int_edugain_productionAggregate" parent="mda.DOMResourceSourceStage">
         <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
-                <constructor-arg name="url" ref="int_edugain_productionAggregate_url"/>
+                <constructor-arg name="url"
+                	ref="int_edugain_${int.edugain.aggregate.name:production}Aggregate_url"/>
             </bean>
         </property>
     </bean>
