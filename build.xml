@@ -2328,10 +2328,6 @@
         <CHANNEL.import channel="${channel}"/>
     </target>
 
-    <target name="flow.int_edugain.testImport">
-        <CHANNEL.do channel="int_edugain" verb="importTest"/>
-    </target>
-
     <!--
         flow.verify.cobweb
 

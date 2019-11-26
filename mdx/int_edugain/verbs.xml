@@ -81,18 +81,6 @@
         </property>
     </bean>
 
-    <bean id="importTest" parent="mda.SimplePipeline">
-        <property name="stages">
-            <list>
-                <ref bean="int_edugain_testEntities"/>
-                <ref bean="standardImportActions"/>
-                <ref bean="edugainPolicy"/>
-                <ref bean="standardImportTail"/>
-                <ref bean="serializeImported"/>
-            </list>
-        </property>
-    </bean>
-
     <!--
         verify
 
