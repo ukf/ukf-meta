@@ -154,7 +154,32 @@
         Approximately when the Spring context was initialised,
         as a java.time.Instant.
     -->
-    <bean id="now_instant_raw" parent="Instant" factory-method="now"/>
+    <bean id="start_instant_raw" parent="Instant" factory-method="now"/>
+
+    <!--
+        A java.time.Instant representing 00:00:00Z today.
+
+        We use this to pin timestamps in aggregates intended for comparison.
+    -->
+    <bean id="today_instant_raw" parent="Instant" factory-method="from"
+        c:_="#{ start_instant_raw.truncatedTo(T(java.time.temporal.ChronoUnit).DAYS) }"/>
+
+    <!--
+        Select the instant to use as "now" in places like aggregate generation.
+
+        By default, this will be the time the Spring context was initialised.
+        This may be overridden in order to provide a stable value for
+        run-to-run comparisons.
+
+        Set the now.instant.raw.name to the name of the overriding value bean.
+        If running from build.xml using ant, this needs to be prefixed by "mda.".
+
+        Example:
+
+            ant -Dmda.now.instant.raw.name=today_instant_raw ...
+    -->
+    <bean id="now_instant_raw" parent="Instant" factory-method="from"
+        c:_-ref="${now.instant.raw.name:start_instant_raw}"/>
 
     <!--
         now_instant_raw can have any precision. To get somewhat consistent
@@ -179,6 +204,22 @@
         c:_0-ref="now_instant"
         c:_1="#{ T(java.time.ZoneId).systemDefault() }"/>
     <bean id="now_local_ISO" parent="String" c:_="#{ now_local.toString() }"/>
+
+    <!--
+        Make a value for the validUntil attribute for any aggregates we
+        generate.
+
+        This is based on the now_instant plus a number of days specified
+        by the validUntil.aggregate.days property (or 14 days if for some reason
+        that is not defined).
+
+        Assumes that a day is exactly 86400 seconds, which is close enough for
+        these purposes.
+    -->
+    <bean id="validuntil_aggregate_days" class="java.lang.Integer" factory-method="parseInt"
+        c:_="${validUntil.aggregate.days:14}"/>
+    <bean id="validuntil_aggregate_ISO" parent="String"
+        c:_="#{ now_instant.plusSeconds(86400*validuntil_aggregate_days).toString()}"/>
 
     <!--
         ***********************************************

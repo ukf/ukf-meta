@@ -85,13 +85,12 @@
     <!--
         assembleAggregate
 
-        Assemble a UK-style aggregate with an appropriate validUntil and ID.
+        Assemble a UK-style aggregate with an appropriate ID.
     -->
     <bean id="assembleAggregate" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
                 <ref bean="uk_assemble"/>
-                <bean parent="mda.SetValidUntilStage" p:validityDuration="${validUntil.aggregate.duration}"/>
                 <!--
                     setStaticID
 
@@ -282,6 +281,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
+                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
@@ -438,6 +438,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
+                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
@@ -522,6 +523,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
+                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
@@ -581,6 +583,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
+                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
@@ -638,6 +641,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
+                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
