@@ -23,11 +23,11 @@
     -->
     <!-- production aggregate -->
     <bean id="int_edugain_productionAggregate_url" parent="String">
-        <constructor-arg value="https://mds.edugain.org/edugain-v1.xml"/>
+        <constructor-arg value="http://mds.edugain.org/edugain-v1.xml"/>
     </bean>
     <!-- beta (test) aggregate -->
     <bean id="int_edugain_betaAggregate_url" parent="String">
-        <constructor-arg value="https://mds.edugain.org/edugain-v1-beta.xml"/>
+        <constructor-arg value="http://mds.edugain.org/edugain-v1-beta.xml"/>
     </bean>
 
     <!--
