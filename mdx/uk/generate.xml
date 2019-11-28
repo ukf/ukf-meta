@@ -281,7 +281,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
-                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
+                <entry key="validUntil_ISO" value-ref="validUntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
@@ -438,7 +438,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
-                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
+                <entry key="validUntil_ISO" value-ref="validUntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
@@ -523,7 +523,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
-                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
+                <entry key="validUntil_ISO" value-ref="validUntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
@@ -583,7 +583,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
-                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
+                <entry key="validUntil_ISO" value-ref="validUntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>
@@ -641,7 +641,7 @@
                 <entry key="validityDays" value="${validUntil.aggregate.days}"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
                 <entry key="now_local_ISO" value-ref="now_local_ISO"/>
-                <entry key="valid_until_ISO" value-ref="validuntil_aggregate_ISO"/>
+                <entry key="validUntil_ISO" value-ref="validUntil_aggregate_ISO"/>
             </map>
         </property>
     </bean>

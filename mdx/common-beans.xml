@@ -216,10 +216,10 @@
         Assumes that a day is exactly 86400 seconds, which is close enough for
         these purposes.
     -->
-    <bean id="validuntil_aggregate_days" class="java.lang.Integer" factory-method="parseInt"
+    <bean id="validUntil_aggregate_days" class="java.lang.Integer" factory-method="parseInt"
         c:_="${validUntil.aggregate.days:14}"/>
-    <bean id="validuntil_aggregate_ISO" parent="String"
-        c:_="#{ now_instant.plusSeconds(86400*validuntil_aggregate_days).toString()}"/>
+    <bean id="validUntil_aggregate_ISO" parent="String"
+        c:_="#{ now_instant.plusSeconds(86400*validUntil_aggregate_days).toString()}"/>
 
     <!--
         ***********************************************

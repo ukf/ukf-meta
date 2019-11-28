@@ -63,26 +63,26 @@
     <xsl:param name="now_local_ISO"/>
 
     <!--
-        valid_until_ISO
+        validUntil_ISO
 
         This parameter is an ISO8601 representation of the UTC instant
         at which the aggregate will become invalid. This has been computed
         by the caller as now_ISO + validityDays days.
     -->
-    <xsl:param name="valid_until_ISO"/>
+    <xsl:param name="validUntil_ISO"/>
 
     <!--
         Document element.
     -->
     <xsl:template match="/md:EntitiesDescriptor">
         <xsl:call-template name="document.comment">
-            <xsl:with-param name="validUntil" select="$valid_until_ISO"/>
+            <xsl:with-param name="validUntil" select="$validUntil_ISO"/>
         </xsl:call-template>
         <EntitiesDescriptor>
             <xsl:apply-templates select="@*"/>
-            <xsl:attribute name="validUntil"><xsl:value-of select="$valid_until_ISO"/></xsl:attribute>
+            <xsl:attribute name="validUntil"><xsl:value-of select="$validUntil_ISO"/></xsl:attribute>
             <xsl:call-template name="document.comment">
-                <xsl:with-param name="validUntil" select="$valid_until_ISO"/>
+                <xsl:with-param name="validUntil" select="$validUntil_ISO"/>
             </xsl:call-template>
 
             <!--
