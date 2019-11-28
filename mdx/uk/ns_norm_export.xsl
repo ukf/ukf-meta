@@ -111,6 +111,27 @@
     <!--
         ***************************************
         ***                                 ***
+        ***   R E M D   N A M E S P A C E   ***
+        ***                                 ***
+        ***************************************
+    -->
+
+
+    <!--
+        @remd:*
+
+        Normalise namespace to not use a prefix. Applies to attributes only.
+    -->
+    <xsl:template match="@remd:*">
+        <xsl:attribute name="remd:{local-name()}" namespace="http://refeds.org/metadata">
+            <xsl:value-of select="."/>
+        </xsl:attribute>
+    </xsl:template>
+
+
+    <!--
+        ***************************************
+        ***                                 ***
         ***   X E N C   N A M E S P A C E   ***
         ***                                 ***
         ***************************************
