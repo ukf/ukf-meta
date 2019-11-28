@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    statistics.xsl
+    statistics-charting.xsl
 
     XSL stylesheet taking a UK Federation metadata file and resulting in an HTML document
     giving statistics.
