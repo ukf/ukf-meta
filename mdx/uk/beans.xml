@@ -515,6 +515,7 @@
         <property name="transformParameters">
             <map>
                 <entry key="memberDocument" value-ref="uk_membersDocument"/>
+                <entry key="now_ISO" value-ref="now_ISO"/>
             </map>
         </property>
     </bean>

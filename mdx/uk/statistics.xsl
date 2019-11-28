@@ -38,9 +38,17 @@
     -->
     <xsl:param name="memberDocument"/>
 
-    <xsl:template match="md:EntitiesDescriptor">
+    <!--
+        now_ISO
 
-        <xsl:variable name="now" select="date:date-time()"/>
+        This parameter is an ISO8601 representation of the UTC instant
+        at which the aggregate generation started.
+
+        Example: 2019-10-23T10:25:11Z
+    -->
+    <xsl:param name="now_ISO"/>
+
+    <xsl:template match="md:EntitiesDescriptor">
 
         <!--
             Break down the "members" document.
@@ -110,7 +118,7 @@
                 </p>
                 <p>
                     The document is regenerated each time the UK Federation metadata is built;
-                    this version was created at <xsl:value-of select="$now"/>.
+                    this version was created at <xsl:value-of select="$now_ISO"/>.
                 </p>
                 <p>This document is produced as a working document of the UK federation core team.
                    Some of the statistics may be approximations, and the report may be used to track
