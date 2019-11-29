@@ -28,6 +28,11 @@
     <import resource="classpath:uk/org/iay/incommon/mda/beans.xml"/>
 
     <!--
+        Import ukf channel beans, for uk_assemble.
+    -->
+    <import resource="classpath:uk/beans.xml"/>
+
+    <!--
         Import UK federation ingress policy for eduGAIN.
     -->
     <import resource="classpath:uk/edugain-policy.xml"/>
@@ -179,8 +184,24 @@
                 <ref bean="int_edugain_productionEntities"/>
                 <ref bean="removeUKEntities"/>
 
+                <!--
+                    Sort the remaining entities by entity ID, so that any errors
+                    are reported in a stable order, even if some registrars
+                    have unstable output.
+                    
+                    Ideally this should be handled by an explicit ordering stage.
+                    Lacking one, we use the fact that we can use the ordering
+                    strategy ability of the EntitiesDescriptor assembler to
+                    order entities, and then disassemble again. Ordering is based
+                    on the ItemID populated into the item metadata.
+                -->
+                <ref bean="populateItemIds"/>
+                <ref bean="uk_assemble"/>
+                <ref bean="disassemble"/>
+
                 <ref bean="standardImportActions"/>
                 <ref bean="edugainPolicy"/>
+
                 <ref bean="warningAndErrorAnnouncer"/>
                 <ref bean="errorTerminator"/>
             </list>
