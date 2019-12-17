@@ -431,7 +431,7 @@
     <bean id="pk_pkifed_registrar"       parent="String" c:_="https://pkifed.pk"/>
     <bean id="pl_pionier_registrar"      parent="String" c:_="https://aai.pionier.net.pl"/>
     <bean id="pt_rctsaai_registrar"      parent="String" c:_="https://www.fccn.pt"/>
-    <bean id="ro_edunetid_registrar"     parent="String" c:_="https://eduid.roedu.net/"/><!-- A guess -->
+    <bean id="ro_edunetid_registrar"     parent="String" c:_="http://eduid.roedu.net"/>
     <bean id="rs_amres_registrar"        parent="String" c:_="http://amres.ac.rs/"/><!-- A guess -->
     <bean id="ru_fedurus_registrar"      parent="String" c:_="http://arbicon.ru"/>
     <bean id="ru_runnet_registrar"       parent="String" c:_="http://runnet.ru/"/>
@@ -517,6 +517,7 @@
                 <entry key-ref="pk_pkifed_registrar"          value="PK"/>
                 <entry key-ref="pl_pionier_registrar"         value="PL"/>
                 <entry key-ref="pt_rctsaai_registrar"         value="PT"/>
+                <entry key-ref="ro_edunetid_registrar"        value="RO"/>
                 <entry key-ref="ru_fedurus_registrar"         value="RU-FEDURUS"/>
                 <entry key-ref="ru_runnet_registrar"          value="RU-RUNNET"/>
                 <entry key-ref="sa_maeen_registrar"           value="SA"/>
@@ -539,7 +540,6 @@
                 <entry key-ref="al_rash_registrar"            value="AL"/>
                 <entry key-ref="bg_bif_registrar"             value="BG"/>
                 <entry key-ref="it_gridp_registrar"           value="IT-GRIDP"/>
-                <entry key-ref="ro_edunetid_registrar"        value="RO"/>
 
                 <!-- eduGAIN candidates -->
                 <entry key-ref="cn_cstcloud_registrar"        value="CN-CSTCLOUD"/>
