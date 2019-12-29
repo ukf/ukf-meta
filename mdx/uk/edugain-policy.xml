@@ -121,6 +121,25 @@
                     </property>
                 </bean>
 
+                <!--
+                    ***************************************************
+                    ***                                             ***
+                    ***   U K   F E D E R A T I O N   P O L I C Y   ***
+                    ***                                             ***
+                    ***************************************************
+
+                    The following policy elements are not documented as part
+                    of InCommon's eduGAIN import policy. Some may be
+                    _implemented_ as part of eduGAIN's effective policy, but
+                    not documented as such.
+                -->
+
+                <!--
+                    All eduGAIN entities should have mdrpi:RegistrationInfo elements, but
+                    we can't check the actual values.
+                -->
+                <ref bean="check_hasreginfo"/>
+
             </list>
         </property>
     </bean>

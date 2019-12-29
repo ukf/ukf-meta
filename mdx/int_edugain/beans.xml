@@ -94,12 +94,6 @@
                 <ref bean="disassemble"/>
 
                 <ref bean="int_edugain_removeBlacklistedEntities"/>
-
-                <!--
-                    All eduGAIN entities should have mdrpi:RegistrationInfo elements, but
-                    we can't check the actual values.
-                -->
-                <ref bean="check_hasreginfo"/>
             </list>
         </property>
     </bean>
