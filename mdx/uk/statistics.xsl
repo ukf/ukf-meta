@@ -1587,9 +1587,20 @@
                 select="set:difference($entities.openathens.in, $entities.openathens)"/>
 
             <!--
-                Classify Shibboleth 3 IdPs entities.
+                Classify Shibboleth 4 entities.
             -->
-            <xsl:variable name="entities.shib.3.in" select="$entities.openathens.out"/>
+            <xsl:variable name="entities.shib.4.in" select="$entities.openathens.out"/>
+            <xsl:variable name="entities.shib.4"
+                select="$entities.shib.4.in[
+                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '4']
+                ]"/>
+            <xsl:variable name="entities.shib.4.out"
+                select="set:difference($entities.shib.4.in, $entities.shib.4)"/>
+
+            <!--
+                Classify Shibboleth 3 entities.
+            -->
+            <xsl:variable name="entities.shib.3.in" select="$entities.shib.4.out"/>
             <xsl:variable name="entities.shib.3"
                 select="$entities.shib.3.in[
                 md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '3']
@@ -1667,6 +1678,12 @@
             -->
 
             <xsl:call-template name="entity.breakdown.by.software.line">
+                <xsl:with-param name="entities" select="$entities.shib.4"/>
+                <xsl:with-param name="name">Shibboleth 4.x</xsl:with-param>
+                <xsl:with-param name="total" select="$entityCount"/>
+            </xsl:call-template>
+
+            <xsl:call-template name="entity.breakdown.by.software.line">
                 <xsl:with-param name="entities" select="$entities.shib.3"/>
                 <xsl:with-param name="name">Shibboleth 3.x</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
@@ -1678,7 +1695,7 @@
                 <xsl:with-param name="total" select="$entityCount"/>
             </xsl:call-template>
 
-            <xsl:variable name="entities.shib" select="$entities.shib.2 | $entities.shib.3"/>
+            <xsl:variable name="entities.shib" select="$entities.shib.2 | $entities.shib.3 | $entities.shib.4"/>
             <xsl:call-template name="entity.breakdown.by.software.line">
                 <xsl:with-param name="entities" select="$entities.shib"/>
                 <xsl:with-param name="name">Shibboleth combined</xsl:with-param>
