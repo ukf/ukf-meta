@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     targetNamespace="http://ukfederation.org.uk/2006/11/label"
-    version="2016-09-15"
+    version="2020-02-13"
     elementFormDefault="qualified">
 
     <annotation>
@@ -11,7 +11,12 @@
 
             For additional information, see the Federation Technical Specification.
 
-            This version of the schema follows FTS edition 1.1 of 1-June-2007.
+            This version of the schema includes the UKFederationMember and
+            AccountableUsers elements described in
+            FTS edition 1.5 of 6-October-2014.
+
+            All other types and elements defined here are for UK federation
+            internal use only and are not for publication.
         </documentation>
     </annotation>
 
@@ -162,6 +167,86 @@
             <documentation>
                 Indicates that the entity has been opted-out from inclusion in
                 the UK federation export aggregate.
+            </documentation>
+        </annotation>
+    </element>
+
+    <!--
+        *****************************************
+        ***                                   ***
+        ***   F L O W   M A N A G E M E N T   ***
+        ***                                   ***
+        *****************************************
+    -->
+
+    <simpleType name="flowName">
+        <annotation>
+            <documentation>
+                A controlled vocabulary of names of flows in the
+                UK federation tooling.
+            </documentation>
+        </annotation>
+        <restriction base="string">
+            <annotation>
+                <documentation>
+                    Because we know the valid flow names, we can restrict
+                    values of flowName to just those names.
+                </documentation>
+            </annotation>
+            <enumeration value="cdsall"/>
+            <enumeration value="export"/>
+            <enumeration value="export-preview"/>
+            <enumeration value="fallback"/>
+            <enumeration value="production"/>
+            <enumeration value="statistics"/>
+            <enumeration value="test"/>
+            <enumeration value="wayf"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="flowConstraint">
+        <annotation>
+            <documentation>
+                A flow constraint is a dated label naming
+                a flow within the UK federation tooling.
+            </documentation>
+        </annotation>
+        <complexContent>
+            <extension base="ukfedlabel:datedLabel">
+                <attribute name="flow" type="ukfedlabel:flowName" use="required"/>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <element name="DisableFlow" type="ukfedlabel:flowConstraint">
+        <annotation>
+            <documentation>
+                Indicates that the entity should be removed from the
+                named flow.
+
+                If labelled with multiple DisableFlow elements, the
+                entity should be removed from each named flow.
+
+                An entity MUST NOT be labelled with both
+                EnableFlow and DisableFlow elements.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="EnableFlow" type="ukfedlabel:flowConstraint">
+        <annotation>
+            <documentation>
+                Indicates that the entity should be allowed to pass
+                through the named flow, and removed from other
+                flows.
+
+                If labelled with multiple EnableFlow elements, the
+                entity should be allowed to pass through all named
+                flows, and only removed from flows not named by any
+                EnableFlow element.
+
+                An entity MUST NOT be labelled with both
+                EnableFlow and DisableFlow elements.
             </documentation>
         </annotation>
     </element>
