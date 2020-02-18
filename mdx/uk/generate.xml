@@ -298,6 +298,10 @@
     <bean id="uk_productionPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <!-- Apply flow constraints for this flow. -->
+                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
+                    p:flowName="production"/>
+
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
@@ -353,6 +357,10 @@
     <bean id="uk_wayfPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <!-- Apply flow constraints for this flow. -->
+                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
+                    p:flowName="wayf"/>
+                
                 <!--
                     Remove SIRTFI metadata.
                 -->
@@ -476,6 +484,10 @@
     <bean id="CDSAllPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <!-- Apply flow constraints for this flow. -->
+                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
+                    p:flowName="cdsall"/>
+                
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
@@ -543,6 +555,10 @@
     <bean id="uk_fallbackPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <!-- Apply flow constraints for this flow. -->
+                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
+                    p:flowName="fallback"/>
+                
                 <bean id="removeFallbackBlocklist" parent="mda.EntityFilterStage"
                     p:whitelistingEntities="false"
                     p:designatedEntities-ref="fallbackEntityBlocklist"/>
@@ -603,6 +619,10 @@
     <bean id="uk_testPipeline" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
+                <!-- Apply flow constraints for this flow. -->
+                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
+                    p:flowName="test"/>
+                
                 <!--
                     Enforce IdP display name uniqueness before assembling aggregate
                 -->
@@ -663,6 +683,10 @@
     <bean id="uk_exportPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <!-- Apply flow constraints for this flow. -->
+                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
+                    p:flowName="export"/>
+                
                 <!--
                     Additional rules excluding entities from the aggregate.
 
@@ -763,6 +787,10 @@
     <bean id="uk_exportPreviewPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <!-- Apply flow constraints for this flow. -->
+                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
+                    p:flowName="export-preview"/>
+                
                 <!--
                     Additional rules excluding entities from the aggregate.
 

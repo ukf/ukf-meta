@@ -73,6 +73,8 @@
     <xsl:template match="md:EntityDescriptor/md:Extensions/mdrpi:RegistrationInfo"/>
     <xsl:template match="md:EntityDescriptor/md:Extensions/shibmd:Scope"/>
     <xsl:template match="md:EntityDescriptor/md:Extensions/ukfedlabel:AccountableUsers"/>
+    <xsl:template match="md:EntityDescriptor/md:Extensions/ukfedlabel:DisableFlow"/>
+    <xsl:template match="md:EntityDescriptor/md:Extensions/ukfedlabel:EnableFlow"/>
     <xsl:template match="md:EntityDescriptor/md:Extensions/ukfedlabel:ExportOptIn"/>
     <xsl:template match="md:EntityDescriptor/md:Extensions/ukfedlabel:ExportOptOut"/>
     <xsl:template match="md:EntityDescriptor/md:Extensions/ukfedlabel:Software"/>

@@ -355,6 +355,8 @@
 
                 <ref bean="populateItemIds"/>
                 <ref bean="uk_populateIds"/>
+                <bean id="uk_populateFlowConstraints"
+                    parent="ukf.EntityDescriptorFlowConstraintPopulationStage"/>
                 <ref bean="uk_default_regauth"/>
                 <ref bean="populateRegistrationAuthorities"/>
 
@@ -531,6 +533,10 @@
     <bean id="uk_statisticsPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <!-- Apply flow constraints for this flow. -->
+                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
+                    p:flowName="statistics"/>
+
                 <ref bean="assemble"/>
                 <ref bean="uk_generateStatistics"/>
                 <ref bean="uk_serializeStatistics"/>
