@@ -71,4 +71,15 @@
         </xsl:call-template>
     </xsl:template>
 
+    <!--
+        Check for entities which have both kinds of flow constraint.
+    -->
+    <xsl:template match="md:EntityDescriptor/md:Extensions[ukfedlabel:DisableFlow][ukfedlabel:EnableFlow]">
+        <xsl:call-template name="error">
+            <xsl:with-param name="m">
+                <xsl:text>entity cannot have both EnableFlow and DisableFlow constraints</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
 </xsl:stylesheet>
