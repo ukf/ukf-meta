@@ -18,6 +18,7 @@ REGISTRAR_NAME = {
 	"http://cafe.rnp.br":               "BR",
 	"http://www.canarie.ca":            "CA",
 	"http://cofre.reuna.cl/":           "CL",
+	"https://www.carsi.edu.cn":         "CN",
 	"http://www.srce.hr":               "HR",
 	"http://www.eduid.cz/":             "CZ",
 	"https://www.wayf.dk":              "DK",
