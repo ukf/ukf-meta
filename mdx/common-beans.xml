@@ -854,6 +854,22 @@
     </bean>
 
     <!--
+        strip_mdui_logo_length
+
+        Filter out mdui:Logo elements whose text content is
+        longer than a threshold value. Add a warning to the
+        entity when this is done.
+    -->
+    <bean id="strip_mdui_logo_length" parent="mda.XSLTransformationStage"
+        p:XSLResource="classpath:strip-mdui-logo-length.xsl">
+        <property name="transformParameters">
+            <map>
+                <entry key="maxLength" value="${mdui.logo.length.remove:50000}"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--
         *****************************************************
         ***                                               ***
         ***   S H I B B O L E T H   E X T E N S I O N S   ***
@@ -1193,12 +1209,18 @@
                     </property>
                 </bean>
 
+                <!--
+                    Stages that modify metadata come first, so that
+                    anything they remove is not checked later.
+                -->
                 <ref bean="cleanImport"/>
                 <ref bean="wrapX509Certificates"/>
                 <ref bean="stripAAMDUI"/>
                 <ref bean="stripMDUILogoHttp"/>
                 <ref bean="trimImportElementWhitespace"/>
                 <ref bean="stripEmptyExtensions"/>
+                <ref bean="strip_mdui_logo_length"/>
+
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
                 <ref bean="check_dup_display"/>
