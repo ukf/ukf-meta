@@ -221,6 +221,21 @@
         p:XSLResource="classpath:_rules/check_mdui.xsl"/>
 
     <!--
+        check_mdui_logo_length
+
+        Add a warning for mdui:Logo elements longer than some
+        threshold.
+    -->
+    <bean id="check_mdui_logo_length" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_mdui_logo_length.xsl">
+        <property name="transformParameters">
+            <map>
+                <entry key="maxLength" value="${mdui.logo.length.warn:40000}"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--
         check_mdui
 
         Composite check for the MDUI specification.
@@ -230,6 +245,7 @@
             <list>
                 <ref bean="check_mdui_iphint"/>
                 <ref bean="check_mdui_xslt"/>
+                <ref bean="check_mdui_logo_length"/>
             </list>
         </property>
     </bean>
