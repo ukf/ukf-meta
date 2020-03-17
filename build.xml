@@ -112,7 +112,7 @@
     <property name="validUntil.default.days" value="14"/>
 
     <!-- Specific validUntil duration for aggregates, in days. -->
-    <property name="validUntil.aggregate.days" value="${validUntil.default.days}"/>
+    <property name="validUntil.aggregate.days" value="21"/>
     <!-- Same value, as an ISO 8601 duration. -->
     <property name="validUntil.aggregate.duration" value="P${validUntil.aggregate.days}D"/>
 
