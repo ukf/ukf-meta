@@ -150,6 +150,11 @@
                 -->
                 <ref bean="check_hasreginfo"/>
 
+                <!--
+                    Checks against the UKf-specific list of compromised RSA keys.
+                -->
+                <ref bean="check_ukf_compromised"/>
+                    
             </list>
         </property>
     </bean>

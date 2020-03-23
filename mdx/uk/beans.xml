@@ -234,6 +234,31 @@
         p:members-ref="uk_members"/>
 
     <!--
+        compromised.ukf
+
+        Check against UKf-specific list of compromised RSA keys.
+    -->
+    <bean id="compromised.ukf" parent="mda.X509RSAOpenSSLBlacklistValidator"
+        p:id="compromised.ukf">
+        <property name="blacklistResource">
+            <bean parent="FileSystemResource" c:_="${blocklists.dir}/compromised-keys.txt"/>
+        </property>
+    </bean>
+
+    <!--
+        check_ukf_compromised
+
+        Validation bean which just checks against the UKf-specific list of compromised RSA keys.
+    -->
+    <bean id="check_ukf_compromised" parent="mda.X509ValidationStage">
+        <property name="validators">
+            <list>
+                <ref bean="compromised.ukf"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--
         check_uk_keydesc_key
     -->
     <bean id="check_uk_keydesc_key" parent="mda.XSLValidationStage"
@@ -425,6 +450,11 @@
                                 Again, don't need to check for keys below our minimum key size.
                             -->
                             <ref bean="compromised.2048"/>
+
+                            <!--
+                                Check against UKf-specific list of compromised RSA keys.
+                            -->
+                            <ref bean="compromised.ukf"/>
                         </list>
                     </property>
                 </bean>
