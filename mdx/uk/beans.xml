@@ -302,6 +302,13 @@
     <bean id="check_uk_mdui_dn_en_present" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:uk/check_uk_mdui_dn_en_present.xsl"/>
 
+    <!--
+        check_uk_rands
+
+        If an SP has the R&S entity category, it MUST have an MDRPS
+    -->
+    <bean id="check_uk_rands" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:uk/check_uk_rands.xsl"/>
 
     <!--
         ***************************************
@@ -387,6 +394,7 @@
                 <ref bean="check_uk_urlenc"/>
                 <ref bean="check_uk_mdui_dn_en_present"/>
                 <ref bean="check_uk_mdui_dn_en_match"/>
+                <ref bean="check_uk_rands"/>
                 <ref bean="check_dup_display"/>
 
                 <bean id="checkCertificates" parent="mda.X509ValidationStage">
