@@ -854,6 +854,7 @@
                 <ref bean="assembleAggregate"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
+                <bean parent="mda.SetCacheDurationStage" p:cacheDuration="PT6H"/>
                 <ref bean="uk_finaliseExport"/>
 
                 <bean id="uk_normaliseExportPreview" parent="mda.XSLTransformationStage"
