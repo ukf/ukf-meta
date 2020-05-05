@@ -309,6 +309,8 @@
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="assembleAggregate"/>
+                <bean parent="mda.SetCacheDurationStage"
+                    p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
@@ -373,6 +375,8 @@
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="assembleAggregate"/>
+                <bean parent="mda.SetCacheDurationStage"
+                    p:cacheDuration="${cacheDuration.aggregate.duration}"/>
 
                 <!--
                     Remove embedded images used in mdui:Logo elements.
@@ -496,6 +500,8 @@
 
                 <!-- make an aggregate first so that we're only traversing one item -->
                 <ref bean="assembleAggregate"/>
+                <bean parent="mda.SetCacheDurationStage"
+                    p:cacheDuration="${cacheDuration.aggregate.duration}"/>
 
                 <!-- remove many things that the CDS doesn't look at -->
                 <ref bean="CDSStripUnwanted"/>
@@ -749,6 +755,8 @@
 
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="assembleAggregate"/>
+                <bean parent="mda.SetCacheDurationStage"
+                    p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
@@ -853,10 +861,10 @@
 
                 <ref bean="stripUkfedlabelNamespace"/>
                 <ref bean="assembleAggregate"/>
-                <ref bean="stripEntityScopes"/>
-                <ref bean="stripEmptyExtensions"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
+                <ref bean="stripEntityScopes"/>
+                <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseExport"/>
 
                 <bean id="uk_normaliseExportPreview" parent="mda.XSLTransformationStage"
