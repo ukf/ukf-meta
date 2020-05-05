@@ -75,7 +75,7 @@
                         <bean parent="ukf.FixedStringIdentifierGenerationStrategy" c:_="_"/>
                     </constructor-arg>
                 </bean>
-                <bean parent="mda.SetCacheDurationStage" p:cacheDuration="PT6H"/>
+                <bean parent="mda.SetCacheDurationStage" p:cacheDuration="${cacheDuration.perEntity.duration}"/>
                 <bean parent="mda.SetValidUntilStage" p:validityDuration="${validUntil.perEntity.duration}"/>
 
                 <!-- Identity transform fixes signing issues. -->

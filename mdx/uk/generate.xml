@@ -631,7 +631,8 @@
 
                 <ref bean="uk_strip_UKFederationMember"/>
                 <ref bean="assembleAggregate"/>
-                <bean parent="mda.SetCacheDurationStage" p:cacheDuration="PT6H"/>
+                <bean parent="mda.SetCacheDurationStage"
+                    p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
@@ -854,7 +855,8 @@
                 <ref bean="assembleAggregate"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
-                <bean parent="mda.SetCacheDurationStage" p:cacheDuration="PT6H"/>
+                <bean parent="mda.SetCacheDurationStage"
+                    p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="uk_finaliseExport"/>
 
                 <bean id="uk_normaliseExportPreview" parent="mda.XSLTransformationStage"

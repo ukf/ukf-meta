@@ -121,6 +121,13 @@
     <!-- Same value, as an ISO 8601 duration. -->
     <property name="validUntil.perEntity.duration" value="P${validUntil.perEntity.days}D"/>
 
+    <!-- Default cacheDuration for all generated metadata, as an ISO 8601 duration. -->
+    <property name="cacheDuration.default.duration" value="PT6H"/>
+    <!-- Specific cacheDuration for aggregates. -->
+    <property name="cacheDuration.aggregate.duration" value="${cacheDuration.default.duration}"/>
+    <!-- Specific cacheDuration for per-entity metadata. -->
+    <property name="cacheDuration.perEntity.duration" value="${cacheDuration.default.duration}"/>
+
     <!--
         ***************************************************************
         ***                                                         ***
@@ -1576,6 +1583,8 @@
     -->
     <property name="mda.java.endorsed.dirs" value="${tools.dir}/endorsed"/>
     <property name="mda.blocklists.dir" value="${blocklists.dir}"/>
+    <property name="mda.cacheDuration.aggregate.duration" value="${cacheDuration.aggregate.duration}"/>
+    <property name="mda.cacheDuration.perEntity.duration" value="${cacheDuration.perEntity.duration}"/>
     <property name="mda.edugain.dir" value="${edugain.dir}"/>
     <property name="mda.entities.dir" value="${entities.dir}"/>
     <property name="mda.mdx.dir" value="${mdx.dir}"/>
