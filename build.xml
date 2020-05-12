@@ -1535,6 +1535,11 @@
         <CHANNEL.do channel="uk" verb="generate"/>
 
         <!--
+            Generate discovery feeds.
+        -->
+        <CHANNEL.do channel="uk" verb="discofeeds"/>
+
+        <!--
             Post-process mda-generated output files.
         -->
         <MDNORM i="${output.dir}/${mdaggr.prod.unsigned}"/>
