@@ -301,7 +301,7 @@
 
     <!--
         There are many separate processing "streams":  production, test, export,
-        fallback, "wayf", and "cdsall".
+        fallback, "wayf", "cdsall" and "wugen".
 
         Each stream has its own unsigned file, as follows:
     -->
@@ -313,6 +313,7 @@
     <property name="mdaggr.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
     <property name="mdaggr.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
     <property name="mdaggr.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
+    <property name="mdaggr.wugen.unsigned"  value="ukfederation-wugen-unsigned.xml"/>
 
     <!--
         Each stream also has its own signed file, as follows:
@@ -325,6 +326,7 @@
     <property name="mdaggr.back.signed"     value="ukfederation-back.xml"/>
     <property name="mdaggr.wayf.signed"     value="ukfederation-wayf.xml"/>
     <property name="mdaggr.cdsall.signed"   value="ukfederation-cdsall.xml"/>
+    <property name="mdaggr.wugen.signed"    value="ukfederation-wugen.xml"/>
 
     <!--
         Other files
@@ -1392,6 +1394,8 @@
             property="mdaggr.export.signed.checksum"/>
         <checksum file="${aggregates.dir}/${mdaggr.export.preview.signed}"
             property="mdaggr.export.preview.signed.checksum"/>
+        <checksum file="${aggregates.dir}/${mdaggr.wugen.signed}"
+            property="mdaggr.wugen.signed.checksum"/>
 
         <echo>Verifying metadata held at ${cdi-master.name}</echo>
         <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.prod.signed}"
@@ -1408,6 +1412,8 @@
             checksum="${mdaggr.export.signed.checksum}"/>
         <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${cdi-master.name}${cdi-master.md.path.name}${mdaggr.wugen.signed}"
+            checksum="${mdaggr.wugen.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host-ne-01.name}</echo>
         <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.prod.signed}"
@@ -1424,6 +1430,8 @@
             checksum="${mdaggr.export.signed.checksum}"/>
         <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.wugen.signed}"
+            checksum="${mdaggr.wugen.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host-ne-02.name}</echo>
         <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.prod.signed}"
@@ -1440,6 +1448,8 @@
             checksum="${mdaggr.export.signed.checksum}"/>
         <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.wugen.signed}"
+            checksum="${mdaggr.wugen.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host-we-01.name}</echo>
         <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.prod.signed}"
@@ -1456,6 +1466,8 @@
             checksum="${mdaggr.export.signed.checksum}"/>
         <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.wugen.signed}"
+            checksum="${mdaggr.wugen.signed.checksum}"/>
 
         <echo>Verifying metadata held at ${md.dist.host-we-02.name}</echo>
         <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.prod.signed}"
@@ -1472,6 +1484,8 @@
             checksum="${mdaggr.export.signed.checksum}"/>
         <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.export.preview.signed}"
             checksum="${mdaggr.export.preview.signed.checksum}"/>
+        <VFY.remote.and.checksum i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.wugen.signed}"
+            checksum="${mdaggr.wugen.signed.checksum}"/>
 
         <echo>Verification completed.</echo>
     </target>
@@ -1559,6 +1573,7 @@
         <MDNORM i="${output.dir}/${mdaggr.prod.unsigned}"/>
         <MDNORM i="${output.dir}/${mdaggr.wayf.unsigned}"/>
         <MDNORM.noblank i="${output.dir}/${mdaggr.cdsall.unsigned}"/>
+        <MDNORM.noblank i="${output.dir}/${mdaggr.wugen.unsigned}"/>
         <MDNORM i="${output.dir}/${mdaggr.test.unsigned}"/>
         <MDNORM i="${output.dir}/${mdaggr.export.unsigned}"/>
         <MDNORM i="${output.dir}/${mdaggr.export.preview.unsigned}"/>
@@ -1964,6 +1979,9 @@
         <echo>Signing UKfed fallback metadata.</echo>
         <SIGN.uk i="${output.dir}/${mdaggr.back.unsigned}" o="${output.dir}/${mdaggr.back.signed}" digest="SHA-256"/>
 
+        <echo>Signing UKfed Wugen metadata.</echo>
+        <SIGN.uk i="${output.dir}/${mdaggr.wugen.unsigned}" o="${output.dir}/${mdaggr.wugen.signed}" digest="SHA-256"/>
+
     </target>
 
     <!--
@@ -2001,6 +2019,9 @@
 
         <echo>Verifying signed UK fallback metadata.</echo>
         <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.back.signed}"/>
+
+        <echo>Verifying signed UK Wugen metadata.</echo>
+        <XMLSECTOOL.VFY.uk i="${output.dir}/${mdaggr.wugen.signed}"/>
 
         <echo>Verification completed.</echo>
     </target>
@@ -2091,6 +2112,7 @@
                 <include name="${mdaggr.back.unsigned}"/>
                 <include name="${mdaggr.export.unsigned}"/>
                 <include name="${mdaggr.export.preview.unsigned}"/>
+                <include name="${mdaggr.wugen.unsigned}"/>
                 <include name="${mdaggr.stats}"/>
             </fileset>
         </scp>
@@ -2107,6 +2129,7 @@
                 <include name="${mdaggr.back.unsigned}"/>
                 <include name="${mdaggr.export.unsigned}"/>
                 <include name="${mdaggr.export.preview.unsigned}"/>
+                <include name="${mdaggr.wugen.unsigned}"/>
             </fileset>
         </scp>
     </target>
@@ -2120,6 +2143,7 @@
         <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.back.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
         <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.export.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
         <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.export.preview.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
+        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.wugen.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
     </target>
 
     <target name="fs.scp.mdqcache.from.keymaster">
