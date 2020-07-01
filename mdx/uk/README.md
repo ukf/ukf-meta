@@ -28,9 +28,10 @@ before being included in the `export` version consumed by interfederation partne
 
 ### Export Preview Aggregate vs. Export Aggregate
 
-Status (2020-07-01):
+Status (2020-07-21):
 
-* These aggregates are currently identical.
+* The `export-preview` aggregate declares the `alg` namespace on the document element,
+  rather than on each `<DigestMethod>` or `<SigningMethod>` element.
 
 ## Production Maturity Pipeline
 
@@ -59,12 +60,15 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 
 ### Test Aggregate vs. Production Aggregate
 
-Status (2020-07-01):
+Status (2020-07-21):
 
 * The `test` aggregate does not include the `<UKFederationMember>` label (`ukf-meta#34`).
 
 * The `test` aggregate does not include the entity-level copy of the scopes for an
   identity provider (`ukf-meta#49`).
+
+* The `test` aggregate declares the `alg` namespace on the document element,
+  rather than on each `<DigestMethod>` or `<SigningMethod>` element.
 
 
 ### `cds-all` Aggregate vs. Production Aggregate
