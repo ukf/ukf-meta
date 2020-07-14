@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# Git provides the following as part of STDIN when invoking this script: <oldrev> <newrev> <refname>
+read oldrev newrev refname
+
+# Set the location of the git repo and the apache directories to serve content from
+gitdir=/var/git/ukf-products
+apacheaggrdir=/var/www/html/metadata.uou
+apachemdqdir=/var/www/html/mdq.uou/entities
+
+# Set the location of the temporary mdq cache dir
+mdqcachedir=/tmp/mdqcache
+
+# This Git repo has had the latest stuff pushed to it, but it hasn't checked it out yet. So let's do it.
+git --work-tree=$gitdir --git-dir=$gitdir/.git checkout -f
+
+# Make a gzipped version of each aggregate
+echo -n "Gzipping each aggregate... "
+for f in $gitdir/aggregates/*.xml
+do
+    gzip -9 < $f > $f.gz
+done
+echo "Done."
+
+# The MDQ cache should have been SCPed to /tmp and be sitting there happily.
+# First, we should untar it.
+echo -n "Untarring mdq cache... "
+rm -rf $mdqcachedir
+mkdir $mdqcachedir
+cd $mdqcachedir
+tar xzf /tmp/mdqcache.tar.gz
+echo "Done."
+
+# Make a gzipped version of each per-entity fragment; also create symlink
+# to the XML file and its .gz version named from the SHA1 hash of the entityId
+echo -n "Gzipping each fragment file, and symlinking to the file and the .gz... "
+cd $mdqcachedir
+for f in $mdqcachedir/*.xml
+do
+    
+    # First we're going to figure out some stuff about the request and how it'll
+    # map to other versions of the name
+
+    # Convert the /full/path/and/filename.xml to just filename.xml
+    filename=${f##*/}
+    
+    # And then filename.xml to just filename (i.e. the % encoded entityId)
+    entityidpercentencoded=${filename%.*}
+    
+    # Un-%encode the entityId
+    entityid=$(echo $entityidpercentencoded | sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b")
+    
+    # Calculate the sha1 hash of the entityId
+    entityidsha1=$(echo -n $entityid | openssl sha1 | awk '{print $2}')
+
+    
+    # Now we're actually going to do something with that!
+
+    # Create the gzipped version of the file
+    gzip -9 < $filename > x_gz-$filename.gz
+    
+    # Remove .xml from the filenames
+    mv -f $filename $entityidpercentencoded
+    mv -f x_gz-$filename.gz x_gz-$entityidpercentencoded.gz
+
+    # Create the symlinks to the XML file and the gzipped version
+    ln -s $entityidpercentencoded {sha1}$entityidsha1
+    ln -s x_gz-$entityidpercentencoded.gz x_gz-{sha1}$entityidsha1.gz
+
+done
+echo "Done."
+
+# Get the timestamp of the commit
+mtime=$(git --work-tree=$gitdir --git-dir=$gitdir/.git show $newrev --quiet --pretty=format:%ct)
+
+# Set the timestamp on each of the files to that of the commit
+echo -n "Setting the timestamp on each file to that of the commit... "
+find $gitdir -regextype posix-extended -regex '.*\.(xml|gz)' -exec touch -d @$mtime {} \;
+find $mdqcachedir -exec touch -d @$mtime {} \;
+echo "Done."
+
+# Put files into the correct directory
+echo -n "Rsyncing files to the appropriate apache directory... "
+rsync -at $gitdir/aggregates/*.{xml,gz} $apacheaggrdir
+rsync -at --delete $mdqcachedir/ $apachemdqdir
+echo "Done."
+
+# Remove the temporary files
+echo -n "Removing temporary files... "
+find $gitdir -name "*.gz" -exec rm -f {} \;
+rm -rf $mdqcachedir
+echo "Done."
