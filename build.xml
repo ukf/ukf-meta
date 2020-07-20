@@ -2161,7 +2161,7 @@
             </fileset>
         </scp>
         <sshexec
-            user="${md.user}" host="${md.dist.host-ne-01.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
+            username="${md.user}" host="${md.dist.host-ne-01.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
             command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
             failonerror="true"
         />
@@ -2172,7 +2172,7 @@
             </fileset>
         </scp>
         <sshexec
-            user="${md.user}" host="${md.dist.host-ne-02.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
+            username="${md.user}" host="${md.dist.host-ne-02.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
             command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
             failonerror="true"
         />
@@ -2183,7 +2183,7 @@
             </fileset>
         </scp>
         <sshexec
-            user="${md.user}" host="${md.dist.host-we-01.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
+            username="${md.user}" host="${md.dist.host-we-01.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
             command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
             failonerror="true"
         />
@@ -2194,7 +2194,7 @@
             </fileset>
         </scp>
         <sshexec
-            user="${md.user}" host="${md.dist.host-we-02.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
+            username="${md.user}" host="${md.dist.host-we-02.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
             command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
             failonerror="true"
         />
