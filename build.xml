@@ -332,6 +332,7 @@
     <property name="mdq.cache" value="mdqcache.tar.gz"/>
     <property name="mdaggr.stats" value="ukfederation-stats.html"/>
     <property name="post-receive-githook" value="post-receive"/>
+    <property name="md.githook.path" value="/tmp" />
 
 
     <!--
@@ -2154,29 +2155,49 @@
         -->
         <echo>Pushing post-receive githook to MD dist.</echo>
         <echo>-> MD-NE-01</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:${md.githook.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${githook.dir}">
                 <include name="${post-receive-githook}"/>
             </fileset>
         </scp>
+        <sshexec
+            user="${md.user}" host="${md.dist.host-ne-01.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
+            command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
+            failonerror="true"
+        />
         <echo>-> MD-NE-02</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-02.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-02.name}:${md.githook.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${githook.dir}">
                 <include name="${post-receive-githook}"/>
             </fileset>
         </scp>
+        <sshexec
+            user="${md.user}" host="${md.dist.host-ne-02.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
+            command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
+            failonerror="true"
+        />
         <echo>-> MD-WE-01</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-01.name}:${md.githook.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${githook.dir}">
                 <include name="${post-receive-githook}"/>
             </fileset>
         </scp>
+        <sshexec
+            user="${md.user}" host="${md.dist.host-we-01.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
+            command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
+            failonerror="true"
+        />
         <echo>-> MD-WE-02</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-02.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-02.name}:${md.githook.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${githook.dir}">
                 <include name="${post-receive-githook}"/>
             </fileset>
         </scp>
+        <sshexec
+            user="${md.user}" host="${md.dist.host-we-02.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
+            command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
+            failonerror="true"
+        />
     </target>
 
     <target name="publish.md">
