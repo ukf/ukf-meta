@@ -332,7 +332,7 @@
     <property name="mdq.cache" value="mdqcache.tar.gz"/>
     <property name="mdaggr.stats" value="ukfederation-stats.html"/>
     <property name="post-receive-githook" value="post-receive"/>
-    <property name="md.githook.path" value="/var/git/ukf-products/.git/hooks/" />
+    <property name="md.githook.path" value="/var/git/ukf-products/.git/hooks" />
 
 
     <!--
