@@ -333,7 +333,9 @@
     <property name="mdaggr.stats" value="ukfederation-stats.html"/>
     <property name="post-receive-githook" value="post-receive"/>
     <property name="md.githook.path" value="/var/git/ukf-products/.git/hooks" />
-
+    <property name="mdaggr.discofeed.filtered" value="discofeed.json"/>
+    <property name="mdaggr.discofeed.all" value="discofeed-all.json"/>
+    <property name="md.discofeed.path" value="/tmp" />
 
     <!--
         *************************************************
@@ -636,6 +638,7 @@
         git.data.allbranches.pushtoorigin,
         scp.githook,
         publish.mdqcache,
+        publish.json,
         publish.md,
         publish.otherfiles,
         samlmd.aggregates.verify.remote,
@@ -2273,6 +2276,49 @@
             </fileset>
         </scp>
     </target>
+
+    <target name="publish.json">
+        <!--
+            Push 2 JSON files to the MD dist servers
+        -->
+        <echo>Pushing UK Federation JSON files to MD dist.</echo>
+        <echo>-> CDI-master</echo>
+        <scp failonerror="true" remoteTodir="${cdi-master.user}@${cdi-master.name}:${cdi-master.temploc.name}" port="${cdi-master.ssh.port}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdaggr.discofeed.filtered}"/>
+                <include name="${mdaggr.discofeed.all}"/>
+            </fileset>
+        </scp>
+        <echo>-> MD-NE-01</echo>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:${md.discofeed.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdaggr.discofeed.filtered}"/>
+                <include name="${mdaggr.discofeed.all}"/>
+            </fileset>
+        </scp>
+        <echo>-> MD-NE-02</echo>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-02.name}:${md.discofeed.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdaggr.discofeed.filtered}"/>
+                <include name="${mdaggr.discofeed.all}"/>
+            </fileset>
+        </scp>
+        <echo>-> MD-WE-01</echo>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-01.name}:${md.discofeed.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdaggr.discofeed.filtered}"/>
+                <include name="${mdaggr.discofeed.all}"/>
+            </fileset>
+        </scp>
+        <echo>-> MD-WE-02</echo>
+        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-02.name}:${md.discofeed.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+            <fileset dir="${output.dir}">
+                <include name="${mdaggr.discofeed.filtered}"/>
+                <include name="${mdaggr.discofeed.all}"/>
+            </fileset>
+        </scp>
+    </target>
+
 
     <target name="publish.otherfiles">
         <!--
