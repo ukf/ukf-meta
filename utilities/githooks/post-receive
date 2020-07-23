@@ -11,6 +11,11 @@ apachemdqdir=/var/www/html/mdq.uou/entities
 # Set the location of the temporary mdq cache dir
 mdqcachedir=/tmp/mdqcache
 
+# Set the location of JSON discofeed files
+jsontempdir=/tmp
+discofeed=discofeed.json
+discofeedall=discofeed-all.json
+
 # This Git repo has had the latest stuff pushed to it, but it hasn't checked it out yet. So let's do it.
 git --work-tree=$gitdir --git-dir=$gitdir/.git checkout -f
 
@@ -20,6 +25,12 @@ for f in $gitdir/aggregates/*.xml
 do
     gzip -9 < $f > $f.gz
 done
+echo "Done."
+
+# The JSON files should have been SCPed to /tmp and be sitting there happily.
+echo -n "Gzipping 2 JSON discofeed files..."
+gzip -9 < "${jsontempdir}/$discofeed" > "${jsontempdir}/${discofeed}.gz"
+gzip -9 < "${jsontempdir}/$discofeedall" > "${jsontempdir}/${discofeedall}.gz"
 echo "Done."
 
 # The MDQ cache should have been SCPed to /tmp and be sitting there happily.
