@@ -88,12 +88,14 @@ mtime=$(git --work-tree=$gitdir --git-dir=$gitdir/.git show $newrev --quiet --pr
 echo -n "Setting the timestamp on each file to that of the commit... "
 find $gitdir -regextype posix-extended -regex '.*\.(xml|gz)' -exec touch -d @$mtime {} \;
 find $mdqcachedir -exec touch -d @$mtime {} \;
+touch -d @$mtime ${jsontempdir}/$discofeed ${jsontempdir}/${discofeed}.gz ${jsontempdir}/$discofeedall ${jsontempdir}/${discofeedall}.gz
 echo "Done."
 
 # Put files into the correct directory
 echo -n "Rsyncing files to the appropriate apache directory... "
 rsync -at $gitdir/aggregates/*.{xml,gz} $apacheaggrdir
 rsync -at --delete $mdqcachedir/ $apachemdqdir
+rsync -at ${jsontempdir}/$discofeed ${jsontempdir}/${discofeed}.gz ${jsontempdir}/$discofeedall ${jsontempdir}/${discofeedall}.gz $apacheaggrdir
 echo "Done."
 
 # Remove the temporary files
