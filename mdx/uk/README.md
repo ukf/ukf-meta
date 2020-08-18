@@ -81,7 +81,6 @@ Status (2017-12-05):
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2020-07-01):
+Status (2020-09-01):
 
-* The `back` aggregate does not currently include the `cacheDuration` attribute
-  which is present with a value of six hours in all others.
+* These aggregates are currently identical.

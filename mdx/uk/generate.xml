@@ -576,6 +576,8 @@
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="assembleAggregate"/>
+                <bean parent="mda.SetCacheDurationStage"
+                    p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
