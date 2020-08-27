@@ -9,6 +9,14 @@
     adjusts it towards the standard used for a UK federation
     metadata repository fragment file.
 
+    Warning:
+
+    * the XSLT template is unusual compared with what you see in
+    so many other files, since it does not copy across comments
+    from the input file to the output. This has the effect that
+    all comments from the incoming file are strippped, but comments
+    generated within the transform itself are unaffected.
+
     Assumptions:
 
     * the output will have oXygen's "format and indent" applied
@@ -18,7 +26,6 @@
     * the metadata comes from a UK federation member
 
     * the metadata most likely represents a Shibboleth 2.x entity
-
 
     Author: Ian A. Young <ian@iay.org.uk>
 
@@ -325,8 +332,8 @@
     -->
 
 
-    <!--By default, copy text blocks, comments and attributes unchanged.-->
-    <xsl:template match="text()|comment()|@*">
+    <!--By default, copy text blocks and attributes unchanged.-->
+    <xsl:template match="text()|@*">
         <xsl:copy/>
     </xsl:template>
 
