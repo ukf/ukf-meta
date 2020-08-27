@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="https://243.ukf-meta.ukfederation.org.uk/001">
+    <SPSSODescriptor>
+        <KeyDescriptor>
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+                        MIIC3DCCAcSgAwIBAgIJAN+91XVXF36VMA0GCSqGSIb3DQEBBQUAMBIxEDAOBgNV
+                        BAMTB3Rlc3Qtc3AwHhcNMTYwNTExMTI0MTA3WhcNMjYwNTA5MTI0MTA3WjASMRAw
+                        DgYDVQQDEwd0ZXN0LXNwMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
+                        zSnEqqkjqprYaIIiO3NOMHHMtvu3T4OP3lRFRp3arNgQTu6J54dj4Ljh2R6w2oFf
+                        NW/SXKYmHQSv9L/wo57PH47QDvHpt/fSrcG5vr5E0GJFBsKLH21ejK2IaRh58m4k
+                        xTpncRbdLDVntHs0ZOOAzXTyM9kzwNmLHnhkl6MH0q7qiHRsOXUFMJMM8VdEFZ3p
+                        zGrOjZ36sFysjxwBH+2YYixgJCsmDJJI8/0XCFg9KvgHgtUudru4cO2PgU4MFj9V
+                        mV+j3vPhZP3GPMNqLBlAqDTKKw6lRIHF2hHGE1zhqU6A3QGRxhkAonPEyGMvYfFT
+                        tSW5MW2f58B+0+A5nMKqTwIDAQABozUwMzASBgNVHREECzAJggd0ZXN0LXNwMB0G
+                        A1UdDgQWBBQob//Wa5StNlZteESM3e54WsDovzANBgkqhkiG9w0BAQUFAAOCAQEA
+                        iaLcK3+i8w7AzYuaDiu0I4kclZoxz1zKHyI4o7s+iTTR5xJrX+d5WRZT4f72RkDS
+                        gEH4L/f64XUufso8ilt7vCxJOIUAAcZSxHFD/4TvBhNBha9HjzlL11kOr8VNs3OJ
+                        FQwsV8Or5xr2T1wpcT+JN5sDNbAxx7oz/vthnAdvo98vGMMx1VJcNz7B5irg3B5M
+                        gegI3kOm1UfZLWxjfae/uX19d8N0r8AFD3Uuw4UX/07LVZmrtvjI5LB+ju/kv8kP
+                        ENCjwhjjXq7NUW8hgSiqqdMkFA1iH+KMAYtn2xvll1TojluWAwpYjaCjOLyJSBuV
+                        sIV9aK2TFEhoJD6KkXUNqg==
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+            <EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes128-gcm"/>
+            <EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes192-gcm"/>
+            <EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#aes256-gcm"/>
+            <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
+            <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes192-cbc"/>
+            <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes256-cbc"/>
+            <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+            <EncryptionMethod Algorithm="http://www.w3.org/2009/xmlenc11#rsa-oaep"/>
+            <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+        </KeyDescriptor>
+    </SPSSODescriptor>
+</EntityDescriptor>

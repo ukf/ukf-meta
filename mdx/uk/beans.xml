@@ -591,4 +591,18 @@
         </property>
     </bean>
 
+    <!--
+        #############################################################
+        ###                                                       ###
+        ###   A D D   E N C R Y P T I O N   A L G O R I T H M S   ###
+        ###                                                       ###
+        #############################################################
+    -->
+
+    <!--
+        Add CBC EncryptionMethod where there is no other block algorithm
+    -->
+    <bean id="uk_add_cbc_encryption" parent="mda.XSLTransformationStage"
+        p:XSLResource="classpath:uk/add_cbc_encryption.xsl"/>
+
 </beans>

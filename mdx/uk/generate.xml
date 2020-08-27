@@ -642,6 +642,9 @@
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEntityScopes"/>
+
+                <ref bean="uk_add_cbc_encryption"/>
+
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
 
@@ -867,6 +870,9 @@
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
+
+                <ref bean="uk_add_cbc_encryption"/>
+
                 <ref bean="uk_finaliseExport"/>
 
                 <bean id="uk_normaliseExportPreview" parent="mda.XSLTransformationStage"
