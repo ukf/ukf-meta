@@ -1588,7 +1588,6 @@
         The individual properties listed here can be augmented or overridden
         by properties defined in the external properties files, e.g., build.properties.
     -->
-    <property name="mda.java.endorsed.dirs" value="${tools.dir}/endorsed"/>
     <property name="mda.blocklists.dir" value="${blocklists.dir}"/>
     <property name="mda.cacheDuration.aggregate.duration" value="${cacheDuration.aggregate.duration}"/>
     <property name="mda.cacheDuration.perEntity.duration" value="${cacheDuration.perEntity.duration}"/>
@@ -1629,18 +1628,44 @@
                     <pathelement path="${mdx.dir}"/>
 
                     <!-- Include all APIs we may want to use. -->
+
+                    <!-- The Shibboleth MDA. -->
                     <fileset dir="${tools.mda}/lib">
                         <include name="*.jar"/>
                     </fileset>
+
+                    <!-- UK federation MDA beans, and ukf-members. -->
                     <fileset dir="${tools.dir}/ukf-mda">
                         <include name="*.jar"/>
                     </fileset>
-                    <fileset dir="${tools.dir}/xalan/lib">
-                        <include name="sdss-xalan-md-*.jar"/>
-                    </fileset>
+
+                    <!-- InCommon MDA beans. -->
                     <fileset dir="${tools.dir}/inc-mda">
                         <include name="*.jar"/>
                     </fileset>
+
+                    <!-- Support libraries for any of the above. -->
+                    <fileset dir="${tools.dir}/lib">
+                        <include name="*.jar"/>
+                    </fileset>
+
+                    <!--
+                        Use Xalan as our XML processor.
+                        Note: this is not the old endorsement mechanism,
+                        despite the directory name. Instead, we just load
+                        it via the classpath.
+                    -->
+                    <fileset dir="${tools.dir}/xalan/impl">
+                        <include name="*.jar"/>
+                    </fileset>
+
+                    <!--
+                        Xalan-dependent UK federation classes.
+                    -->
+                    <fileset dir="${tools.dir}/xalan/lib">
+                        <include name="sdss-xalan-md-*.jar"/>
+                    </fileset>
+
                 </classpath>
                 <syspropertyset>
                     <propertyset refid="mda.properties"/>
