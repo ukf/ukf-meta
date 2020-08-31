@@ -330,29 +330,29 @@ while (<>) {
         # Deal with certificate expiry for CA-issued certificates.
         #
         if ($issuer ne $subject) {
-        if ($days < -$longExpiredDays) {
-            my $d = floor(-$days);
-            if (defined($expiry_whitelist{$fingerprint})) {
-                comment("EXPIRED LONG AGO ($d days; $notAfter)");
-            } else {
-                error("EXPIRED LONG AGO ($d days; $notAfter)");
-                comment("fingerprint $fingerprint");
+            if ($days < -$longExpiredDays) {
+                my $d = floor(-$days);
+                if (defined($expiry_whitelist{$fingerprint})) {
+                    comment("EXPIRED LONG AGO ($d days; $notAfter)");
+                } else {
+                    error("EXPIRED LONG AGO ($d days; $notAfter)");
+                    comment("fingerprint $fingerprint");
+                }
+            } elsif ($days < 0) {
+                if (defined($expiry_whitelist{$fingerprint})) {
+                    comment("EXPIRED ($notAfter)");
+                } else {
+                    error("EXPIRED ($notAfter)");
+                    comment("fingerprint $fingerprint");
+                }
+            } elsif ($days < $daysBeforeError) {
+                $days = int($days);
+                error("expires in $days days ($notAfter)");
+            } elsif ($days < $daysBeforeWarning) {
+                $days = int($days);
+                warning("expires in $days days ($notAfter)");
             }
-        } elsif ($days < 0) {
-            if (defined($expiry_whitelist{$fingerprint})) {
-                comment("EXPIRED ($notAfter)");
-            } else {
-                error("EXPIRED ($notAfter)");
-                comment("fingerprint $fingerprint");
-            }
-        } elsif ($days < $daysBeforeError) {
-            $days = int($days);
-            error("expires in $days days ($notAfter)");
-        } elsif ($days < $daysBeforeWarning) {
-            $days = int($days);
-            warning("expires in $days days ($notAfter)");
         }
-	}
 
         #
         # Handle public key size.
