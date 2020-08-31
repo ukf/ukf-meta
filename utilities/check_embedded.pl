@@ -249,6 +249,9 @@ while (<>) {
             } elsif (/^\s*Public-Key: \((\d+) bit\)/) { # OpenSSL 1.0
                 $pubSize = $1;
                 next;
+            } elsif (/^\s*RSA Public-Key: \((\d+) bit\)/) { # OpenSSL 1.1.1g
+                $pubSize = $1;
+                next;
             }
 
             if (/Not After : (.*)$/) {
