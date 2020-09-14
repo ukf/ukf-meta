@@ -127,6 +127,8 @@
 
                 <!--
                     Dummy elements to include for IdPs only.
+
+                    Any incoming mdattr:EntityAttributes are discarded by a rule below
                 -->
                 <xsl:if test="md:IDPSSODescriptor">
                     <xsl:comment> *** VERIFY OR REMOVE THE FOLLOWING ELEMENT *** </xsl:comment>
@@ -311,6 +313,33 @@
     -->
     <xsl:template match="mdrpi:RegistrationInfo"/>
 
+    <!--
+        *******************************************
+        ***                                     ***
+        ***   M D A T T R   N A M E S P A C E   ***
+        ***                                     ***
+        *******************************************
+    -->
+
+    <!--
+        Remove all EntityAttributes on import
+    -->
+    <xsl:template match="mdattr:EntityAttributes"/>
+
+
+    <!--
+        ***************************************************
+        ***                                             ***
+        ***   U K F E D L A B E L   N A M E S P A C E   ***
+        ***                                             ***
+        ***************************************************
+    -->
+
+    <!--
+        Remove elements that may have been copied from published metadata
+    -->
+    <xsl:template match="ukfedlabel:UKFederationMember"/>
+    <xsl:template match="ukfedlabel:AccountableUsers"/>
 
     <!--
         *************************************
