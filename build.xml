@@ -2368,6 +2368,24 @@
         </if>
     </target>
 
+    <target name="publish.generated.html">
+        <!--
+            Push HTML files generated outwith production pipeline to the web server - but only when in prod env!
+        -->
+        <if>
+            <equals arg1="${env}" arg2="prod"/>
+                <then>
+                    <echo>Pushing HTML files to web site.</echo>
+                    <echo>-> Web1</echo>
+                    <scp failonerror="true" remoteTodir="${www.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+                        <fileset dir="${build.dir}">
+                            <include name="orgnamescope.html"/>
+                        </fileset>
+                    </scp>
+                </then>
+        </if>
+    </target>
+
 
     <!--
         *****************************************
