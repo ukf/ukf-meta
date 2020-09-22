@@ -12,6 +12,7 @@ Thumbs.db
 
 # /build/
 /build/locations.txt
+/build/orgnamescope.html
 
 # /charting/
 /charting/cache

@@ -1,0 +1,34 @@
+<div xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" style="margin-left:-20%;margin-right:+20%;"><table id="orgnameidp" class="tiger">
+<tr class="ind1">
+<th>DisplayName</th>
+<th>Organisation Name</th>
+<th>entityID</th>
+<th>Scopes</th>
+<th>Visibility</th>
+</tr>
+<small><tr class="ind1" valign="top">
+<td>Bantshire University</td>
+<td>Bantshire University</td>
+<td><a class="external" href="https://met.refeds.org/met/entity/https://bantshire.ac.uk/idp/?federation=uk-access-management-federation">https://bantshire.ac.uk/idp</a></td>
+<td>bantshire.ac.uk<br>
+</td>
+<td>Yes</td>
+</tr>
+<tr class="ind1" valign="top">
+<td>Rummidge University</td>
+<td>Rummidge University</td>
+<td><a class="external" href="https://met.refeds.org/met/entity/https://idp.rummidge.ac.uk/idp/?federation=uk-access-management-federation">https://idp.rummidge.ac.uk/idp</a></td>
+<td>rummidge.ac.uk<br>
+</td>
+<td>Yes</td>
+</tr>
+<tr class="ind1" valign="top">
+<td>Unseen University</td>
+<td>Unseen University</td>
+<td><a class="external" href="https://met.refeds.org/met/entity/urn:mace:ac.uk:sdss.ac.uk:provider:identity:unseen.ac.uk/?federation=uk-access-management-federation">urn:mace:ac.uk:sdss.ac.uk:provider:identity:unseen.ac.uk</a></td>
+<td>
+<br><details><summary>6 Scopes</summary>ankh.unseen.ac.uk<br>morpock.unseen.ac.uk<br>naphill.unseen.ac.uk<br>library.unseen.ac.uk<br>high.energy.magic.unseen.ac.uk<br>unseen.ac.uk<br></details>
+</td>
+<td>No</td>
+</tr></small>
+</table></div>

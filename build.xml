@@ -2764,6 +2764,21 @@
     </target>
 
     <!--
+        generate.html.orgnamescope
+
+        Generates a HTML table of IdPs and their scopes
+    -->
+    <target name="generate.html.orgnamescope">
+        <echo>Running generate.html.orgnamescope XSLT</echo>
+        <exec executable="xsltproc" failonerror="true">
+            <arg value="--output" />
+            <arg value="${build.dir}/orgnamescope.html" />
+            <arg value="${utilities.dir}/orgnamescope.xsl" />
+            <arg value="${aggregates.dir}/ukfederation-metadata.xml" />
+        </exec>
+    </target>
+
+    <!--
         echoproperties
 
         List all the properties ant is using.

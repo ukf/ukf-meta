@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<EntitiesDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+	xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
+	xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
+	xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+	xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
+	xmlns:uklabel="http://ukfederation.org.uk/2006/11/label">
+<EntityDescriptor entityID='https://idp.rummidge.ac.uk/idp'>
+	<Extensions>
+		<uklabel:AccountableUsers />
+		<uklabel:UKFederationMember />
+		<mdrpi:RegistrationInfo registrationAuthority='http://ukfederation.org.uk' />
+	</Extensions>
+        <IDPSSODescriptor>
+		<Extensions>
+			<shibmd:Scope>rummidge.ac.uk</shibmd:Scope>
+		</Extensions>
+        </IDPSSODescriptor>
+	<Organization>
+		<OrganizationName xml:lang='en'>Rummidge University</OrganizationName>
+		<OrganizationDisplayName xml:lang='en'>Rummidge University</OrganizationDisplayName>
+	</Organization>
+</EntityDescriptor>
+<EntityDescriptor entityID='urn:mace:ac.uk:sdss.ac.uk:provider:identity:unseen.ac.uk'>
+        <Extensions>
+                <uklabel:AccountableUsers />
+                <uklabel:UKFederationMember />
+		<mdrpi:RegistrationInfo registrationAuthority='http://ukfederation.org.uk' />
+                <mdattr:EntityAttributes>
+                        <saml:Attribute Name="http://macedir.org/entity-category" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                                <saml:AttributeValue>http://refeds.org/category/hide-from-discovery</saml:AttributeValue>
+                        </saml:Attribute>
+                </mdattr:EntityAttributes>
+        </Extensions>
+        <IDPSSODescriptor>
+		<Extensions>
+			<shibmd:Scope>ankh.unseen.ac.uk</shibmd:Scope>
+			<shibmd:Scope>morpock.unseen.ac.uk</shibmd:Scope>
+			<shibmd:Scope>naphill.unseen.ac.uk</shibmd:Scope>
+			<shibmd:Scope>library.unseen.ac.uk</shibmd:Scope>
+			<shibmd:Scope>high.energy.magic.unseen.ac.uk</shibmd:Scope>
+			<shibmd:Scope>unseen.ac.uk</shibmd:Scope>
+		</Extensions>
+        </IDPSSODescriptor>
+        <Organization>
+                <OrganizationName xml:lang='en'>Unseen University</OrganizationName>
+                <OrganizationDisplayName xml:lang='en'>Unseen University</OrganizationDisplayName>
+        </Organization>
+</EntityDescriptor>
+<EntityDescriptor entityID='https://bantshire.ac.uk/idp'>
+        <Extensions>
+                <uklabel:AccountableUsers />
+                <uklabel:UKFederationMember />
+		<mdrpi:RegistrationInfo registrationAuthority='http://ukfederation.org.uk' />
+        </Extensions>
+        <IDPSSODescriptor>
+		<Extensions>
+			<shibmd:Scope>bantshire.ac.uk</shibmd:Scope>
+		</Extensions>
+        </IDPSSODescriptor>
+        <Organization>
+                <OrganizationName xml:lang='en'>Bantshire University</OrganizationName>
+                <OrganizationDisplayName xml:lang='en'>Bantshire University</OrganizationDisplayName>
+        </Organization>
+</EntityDescriptor>
+<EntityDescriptor entityID='https://idp.monsters.edu/idp'>
+        <Extensions>
+                <uklabel:AccountableUsers />
+        </Extensions>
+        <IDPSSODescriptor />
+        <Organization>
+                <OrganizationName xml:lang='en'>Monsters University</OrganizationName>
+                <OrganizationDisplayName xml:lang='en'>Monsters University</OrganizationDisplayName>
+        </Organization>
+</EntityDescriptor>
+<EntityDescriptor entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:unseen.ac.uk'>
+        <Extensions>
+                <uklabel:AccountableUsers />
+                <uklabel:UKFederationMember />
+		<mdrpi:RegistrationInfo registrationAuthority='http://ukfederation.org.uk' />
+        </Extensions>
+	<SPSSODescriptor />
+        <Organization>
+                <OrganizationName xml:lang='en'>Unseen University</OrganizationName>
+                <OrganizationDisplayName xml:lang='en'>Unseen University SP</OrganizationDisplayName>
+        </Organization>
+</EntityDescriptor>
+</EntitiesDescriptor>
