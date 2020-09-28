@@ -419,6 +419,7 @@
                 <ref bean="stripComments"/>
 
                 <ref bean="stripAlgNamespace"/>
+                <ref bean="stripInitNamespace"/>
                 <ref bean="stripMdattrNamespace"/>
                 <ref bean="stripMdrpiNamespace"/>
                 <ref bean="stripUkfedlabelNamespace"/>
@@ -503,7 +504,6 @@
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
 
                 <!-- remove many things that the CDS doesn't look at -->
-                <ref bean="stripInitNamespace"/>
                 <ref bean="CDSStripUnwanted"/>
 
                 <!--
@@ -521,61 +521,6 @@
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="serializeCDSAllAggregate"/>
-            </list>
-        </property>
-    </bean>
-
-    <!--
-        *****************************************
-        ***                                   ***
-        ***   W U G E N   A G G R E G A T E   ***
-        ***                                   ***
-        *****************************************
-    -->
-
-    <bean id="serializeWugenAggregate" parent="mda.SerializationStage">
-        <property name="serializer" ref="serializer"/>
-        <property name="outputFile">
-            <bean parent="File">
-                <constructor-arg value="${output.dir}/ukfederation-wugen-unsigned.xml"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="WugenPipeline" parent="mda.SimplePipeline">
-        <property name="stages">
-            <list>
-                <!-- Apply flow constraints for this flow. -->
-                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
-                    p:flowName="wugen"/>
-
-                <!--
-                    Enforce IdP display name uniqueness before assembling aggregate
-                -->
-                <ref bean="check_dup_display"/>
-                <ref bean="errorTerminatingFilter"/>
-
-                <!-- make an aggregate first so that we're only traversing one item -->
-                <ref bean="assembleAggregate"/>
-
-                <!-- remove many things that the CDS doesn't look at -->
-                <ref bean="CDSStripUnwanted"/>
-
-                <!--
-                    Remove embedded images used in mdui:Logo elements.
-                -->
-                <ref bean="stripMDUILogoData"/>
-                <ref bean="stripEmptyMDUIUIInfo"/>
-                <ref bean="stripEmptyExtensions"/>
-
-                <ref bean="CDSFinalise"/>
-                <ref bean="CDSNormaliseNamespaces"/>
-
-                <!-- schema validity check MUST pass -->
-                <ref bean="checkSchemas"/>
-                <ref bean="errorTerminatingFilter"/>
-
-                <ref bean="serializeWugenAggregate"/>
             </list>
         </property>
     </bean>
@@ -1163,10 +1108,6 @@
                         <list>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="CDSAllPipeline"/>
-                                <constructor-arg ref="CDSAllSelector"/>
-                            </bean>
-                            <bean class="net.shibboleth.utilities.java.support.collection.Pair">
-                                <constructor-arg ref="WugenPipeline"/>
                                 <constructor-arg ref="CDSAllSelector"/>
                             </bean>
                         </list>
