@@ -2257,7 +2257,7 @@
             <arg value="md-we-01"/>
             <arg value="master"/>
         </exec>
-        <echo>-> MD-WE-01</echo>
+        <echo>-> MD-WE-02</echo>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="push"/>
             <arg value="md-we-02"/>
