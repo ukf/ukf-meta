@@ -533,6 +533,15 @@
         *****************************************
     -->
 
+    <!--
+        The Wugen aggregate includes all entities except standalone AttributeAuthorities
+        (which cannot have WAYFless URLs)
+    -->
+    <bean id="WugenSelector" parent="mda.XPathItemSelectionStrategy">
+        <constructor-arg value="/md:EntityDescriptor[md:IDPSSODescriptor or md:SPSSODescriptor]" />
+        <constructor-arg ref="commonNamespaces"/>
+    </bean>
+
     <bean id="serializeWugenAggregate" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
@@ -1167,7 +1176,7 @@
                             </bean>
                             <bean class="net.shibboleth.utilities.java.support.collection.Pair">
                                 <constructor-arg ref="WugenPipeline"/>
-                                <constructor-arg ref="CDSAllSelector"/>
+                                <constructor-arg ref="WugenSelector"/>
                             </bean>
                         </list>
                     </property>
