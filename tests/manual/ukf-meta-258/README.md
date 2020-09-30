@@ -2,6 +2,8 @@
 
 ## Tests
 
-xsltproc ../../../utilities/orgnamescope.xsl scope-test.xml  | diff - scope-test.out 
+xsltproc ../../../utilities/orgnamescope.xsl input.xml  | diff - scopes.out 
+xsltproc ../../../utilities/ua-idp.xsl input.xml | diff - uai.out
+xsltproc ../../../utilities/ua-idp.xsl accented.xml | diff - accented.out
 
 

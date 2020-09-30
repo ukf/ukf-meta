@@ -2388,6 +2388,7 @@
                     <scp failonerror="true" remoteTodir="${www.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
                         <fileset dir="${build.dir}">
                             <include name="orgnamescope.html"/>
+                            <include name="uai.html"/>
                         </fileset>
                     </scp>
                     <scp failonerror="true" remoteTodir="${www.url.stats}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
@@ -2826,6 +2827,21 @@
             <arg value="--output" />
             <arg value="${build.dir}/randssps.html" />
             <arg value="${utilities.dir}/list_rands_sps.xsl" />
+            <arg value="${aggregates.dir}/ukfederation-metadata.xml" />
+        </exec>
+    </target>
+
+    <!--
+        generate.html.uai
+
+        Generates a HTML table of IdPs asserting User Accountability
+    -->
+    <target name="generate.html.uai">
+        <echo>Running generate.html.uai XSLT</echo>
+        <exec executable="xsltproc" failonerror="true">
+            <arg value="--output" />
+            <arg value="${build.dir}/uai.html" />
+            <arg value="${utilities.dir}/ua-idp.xsl" />
             <arg value="${aggregates.dir}/ukfederation-metadata.xml" />
         </exec>
     </target>
