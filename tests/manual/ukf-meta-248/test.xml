@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
+    xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" 
+    entityID="test">
+<Extensions>
+        <mdrpi:RegistrationInfo registrationAuthority="http://ukfederation.org.uk"
+            registrationInstant="2012-07-13T11:19:55Z">
+            <mdrpi:RegistrationPolicy xml:lang="en"
+                >http://ukfederation.org.uk/doc/mdrps-20130902</mdrpi:RegistrationPolicy>
+            <mdrpi:RegistrationPolicy xml:lang="en"
+                >http://ukfederation.org.uk/doc/mdrps-20130902</mdrpi:RegistrationPolicy>
+        </mdrpi:RegistrationInfo>
+</Extensions>
+<SPSSODescriptor>
+  <Extensions>
+    <mdui:UIInfo>
+      <mdui:DisplayName xml:lang="en">First display name</mdui:DisplayName>
+      <mdui:DisplayName xml:lang="en">Second display name</mdui:DisplayName>
+      <mdui:Description xml:lang="en">First description</mdui:Description>
+      <mdui:Description xml:lang="en">Second description</mdui:Description>
+      <mdui:Keywords xml:lang="en-sco">wee sleekit</mdui:Keywords>
+      <mdui:Keywords xml:lang="en-sco">cowran tim'rous</mdui:Keywords>
+<!--
+      <mdui:InformationURL xml:lang="en">https://www.example.ac.uk/information.html</mdui:InformationURL>
+      <mdui:InformationURL xml:lang="en">https://www2.example.ac.uk/information.html</mdui:InformationURL>
+      <mdui:PrivacyStatementURL xml:lang="en">https://www.example.ac.uk/privacy.html</mdui:PrivacyStatementURL>
+      <mdui:PrivacyStatementURL xml:lang="en">https://www2.example.ac.uk/privacy.html</mdui:PrivacyStatementURL>
+-->
+    </mdui:UIInfo>
+  </Extensions>
+  <AttributeConsumingService index="1" isDefault="true">
+    <ServiceDescription xml:lang="en">English e-learning</ServiceDescription>
+    <ServiceDescription xml:lang="en">英語e-learning</ServiceDescription>
+  </AttributeConsumingService>
+</SPSSODescriptor>
+</EntityDescriptor>

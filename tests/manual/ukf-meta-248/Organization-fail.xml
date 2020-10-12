@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
+  <Organization>
+    <OrganizationName xml:lang="en">English e-learning</OrganizationName>
+    <OrganizationName xml:lang="en">英語e-learning</OrganizationName>
+    <OrganizationDisplayName xml:lang="en">English e-learning</OrganizationDisplayName>
+    <OrganizationDisplayName xml:lang="en">英語e-learning</OrganizationDisplayName>
+  </Organization>
+</EntityDescriptor>

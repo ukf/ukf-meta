@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
+<SPSSODescriptor>
+  <AttributeConsumingService index="1" isDefault="true">
+    <ServiceName xml:lang="en">English e-learning</ServiceName>
+    <ServiceName xml:lang="en">英語e-learning</ServiceName>
+    <ServiceDescription xml:lang="en">English e-learning</ServiceDescription>
+    <ServiceDescription xml:lang="en">英語e-learning</ServiceDescription>
+  </AttributeConsumingService>
+</SPSSODescriptor>
+</EntityDescriptor>

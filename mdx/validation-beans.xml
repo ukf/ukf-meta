@@ -437,6 +437,22 @@
 
 
     <!--
+        ****************************************************
+        ***                                              ***
+        ***   S A M L 2   M E T A D A T A   C H E C K S  ***
+        ***                                              ***
+        ****************************************************
+    -->
+
+
+    <!--
+        check_saml2_lang
+    -->
+    <bean id="check_saml2_lang" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_saml2_lang.xsl"/>
+
+
+    <!--
         ***************************************************
         ***                                             ***
         ***   M I S C E L L A N E O U S   C H E C K S   ***
@@ -645,6 +661,7 @@
                 <ref bean="check_reqattr"/>
                 <ref bean="check_saml1"/>
                 <ref bean="check_saml2"/>
+                <ref bean="check_saml2_lang"/>
                 <ref bean="check_saml2int"/>
                 <ref bean="check_saml2meta"/>
                 <ref bean="check_saml_strings"/>
