@@ -390,7 +390,7 @@
     <bean id="ch_switchaai_registrar"    parent="String" c:_="http://rr.aai.switch.ch/"/>
     <bean id="cl_cofre_registrar"        parent="String" c:_="http://cofre.reuna.cl"/>
     <bean id="cn_carsi_registrar"        parent="String" c:_="https://www.carsi.edu.cn"/>
-    <bean id="cn_cstcloud_registrar"     parent="String" c:_="http://cstcloud.net"/><!-- A guess -->
+    <bean id="cn_cstcloud_registrar"     parent="String" c:_="https://cstcloud.net/"/>
     <bean id="co_colfire_registrar"      parent="String" c:_="http://colfire.co"/>
     <bean id="cy_cynet_registrar"        parent="String" c:_="https://cif.cynet.ac.cy"/>
     <bean id="cz_eduid_registrar"        parent="String" c:_="http://www.eduid.cz/"/>
