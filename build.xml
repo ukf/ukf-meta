@@ -2809,6 +2809,8 @@
         generate.html.orgnamescope
 
         Generates a HTML table of IdPs and their scopes
+
+        bodge-eacute.pl is an awful bodge to fix encodings
     -->
     <target name="generate.html.orgnamescope">
         <echo>Running generate.html.orgnamescope XSLT</echo>
@@ -2817,6 +2819,10 @@
             <arg value="${build.dir}/orgnamescope.html" />
             <arg value="${utilities.dir}/orgnamescope.xsl" />
             <arg value="${aggregates.dir}/ukfederation-metadata.xml" />
+        </exec>
+        <exec executable="perl" failonerror="true">
+            <arg value="${utilities.dir}/bodge-eacute.pl" />
+            <arg value="${build.dir}/orgnamescope.html" />
         </exec>
     </target>
 
