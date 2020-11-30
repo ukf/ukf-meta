@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
+    xmlns:mdrpi="urn:oasis:names:tc:SAML:metadata:rpi"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
+    <Extensions>
+        <mdrpi:RegistrationInfo registrationAuthority="http://ukfederation.org.uk"
+            registrationInstant="2012-07-13T11:19:55Z">
+            <mdrpi:RegistrationPolicy xml:lang="en"
+                >http://ukfederation.org.uk/doc/mdrps-20130902</mdrpi:RegistrationPolicy>
+        </mdrpi:RegistrationInfo>
+        <mdattr:EntityAttributes>
+            <saml:Attribute NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" Name="http://macedir.org/entity-category">
+                <saml:AttributeValue>https://refeds.org/sirtfi</saml:AttributeValue>
+            </saml:Attribute>
+        </mdattr:EntityAttributes>
+    </Extensions>
+</EntityDescriptor>

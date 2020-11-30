@@ -3,7 +3,8 @@
 
     check_uk_rands.xsl
 
-    UKf-specific check for SPs asserting R&S entity category
+    UKf-specific checks for SPs asserting R&S entity category
+    or for IdPs supporting the entity category.
 
 -->
 <xsl:stylesheet version="1.0"
@@ -37,6 +38,26 @@
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>SP asserts R&amp;S entity category but has no RegistrationPolicy element.</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <!--
+        IdPs which support the R&S entity category must include an explicit RegistrationPolicy.
+
+        Note that there is a different UK-specific check to ensure that RegistrationPolicy
+        contains valid values, so we don't need to repeat ourselves here.
+
+        Note also that check_rands_support ensures that entities asserting the entity category
+        are IdPs.
+    -->
+    <xsl:template match="md:EntityDescriptor
+                        [md:Extensions/mdattr:EntityAttributes/saml:Attribute[@Name='http://macedir.org/entity-category-support']
+                                /saml:AttributeValue='http://refeds.org/category/research-and-scholarship']
+                        [not(md:Extensions/mdrpi:RegistrationInfo/mdrpi:RegistrationPolicy)]">
+        <xsl:call-template name="error">
+            <xsl:with-param name="m">
+                <xsl:text>IdP supports R&amp;S entity category but has no RegistrationPolicy element.</xsl:text>
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
