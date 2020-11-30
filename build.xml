@@ -2390,6 +2390,11 @@
                             <include name="orgnamescope.html"/>
                         </fileset>
                     </scp>
+                    <scp failonerror="true" remoteTodir="${www.url.stats}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+                        <fileset dir="${build.dir}">
+                            <include name="randssps.html"/>
+                        </fileset>
+                    </scp>
                 </then>
         </if>
     </target>
@@ -2807,6 +2812,21 @@
         <exec executable="perl" failonerror="true">
             <arg value="${utilities.dir}/bodge-eacute.pl" />
             <arg value="${build.dir}/orgnamescope.html" />
+        </exec>
+    </target>
+
+    <!--
+        generate.html.randssps
+
+        Generates a HTML table of SPs which assert the R&S entity category
+    -->
+    <target name="generate.html.randssps">
+        <echo>Running generate.html.randssps XSLT</echo>
+        <exec executable="xsltproc" failonerror="true">
+            <arg value="--output" />
+            <arg value="${build.dir}/randssps.html" />
+            <arg value="${utilities.dir}/list_rands_sps.xsl" />
+            <arg value="${aggregates.dir}/ukfederation-metadata.xml" />
         </exec>
     </target>
 
