@@ -348,6 +348,7 @@
                 <ref bean="check_adfs"/>
                 <ref bean="check_algsupport"/>
                 <ref bean="check_bindings"/>
+                <ref bean="check_cr"/>
                 <ref bean="check_entityid_prefix"/>
                 <ref bean="check_hoksso"/>
                 <ref bean="check_idpdisc"/>
