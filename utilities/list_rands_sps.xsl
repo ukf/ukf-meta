@@ -82,6 +82,27 @@
             <xsl:with-param name="label"><xsl:text>Description</xsl:text></xsl:with-param>
             <xsl:with-param name="value" select="md:SPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:Description[@xml:lang='en']"/>
         </xsl:call-template>
+        <!-- PrivacyStatementURL (is not mentioned in v1.3 of entity category, but good practice nevertheless -->
+        <xsl:choose>
+            <xsl:when test="md:SPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:PrivacyStatementURL[@xml:lang='en']">
+                <xsl:call-template name="row">
+                    <xsl:with-param name="label"><xsl:text>PrivacyStatementURL</xsl:text></xsl:with-param>
+                    <xsl:with-param name="value">
+                        <xsl:text>&lt;a href=&quot;</xsl:text>
+                        <xsl:value-of select="md:SPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:PrivacyStatementURL[@xml:lang='en']"/>
+                        <xsl:text>&quot;&gt;</xsl:text>
+                        <xsl:value-of select="md:SPSSODescriptor/md:Extensions/mdui:UIInfo/mdui:PrivacyStatementURL[@xml:lang='en']"/>
+                        <xsl:text>&lt;/a&gt;</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="row">
+                    <xsl:with-param name="label"><xsl:text>PrivacyStatementURL</xsl:text></xsl:with-param>
+                    <xsl:with-param name="value"><xsl:text>No English language version available</xsl:text></xsl:with-param>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
         <!-- table footer -->
         <xsl:text>&lt;/table&gt;&#10;</xsl:text>
     </xsl:template>
