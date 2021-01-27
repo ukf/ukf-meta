@@ -75,6 +75,16 @@
                                 p:regex="" p:message="scope element must not be empty"/>
                             <bean p:id="whiteSpace" parent="inc.RejectStringRegexValidator"
                                 p:regex=".*\s.*" p:message="scope '%s' includes white space"/>
+
+                            <!--
+                                Explicitly accept domains which, although they
+                                fall afoul of the public suffic heuristic, are
+                                nevertheless known to be legitimately used as
+                                security domains.
+                            -->
+                            <bean p:id="mil.no" parent="inc.AcceptStringValueValidator"
+                                p:value="mil.no"/>
+
                             <bean p:id="domainName" parent="inc.AsDomainNameStringValidator"
                                 p:message="scope is not a valid domain name: %s">
                                 <property name="validators">
