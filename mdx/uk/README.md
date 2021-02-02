@@ -28,13 +28,10 @@ before being included in the `export` version consumed by interfederation partne
 
 ### Export Preview Aggregate vs. Export Aggregate
 
-Status (2020-09-10):
+Status (2021-02-02):
 
 * The `export-preview` aggregate declares the `alg` namespace on the document element,
   rather than on each `<DigestMethod>` or `<SigningMethod>` element.
-
-* The `export-preview` aggregate adds `<EncryptionMethod>` elements with AES128-CBC
-  to SPs that have no block encryption methods listed
 
 ## Production Maturity Pipeline
 
@@ -63,7 +60,7 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 
 ### Test Aggregate vs. Production Aggregate
 
-Status (2020-09-10):
+Status (2021-02-02):
 
 * The `test` aggregate does not include the `<UKFederationMember>` label (`ukf-meta#34`).
 
@@ -72,9 +69,6 @@ Status (2020-09-10):
 
 * The `test` aggregate declares the `alg` namespace on the document element,
   rather than on each `<DigestMethod>` or `<SigningMethod>` element.
-
-* The `test` aggregate adds `<EncryptionMethod>` elements with AES128-CBC
-  to SPs that have no block encryption methods listed
 
 ### `cds-all` Aggregate vs. Production Aggregate
 
@@ -86,6 +80,7 @@ Status (2017-12-05):
 
 ### Fallback Aggregate vs. Production Aggregate
 
-Status (2020-09-01):
+Status (2021-02-02):
 
-* These aggregates are currently identical.
+* The `production` aggregate adds `<EncryptionMethod>` elements with AES128-CBC
+  to SPs that have no block encryption methods listed
