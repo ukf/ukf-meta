@@ -149,6 +149,17 @@
             <xsl:text> of SP entities</xsl:text>
             <xsl:text>&#10;</xsl:text>
 
+            <xsl:variable name="charting.sps.algsupport.gcm"
+                select="$charting.sps.algsupport[
+                descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes128-gcm' or
+                descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes192-gcm' or
+                descendant::md:EncryptionMethod/@Algorithm='http://www.w3.org/2009/xmlenc11#aes256-gcm']"/>
+            <xsl:variable name="charting.sps.algsupport.gcm.count" select="count($charting.sps.algsupport.gcm)"/>
+            <xsl:text>GCM support: </xsl:text>
+            <xsl:value-of select="format-number($charting.sps.algsupport.gcm.count div $spCount, '0.00%')"/>
+            <xsl:text> of SP entities</xsl:text>
+            <xsl:text>&#10;</xsl:text>
+
             <xsl:variable name="charting.idp4" select="$idps[
                 md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '4']
                 ]"/>
