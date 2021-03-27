@@ -2389,6 +2389,7 @@
                         <fileset dir="${build.dir}">
                             <include name="orgnamescope.html"/>
                             <include name="uai.html"/>
+                            <include name="dml.html"/>
                         </fileset>
                     </scp>
                     <scp failonerror="true" remoteTodir="${www.url.stats}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
@@ -2813,6 +2814,27 @@
         <exec executable="perl" failonerror="true">
             <arg value="${utilities.dir}/bodge-eacute.pl" />
             <arg value="${build.dir}/orgnamescope.html" />
+        </exec>
+    </target>
+
+    <!--
+        generate.html.members
+
+        Generates a HTML table of member names and comments
+
+        bodge-eacute.pl is an awful bodge to fix encodings
+    -->
+    <target name="generate.html.members">
+        <echo>Running generate.html.members XSLT</echo>
+        <exec executable="xsltproc" failonerror="true">
+            <arg value="--output" />
+            <arg value="${build.dir}/dml.html" />
+            <arg value="${utilities.dir}/memberlist.xsl" />
+            <arg value="${members.dir}/members.xml" />
+        </exec>
+        <exec executable="perl" failonerror="true">
+            <arg value="${utilities.dir}/bodge-eacute.pl" />
+            <arg value="${build.dir}/dml.html" />
         </exec>
     </target>
 
