@@ -41,7 +41,7 @@
         If a flow is being run from build.xml using ant, the property name
         needs to be prefixed with "mda.", as "mda.int.edugain.aggregate.name":
 
-            ant -Dmda.int.edugain.aggregate.name=beta ...		
+            ant -Dmda.int.edugain.aggregate.name=beta ...
     -->
     <bean id="int_edugain_productionAggregate" parent="mda.DOMResourceSourceStage">
         <property name="parserPool" ref="parserPool"/>
@@ -58,7 +58,7 @@
         eduGAIN signing certificate.
     -->
     <bean id="int_edugain_signingCertificate" parent="X509CertificateFactoryBean"
-        p:resource="classpath:int_edugain/mds-v1.cer"/>
+        p:resource="classpath:int_edugain/mds-v1-1.cer"/>
 
     <!--
         Check a signature against the eduGAIN signing certificate.
