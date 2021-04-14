@@ -21,7 +21,7 @@
     xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 
-    exclude-result-prefixes="alg ds init md mdattr saml shibmd ukfedlabel xsi"
+    exclude-result-prefixes="ds init md mdattr saml shibmd ukfedlabel xsi"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
