@@ -40,7 +40,7 @@
     xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    exclude-result-prefixes="alg md xenc"
+    exclude-result-prefixes="md xenc"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -90,27 +90,6 @@
         <EntitiesDescriptor>
             <xsl:apply-templates select="node()|@*"/>
         </EntitiesDescriptor>
-    </xsl:template>
-
-
-    <!--
-        *************************************
-        ***                               ***
-        ***   A L G   N A M E S P A C E   ***
-        ***                               ***
-        *************************************
-    -->
-
-
-    <!--
-        alg:*
-
-        Normalise namespace to not use a prefix.
-    -->
-    <xsl:template match="alg:*">
-        <xsl:element name="{local-name()}" namespace="urn:oasis:names:tc:SAML:metadata:algsupport">
-            <xsl:apply-templates select="node()|@*"/>
-        </xsl:element>
     </xsl:template>
 
 

@@ -80,6 +80,3 @@ Status:
 
 * The `production` aggregate adds `<EncryptionMethod>` elements with AES128-CBC
   to SPs that have no block encryption methods listed
-
-* The `production` aggregate declares the `alg` namespace on the document element,
-  rather than on each `<DigestMethod>` or `<SigningMethod>` element.
