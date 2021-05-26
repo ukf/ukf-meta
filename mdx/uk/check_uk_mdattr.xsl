@@ -64,6 +64,7 @@
         [@Name != 'http://macedir.org/entity-category']
         [@Name != 'http://macedir.org/entity-category-support']
         [@Name != 'urn:oasis:names:tc:SAML:attribute:assurance-certification']
+        [@Name != 'urn:oasis:names:tc:SAML:profiles:subject-id:req']
         ">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
@@ -116,6 +117,24 @@
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>unknown assurance certification URI </xsl:text>
+                <xsl:value-of select="."/>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <!--
+        Validate SAML subject identifier requirement value.
+    -->
+    <xsl:template match="mdattr:EntityAttributes/saml:Attribute[@Name='urn:oasis:names:tc:SAML:profiles:subject-id:req']
+        /saml:AttributeValue
+            [. != 'subject-id']
+            [. != 'pairwise-id']
+            [. != 'none']
+            [. != 'any']
+        ">
+        <xsl:call-template name="error">
+            <xsl:with-param name="m">
+                <xsl:text>unknown subject identifier requirement values </xsl:text>
                 <xsl:value-of select="."/>
             </xsl:with-param>
         </xsl:call-template>
