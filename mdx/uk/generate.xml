@@ -1131,6 +1131,12 @@
                 />
 
                 <!--
+                    Output any INFO metadata we may have accumulated, such
+                    as from discovery name deconfliction.
+                -->
+                <ref bean="infoAnnouncer"/>
+
+                <!--
                     *********************************************************
                     ***                                                   ***
                     ***   P R E - P R O D U C T I O N   E N T I T I E S   ***

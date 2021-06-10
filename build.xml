@@ -1689,7 +1689,8 @@
                     <propertyset refid="mda.properties"/>
                 </syspropertyset>
                 <jvmarg value="-enableassertions"/>
-                <arg value="--quiet"/>
+                <arg value="--logConfig"/>
+                <arg value="${tools.dir}/mda-logging.xml"/>
                 <arg value="@{config}"/>
                 <arg value="@{pipeline}"/>
             </java>

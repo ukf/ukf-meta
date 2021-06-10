@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%-5level - %msg%n</Pattern>
+        </encoder>
+    </appender>
+    
+    <!--
+        Based on the default quiet logging configuration, adding anything we
+        specifically want to see from lower levels than WARN.
+    -->
+
+    <logger name="net.shibboleth.metadata.pipeline.StatusMetadataLoggingStage" level="INFO"/>
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    
+</configuration>

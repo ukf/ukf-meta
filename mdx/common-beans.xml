@@ -591,6 +591,21 @@
     </bean>
 
     <!--
+        infoAnnouncer
+
+        A pipeline stage that logs any info metadata present,
+        but takes no action on them.
+    -->
+    <bean id="infoAnnouncer" parent="mda.StatusMetadataLoggingStage">
+        <property name="identificationStrategy" ref="identificationStrategy"/>
+        <property name="selectionRequirements">
+            <list>
+                <value>#{T(net.shibboleth.metadata.InfoStatus)}</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--
         warningAnnouncer
 
         A pipeline stage that logs any warnings present,
