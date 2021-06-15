@@ -382,6 +382,8 @@
     <bean id="ar_mate_registrar"         parent="String" c:_="http://www.federacionmate.gob.ar"/>
     <bean id="at_aconet_registrar"       parent="String" c:_="http://eduid.at"/>
     <bean id="au_aaf_registrar"          parent="String" c:_="https://aaf.edu.au"/>
+    <bean id="az_sciencenet_registrar"   parent="String" c:_="http://edugain.azsciencenet.az"/>
+    <bean id="bd_tigerfed_registrar"     parent="String" c:_="https://tigerfed.net.bd"/>
     <bean id="be_belnet_registrar"       parent="String" c:_="http://federation.belnet.be/"/>
     <bean id="bg_bif_registrar"          parent="String" c:_="http://bif.bren.bg"/>
     <bean id="br_cafe_registrar"         parent="String" c:_="http://cafe.rnp.br"/>
@@ -428,7 +430,7 @@
     <bean id="mt_ricerca_registrar"      parent="String" c:_="https://id.ricerka.net.mt"/>
     <bean id="mw_maren_registrar"        parent="String" c:_="https://maren.ac.mw"/><!-- A guess -->
     <bean id="my_sifulan_registrar"      parent="String" c:_="https://sifulan.my"/>
-    <bean id="mx_fenix_registrar"        parent="String" c:_="http://www.fenix.org.mx/"/><!-- A guess -->
+    <bean id="mx_fenix_registrar"        parent="String" c:_="http://www.fenix.org.mx"/>
     <bean id="mz_cafmoz_registrar"       parent="String" c:_="http://cafmoz.morenet.ac.mz"/>
     <bean id="nl_surfconext_registrar"   parent="String" c:_="http://www.surfconext.nl/"/>
     <bean id="no_feide_registrar"        parent="String" c:_="http://feide.no/"/>
@@ -485,12 +487,14 @@
         <entry key-ref="dz_arnaai_registrar"          value="DZ"/>
         <entry key-ref="si_arnes_registrar"           value="SI"/>
         <entry key-ref="be_belnet_registrar"          value="BE"/>
+        <entry key-ref="bg_bif_registrar"             value="BG"/>
         <entry key-ref="ca_caf_registrar"             value="CA"/>
         <entry key-ref="br_cafe_registrar"            value="BR"/>
         <entry key-ref="mz_cafmoz_registrar"          value="MZ"/>
         <entry key-ref="cn_carsi_registrar"           value="CN-CARSI"/>
         <entry key-ref="cl_cofre_registrar"           value="CL"/>
         <entry key-ref="co_colfire_registrar"         value="CO"/>
+        <entry key-ref="cn_cstcloud_registrar"        value="CN-CSTCLOUD"/>
         <entry key-ref="cy_cynet_registrar"           value="CY"/>
         <entry key-ref="de_dfnaai_registrar"          value="DE"/>
         <entry key-ref="ie_edugate_registrar"         value="IE"/>
@@ -501,6 +505,7 @@
         <entry key-ref="by_febas_registrar"           value="BY"/>
         <entry key-ref="ru_fedurus_registrar"         value="RU-FEDURUS"/>
         <entry key-ref="no_feide_registrar"           value="NO"/>
+        <entry key-ref="mx_fenix_registrar"           value="MX"/>
         <entry key-ref="fr_renater_registrar"         value="FR"/>
         <entry key-ref="zm_fidern_registrar"          value="ZM"/>
         <entry key-ref="jp_gakunin_registrar"         value="JP"/>
@@ -533,6 +538,7 @@
         <entry key-ref="ro_edunetid_registrar"        value="RO"/>
         <entry key-ref="ru_runnet_registrar"          value="RU-RUNNET"/>
         <entry key-ref="sa_maeen_registrar"           value="SA"/>
+        <entry key-ref="sk_safeid_registrar"          value="SK"/>
         <entry key-ref="za_safire_registrar"          value="ZA"/>
         <entry key-ref="sg_sgaf_registrar"            value="SG"/>
         <entry key-ref="my_sifulan_registrar"         value="MY"/>
@@ -541,23 +547,21 @@
         <entry key-ref="se_swamid_registrar"          value="SE"/>
         <entry key-ref="ch_switchaai_registrar"       value="CH"/>
         <entry key-ref="ee_taat_registrar"            value="EE"/>
+        <entry key-ref="bd_tigerfed_registrar"        value="BD"/>
         <entry key-ref="nz_tuakiri_registrar"         value="NZ"/>
         <entry key-ref="uk_ukf_registrar"             value="UK"/>
         <entry key-ref="dk_wayf_registrar"            value="DK"/>
         <entry key-ref="tr_yetkim_registrar"          value="TR"/>
 
         <!-- eduGAIN voting-only members -->
-        <entry key-ref="bg_bif_registrar"             value="BG"/>
         <entry key-ref="it_gridp_registrar"           value="IT-GRIDP"/>
 
         <!-- eduGAIN candidates -->
-        <entry key-ref="cn_cstcloud_registrar"        value="CN-CSTCLOUD"/>
+        <entry key-ref="az_sciencenet_registrar"      value="AZ"/>
         <entry key-ref="me_eduid_registrar"           value="ME"/>
-        <entry key-ref="mx_fenix_registrar"           value="MX"/>
         <entry key-ref="rs_amres_registrar"           value="RS"/>
         <entry key-ref="lb_life_registrar"            value="LB"/>
         <entry key-ref="mw_maren_registrar"           value="MW"/>
-        <entry key-ref="sk_safeid_registrar"          value="SK"/>
         <entry key-ref="tj_tarena_registrar"          value="TJ"/>
     </util:map>
 
