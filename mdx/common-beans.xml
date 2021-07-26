@@ -385,7 +385,7 @@
     <bean id="az_sciencenet_registrar"   parent="String" c:_="http://edugain.azsciencenet.az"/>
     <bean id="bd_tigerfed_registrar"     parent="String" c:_="https://tigerfed.net.bd"/>
     <bean id="be_belnet_registrar"       parent="String" c:_="http://federation.belnet.be/"/>
-    <bean id="bg_bif_registrar"          parent="String" c:_="http://bif.bren.bg"/>
+    <bean id="bg_bif_registrar"          parent="String" c:_="https://bif.bren.bg"/>
     <bean id="br_cafe_registrar"         parent="String" c:_="http://cafe.rnp.br"/>
     <bean id="by_febas_registrar"        parent="String" c:_="https://febas.basnet.by"/>
     <bean id="ca_caf_registrar"          parent="String" c:_="http://www.canarie.ca"/>
