@@ -2076,7 +2076,7 @@
 		Sign MDQ components: EntityDescriptor files and EntitiesDescriptor
     -->
     <target name="samlmd.mdq.sign" depends="
-        samlmd.mdq.sign.fragments
+        samlmd.mdq.sign.fragments,
         samlmd.mdq.sign.all.entities">
 		<echo>MDQ fragments and all entities files signed.</echo>
     </target>
