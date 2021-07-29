@@ -581,7 +581,7 @@
         Runs on: keymaster
 
     -->
-    <target name="process.create-mdq-cache.sign.fragments" depends="mdq.sign.fragments">
+    <target name="process.create-mdq-cache.sign.fragments" depends="samlmd.mdq.sign.fragments">
         <echo>Stage 4.1.1 Success: MDQ fragments signed</echo>
     </target>
 
@@ -592,7 +592,7 @@
         Runs on: keymaster
 
     -->
-    <target name="process.create-mdq-cache.sign.all.entities" depends="mdq.sign.all.entities">
+    <target name="process.create-mdq-cache.sign.all.entities" depends="samlmd.mdq.sign.all.entities">
         <echo>Stage 4.1.2 Success: MDQ all entities file signed</echo>
     </target>
 
