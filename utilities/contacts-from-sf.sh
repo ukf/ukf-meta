@@ -1,23 +1,19 @@
 #!/bin/bash
-# This script processes a Salesforce report "UKfed-contacts-export" which lists all contacts with
-# UK Federation Contact Roles and their corresponding Jisc Organisation ID (ukforg) and Organisation Name
 #
-# The current report can be found here https://eu3.salesforce.com/00Ow0000007MXhK, it needs to be exported as a CSV file
-# which ends up as 'reportnnnnnnnnnnnnn.csv'
+# This script processes a Salesforce report which lists all contacts with UK federation
+# contact roles, their corresponding Jisc Organisation ID and Organisation Name.
 #
-# The input to the script is the above CSV file.
+# Expects a CSV file with the following format:
+# "Contact: Email","Jisc Organisational ID","Role Name","Account Name"
+# "person1@example.com","127","UK Federation Management Contact","Further College"
+# "person2@example.com","12345","UK Federation Signatory","Unseen University"
+#
 #
 # The output of the script is as follows;
 #
 # * A copy of the Salesforce report in $CSVDEST
 # * A list of Management Contact email addresses in $MGMTDEST
 # * A list of all contact email addresses in $CONTACTDEST
-#
-# To use this script please follow the process here;
-#
-# https://repo.infr.ukfederation.org.uk/ukf/ukf-systems/wikis/HOW-to-process-UKfed-contacts-export-report
-#
-# Author: Jon Agland <jon.agland@jisc.ac.uk>
 #
 
 UKFDATA=../../ukf-data
