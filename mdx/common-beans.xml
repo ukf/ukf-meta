@@ -450,7 +450,7 @@
     <bean id="si_arnes_registrar"        parent="String" c:_="http://aai.arnes.si"/>
     <bean id="sk_safeid_registrar"       parent="String" c:_="http://safeid.sk"/>
     <bean id="tj_tarena_registrar"       parent="String" c:_="http://www.tidf.tj/"/>
-    <bean id="tr_yetkim_registrar"       parent="String" c:_="https://yetkim.ulakbim.gov.tr/"/>
+    <bean id="tr_yetkim_registrar"       parent="String" c:_="https://yetkim.org.tr/"/>
     <bean id="ua_peano_registrar"        parent="String" c:_="https://peano.uran.ua"/>
     <bean id="ug_rif_registrar"          parent="String" c:_="https://www.renu.ac.ug"/>
     <bean id="uk_ukf_registrar"          parent="String" c:_="http://ukfederation.org.uk"/>
