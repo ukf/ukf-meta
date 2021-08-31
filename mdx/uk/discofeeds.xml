@@ -78,7 +78,7 @@
     -->
 
     <bean id="discoFeedSerializer" parent="ukf.DiscoFeedCollectionSerializer"
-        p:prettyPrinting="true"/>
+        p:prettyPrinting="true" p:includingLegacyDisplayNames="true"/>
 
     <bean id="discofeeds" parent="mda.SimplePipeline">
         <property name="stages">
