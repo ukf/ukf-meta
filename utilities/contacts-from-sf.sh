@@ -21,6 +21,7 @@ CSVDEST=../../ukf-data/contacts/sf-contacts.csv
 CONTACTDEST=../../ukf-data/contacts/sf-contacts.txt
 MGMTDEST=../../ukf-data/contacts/sf-contacts-mc.txt
 TMPFILE=$(mktemp)
+export LC_COLLATE="C.UTF-8"
 
 if [ -z "$1" ]; then
      echo "ERROR: No file name supplied"
