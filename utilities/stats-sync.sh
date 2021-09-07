@@ -33,9 +33,12 @@ rsync -at --exclude modsec* stats@test-idp:/var/log/httpd/* $logslocation/test-i
 rsync -at stats@test-idp:/opt/shibboleth-idp/logs/idp-audit* $logslocation/test-idp/
 
 # Logs from Test SP
-rsync -at --exclude modsec* stats@test-sp:/var/log/httpd/* $logslocation/test-sp/
-rsync -at stats@test-sp:/var/log/shibboleth/shibd* $logslocation/test-sp/
-rsync -at stats@test-sp:/var/log/shibboleth/transaction* $logslocation/test-sp/
+#
+# The Test SP has a cronjob to remove logs with PII > 30 days old, --delete keeps repo in sync
+#
+rsync --delete -at --exclude modsec* stats@test-sp:/var/log/httpd/* $logslocation/test-sp/
+rsync --delete -at stats@test-sp:/var/log/shibboleth/shibd* $logslocation/test-sp/
+rsync --delete -at stats@test-sp:/var/log/shibboleth/transaction* $logslocation/test-sp/
 
 # Exit happily
 exit 0
