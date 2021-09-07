@@ -1264,7 +1264,7 @@
     -->
 
     <!--
-        Runs the stats-sync script to update the local stats cache
+        Sync the logfiles from the backend servers into a central location
     -->
     <target name="stats.sync">
         <echo>Updating local stats cache</echo>
