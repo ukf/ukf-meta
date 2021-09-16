@@ -100,7 +100,8 @@
 
                 <ref bean="standardImportActions"/>
                 <ref bean="edugainPolicy"/>
-                <ref bean="errorTerminatingFilter"/>
+                <ref bean="warningAndErrorAnnouncer"/>
+                <ref bean="errorTerminator"/>
             </list>
         </property>
     </bean>
