@@ -61,8 +61,6 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 
 Status:
 
-* The `test` aggregate does not include the `<UKFederationMember>` label (`ukf-meta#34`).
-
 * The `test` aggregate does not include the entity-level copy of the scopes for an
   identity provider (`ukf-meta#49`).
 
@@ -77,6 +75,8 @@ Status:
 ### Fallback Aggregate vs. Production Aggregate
 
 Status:
+
+* The `production` aggregate does not include the `<UKFederationMember>` label (`ukf-meta#34`).
 
 * The `production` aggregate adds `<EncryptionMethod>` elements with AES128-CBC
   to SPs that have no block encryption methods listed
