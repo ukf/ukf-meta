@@ -61,8 +61,7 @@ when it appeared in the fallback aggregate, which would be too late to take corr
 
 Status:
 
-* The `test` aggregate does not include the entity-level copy of the scopes for an
-  identity provider (`ukf-meta#49`).
+* These aggregates are identical
 
 ### `cds-all` Aggregate vs. Production Aggregate
 
@@ -75,6 +74,9 @@ Status:
 ### Fallback Aggregate vs. Production Aggregate
 
 Status:
+
+* The `production` aggregate does not include the entity-level copy of the scopes for an
+  identity provider (`ukf-meta#49`).
 
 * The `production` aggregate does not include the `<UKFederationMember>` label (`ukf-meta#34`).
 

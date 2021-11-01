@@ -306,6 +306,7 @@
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
+                <ref bean="stripEntityScopes"/>
 
                 <ref bean="uk_add_cbc_encryption"/>
 
