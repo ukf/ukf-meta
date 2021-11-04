@@ -17,7 +17,7 @@
 <br />
 <ul>
 
-    <xsl:for-each select="//md:EntityDescriptor[md:IDPSSODescriptor][md:Extensions/uklabel:AccountableUsers][md:Extensions/uklabel:UKFederationMember]">
+    <xsl:for-each select="//md:EntityDescriptor[md:IDPSSODescriptor][md:Extensions/uklabel:AccountableUsers]">
         <xsl:sort select="md:Organization/md:OrganizationDisplayName"/>
         <li><xsl:value-of select="md:Organization/md:OrganizationDisplayName"/></li>
     </xsl:for-each>
