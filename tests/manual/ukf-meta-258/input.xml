@@ -63,16 +63,6 @@
                 <OrganizationDisplayName xml:lang='en'>Bantshire University</OrganizationDisplayName>
         </Organization>
 </EntityDescriptor>
-<EntityDescriptor entityID='https://idp.monsters.edu/idp'>
-        <Extensions>
-                <uklabel:AccountableUsers />
-        </Extensions>
-        <IDPSSODescriptor />
-        <Organization>
-                <OrganizationName xml:lang='en'>Monsters University</OrganizationName>
-                <OrganizationDisplayName xml:lang='en'>Monsters University</OrganizationDisplayName>
-        </Organization>
-</EntityDescriptor>
 <EntityDescriptor entityID='urn:mace:ac.uk:sdss.ac.uk:provider:service:unseen.ac.uk'>
         <Extensions>
                 <uklabel:AccountableUsers />
