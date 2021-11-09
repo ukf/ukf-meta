@@ -9,3 +9,5 @@
 # 
 binmode(STDOUT, ":encoding(UTF-8)");
 s/É/&Eacute;/g;
+s/é/&eacute;/g;
+s/ü/&uuml;/g;
