@@ -594,40 +594,7 @@ fi
 # CDS stats
 # =====
 
-# How many accesses to .ds.
-cdscount=$(grep -s $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* $logslocation/cds/shibcds-ne-01/ssl_access_log* $logslocation/cds/shibcds-ne-02/ssl_access_log* $logslocation/cds/shibcds-we-01/ssl_access_log* $logslocation/cds/shibcds-we-02/ssl_access_log* | grep .ds? | wc -l)
-cdscountfriendly=$(echo $cdscount | awk '{ printf ("%'"'"'d\n", $0) }')
-
-# IPv4 vs IPv6 traffic (don't count these for daily stats)
-if [[ "$timeperiod" != "day" ]]; then
-    # Some v6 traffic has traditionally passed through v6v4proxy1/2, so to count v4 we're counting all accesses, minus those from the v4 proxy IP addresses, minus actual v6 addresses
-    cdsv4count=$(grep -s $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* $logslocation/cds/shibcds-ne-01/ssl_access_log* $logslocation/cds/shibcds-ne-02/ssl_access_log* $logslocation/cds/shibcds-we-01/ssl_access_log* $logslocation/cds/shibcds-we-02/ssl_access_log* | grep .ds? | cut -f 1 -d " " | cut -f 2-9 -d ":" | grep -v 193.63.72.83 | grep -v 194.83.7.211 | grep -v ":" | wc -l)
-    cdsv4pc=$(echo "scale=4;($cdsv4count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cdsv6count=$(( cdscount - cdsv4count ))
-    cdsv6pc=$(echo "scale=4;($cdsv6count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-
-    # Per-server request count
-    cds1count=$(grep -s $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* | grep .ds? | wc -l)
-    cds1pc=$(echo "scale=4;($cds1count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cds2count=$(grep -s $apachesearchterm $logslocation/cds/shib-cds2/ssl_access_log* | grep .ds? | wc -l)
-    cds2pc=$(echo "scale=4;($cds2count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cds3count=$(grep -s $apachesearchterm $logslocation/cds/shib-cds3/ssl_access_log* | grep .ds? | wc -l)
-    cds3pc=$(echo "scale=4;($cds3count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cdsne01count=$(grep -s $apachesearchterm $logslocation/cds/shibcds-ne-01/ssl_access_log* | grep .ds? | wc -l)
-    cdsne01pc=$(echo "scale=4;($cdsne01count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cdsne02count=$(grep -s $apachesearchterm $logslocation/cds/shibcds-ne-02/ssl_access_log* | grep .ds? | wc -l)
-    cdsne02pc=$(echo "scale=4;($cdsne02count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cdswe01count=$(grep -s $apachesearchterm $logslocation/cds/shibcds-we-01/ssl_access_log* | grep .ds? | wc -l)
-    cdswe01pc=$(echo "scale=4;($cdswe01count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-    cdswe02count=$(grep -s $apachesearchterm $logslocation/cds/shibcds-we-02/ssl_access_log* | grep .ds? | wc -l)
-    cdswe02pc=$(echo "scale=4;($cdswe02count/$cdscount)*100" | bc | awk '{printf "%.1f\n", $0}')
-fi
-
-# How many of these were to the DS (has entityId in the parameters)
-cdsdscount=$(grep -s $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* $logslocation/cds/shibcds-ne-01/ssl_access_log* $logslocation/cds/shibcds-ne-02/ssl_access_log* $logslocation/cds/shibcds-we-01/ssl_access_log* $logslocation/cds/shibcds-we-02/ssl_access_log* | grep .ds? | grep entityID | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
-
-# How many of these were to the WAYF (has shire in the parameters)
-cdswayfcount=$(grep -s $apachesearchterm $logslocation/cds/shib-cds1/ssl_access_log* $logslocation/cds/shib-cds2/ssl_access_log* $logslocation/cds/shib-cds3/ssl_access_log* $logslocation/cds/shibcds-ne-01/ssl_access_log* $logslocation/cds/shibcds-ne-02/ssl_access_log* $logslocation/cds/shibcds-we-01/ssl_access_log* $logslocation/cds/shibcds-we-02/ssl_access_log* | grep .ds? | grep shire | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
+# ukf-meta issue 338: These have been removed and will be re-implemented in Splunk. See ukf-systems, issue 669
 
 
 # =====
@@ -727,7 +694,7 @@ if [[ "$timeperiod" == "day" ]]; then
     msg+=">-> $mdqcountentityidfriendly ($mdqcountentityidpc%) entityId vs $mdqcountsha1friendly ($mdqcountsha1pc%) sha1 based queries\n"
     msg+=">-> $mdqminqueriesperip/$mdqavgqueriesperip/$mdqmaxqueriesperip min/avg/max queries per querying IP\n"
     msg+=">-> $mdqcountallentities queries for collection of all entities\n"
-    msg+=">*CDS:* $cdscountfriendly requests serviced (DS: $cdsdscount / WAYF: $cdswayfcount).\n"
+    msg+=">*CDS:* These have been removed and will be re-implemented in Splunk. See ukf-systems, issue 669\n"
     msg+=">*Wugen:* $wugencount WAYFless URLs generated, $wugennewsubs new subscriptions.\n"
     msg+=">*Test IdP:* $testidplogincount logins to $testidpspcount SPs.\n"
     msg+=">*Test SP:* $testsplogincount logins from $testspidpcount IdPs.\n"
@@ -778,10 +745,7 @@ else
     msg+="$mdqtoptenqueriesbycount\n"
     msg+="\n-----\n"
     msg+="Central Discovery Service:\n"
-    msg+="-> $cdscountfriendly total requests serviced\n"
-    msg+="-> IPv4: $cdsv4pc% vs IPv6: $cdsv6pc%\n"
-    msg+="-> Server distribution: shibcds-ne-01: $cdsne01pc% shibcds-ne-02: $cdsne02pc% shibcds-we-01: $cdswe01pc% shibcds-we-02: $cdswe02pc% / shib-cds1: $cds1pc% shib-cds2: $cds2pc% shib-cds3: $cds3pc%\n"
-    msg+="-> DS: $cdsdscount / WAYF: $cdswayfcount\n"
+    msg+="These stats have been removed and will be re-implemented in Splunk. See ukf-systems, issue 669\n"
     msg+="\n-----\n"
     msg+="Wugen:\n"
     msg+="-> $wugencount WAYFless URLs generated\n"
