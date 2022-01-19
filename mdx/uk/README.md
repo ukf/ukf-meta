@@ -75,9 +75,6 @@ Status:
 
 Status:
 
-* The `production` aggregate does not include the entity-level copy of the scopes for an
-  identity provider (`ukf-meta#49`).
-
 * The `production` aggregate does not include the `<UKFederationMember>` label (`ukf-meta#34`).
 
 * The `production` aggregate adds `<EncryptionMethod>` elements with AES128-CBC
