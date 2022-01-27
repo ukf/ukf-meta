@@ -370,6 +370,7 @@
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
+                <ref bean="stripEntityScopes"/>
 
                 <!--
                     Remove embedded images used in mdui:Logo elements.
