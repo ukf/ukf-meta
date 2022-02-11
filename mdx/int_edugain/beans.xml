@@ -29,9 +29,13 @@
     <bean id="int_edugain_betaAggregate_url" parent="String">
         <constructor-arg value="http://mds.edugain.org/edugain-v1-beta.xml"/>
     </bean>
+    <!-- Downloaded copy of production aggregate. -->
+    <bean id="int_edugain_productionAggregate_file" parent="File">
+        <constructor-arg value="${output.edugain.download}"/>
+    </bean>
 
     <!--
-        Fetches the eduGAIN production aggregate.
+        Fetches the eduGAIN production aggregate from its designated URL.
 
         Other aggregates may be substituted if their location exists as a bean
         named "int_edugain_<ID>Aggregate_url" above, and the property
@@ -49,8 +53,19 @@
             <bean parent="HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"
-                	ref="int_edugain_${int.edugain.aggregate.name:production}Aggregate_url"/>
+                    ref="int_edugain_${int.edugain.aggregate.name:production}Aggregate_url"/>
             </bean>
+        </property>
+    </bean>
+
+    <!--
+        Fetches the downloaded copy of the eduGAIN production aggregate.
+    -->
+    <bean id="int_edugain_productionAggregate_fromFile" parent="mda.DOMResourceSourceStage">
+        <property name="parserPool" ref="parserPool"/>
+        <property name="DOMResource">
+            <bean parent="FileSystemResource"
+                c:_-ref="int_edugain_productionAggregate_file"/>
         </property>
     </bean>
 
@@ -80,7 +95,7 @@
     <bean id="int_edugain_productionEntities" parent="mda.CompositeStage">
         <property name="composedStages">
             <list>
-                <ref bean="int_edugain_productionAggregate"/>
+                <ref bean="int_edugain_productionAggregate_fromFile"/>
 
                 <!--
                     Check for fatal errors at the aggregate level:

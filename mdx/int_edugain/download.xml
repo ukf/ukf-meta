@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Download eduGAIN aggregate.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+        Import commonly used beans.
+    -->
+    <import resource="classpath:common-beans.xml"/>
+
+    <!--
+        Import eduGAIN channel beans.
+    -->
+    <import resource="classpath:int_edugain/beans.xml"/>
+
+    <!--
+        Download eduGAIN aggregate.
+    -->
+    <bean id="download" parent="mda.SimplePipeline">
+        <property name="stages">
+            <list>
+                <ref bean="int_edugain_productionAggregate"/>
+
+                <!--
+                    Check for fatal errors at the aggregate level:
+                        missing or expired validUntil attribute
+                        invalid signature
+                -->
+                <ref bean="check_validUntil"/>
+                <ref bean="int_edugain_checkSignature"/>
+                <ref bean="errorTerminatingFilter"/>
+
+                <!-- Write the downloaded aggregate out to a file. -->
+                <bean id="serializeImported" parent="mda.SerializationStage"
+                    p:serializer-ref="serializer"
+                    p:outputFile-ref="int_edugain_productionAggregate_file"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

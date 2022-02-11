@@ -1547,6 +1547,37 @@
 
 
     <!--
+        *******************************************************
+        ***                                                 ***
+        ***   e d u G A I N   D O W N L O A D / C A C H E   ***
+        ***                                                 ***
+        *******************************************************
+    -->
+
+    <!--
+        flow.edugain.download
+
+        Downloads the eduGAIN aggregate and writes it into a file if successful.
+    -->
+    <target name="flow.edugain.download">
+        <echo>Downloading eduGAIN aggregate.</echo>
+        <CHANNEL.do channel="int_edugain" verb="download"/>
+        <echo>Download to ${mda.output.edugain.download} completed.</echo>
+    </target>
+
+    <!--
+        edugain.download.clear
+
+        Removes any already-downloaded copy of the eduGAIN aggregate.
+        This can be used at the start of a sequence of download attempts
+        to ensure that a much older success doesn't hide subsequent failures.
+    -->
+    <target name="edugain.download.clear">
+        <echo>Removing previously downloaded eduGAIN aggregate.</echo>
+        <delete file="${mda.output.edugain.download}" quiet="true" verbose="false"/>
+    </target>
+
+    <!--
         *************************************************
         ***                                           ***
         ***   M E T A D A T A   G E N E R A T I O N   ***
@@ -1585,8 +1616,11 @@
 
     <!--
         Unsigned metadata generation for the UK Federation.
+
+        This target assumes that the eduGAIN aggregate has
+        already been downloaded. It will fail if this is not the case.
     -->
-    <target name="samlmd.aggregates.generate">
+    <target name="flow.aggregates.generate">
         <echo>Generating unsigned UKfed metadata files.</echo>
 
         <!--
@@ -1624,6 +1658,18 @@
         <echo>Generated UK unsigned metadata.</echo>
     </target>
 
+    <!--
+        Unsigned metadata generation for the UK Federation.
+
+        This target removes any existing eduGAIN download, downloads a
+        new copy and then runs the aggregate generation flows.
+    -->
+    <target name="samlmd.aggregates.generate" depends="
+            edugain.download.clear,
+            flow.edugain.download,
+            flow.aggregates.generate
+        ">
+    </target>
 
     <!--
         ***************************
@@ -1652,6 +1698,7 @@
     <property name="mda.mdx.dir" value="${mdx.dir}"/>
     <property name="mda.members.dir" value="${members.dir}"/>
     <property name="mda.output.dir" value="${output.dir}"/>
+    <property name="mda.output.edugain.download" value="${output.dir}/edugain-download.xml"/>
     <property name="mda.sign.keyAlias" value="${sign.uk.keyAlias}"/>
     <property name="mda.sign.pkcs11Config" value="${sign.uk.pkcs11Config}"/>
     <property name="mda.mdq.output" value="${mdq.output.dir}"/>
