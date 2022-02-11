@@ -136,26 +136,8 @@
     <!--
         Entity attribute matcher for the SIRTFI assurance certification.
     -->
-    <bean id="SIRTFI.entity.attribute.matcher" parent="mda.MultiPredicateMatcher">
-        <property name="nameFormatPredicate">
-            <bean class="com.google.common.base.Predicates"
-                factory-method="equalTo"
-                c:_="urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
-            />
-        </property>
-        <property name="namePredicate">
-            <bean class="com.google.common.base.Predicates"
-                factory-method="equalTo"
-                c:_="urn:oasis:names:tc:SAML:attribute:assurance-certification"
-            />
-        </property>
-        <property name="valuePredicate">
-            <bean class="com.google.common.base.Predicates"
-                factory-method="equalTo"
-                c:_="https://refeds.org/sirtfi"
-            />
-        </property>
-    </bean>
+    <bean id="SIRTFI.entity.attribute.matcher" parent="ukf.AssuranceCertificationMatcher"
+        c:_="https://refeds.org/sirtfi"/>
 
     <!--
         Remove the REFEDS metadata namespace.
