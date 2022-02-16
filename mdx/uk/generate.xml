@@ -52,15 +52,6 @@
     -->
 
     <!--
-        stripEntityScopes
-
-        Remove entity-level Scope elements, leaving only the ones associated
-        with role descriptors.
-    -->
-    <bean id="stripEntityScopes" parent="mda.XSLTransformationStage"
-        p:XSLResource="classpath:uk/entity_scopes.xsl"/>
-
-    <!--
         finalise_parent
 
         Template for a stage used in each output pipeline which performs
@@ -274,7 +265,6 @@
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
-                <ref bean="stripEntityScopes"/>
 
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
@@ -336,7 +326,6 @@
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
-                <ref bean="stripEntityScopes"/>
 
                 <!--
                     Remove embedded images used in mdui:Logo elements.
@@ -584,7 +573,6 @@
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
-                <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
@@ -641,7 +629,6 @@
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
-                <ref bean="stripEntityScopes"/>
 
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
@@ -754,7 +741,6 @@
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
-                <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
 
                 <ref bean="uk_finaliseExport"/>
@@ -855,7 +841,6 @@
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
-                <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
 
                 <ref bean="uk_finaliseExport"/>

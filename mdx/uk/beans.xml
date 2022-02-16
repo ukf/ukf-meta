@@ -400,6 +400,13 @@
 
                 <ref bean="uk_add_cbc_encryption"/>
 
+                <!--
+                    Remove entity-level Scope elements, leaving only the ones associated
+                    with role descriptors.
+                -->
+                <bean id="stripEntityScopes" parent="mda.XSLTransformationStage"
+                    p:XSLResource="classpath:uk/entity_scopes.xsl"/>
+
                 <ref bean="populateItemIds"/>
                 <ref bean="uk_populateIds"/>
                 <bean id="uk_populateFlowConstraints"
