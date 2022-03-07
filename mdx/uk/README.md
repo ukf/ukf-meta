@@ -75,7 +75,5 @@ Status:
 
 Status:
 
-* The `production` aggregate does not include the `<UKFederationMember>` label (`ukf-meta#34`).
-
 * The `production` aggregate adds `<EncryptionMethod>` elements with AES128-CBC
   to SPs that have no block encryption methods listed

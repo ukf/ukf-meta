@@ -71,9 +71,6 @@
         <xsl:variable name="dualEntities" select="$entities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
         <xsl:variable name="dualEntityCount" select="count($dualEntities)"/>
 
-        <xsl:variable name="federationMemberEntityCount"
-            select="count($entities[md:Extensions/ukfedlabel:UKFederationMember])"/>
-
         <xsl:variable name="memberEntities"
             select="dyn:closure($members/members:Name, '$entities[md:Organization/md:OrganizationName = current()]')"/>
         <xsl:variable name="memberEntityCount"

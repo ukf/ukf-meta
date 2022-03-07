@@ -302,7 +302,6 @@
                 <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
                     p:flowName="production"/>
 
-                <ref bean="uk_strip_UKFederationMember"/>
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
@@ -672,7 +671,6 @@
                 <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
                     p:flowName="test"/>
 
-                <ref bean="uk_strip_UKFederationMember"/>
                 <ref bean="assembleAggregate"/>
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>

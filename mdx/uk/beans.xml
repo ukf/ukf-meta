@@ -476,13 +476,6 @@
 
 
     <!--
-        uk_strip_UKFederationMember
-    -->
-    <bean id="uk_strip_UKFederationMember" parent="mda.ElementStrippingStage"
-        p:elementNamespace-ref="ukfedlabel_namespace"
-        p:elementName="UKFederationMember"/>
-
-    <!--
         ***********************************************
         ***                                         ***
         ***   N A M E S P A C E   H A N D L I N G   ***

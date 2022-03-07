@@ -51,9 +51,6 @@
                     </property>
                 </bean>
 
-                <!-- Remove UKFederationLabel elements. -->
-                <ref bean="uk_strip_UKFederationMember"/>
-
                 <!--
                     Remove xsi elements and attributes.
 
