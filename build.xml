@@ -1727,6 +1727,7 @@
                     <propertyset refid="mda.properties"/>
                 </syspropertyset>
                 <jvmarg value="-enableassertions"/>
+                <jvmarg if:set="java.heap.dump" value="-XX:+HeapDumpOnOutOfMemoryError"/>
                 <arg value="--logConfig"/>
                 <arg value="${tools.dir}/mda-logging.xml"/>
                 <arg value="@{config}"/>
