@@ -60,20 +60,26 @@
                 -->
                 <ref bean="stripXsiNamespace"/>
 
+                <!--
+                    Propagate the validUntil attribute from the aggregate
+                    down to the individual entity descriptors.
+                -->
+                <bean parent="mda.XSLTransformationStage"
+                    p:XSLResource="classpath:uk/mdq_validity.xsl"/>
+
                 <!-- Break down into individual entities. -->
                 <ref bean="disassemble"/>
 
                 <!-- Populate ItemId with the entityID. -->
                 <ref bean="populateItemIds"/>
 
-                <!-- Set ID, cacheDuration and validUntil attributes. -->
+                <!-- Set ID and cacheDuration attributes. -->
                 <bean parent="mda.GenerateIdStage">
                     <constructor-arg>
                         <bean parent="ukf.FixedStringIdentifierGenerationStrategy" c:_="_"/>
                     </constructor-arg>
                 </bean>
                 <bean parent="mda.SetCacheDurationStage" p:cacheDuration="${cacheDuration.perEntity.duration}"/>
-                <bean parent="mda.SetValidUntilStage" p:validityDuration="${validUntil.perEntity.duration}"/>
 
                 <!-- Identity transform fixes signing issues. -->
                 <bean parent="mda.XSLTransformationStage"

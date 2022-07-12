@@ -116,6 +116,12 @@
     <!-- Same value, as an ISO 8601 duration. -->
     <property name="validUntil.aggregate.duration" value="P${validUntil.aggregate.days}D"/>
 
+    <!--
+        The following properties establish a validity interval for per-entity
+        metadata. Note, however, that the current UK federation configuration (see
+        mdx/uk/mdq-multisign.xml) does not make use of these, instead inheriting
+        the validUntil instant from the aggregate metadata.
+    -->
     <!-- Specific validUntil duration for per-entity metadata, in days. -->
     <property name="validUntil.perEntity.days" value="${validUntil.default.days}"/>
     <!-- Same value, as an ISO 8601 duration. -->
