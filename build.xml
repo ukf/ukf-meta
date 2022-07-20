@@ -2634,16 +2634,28 @@
 
         The intention is that these targets be called from Jenkins.
     -->
-    <target name="flow.verifyEdugain.output">
+    <target name="flow.verifyEdugain.output" depends="
+		edugain.download.clear,
+		flow.edugain.download
+		">
         <CHANNEL.do verb="verify" channel="int_edugain"/>
     </target>
-    <target name="flow.verifyEdugain.output.new">
+    <target name="flow.verifyEdugain.output.new" depends="
+		edugain.download.clear,
+		flow.edugain.download
+		">
         <CHANNEL.do verb="verify.new" channel="int_edugain"/>
     </target>
-    <target name="flow.verifyEdugain.output.all">
+    <target name="flow.verifyEdugain.output.all" depends="
+		edugain.download.clear,
+		flow.edugain.download
+		">
         <CHANNEL.do verb="verify.all" channel="int_edugain"/>
     </target>
-    <target name="flow.verifyEdugain.output.recovered">
+    <target name="flow.verifyEdugain.output.recovered" depends="
+		edugain.download.clear,
+		flow.edugain.download
+		">
         <CHANNEL.do verb="verify.recovered" channel="int_edugain"/>
     </target>
 
