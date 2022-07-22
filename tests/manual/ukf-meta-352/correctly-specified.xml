@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+    xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:remd="http://refeds.org/metadata"
+    entityID="https://example.ac.uk/correctly-specified">
+    <Extensions>
+        <mdattr:EntityAttributes>
+            <saml:Attribute Name="urn:oasis:names:tc:SAML:attribute:assurance-certification" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+                <saml:AttributeValue>https://refeds.org/sirtfi2</saml:AttributeValue>
+                <saml:AttributeValue>https://refeds.org/sirtfi</saml:AttributeValue>
+            </saml:Attribute>
+        </mdattr:EntityAttributes>
+    </Extensions>
+    <ContactPerson contactType="other"
+        remd:contactType="http://refeds.org/metadata/contactType/security">
+       <GivenName>Name of the security contact</GivenName>
+       <EmailAddress>mailto:csirt@example.ac.uk</EmailAddress>
+    </ContactPerson>
+</EntityDescriptor>
