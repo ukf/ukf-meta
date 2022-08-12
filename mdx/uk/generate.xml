@@ -289,8 +289,6 @@
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEntityScopes"/>
 
-                <ref bean="uk_add_cbc_encryption"/>
-
                 <ref bean="uk_finaliseProduction"/>
                 <ref bean="uk_normaliseNamespaces"/>
 
@@ -600,7 +598,6 @@
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEntityScopes"/>
-                <ref bean="uk_add_cbc_encryption"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="uk_finaliseFallback"/>
                 <ref bean="uk_normaliseFallback"/>
@@ -658,8 +655,6 @@
                 <bean parent="mda.SetCacheDurationStage"
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEntityScopes"/>
-
-                <ref bean="uk_add_cbc_encryption"/>
 
                 <ref bean="uk_finaliseTest"/>
                 <ref bean="uk_normaliseTest"/>
@@ -775,8 +770,6 @@
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
 
-                <ref bean="uk_add_cbc_encryption"/>
-
                 <ref bean="uk_finaliseExport"/>
 
                 <bean id="uk_normaliseExport" parent="mda.XSLTransformationStage"
@@ -877,8 +870,6 @@
                     p:cacheDuration="${cacheDuration.aggregate.duration}"/>
                 <ref bean="stripEntityScopes"/>
                 <ref bean="stripEmptyExtensions"/>
-
-                <ref bean="uk_add_cbc_encryption"/>
 
                 <ref bean="uk_finaliseExport"/>
 
