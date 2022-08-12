@@ -1247,6 +1247,7 @@
                 <ref bean="trimImportElementWhitespace"/>
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="strip_mdui_logo_length"/>
+                <ref bean="uk_add_cbc_encryption"/>
 
                 <ref bean="checkSchemas"/>
                 <ref bean="CHECK_std"/>
