@@ -433,6 +433,7 @@
     <bean id="mx_fenix_registrar"        parent="String" c:_="http://www.fenix.org.mx"/>
     <bean id="mz_cafmoz_registrar"       parent="String" c:_="http://cafmoz.morenet.ac.mz"/>
     <bean id="nl_surfconext_registrar"   parent="String" c:_="http://www.surfconext.nl/"/>
+    <bean id="ng_eduidng_registrar"      parent="String" c:_="https://www.eduid.ng"/>
     <bean id="no_feide_registrar"        parent="String" c:_="http://feide.no/"/>
     <bean id="nz_tuakiri_registrar"      parent="String" c:_="https://tuakiri.ac.nz/"/>
     <bean id="om_omankid_registrar"      parent="String" c:_="https://www.trc.gov.om/trcweb/"/>
@@ -449,6 +450,7 @@
     <bean id="sg_sgaf_registrar"         parent="String" c:_="https://www.singaren.net.sg"/>
     <bean id="si_arnes_registrar"        parent="String" c:_="http://aai.arnes.si"/>
     <bean id="sk_safeid_registrar"       parent="String" c:_="http://safeid.sk"/>
+    <bean id="th_thaiidf_registrar"      parent="String" c:_="http://idf.thairen.net.th"/>
     <bean id="tj_tarena_registrar"       parent="String" c:_="http://www.tidf.tj/"/>
     <bean id="tr_yetkim_registrar"       parent="String" c:_="https://yetkim.org.tr/"/>
     <bean id="ua_peano_registrar"        parent="String" c:_="https://peano.uran.ua"/>
@@ -501,6 +503,7 @@
         <entry key-ref="cz_eduid_registrar"           value="CZ"/>
         <entry key-ref="hu_eduid_registrar"           value="HU"/>
         <entry key-ref="lu_eduid_registrar"           value="LU"/>
+        <entry key-ref="ng_eduidng_registrar"         value="NG"/>
         <entry key-ref="ma_eduidm_registrar"          value="MA"/>
         <entry key-ref="by_febas_registrar"           value="BY"/>
         <entry key-ref="ru_fedurus_registrar"         value="RU-FEDURUS"/>
@@ -547,6 +550,7 @@
         <entry key-ref="se_swamid_registrar"          value="SE"/>
         <entry key-ref="ch_switchaai_registrar"       value="CH"/>
         <entry key-ref="ee_taat_registrar"            value="EE"/>
+        <entry key-ref="th_thaiidf_registrar"         value="TH"/>
         <entry key-ref="bd_tigerfed_registrar"        value="BD"/>
         <entry key-ref="nz_tuakiri_registrar"         value="NZ"/>
         <entry key-ref="uk_ukf_registrar"             value="UK"/>
