@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project default="echoproperties">
+
+    <!--
+        *******************************************
+        ***                                     ***
+        ***   P R O P E R T Y   S O U R C E S   ***
+        ***                                     ***
+        *******************************************
+    -->
+
+    <!--
+        os.family
+
+        Distinguish between the general kind of operating systems
+        we could be executing on.
+
+        Values: windows, macosx, linux, other.
+    -->
+    <condition property="os.family" value="windows">
+        <os family="windows"/>
+    </condition>
+    <condition property="os.family" value="macosx">
+        <os family="mac"/>
+    </condition>
+    <condition property="os.family" value="linux">
+        <os family="unix" name="Linux"/>
+    </condition>
+    <property name="os.family" value="other"/>
+
+    <!--
+        env
+
+        Distinguish between different classes of deployment,
+        e.g., development vs. production.
+
+        Values: dev, preprod, prod, prod-old
+
+        Defaults to "dev" here, but that can be overridden from the command
+        line, a Jenkins job, or in build.properties.
+    -->
+    <property name="env" value="dev"/>
+
+    <!--
+        External property files.
+
+        Pull in properties from external files. Because Ant properties are
+        immutable, amy properties declared in this file should be regarded as
+        defaults, and will be overridden by any definitions in the following
+        locations:
+
+        * on the command line
+        * in a Jenkins job definition
+        * in any of the external files listed below
+
+        The first location specifying a particular property sets the final value.
+
+        The build.properties file is not source controlled, and should be used
+        to override properties for a particular deployment, or to include
+        credentials.
+    -->
+    <property file="build.properties"/>
+    <property file="${os.family}.properties"/>
+    <property file="${env}.properties"/>
+    <property file="default.properties"/>
+
+    <!--
+        *******************************
+        ***                         ***
+        ***   P R O P E R T I E S   ***
+        ***                         ***
+        *******************************
+    -->
+
+    <!--
+        When invoking the targets related to orchestration, a production deployment
+        MUST define the following properties:
+
+        * shared.ws.dir              - the full path the to the shared workspace on the orchestration machine
+        * node.fqdn                  - the fully-qualified domain name of the remote (signing) node
+
+        The following properties MUST be provided as arguments when invoking the targets that make use of them:
+
+        * jenkins.url.to.trigger.signing     - full URL to trigger the Jenkins task responsible for signing
+        * jenkins.url.to.trigger.publication - full URL to trigger the Jenkins task responsible for publication
+    -->
+
+    <!-- directories on the orchestration machine -->
+    <property name="build.dir" value="${shared.ws.dir}/build"/>
+    <property name="tooling.dir" value="${shared.ws.dir}/ukf-meta"/>
+
+    <!-- remote working directory may not be the same as the orchestrator (they are the same in production) -->
+    <property name="remote.ws.dir" value="${shared.ws.dir}"/>
+    <property name="remote.build.dir" value="${remote.ws.dir}/build"/>
+    <property name="remote.tooling.dir" value="${remote.ws.dir}/ukf-meta"/>
+
+    <!-- properties relating to the remote node -->
+    <property name="node.user" value="ukf-signing"/>
+    <property name="node.build.dir.url" value="${node.user}@${node.fqdn}:${remote.build.dir}"/>
+    <property name="node.tooling.dir.url" value="${node.user}@${node.fqdn}:${remote.tooling.dir}"/>
+
+    <!-- filenames of the unsigned aggregates -->
+    <property name="md.prod.unsigned"   value="ukfederation-metadata-unsigned.xml"/>
+    <property name="md.test.unsigned"   value="ukfederation-test-unsigned.xml"/>
+    <property name="md.export.unsigned" value="ukfederation-export-unsigned.xml"/>
+    <property name="md.export.preview.unsigned"
+                                        value="ukfederation-export-preview-unsigned.xml"/>
+    <property name="md.back.unsigned"   value="ukfederation-back-unsigned.xml"/>
+    <property name="md.wayf.unsigned"   value="ukfederation-wayf-unsigned.xml"/>
+    <property name="md.cdsall.unsigned" value="ukfederation-cdsall-unsigned.xml"/>
+    <property name="md.wugen.unsigned"  value="ukfederation-wugen-unsigned.xml"/>
+
+    <!--
+        *************************************
+        ***                               ***
+        ***   O R C H E S T R A T I O N   ***
+        ***                               ***
+        *************************************
+    -->
+
+    <!--
+        Some conventions:
+
+        * targets whose names start "process." are expected to be run by Jenkins
+        * run git.pull.all in a separate "invoke ant" step before each of Jenkins targets are run
+        * inline targets as much as possible
+    -->
+
+    <!-- Step 3.0 runs on node -->
+    <target name="process.clear.build.dir">
+        <echo>Clearing build directory on node.</echo>
+        <delete includeemptydirs="true">
+            <fileset dir="${remote.build.dir}" includes="**/*"/>
+        </delete>
+        <echo>Output directory on node cleared.</echo>
+    </target>
+
+    <!-- Step 3.1 runs on orchestrator -->
+    <target name="process.transfer.files.to.node" depends="
+        fs.copy.tooling.to.node,
+        fs.copy.unsigned.aggregates.to.node">
+        <echo>Files transferred to node.</echo>
+    </target>
+
+    <target name="fs.copy.tooling.to.node">
+        <echo>Copying tooling from orchestrator ${tooling.dir} to ${node.tooling.dir.url}</echo>
+        <exec executable="rsync" dir="${tooling.dir}" failonerror="true">
+            <arg value="-a"/>
+            <arg value="--delete"/>
+            <arg value="--delete-excluded"/>
+            <!-- use ssh with default identity and known_hosts -->
+            <arg value="-e"/>
+            <arg value="ssh"/>
+            <!-- exclude .files and .direectories -->
+            <arg value="--exclude"/>
+            <arg value=".git"/>
+            <arg value="--exclude"/>
+            <arg value="charting"/>
+            <!-- the input files -->
+            <arg value="${tooling.dir}/"/>
+            <!-- remote directory must be last argument -->
+            <arg value="${node.tooling.dir.url}"/>
+        </exec>
+    </target>
+
+    <target name="fs.copy.unsigned.aggregates.to.node">
+        <echo>Copying unsigned aggregates from orchestrator ${build.dir} to ${node.build.dir.url}</echo>
+        <exec executable="rsync" dir="${build.dir}" failonerror="true">
+            <arg value="-a"/>
+            <!-- use ssh with default identity and known_hosts -->
+            <arg value="-e"/>
+            <arg value="ssh"/>
+            <!-- the input files -->
+            <arg value="${md.prod.unsigned}"/>
+            <arg value="${md.test.unsigned}"/>
+            <arg value="${md.export.unsigned}"/>
+            <arg value="${md.export.preview.unsigned}"/>
+            <arg value="${md.back.unsigned}"/>
+            <arg value="${md.wayf.unsigned}"/>
+            <arg value="${md.cdsall.unsigned}"/>
+            <arg value="${md.wugen.unsigned}"/>
+            <!-- remote directory must be last argument -->
+            <arg value="${node.build.dir.url}"/>
+        </exec>
+    </target>
+
+    <!-- Step 3.2 sign and verify is not orchestration -->
+
+    <!-- Step 4.1.1 create MDQ cache is not orchestration -->
+
+    <!-- Step 4.1.2 sign MDQ all entities is not orchestration -->
+
+    <!-- Step 4.1.3 create tarfile of signed MDQ products is no orchestration -->
+
+    <!-- Step 4.2 copy signed files from node to orchestrator -->
+    <!--
+    <target name="process.create-mdq-cache.scp.and.push" depends="
+        fs.scp.signed.files.from.keymaster,
+        fs.scp.mdqcache.from.keymaster,
+        fs.cp.other.files.to.aggregates.dir,
+        git.products.addallnewfiles,
+        git.products.commit.signed">
+        <echo>Signed aggregates and stats file committed to data repository.</echo>
+    </target>
+    -->
+
+    <!-- Step 5 transfer files back to repo -->
+    <!--
+    <target name="process.transfer.files.for.publishing" depends="
+        git.products.masterbranch.pushtoorigin,
+        git.products.createtagandpushtoorigin,
+        fs.scp.mdqcache.to.repo,
+        jenkins.triggerjob.publish">
+        <echo>Master branch pushed to origin, new tag created and pushed, mdq cache sent to repo, message sent to start publication.</echo>
+    </target>
+    -->
+
+    <!--
+        *******************************
+        ***                         ***
+        ***   M I S C E L L A N Y   ***
+        ***                         ***
+        *******************************
+    -->
+
+    <target name="echoproperties">
+        <echo>All properties:</echo>
+        <echoproperties/>
+    </target>
+
+</project>
