@@ -9,6 +9,11 @@
 .DS_Store
 Thumbs.db
 
+# Eclipse files
+.classpath
+.project
+.settings
+
 # /
 /private
 /build.properties
