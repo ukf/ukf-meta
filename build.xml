@@ -2160,13 +2160,28 @@
     </target>
 
     <!--
-        Simple local test of per-entity metadata generation, based on a single
-        entity rather than the whole production aggregate, because dev environment
-        PKCS#11 tokens are not fast enough to sign everything.
+        Simple local test of per-entity metadata generation, based on a curated
+        selection of entities rather than the whole production aggregate, because
+        dev environment PKCS#11 tokens are not fast enough to sign everything.
+
+        Assumes that the unsigned production aggregate already exists;
+        does NOT rebuild it every time.
     -->
     <target name="samlmd.mdq.sign.test" depends="get.sign.uk.keyPassword">
-        <property name="mda.mdq.input" value="${entities.dir}/uk000006.xml"/>
+        <property name="mda.mdq.input" value="${temp.dir}/mdq-temp.xml"/>
         <property name="mda.sign.keyPassword" value="${sign.uk.keyPassword}"/>
+        <echo>Generating per-entity test selection aggregate in ${mda.mdq.input}</echo>
+        <echo>    from unsigned aggregate in ${output.dir}/${mdaggr.prod.unsigned}</echo>
+        <delete file="${mda.mdq.input}" quiet="true"/>
+        <exec executable="xsltproc" failonerror="true">
+            <!-- The OUTPUT of xsltproc is the INPUT for the signing process. -->
+            <arg value="--output"/>
+            <arg value="${mda.mdq.input}"/>
+            <!-- Transform. -->
+            <arg value="${mdx.dir}/uk/mdq-multisign-test-gen.xsl"/>
+            <!-- The INPUT to xsltproc is the unsigned production aggregate. -->
+            <arg value="${output.dir}/${mdaggr.prod.unsigned}"/>
+        </exec>
         <echo>Generating per-entity metadata in ${mda.mdq.output}</echo>
         <echo>    from test metadata in ${mda.mdq.input}</echo>
         <delete dir="${mdq.output.dir}" quiet="true"/>
