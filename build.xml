@@ -619,34 +619,34 @@
 
         Process:
             * SCP: Copy files from keymaster
-            * FS: Copy other files from output dir into aggregates.dir so it'll get checked in
-            * Git: Add newly created files
-            * Git: Commit
     -->
     <target name="process.create-mdq-cache.scp.and.push" depends="
         fs.scp.signed.files.from.keymaster,
-        fs.scp.mdqcache.from.keymaster,
-        fs.cp.other.files.to.aggregates.dir,
-        git.products.addallnewfiles,
-        git.products.commit.signed">
-        <echo>Stage 4.2 Success: Signed aggregates and stats file comitted to data repository.</echo>
+        fs.scp.mdqcache.from.keymaster">
+        <echo>Stage 4.2 Success: Signed products retrieved from keymaster.</echo>
     </target>
 
     <!--
         Stage 5 of md process: Create Tag on products repository, push all to repo (incl. SCPing mdq cache)
 
         Runs on: orchestrator
+            * FS: Copy other files from output dir into aggregates.dir so it'll get checked in
+            * Git: Add newly created files
+            * Git: Commit
             * Git: Create New Tag
             * Git: Push to origin
             * SCP: Copy mdq cache to repo
             * Jenkins: Trigger publish task
     -->
     <target name="process.bagandtag" depends="
+        fs.cp.other.files.to.aggregates.dir,
+        git.products.addallnewfiles,
+        git.products.commit.signed,
         git.products.masterbranch.pushtoorigin,
         git.products.createtagandpushtoorigin,
         fs.scp.mdqcache.to.repo,
         jenkins.triggerjob.publish">
-        <echo>Stage 5 Success: Master branch pushed to origin, new tag created and pushed, mdq cache sent to repo, message sent to start publication.</echo>
+        <echo>Stage 5 Success: Signed products committed and pushed to origin, new tag created and pushed, mdq cache sent to repo, message sent to start publication.</echo>
     </target>
 
     <!--
