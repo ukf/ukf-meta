@@ -214,10 +214,7 @@
     <!-- Step 4.2 collates products (signed and otherwise) on orchestrator -->
     <target name="process.collate.products.on.orchestrator" depends="
         fs.rsync.products.from.node,
-        fs.rsync.mdqcache.from.node,
-        fs.copy.stats.file.to.aggregates.directory,
-        git.products.addallnewfiles,
-        git.products.commit.signed">
+        fs.rsync.mdqcache.from.node">
         <echo>Collated products on orchestrator</echo>
     </target>
 
@@ -256,28 +253,7 @@
         </exec>
     </target>
 
-    <target name="fs.copy.stats.file.to.aggregates.directory">
-        <echo>Not needed the now</echo>
-    </target>
-
-    <target name="git.products.addallnewfiles">
-        <echo>Not needed the now</echo>
-    </target>
-
-    <target name="git.products.commit.signed">
-        <echo>Not needed the now</echo>
-    </target>
-
-    <!-- Step 5 transfer files back to repo -->
-    <!--
-    <target name="process.transfer.files.for.publishing" depends="
-        git.products.masterbranch.pushtoorigin,
-        git.products.createtagandpushtoorigin,
-        fs.scp.mdqcache.to.repo,
-        jenkins.triggerjob.publish">
-        <echo>Master branch pushed to origin, new tag created and pushed, mdq cache sent to repo, message sent to start publication.</echo>
-    </target>
-    -->
+    <!-- Step 5 transfer files back to repo uses the original build.xml -->
 
     <!--
         *******************************
