@@ -79,6 +79,8 @@
 
         * shared.ws.dir              - the full path the to the shared workspace on the orchestration machine
         * node.fqdn                  - the fully-qualified domain name of the remote (signing) node
+        * compare.ws.dir             - workspace where the compare jobs get their input
+        * node.to.publish            - node from which we take signed products to publish
 
         The following properties MUST be provided as arguments when invoking the targets that make use of them:
 
@@ -93,6 +95,7 @@
     <property name="build.dir" value="${shared.ws.dir}/build"/>
     <property name="tooling.dir" value="${shared.ws.dir}/ukf-meta"/>
     <property name="aggregates.dir" value="${shared.ws.dir}/${git.repo.project.products}/aggregates"/>
+    <property name="select.dir" value="${compare.ws.dir}/${node.to.publish}"/>
 
     <!-- remote working directory may not be the same as the orchestrator (they are the same in production) -->
     <property name="remote.ws.dir" value="${shared.ws.dir}"/>
@@ -251,6 +254,21 @@
             <!-- bring them back to orchestrator working directory -->
             <arg value="${build.dir}"/>
         </exec>
+    </target>
+
+    <!-- Step SELECT copies the signed products to the appropriate directories -->
+    <target name="fs.select.signed.products">
+        <echo>Copying mdqcache to output directory in orchestrator's workspace</echo>
+        <copy todir="${build.dir}" file="${select.dir}/${mdq.cache}"/>
+        <echo>Copying signed aggregates to orchestrator's ukf-products repository</echo>
+        <copy todir="${aggregates.dir}" file="${select.dir}/${md.prod.signed}"/>
+        <copy todir="${aggregates.dir}" file="${select.dir}/${md.test.signed}"/>
+        <copy todir="${aggregates.dir}" file="${select.dir}/${md.export.signed}"/>
+        <copy todir="${aggregates.dir}" file="${select.dir}/${md.export.preview.signed}"/>
+        <copy todir="${aggregates.dir}" file="${select.dir}/${md.back.signed}"/>
+        <copy todir="${aggregates.dir}" file="${select.dir}/${md.wayf.signed}"/>
+        <copy todir="${aggregates.dir}" file="${select.dir}/${md.cdsall.signed}"/>
+        <copy todir="${aggregates.dir}" file="${select.dir}/${md.wugen.signed}"/>
     </target>
 
     <!-- Step 5 transfer files back to repo uses the original build.xml -->
