@@ -1737,11 +1737,6 @@
                         <include name="*.jar"/>
                     </fileset>
 
-                    <!-- InCommon MDA beans. -->
-                    <fileset dir="${tools.dir}/inc-mda">
-                        <include name="*.jar"/>
-                    </fileset>
-
                     <!-- Support libraries for any of the above. -->
                     <fileset dir="${tools.dir}/lib">
                         <include name="*.jar"/>
