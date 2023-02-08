@@ -22,19 +22,6 @@
     -->
     <import resource="classpath:uk/beans.xml"/>
 
-    <!-- This bean MUST be called "conversionService" to work properly. -->
-    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-        <property name="converters">
-            <set>
-                <bean class="net.shibboleth.ext.spring.config.DurationToLongConverter" />
-                <bean class="net.shibboleth.ext.spring.config.StringToIPRangeConverter" />
-                <bean class="net.shibboleth.ext.spring.config.BooleanToPredicateConverter" />
-                <bean class="net.shibboleth.ext.spring.config.StringBooleanToPredicateConverter" />
-                <bean class="net.shibboleth.ext.spring.config.StringToResourceConverter" />
-            </set>
-        </property>
-    </bean>
-
     <!--
         Generate per-entity metadata.
     -->
