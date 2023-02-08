@@ -22,7 +22,7 @@
     <!--
         Pick up Shibboleth MDA beans.
     -->
-    <import resource="mda-beans.xml"/>
+    <import resource="classpath:net/shibboleth/metadata/beans.xml"/>
 
     <!--
         Pick up UK federation MDA beans.

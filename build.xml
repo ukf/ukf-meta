@@ -278,7 +278,7 @@
     -->
     <property name="tools.dir" value="tools"/>
     <property name="tools.ant" value="${tools.dir}/ant"/>
-    <property name="tools.mda" value="${tools.dir}/aggregator-cli-0.9.2"/>
+    <property name="tools.mda" value="${tools.dir}/mda-distribution-0.10.0"/>
     <property name="tools.mdnorm" value="${tools.dir}/mdnorm"/>
     <property name="tools.slacktee" value="${tools.dir}/slacktee"/>
     <property name="tools.xmlsectool" value="${tools.dir}/xmlsectool-3.0.0"/>
