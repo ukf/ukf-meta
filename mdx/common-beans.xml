@@ -992,8 +992,8 @@
     <bean id="httpClientBuilder"
         class="net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder"
         p:connectionDisregardTLSCertificate="true"
-        p:socketTimeout="100000"
-        p:connectionTimeout="100000"
+        p:socketTimeout="PT100S"
+        p:connectionTimeout="PT100S"
     />
 
     <!--
