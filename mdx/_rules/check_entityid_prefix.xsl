@@ -22,9 +22,10 @@
     <!--
         Entity IDs should start with one of "http://", "https://" or "urn:mace:".
     -->
-    <xsl:template match="md:EntityDescriptor[not(starts-with(@entityID, 'urn:mace:'))]
-        [not(starts-with(@entityID, 'http://'))]
-        [not(starts-with(@entityID, 'https://'))]">
+    <xsl:template match="md:EntityDescriptor[
+        not(starts-with(@entityID, 'urn:mace:')) and
+        not(starts-with(@entityID, 'http://')) and
+        not(starts-with(@entityID, 'https://'))]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">entity ID <xsl:value-of select="@entityID"/> does not start with acceptable prefix</xsl:with-param>
         </xsl:call-template>
