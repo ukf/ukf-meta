@@ -1,0 +1,55 @@
+#
+# Continuous integration tests for the ukf-meta repository.
+#
+
+#
+# Default image for all steps is Amazon Corretto 11, which is based
+# on Amazon Linux (a variety of yum-based Linux derived from RHEL 7).
+#
+image: "amazoncorretto:11"
+
+stages:
+  - test
+
+perform-test:
+  stage: test
+  script:
+    #
+    # Install the tools we need that are not provided by the base image.
+    #
+    - yum -y --quiet install ant git libxslt
+
+    #
+    # Create work directories under the current one.
+    #
+    - mkdir -p work/build work/temp
+
+    #
+    # Fetch full UK federation inventory.
+    #
+    # The clone is made with a depth of 1 because we don't need any history.
+    #
+    - git clone --depth=1 https://gitlab-ci-token:$CI_JOB_TOKEN@$CI_SERVER_HOST/ukf/ukf-data.git work/ukf-data
+
+    #
+    # Thin UK federation inventory: retain 100 random entities.
+    #
+    - find work/ukf-data/entities -type f -name uk0\*.xml | sort -R | tail -n +101 | xargs rm
+
+    #
+    # Acquire a copy of the eduGAIN aggregate.
+    #
+    - ant -Denv=ci-download flow.edugain.download
+    - ls -lh work/temp
+
+    #
+    # Thin the eduGAIN aggregate into another file containing just 1% of the original
+    # entities.
+    #
+    - xsltproc -o work/temp/edugain-thin.xml utilities/thin_aggregate.xsl work/temp/edugain-download.xml
+    - ls -lh work/temp
+
+    #
+    # Run the full generate pipeline on the thinned input data.
+    #
+    - ant -Denv=ci-thin flow.aggregates.generate
