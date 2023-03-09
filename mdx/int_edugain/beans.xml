@@ -100,10 +100,11 @@
                 <!--
                     Check for fatal errors at the aggregate level:
                         missing or expired validUntil attribute
-                        invalid signature
+
+                    Signature was checked when the file was downloaded,
+                    so we don't need to do it again here.
                 -->
                 <ref bean="check_validUntil"/>
-                <ref bean="int_edugain_checkSignature"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="disassemble"/>
