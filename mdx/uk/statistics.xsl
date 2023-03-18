@@ -1542,7 +1542,7 @@
                         [@name != 'EZproxy']
                         [@name != 'OpenAthens']
                         [@name != 'Guanxi']
-                        [@name != 'simpleSAMLphp']
+                        [@name != 'SimpleSAMLphp']
                         [@name != 'Atypon SAML SP 1.1/2.0']
                         [@name != 'AthensIM']
                         [@name != 'Eduserv Gateway']
@@ -1560,11 +1560,11 @@
                 select="set:difference($entities.ezproxy.in, $entities.ezproxy)"/>
 
             <!--
-                Classify simpleSAMLphp entities.
+                Classify SimpleSAMLphp entities.
             -->
             <xsl:variable name="entities.simplesamlphp.in" select="$entities.ezproxy.out"/>
             <xsl:variable name="entities.simplesamlphp"
-                select="$entities.simplesamlphp.in[md:Extensions/ukfedlabel:Software/@name='simpleSAMLphp']"/>
+                select="$entities.simplesamlphp.in[md:Extensions/ukfedlabel:Software/@name='SimpleSAMLphp']"/>
             <xsl:variable name="entities.simplesamlphp.out"
                 select="set:difference($entities.simplesamlphp.in, $entities.simplesamlphp)"/>
 
@@ -1717,7 +1717,7 @@
 
             <xsl:call-template name="entity.breakdown.by.software.line">
                 <xsl:with-param name="entities" select="$entities.simplesamlphp"/>
-                <xsl:with-param name="name">simpleSAMLphp</xsl:with-param>
+                <xsl:with-param name="name">SimpleSAMLphp</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
             </xsl:call-template>
 
