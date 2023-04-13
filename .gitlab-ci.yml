@@ -3,10 +3,10 @@
 #
 
 #
-# Default image for all steps is Amazon Corretto 11, which is based
+# Default image for all steps is Amazon Corretto 17, which is based
 # on Amazon Linux (a variety of yum-based Linux derived from RHEL 7).
 #
-image: "amazoncorretto:11"
+image: "amazoncorretto:17"
 
 stages:
   - test
