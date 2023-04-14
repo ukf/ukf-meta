@@ -399,8 +399,7 @@
 
         It is assumed that the entities are wrapped in a single EntitiesDescriptor.
     -->
-    <bean id="check_aggregate" parent="mda.XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_aggregate.xsl"/>
+    <bean id="check_aggregate" parent="mda.DuplicateEntityInAggregateCheckingStage"/>
 
     <!--
         check_dup_display
