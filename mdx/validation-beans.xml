@@ -289,6 +289,25 @@
         </property>
     </bean>
 
+    <!--
+        ******************************************************************
+        ***                                                            ***
+        ***   R E F E D S   C o C o   v2   S P E C I F I C A T I O N   ***
+        ***                                                            ***
+        ******************************************************************
+    -->
+
+    <bean id="check_coco_v2_support" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_coco_v2_support.xsl"/>
+
+    <bean id="check_coco_v2" parent="mda.CompositeStage">
+        <property name="composedStages">
+            <list>
+                <ref bean="check_coco_v2_support"/>
+            </list>
+        </property>
+    </bean>
+
 
     <!--
         ***********************************************************
@@ -658,6 +677,7 @@
                 <ref bean="check_mdui"/>
                 <ref bean="check_misc"/>
                 <ref bean="check_rands"/>
+                <ref bean="check_coco_v2"/>
                 <ref bean="check_reqattr"/>
                 <ref bean="check_saml1"/>
                 <ref bean="check_saml2"/>

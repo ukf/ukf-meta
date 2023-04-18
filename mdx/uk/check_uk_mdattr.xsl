@@ -98,6 +98,7 @@
         /saml:AttributeValue
         [. != 'http://refeds.org/category/research-and-scholarship']
         [. != 'http://www.geant.net/uri/dataprotection-code-of-conduct/v1']
+        [. != 'https://refeds.org/category/code-of-conduct/v2']
         ">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
