@@ -62,9 +62,9 @@
 
                 <!-- Set ID and cacheDuration attributes. -->
                 <bean parent="mda.GenerateIdStage">
-                    <constructor-arg>
+                    <property name="generator">
                         <bean parent="ukf.FixedStringIdentifierGenerationStrategy" c:_="_"/>
-                    </constructor-arg>
+                    </property>
                 </bean>
                 <bean parent="mda.SetCacheDurationStage" p:cacheDuration="${cacheDuration.perEntity.duration}"/>
 

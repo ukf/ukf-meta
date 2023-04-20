@@ -70,9 +70,9 @@
                     Set the item's ID attribute to the static string "_".
                 -->
                 <bean id="setStaticID" parent="mda.GenerateIdStage">
-                    <constructor-arg>
+                    <property name="generator">
                         <bean parent="ukf.FixedStringIdentifierGenerationStrategy" c:_="_"/>
-                    </constructor-arg>
+                    </property>
                 </bean>
             </list>
         </property>
