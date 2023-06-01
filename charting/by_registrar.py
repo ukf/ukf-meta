@@ -88,4 +88,4 @@ else:
 	print
 
 	print "Current eduGAIN production aggregate:"
-	display(urlopen("http://mds.edugain.org/"), 9)
+	display(urlopen("https://mds.edugain.org/edugain-v2.xml"), 9)
