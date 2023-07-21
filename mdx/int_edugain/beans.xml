@@ -50,7 +50,7 @@
     <bean id="int_edugain_productionAggregate" parent="mda.DOMResourceSourceStage">
         <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
-            <bean parent="HTTPResource">
+            <bean parent="mda.HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url"
                     ref="int_edugain_${int.edugain.aggregate.name:production}Aggregate_url"/>
@@ -72,7 +72,7 @@
     <!--
         eduGAIN signing certificate.
     -->
-    <bean id="int_edugain_signingCertificate" parent="X509CertificateFactoryBean"
+    <bean id="int_edugain_signingCertificate" parent="mda.X509CertificateFactoryBean"
         p:resource="classpath:int_edugain/mds-v2.cer"/>
 
     <!--

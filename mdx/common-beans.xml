@@ -54,12 +54,6 @@
         class="org.springframework.core.io.FileSystemResource"/>
 
     <!--
-        Shibboleth-defined Resource class parent bean.
-    -->
-    <bean id="HTTPResource" abstract="true"
-        class="net.shibboleth.shared.spring.httpclient.resource.HTTPResource"/>
-
-    <!--
         component_parent
 
         Parent for anything based on the Shibboleth component system.
@@ -119,28 +113,8 @@
         </property>
     </bean>
 
-    <!-- *** Parent beans for Shibboleth spring-extensions factory beans. *** -->
-
-    <bean id="DOMDocumentFactoryBean" abstract="true"
-        class="net.shibboleth.shared.spring.factory.DOMDocumentFactoryBean"/>
-
-    <bean id="PKCS11PrivateKeyFactoryBean" abstract="true"
-        class="net.shibboleth.shared.spring.security.factory.PKCS11PrivateKeyFactoryBean"/>
-
-    <bean id="PrivateKeyFactoryBean" abstract="true"
-        class="net.shibboleth.shared.spring.security.factory.PrivateKeyFactoryBean"/>
-
-    <bean id="PublicKeyFactoryBean" abstract="true"
-        class="net.shibboleth.shared.spring.security.factory.PublicKeyFactoryBean"/>
-
-    <bean id="X509CertificateChainFactoryBean" abstract="true"
-        class="net.shibboleth.shared.spring.security.factory.X509CertificateChainFactoryBean"/>
-
-    <bean id="X509CertificateFactoryBean" abstract="true"
-        class="net.shibboleth.shared.spring.security.factory.X509CertificateFactoryBean"/>
-
     <!-- *** Default Shibboleth component bean id property from Spring bean id *** -->
-    <bean class="net.shibboleth.shared.spring.config.IdentifiableBeanPostProcessor" lazy-init="false"/>
+    <bean parent="mda.IdentifiableBeanPostProcessor" lazy-init="false"/>
 
 
     <!--
@@ -155,11 +129,11 @@
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="net.shibboleth.shared.spring.config.StringToDurationConverter" />
-                <bean class="net.shibboleth.shared.spring.config.StringToIPRangeConverter" />
-                <bean class="net.shibboleth.shared.spring.config.BooleanToPredicateConverter" />
-                <bean class="net.shibboleth.shared.spring.config.StringBooleanToPredicateConverter" />
-                <bean class="net.shibboleth.shared.spring.config.StringToResourceConverter" />
+                <bean parent="mda.StringToDurationConverter"/>
+                <bean parent="mda.StringToIPRangeConverter"/>
+                <bean parent="mda.BooleanToPredicateConverter"/>
+                <bean parent="mda.StringBooleanToPredicateConverter"/>
+                <bean parent="mda.StringToResourceConverter"/>
             </set>
         </property>
     </bean>
@@ -286,7 +260,7 @@
         A NamespaceContext that assigns the usual prefix for each of the commonly used XML namespaces.
         This is used in the evaluation of XPath expressions.
     -->
-    <bean id="commonNamespaces" class="net.shibboleth.metadata.dom.SimpleNamespaceContext">
+    <bean id="commonNamespaces" parent="mda.SimpleNamespaceContext">
         <constructor-arg>
             <util:map map-class="java.util.HashMap">
                 <entry key="alg"        value-ref="alg_namespace"/>
@@ -989,8 +963,7 @@
 
         These options can be removed once the underlying issue has been resolved.
     -->
-    <bean id="httpClientBuilder"
-        class="net.shibboleth.shared.httpclient.HttpClientBuilder"
+    <bean id="httpClientBuilder" parent="mda.HttpClientBuilder"
         p:connectionDisregardTLSCertificate="true"
         p:socketTimeout="PT100S"
         p:connectionTimeout="PT100S"
@@ -1008,8 +981,7 @@
 
         A pre-configured parser pool for use by source stages.
     -->
-    <bean id="parserPool" parent="component_parent"
-        class="net.shibboleth.shared.xml.impl.BasicParserPool"
+    <bean id="parserPool" parent="mda.BasicParserPool"
         p:ignoreComments="false"
         p:ignoreElementContentWhitespace="false"/>
 

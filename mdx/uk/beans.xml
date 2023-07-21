@@ -107,7 +107,7 @@
     <bean id="uk_exportAggregate" parent="mda.DOMResourceSourceStage">
         <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
-            <bean parent="HTTPResource">
+            <bean parent="mda.HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" ref="uk_exportAggregate_url"/>
             </bean>
@@ -121,7 +121,7 @@
     <bean id="uk_productionAggregate" parent="mda.DOMResourceSourceStage">
         <property name="parserPool" ref="parserPool"/>
         <property name="DOMResource">
-            <bean parent="HTTPResource">
+            <bean parent="mda.HTTPResource">
                 <constructor-arg name="client" ref="httpClient"/>
                 <constructor-arg name="url" ref="uk_productionAggregate_url"/>
             </bean>
@@ -132,7 +132,7 @@
     <!--
         Metadata signing certificate.
     -->
-    <bean id="uk_signingCertificate" parent="X509CertificateFactoryBean"
+    <bean id="uk_signingCertificate" parent="mda.X509CertificateFactoryBean"
         p:resource="classpath:uk/ukfederation-2014.pem"/>
 
 
@@ -177,7 +177,7 @@
 
         This bean contains the contents of the members.xml file as a DOM Document.
     -->
-    <bean id="uk_membersDocument" parent="DOMDocumentFactoryBean">
+    <bean id="uk_membersDocument" parent="mda.DOMDocumentFactoryBean">
         <property name="resource">
             <bean parent="FileSystemResource" c:_="${members.dir}/members.xml"/>
         </property>
@@ -190,7 +190,7 @@
 
         This bean loads the schema for the members.xml file as a DOM Document.
     -->
-    <bean id="uk_membersSchemaDocument" parent="DOMDocumentFactoryBean">
+    <bean id="uk_membersSchemaDocument" parent="mda.DOMDocumentFactoryBean">
         <property name="resource">
             <bean parent="FileSystemResource" c:_="${members.dir}/ukfederation-members.xsd"/>
         </property>

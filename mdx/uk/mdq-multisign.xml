@@ -75,7 +75,7 @@
                 <!-- Sign each item. -->
                 <bean id="perform.signature" parent="mda.XMLSignatureSigningStage">
                     <property name="privateKey">
-                        <bean parent="PKCS11PrivateKeyFactoryBean"
+                        <bean parent="mda.PKCS11PrivateKeyFactoryBean"
                             p:pkcs11Config="${sign.pkcs11Config}"
                             p:keyPassword="${sign.keyPassword}"
                             p:keyAlias="${sign.keyAlias}"
