@@ -86,7 +86,7 @@
         Fetch the production entities as a collection.
     -->
     <bean id="us_incommon_productionEntities" parent="mda.CompositeStage">
-        <property name="composedStages">
+        <property name="stages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
 
@@ -108,7 +108,7 @@
         Synthesise an export collection by filtering the production entities.
     -->
     <bean id="us_incommon_exportedEntities" parent="mda.CompositeStage">
-        <property name="composedStages">
+        <property name="stages">
             <list>
                 <ref bean="us_incommon_productionAggregate"/>
 
@@ -135,7 +135,7 @@
                     Filter out all entities not involved in the pilot.
                 -->
                 <bean id="us_incommon_pilot_filterEntities" parent="mda.EntityFilterStage"
-                    p:whitelistingEntities="true">
+                    p:keepingEntities="true">
                     <property name="designatedEntities">
                         <set>
                             <value>https://ligo.org/ligovirgo/cbcnote/shibboleth-sp</value>
@@ -148,10 +148,10 @@
                     Remove all contact information.
                 -->
                 <bean id="us_incommon_remove_contacts" parent="mda.ContactPersonFilterStage"
-                    p:whitelistingTypes="true">
+                    p:keepingTypes="true">
                     <property name="designatedTypes">
                         <set>
-                            <!-- no whitelisted types implies remove everything -->
+                            <!-- no kept types implies remove everything -->
                         </set>
                     </property>
                 </bean>
@@ -175,7 +175,7 @@
         Fake an export aggregate by aggregating the exported entities.
     -->
     <bean id="us_incommon_exportedAggregate" parent="mda.CompositeStage">
-        <property name="composedStages">
+        <property name="stages">
             <list>
                 <ref bean="us_incommon_exportedEntities"/>
                 <ref bean="assemble"/>

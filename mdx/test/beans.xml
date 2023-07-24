@@ -23,7 +23,7 @@
         Fetch and process the entities as a collection.
     -->
     <bean id="test_entities" parent="mda.CompositeStage">
-        <property name="composedStages">
+        <property name="stages">
             <list>
                 <ref bean="test_aggregate"/>
                 <ref bean="disassemble"/>

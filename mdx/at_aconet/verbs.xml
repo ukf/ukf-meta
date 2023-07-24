@@ -95,7 +95,7 @@
                     a while to resolve.
                 -->
                 <bean id="filterEntities" parent="mda.EntityFilterStage"
-                    p:whitelistingEntities="false">
+                    p:keepingEntities="false">
                     <property name="designatedEntities">
                         <set>
                         </set>

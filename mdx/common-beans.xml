@@ -57,7 +57,7 @@
         Shibboleth-defined Resource class parent bean.
     -->
     <bean id="HTTPResource" abstract="true"
-        class="net.shibboleth.ext.spring.resource.HTTPResource"/>
+        class="net.shibboleth.shared.spring.httpclient.resource.HTTPResource"/>
 
     <!--
         component_parent
@@ -73,7 +73,8 @@
 
         Parent for XML Signature validation stages.
 
-        Applies global algorithm blacklists. For values, see:
+        Applies global algorithm exclusions. For values, see:
+
             http://www.w3.org/TR/xmlsec-algorithms/
 
         Establishes a default of *not* permitting empty references
@@ -82,12 +83,12 @@
         require it.
     -->
     <bean id="XMLSignatureValidationStage" abstract="true" parent="mda.XMLSignatureValidationStage">
-        <property name="blacklistedDigests">
+        <property name="disallowedDigests">
             <list>
                 <value>http://www.w3.org/2001/04/xmldsig-more#md5</value>
             </list>
         </property>
-        <property name="blacklistedSignatureMethods">
+        <property name="disallowedSignatureMethods">
             <list>
                 <value>http://www.w3.org/2001/04/xmldsig-more#rsa-md5</value>
             </list>
@@ -103,13 +104,13 @@
     -->
     <bean id="XMLSignatureValidationStageSHA256" abstract="true"
         parent="XMLSignatureValidationStage">
-        <property name="blacklistedDigests">
+        <property name="disallowedDigests">
             <list>
                 <value>http://www.w3.org/2000/09/xmldsig#sha1</value>
                 <value>http://www.w3.org/2001/04/xmldsig-more#md5</value>
             </list>
         </property>
-        <property name="blacklistedSignatureMethods">
+        <property name="disallowedSignatureMethods">
             <list>
                 <value>http://www.w3.org/2000/09/xmldsig#rsa-sha1</value>
                 <value>http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1</value>
@@ -121,26 +122,25 @@
     <!-- *** Parent beans for Shibboleth spring-extensions factory beans. *** -->
 
     <bean id="DOMDocumentFactoryBean" abstract="true"
-        class="net.shibboleth.ext.spring.factory.DOMDocumentFactoryBean"/>
+        class="net.shibboleth.shared.spring.factory.DOMDocumentFactoryBean"/>
 
-    <!-- PKCS11PrivateKeyFactoryBean is in MDA in V0.9.2. -->
     <bean id="PKCS11PrivateKeyFactoryBean" abstract="true"
-        class="net.shibboleth.metadata.util.PKCS11PrivateKeyFactoryBean"/>
+        class="net.shibboleth.shared.spring.security.factory.PKCS11PrivateKeyFactoryBean"/>
 
     <bean id="PrivateKeyFactoryBean" abstract="true"
-        class="net.shibboleth.ext.spring.factory.PrivateKeyFactoryBean"/>
+        class="net.shibboleth.shared.spring.security.factory.PrivateKeyFactoryBean"/>
 
     <bean id="PublicKeyFactoryBean" abstract="true"
-        class="net.shibboleth.ext.spring.factory.PublicKeyFactoryBean"/>
+        class="net.shibboleth.shared.spring.security.factory.PublicKeyFactoryBean"/>
 
     <bean id="X509CertificateChainFactoryBean" abstract="true"
-        class="net.shibboleth.ext.spring.factory.X509CertificateChainFactoryBean"/>
+        class="net.shibboleth.shared.spring.security.factory.X509CertificateChainFactoryBean"/>
 
     <bean id="X509CertificateFactoryBean" abstract="true"
-        class="net.shibboleth.ext.spring.factory.X509CertificateFactoryBean"/>
+        class="net.shibboleth.shared.spring.security.factory.X509CertificateFactoryBean"/>
 
     <!-- *** Default Shibboleth component bean id property from Spring bean id *** -->
-    <bean class="net.shibboleth.ext.spring.config.IdentifiableBeanPostProcessor" lazy-init="false"/>
+    <bean class="net.shibboleth.shared.spring.config.IdentifiableBeanPostProcessor" lazy-init="false"/>
 
 
     <!--
@@ -155,11 +155,11 @@
     <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="net.shibboleth.ext.spring.config.DurationToLongConverter" />
-                <bean class="net.shibboleth.ext.spring.config.StringToIPRangeConverter" />
-                <bean class="net.shibboleth.ext.spring.config.BooleanToPredicateConverter" />
-                <bean class="net.shibboleth.ext.spring.config.StringBooleanToPredicateConverter" />
-                <bean class="net.shibboleth.ext.spring.config.StringToResourceConverter" />
+                <bean class="net.shibboleth.shared.spring.config.StringToDurationConverter" />
+                <bean class="net.shibboleth.shared.spring.config.StringToIPRangeConverter" />
+                <bean class="net.shibboleth.shared.spring.config.BooleanToPredicateConverter" />
+                <bean class="net.shibboleth.shared.spring.config.StringBooleanToPredicateConverter" />
+                <bean class="net.shibboleth.shared.spring.config.StringToResourceConverter" />
             </set>
         </property>
     </bean>
@@ -286,7 +286,7 @@
         A NamespaceContext that assigns the usual prefix for each of the commonly used XML namespaces.
         This is used in the evaluation of XPath expressions.
     -->
-    <bean id="commonNamespaces" class="net.shibboleth.utilities.java.support.xml.SimpleNamespaceContext">
+    <bean id="commonNamespaces" class="net.shibboleth.metadata.dom.SimpleNamespaceContext">
         <constructor-arg>
             <util:map map-class="java.util.HashMap">
                 <entry key="alg"        value-ref="alg_namespace"/>
@@ -702,7 +702,7 @@
         any items that had errors.  Items with just warnings are retained.
     -->
     <bean id="errorAnnouncingFilter" parent="mda.CompositeStage">
-        <property name="composedStages">
+        <property name="stages">
             <list>
                 <ref bean="warningAndErrorAnnouncer"/>
                 <ref bean="errorRemover"/>
@@ -718,7 +718,7 @@
         Warnings are not announced, and do not cause termination.
     -->
     <bean id="errorTerminatingFilter" parent="mda.CompositeStage">
-        <property name="composedStages">
+        <property name="stages">
             <list>
                 <ref bean="errorAnnouncer"/>
                 <ref bean="errorTerminator"/>
@@ -990,7 +990,7 @@
         These options can be removed once the underlying issue has been resolved.
     -->
     <bean id="httpClientBuilder"
-        class="net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder"
+        class="net.shibboleth.shared.httpclient.HttpClientBuilder"
         p:connectionDisregardTLSCertificate="true"
         p:socketTimeout="PT100S"
         p:connectionTimeout="PT100S"
@@ -1009,7 +1009,7 @@
         A pre-configured parser pool for use by source stages.
     -->
     <bean id="parserPool" parent="component_parent"
-        class="net.shibboleth.utilities.java.support.xml.BasicParserPool"
+        class="net.shibboleth.shared.xml.impl.BasicParserPool"
         p:ignoreComments="false"
         p:ignoreElementContentWhitespace="false"/>
 
@@ -1227,7 +1227,7 @@
         that is left to the caller.
     -->
     <bean id="standardImportActions" parent="mda.CompositeStage">
-        <property name="composedStages">
+        <property name="stages">
             <list>
                 <ref bean="populateItemIds"/>
                 <ref bean="populateRegistrationAuthorities"/>
@@ -1237,7 +1237,7 @@
                     other than the ones we accept from partners.
                 -->
                 <bean id="whitelistImportedNamespaces" parent="mda.NamespacesStrippingStage"
-                    p:whitelisting="true">
+                    p:keeping="true">
                     <property name="namespaces">
                         <set>
                             <ref bean="alg_namespace"/>
@@ -1290,7 +1290,7 @@
         namespaces in the document ready for serialisation.
     -->
     <bean id="standardImportTail" parent="mda.CompositeStage">
-        <property name="composedStages">
+        <property name="stages">
             <list>
                 <!-- announce and remove any entities with errors -->
                 <ref bean="errorAnnouncingFilter"/>
