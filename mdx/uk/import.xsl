@@ -54,9 +54,7 @@
     <!--
         Force UTF-8 encoding for the output.
     -->
-    <xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8"
-        indent="yes" xalan:indent-amount="4"
-    />
+    <xsl:output omit-xml-declaration="no" method="xml" encoding="UTF-8"/>
 
     <!--
         Parameters passed in from verbs.xml.
