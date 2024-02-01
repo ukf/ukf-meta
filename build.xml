@@ -1752,13 +1752,6 @@
                         <include name="*.jar"/>
                     </fileset>
 
-                    <!--
-                        Xalan-dependent UK federation classes.
-                    -->
-                    <fileset dir="${tools.dir}/xalan/lib">
-                        <include name="sdss-xalan-md-*.jar"/>
-                    </fileset>
-
                 </classpath>
                 <syspropertyset>
                     <propertyset refid="mda.properties"/>
