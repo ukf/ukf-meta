@@ -714,16 +714,26 @@
         QNames for SAML metadata elements.
     -->
     <bean id="md-AdditionalMetadataLocation"  parent="QName" c:_0-ref="md_namespace" c:_1="AdditionalMetadataLocation"/>
+    <bean id="md-ArtifactResolutionService"   parent="QName" c:_0-ref="md_namespace" c:_1="ArtifactResolutionService"/>
+    <bean id="md-AssertionConsumerService"    parent="QName" c:_0-ref="md_namespace" c:_1="AssertionConsumerService"/>
+    <bean id="md-AssertionIDRequestService"   parent="QName" c:_0-ref="md_namespace" c:_1="AssertionIDRequestService"/>
     <bean id="md-AttributeProfile"            parent="QName" c:_0-ref="md_namespace" c:_1="AttributeProfile"/>
+    <bean id="md-AttributeService"            parent="QName" c:_0-ref="md_namespace" c:_1="AttributeService"/>
+    <bean id="md-AuthnQueryService"           parent="QName" c:_0-ref="md_namespace" c:_1="AuthnQueryService"/>
+    <bean id="md-AuthzService"                parent="QName" c:_0-ref="md_namespace" c:_1="AuthzService"/>
     <bean id="md-Company"                     parent="QName" c:_0-ref="md_namespace" c:_1="Company"/>
     <bean id="md-EmailAddress"                parent="QName" c:_0-ref="md_namespace" c:_1="EmailAddress"/>
     <bean id="md-GivenName"                   parent="QName" c:_0-ref="md_namespace" c:_1="GivenName"/>
+    <bean id="md-ManageNameIDService"         parent="QName" c:_0-ref="md_namespace" c:_1="ManageNameIDService"/>
     <bean id="md-NameIDFormat"                parent="QName" c:_0-ref="md_namespace" c:_1="NameIDFormat"/>
+    <bean id="md-NameIDMappingService"        parent="QName" c:_0-ref="md_namespace" c:_1="NameIDMappingService"/>
     <bean id="md-OrganizationDisplayName"     parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationDisplayName"/>
     <bean id="md-OrganizationName"            parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationName"/>
     <bean id="md-OrganizationURL"             parent="QName" c:_0-ref="md_namespace" c:_1="OrganizationURL"/>
     <bean id="md-ServiceDescription"          parent="QName" c:_0-ref="md_namespace" c:_1="ServiceDescription"/>
     <bean id="md-ServiceName"                 parent="QName" c:_0-ref="md_namespace" c:_1="ServiceName"/>
+    <bean id="md-SingleLogoutService"         parent="QName" c:_0-ref="md_namespace" c:_1="SingleLogoutService"/>
+    <bean id="md-SingleSignOnService"         parent="QName" c:_0-ref="md_namespace" c:_1="SingleSignOnService"/>
     <bean id="md-SurName"                     parent="QName" c:_0-ref="md_namespace" c:_1="SurName"/>
     <bean id="md-TelephoneNumber"             parent="QName" c:_0-ref="md_namespace" c:_1="TelephoneNumber"/>
 

@@ -18,7 +18,6 @@
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
-    xmlns:mdxURL="xalan://uk.ac.sdss.xalan.md.URLchecker"
     xmlns:set="http://exslt.org/sets"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
@@ -129,103 +128,6 @@
                 </xsl:with-param>
             </xsl:call-template>
         </xsl:if>
-    </xsl:template>
-
-
-    <!--
-        Section 2.1.5 Element <mdui:Logo>
-    -->
-    <xsl:template match="mdui:Logo">
-        <!--
-            Logos must never include un-encoded line breaks. This makes them invalid
-            URLs, but also causes problems with the Shibboleth CDS.
-        -->
-        <xsl:if test="contains(., '&#10;')">
-            <xsl:call-template name="error">
-                <xsl:with-param name="m">mdui:Logo contains line break</xsl:with-param>
-            </xsl:call-template>
-        </xsl:if>
-
-        <xsl:if test="contains(., '&#xA0;')">
-            <xsl:call-template name="error">
-                <xsl:with-param name="m">mdui:Logo contains non-breaking space</xsl:with-param>
-            </xsl:call-template>
-        </xsl:if>
-
-        <!--
-            Require that the URL starts with https://
-
-            This is a SHOULD in the specification; we treat it as a MUST here.
-
-            Exception: allow data: URIs as well.  The spec is currently
-            ambiguous about this, clarification ticket is here:
-
-            https://tools.oasis-open.org/issues/browse/SECURITY-24
-        -->
-        <xsl:if test="not(starts-with(., 'https://'))">
-            <xsl:if test="not(starts-with(., 'data:'))">
-                <xsl:call-template name="error">
-                    <xsl:with-param name="m">mdui:Logo URL does not start with https://</xsl:with-param>
-                </xsl:call-template>
-            </xsl:if>
-        </xsl:if>
-
-        <!--
-            Check for <mdui:Logo> elements that aren't valid URLs.
-
-            Again, explicitly permit anything starting with 'data:', so that the
-            only validity test we're performing on data: URLs is the "no newline" rule.
-        -->
-        <xsl:if test="mdxURL:invalidURL(.)">
-            <xsl:if test="not(starts-with(., 'data:'))">
-                <xsl:call-template name="error">
-                    <xsl:with-param name="m">
-                        <xsl:text>mdui:</xsl:text>
-                        <xsl:value-of select='local-name()'/>
-                        <xsl:text> '</xsl:text>
-                        <xsl:value-of select="."/>
-                        <xsl:text>' is not a valid URL: </xsl:text>
-                        <xsl:value-of select="mdxURL:whyInvalid(.)"/>
-                    </xsl:with-param>
-                </xsl:call-template>
-            </xsl:if>
-        </xsl:if>
-    </xsl:template>
-
-    <!--
-        Section 2.1.6 Element <mdui:InformationURL>
-
-        Require that the URL is valid.
-    -->
-    <xsl:template match="mdui:InformationURL[mdxURL:invalidURL(.)]">
-        <xsl:call-template name="error">
-            <xsl:with-param name="m">
-                <xsl:text>mdui:</xsl:text>
-                <xsl:value-of select='local-name()'/>
-                <xsl:text> '</xsl:text>
-                <xsl:value-of select="."/>
-                <xsl:text>' is not a valid URL: </xsl:text>
-                <xsl:value-of select="mdxURL:whyInvalid(.)"/>
-            </xsl:with-param>
-        </xsl:call-template>
-    </xsl:template>
-
-    <!--
-        Section 2.1.7 Element <mdui:PrivacyStatementURL>
-
-        Require that the URL is valid.
-    -->
-    <xsl:template match="mdui:PrivacyStatementURL[mdxURL:invalidURL(.)]">
-        <xsl:call-template name="error">
-            <xsl:with-param name="m">
-                <xsl:text>mdui:</xsl:text>
-                <xsl:value-of select='local-name()'/>
-                <xsl:text> '</xsl:text>
-                <xsl:value-of select="."/>
-                <xsl:text>' is not a valid URL: </xsl:text>
-                <xsl:value-of select="mdxURL:whyInvalid(.)"/>
-            </xsl:with-param>
-        </xsl:call-template>
     </xsl:template>
 
     <!--

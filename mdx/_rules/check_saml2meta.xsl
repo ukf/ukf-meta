@@ -11,7 +11,6 @@
 -->
 <xsl:stylesheet version="1.0"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
-    xmlns:mdxURL="xalan://uk.ac.sdss.xalan.md.URLchecker"
     xmlns:set="http://exslt.org/sets"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -65,49 +64,5 @@
         -->
         <xsl:apply-templates/>
     </xsl:template>
-
-
-    <!--
-        Check for Location attributes that aren't valid URLs.
-    -->
-    <xsl:template match="md:*[@Location and mdxURL:invalidURL(@Location)]">
-        <xsl:call-template name="error">
-            <xsl:with-param name="m">
-                <xsl:value-of select='local-name()'/>
-                <xsl:text> Location is not a valid URL: </xsl:text>
-                <xsl:value-of select="mdxURL:whyInvalid(@Location)"/>
-            </xsl:with-param>
-        </xsl:call-template>
-    </xsl:template>
-
-
-    <!--
-        Check for ResponseLocation attributes that aren't valid URLs.
-    -->
-    <xsl:template match="md:*[@ResponseLocation and mdxURL:invalidURL(@ResponseLocation)]">
-        <xsl:call-template name="error">
-            <xsl:with-param name="m">
-                <xsl:value-of select='local-name()'/>
-                <xsl:text> ResponseLocation is not a valid URL: </xsl:text>
-                <xsl:value-of select="mdxURL:whyInvalid(@ResponseLocation)"/>
-            </xsl:with-param>
-        </xsl:call-template>
-    </xsl:template>
-
-
-    <!--
-        Check for OrganizationURLs that aren't valid URLs.
-    -->
-    <xsl:template match="md:OrganizationURL[mdxURL:invalidURL(.)]">
-        <xsl:call-template name="error">
-            <xsl:with-param name="m">
-                <xsl:text>OrganizationURL '</xsl:text>
-                <xsl:value-of select="."/>
-                <xsl:text>' is not a valid URL: </xsl:text>
-                <xsl:value-of select="mdxURL:whyInvalid(.)"/>
-            </xsl:with-param>
-        </xsl:call-template>
-    </xsl:template>
-
 
 </xsl:stylesheet>
