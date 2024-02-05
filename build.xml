@@ -2483,11 +2483,6 @@
                             <include name="${mdaggr.stats}"/>
                         </fileset>
                     </scp>
-                    <scp failonerror="true" remoteTodir="${www.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-                        <fileset dir="${members.dir}">
-                            <include name="members.xml"/>
-                        </fileset>
-                    </scp>
                 </then>
         </if>
     </target>
