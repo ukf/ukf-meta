@@ -120,7 +120,7 @@
         PublicationInfo MUST appear within the Extensions of either
         EntitiesDescriptor or EntityDescriptor.
     -->
-    <xsl:template match="md:PublicationInfo[not(parent::md:Extensions)]">
+    <xsl:template match="mdrpi:PublicationInfo[not(parent::md:Extensions)]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">PublicationInfo must only appear within an Extensions element</xsl:with-param>
         </xsl:call-template>
