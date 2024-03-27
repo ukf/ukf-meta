@@ -15,12 +15,6 @@ rsync -at --exclude modsec* stats@md-ne-02:/var/log/httpd/* $logslocation/md/md-
 rsync -at --exclude modsec* stats@md-we-01:/var/log/httpd/* $logslocation/md/md-we-01/
 rsync -at --exclude modsec* stats@md-we-02:/var/log/httpd/* $logslocation/md/md-we-02/
 
-# Logs from CDS servers
-rsync -at --exclude modsec* stats@shibcds-ne-01:/var/log/httpd/* $logslocation/cds/shibcds-ne-01/
-rsync -at --exclude modsec* stats@shibcds-ne-02:/var/log/httpd/* $logslocation/cds/shibcds-ne-02/
-rsync -at --exclude modsec* stats@shibcds-we-01:/var/log/httpd/* $logslocation/cds/shibcds-we-01/
-rsync -at --exclude modsec* stats@shibcds-we-02:/var/log/httpd/* $logslocation/cds/shibcds-we-02/
-
 # Logs from websites
 rsync -at --exclude modsec* stats@www-ne-01:/var/log/httpd/* $logslocation/www/www-ne-01/
 rsync -at --exclude modsec* stats@www-we-01:/var/log/httpd/* $logslocation/www/www-we-01/
