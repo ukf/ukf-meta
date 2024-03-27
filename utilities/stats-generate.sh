@@ -596,19 +596,6 @@ fi
 
 # ukf-meta issue 338: These have been removed and will be re-implemented in Splunk. See ukf-systems, issue 669
 
-
-# =====
-# Wugen stats
-# =====
-
-# Total WAYFless URLs generated
-#wugencount=$(grep $date $logslocation/wugen/urlgenerator-audit.* $logslocation/wugen/wayfless-url-generator-audit.* | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
-wugencount=$(grep -s $date $logslocation/wugen/wayfless-url-generator-process.* | grep "Returning wayfless url" | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
-
-# New subscribers to WAYFless URLs
-wugennewsubs=$(grep -s $date $logslocation/wugen/urlgenerator-process.* $logslocation/wugen/wayfless-url-generator-process.* | grep "Subscribing user and service provider" | wc -l | awk '{ printf ("%'"'"'d\n", $0) }')
-
-
 # =====
 # Test IdP stats
 # =====
@@ -695,7 +682,6 @@ if [[ "$timeperiod" == "day" ]]; then
     msg+=">-> $mdqminqueriesperip/$mdqavgqueriesperip/$mdqmaxqueriesperip min/avg/max queries per querying IP\n"
     msg+=">-> $mdqcountallentities queries for collection of all entities\n"
     msg+=">*CDS:* These have been removed and will be re-implemented in Splunk. See ukf-systems, issue 669\n"
-    msg+=">*Wugen:* $wugencount WAYFless URLs generated, $wugennewsubs new subscriptions.\n"
     msg+=">*Test IdP:* $testidplogincount logins to $testidpspcount SPs.\n"
     msg+=">*Test SP:* $testsplogincount logins from $testspidpcount IdPs.\n"
     msg+=">*Website:* $wwwaccesscountfriendly hits from $wwwaccessipcount unique IPs."
@@ -746,10 +732,6 @@ else
     msg+="\n-----\n"
     msg+="Central Discovery Service:\n"
     msg+="These stats have been removed and will be re-implemented in Splunk. See ukf-systems, issue 669\n"
-    msg+="\n-----\n"
-    msg+="Wugen:\n"
-    msg+="-> $wugencount WAYFless URLs generated\n"
-    msg+="-> $wugennewsubs new subscriptions.\n"
     msg+="\n-----\n"
     msg+="Test IdP usage:\n"
     msg+="-> $testidplogincount logins to $testidpspcount SPs.\n"
