@@ -47,9 +47,8 @@
         A SAML 2.0 IdP with an AttributeAuthority needs an AttributeService with an appropriate Binding.
     -->
     <xsl:template match="md:AttributeAuthorityDescriptor
-        [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-        [not(md:AttributeService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:SOAP'])]
-        ">
+        [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol') and 
+        not(md:AttributeService[@Binding='urn:oasis:names:tc:SAML:2.0:bindings:SOAP'])]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">SAML 2.0 AttributeAuthority missing appropriately bound AttributeService</xsl:with-param>
         </xsl:call-template>
@@ -72,8 +71,8 @@
         Use of SAML 2.0 bindings requires SAML 2.0 in protocolSupportEnumeration.
     -->
     <xsl:template match="md:IDPSSODescriptor
-        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol'))]
-        [md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:2.0:bindings:')]]">
+        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')) and 
+        md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:2.0:bindings:')]]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>SAML 2.0 binding requires SAML 2.0 token in IDPSSODescriptor/@protocolSupportEnumeration</xsl:text>
@@ -85,8 +84,8 @@
         Use of SAML 2.0 bindings requires SAML 2.0 in protocolSupportEnumeration.
     -->
     <xsl:template match="md:AttributeAuthorityDescriptor
-        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol'))]
-        [md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:2.0:bindings:')]]">
+        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')) and
+        md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:2.0:bindings:')]]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>SAML 2.0 binding requires SAML 2.0 token in AttributeAuthorityDescriptor/@protocolSupportEnumeration</xsl:text>
@@ -98,8 +97,8 @@
         Use of SAML 2.0 bindings requires SAML 2.0 in protocolSupportEnumeration.
     -->
     <xsl:template match="md:SPSSODescriptor
-        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol'))]
-        [md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:2.0:bindings:')]]">
+        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')) and
+        md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:2.0:bindings:')]]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>SAML 2.0 binding requires SAML 2.0 token in SPSSODescriptor/@protocolSupportEnumeration</xsl:text>
