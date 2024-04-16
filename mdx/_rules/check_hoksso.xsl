@@ -55,7 +55,7 @@
         or on md:AssertionConsumerService.
     -->
     <xsl:template match="@hoksso:ProtocolBinding
-        [not(parent::md:SingleSignOnService)][not(parent::md:AssertionConsumerService)]">
+        [not(parent::md:SingleSignOnService or parent::md:AssertionConsumerService)]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>hoksso:ProtocolBinding may not appear on </xsl:text>
