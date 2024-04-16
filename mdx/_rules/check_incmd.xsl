@@ -44,7 +44,7 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template priority="2" match="@incmd:contactType[not(starts-with(.,'http://'))][not(starts-with(.,'https://'))]">
+    <xsl:template priority="2" match="@incmd:contactType[not((starts-with(.,'http://')) or (starts-with(.,'https://')))]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">incmd:contactType must be an absolute URI</xsl:with-param>
         </xsl:call-template>
