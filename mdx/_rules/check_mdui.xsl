@@ -46,7 +46,7 @@
         to the two defined container elements.  This will catch mis-spelled containers.
     -->
     <xsl:template match="md:Extensions/mdui:*
-        [not(local-name()='UIInfo')][not(local-name()='DiscoHints')]">
+        [not(local-name()='UIInfo') and not(local-name()='DiscoHints')]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>misspelled or misplaced mdui element within md:Extensions: </xsl:text>
@@ -71,7 +71,7 @@
         </xsl:call-template>
     </xsl:template>
     <xsl:template match="md:Extensions[mdui:UIInfo]
-        [not(parent::md:IDPSSODescriptor)][not(parent::md:SPSSODescriptor)]">
+        [not(parent::md:IDPSSODescriptor or parent::md:SPSSODescriptor)]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>UIInfo appearing outside SSO descriptor element (</xsl:text>
