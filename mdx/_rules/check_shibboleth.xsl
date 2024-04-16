@@ -36,8 +36,10 @@
         We perform a very cursory test for this by insisting that they start with
         either "http://" or "https://".
     -->
-    <xsl:template match="md:OrganizationURL[not(starts-with(., 'http://'))]
-        [not(starts-with(., 'https://'))]">
+    <xsl:template match="md:OrganizationURL[not(
+            (starts-with(., 'http://')) or 
+            (starts-with(., 'https://'))
+        )]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">OrganizationURL '<xsl:value-of select="."/>' does not start with acceptable prefix</xsl:with-param>
         </xsl:call-template>
