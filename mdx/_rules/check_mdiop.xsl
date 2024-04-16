@@ -27,8 +27,7 @@
         Section 2.5.1: at least one representation must appear.
     -->
     <xsl:template match="md:KeyDescriptor
-        [not(ds:KeyInfo/ds:KeyValue)]
-        [not(ds:KeyInfo/ds:X509Data/ds:X509Certificate)]">
+        [not((ds:KeyInfo/ds:KeyValue) or (ds:KeyInfo/ds:X509Data/ds:X509Certificate))]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">KeyDescriptor does not contain a key representation</xsl:with-param>
         </xsl:call-template>
