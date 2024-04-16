@@ -33,8 +33,8 @@
         An IdP with a SAML 1.1 AttributeAuthority needs an AttributeService with an appropriate Binding.
     -->
     <xsl:template match="md:AttributeAuthorityDescriptor
-        [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')]
-        [not(md:AttributeService[@Binding='urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding'])]
+        [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol') and
+        not(md:AttributeService[@Binding='urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding'])]
         ">
         <xsl:call-template name="error">
             <xsl:with-param name="m">SAML 1.1 AttributeAuthority missing appropriately bound AttributeService</xsl:with-param>
@@ -45,8 +45,8 @@
         Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
     -->
     <xsl:template match="md:IDPSSODescriptor
-        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol'))]
-        [md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
+        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')) and
+        md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>SAML 1.0 binding requires SAML 1.1 token in IDPSSODescriptor/@protocolSupportEnumeration</xsl:text>
@@ -58,8 +58,8 @@
         Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
     -->
     <xsl:template match="md:AttributeAuthorityDescriptor
-        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol'))]
-        [md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
+        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')) and
+        md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>SAML 1.0 binding requires SAML 1.1 token in AttributeAuthorityDescriptor/@protocolSupportEnumeration</xsl:text>
@@ -71,8 +71,8 @@
         Use of SAML 1.0 bindings requires SAML 1.1 in protocolSupportEnumeration.
     -->
     <xsl:template match="md:SPSSODescriptor
-        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol'))]
-        [md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
+        [not(contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:1.1:protocol')) and
+        md:*/@Binding[starts-with(., 'urn:oasis:names:tc:SAML:1.0:')]]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>SAML 1.0 binding requires SAML 1.1 token in SPSSODescriptor/@protocolSupportEnumeration</xsl:text>
