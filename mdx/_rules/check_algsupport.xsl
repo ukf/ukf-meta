@@ -42,7 +42,7 @@
     <!--
         2.4 Check for misplaced SigningMethod or DigestMethod elements.
     -->
-    <xsl:template match="alg:*[not(parent::md:Extensions)]">
+    <xsl:template match="alg:*[count(parent::md:Extensions)=0]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>alg:</xsl:text>
