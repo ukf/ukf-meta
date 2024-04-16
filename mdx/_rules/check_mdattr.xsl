@@ -39,7 +39,7 @@
         </xsl:call-template>
     </xsl:template>
     <xsl:template match="md:Extensions[mdattr:EntityAttributes]
-        [not(parent::md:EntityDescriptor)][not(parent::md:EntitiesDescriptor)]">
+        [not(parent::md:EntityDescriptor or parent::md:EntitiesDescriptor)]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">EntityAttributes must only appear within Extensions of EntityDescriptor or EntitiesDescriptor</xsl:with-param>
         </xsl:call-template>
