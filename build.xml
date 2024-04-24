@@ -218,7 +218,7 @@
         Repo properties.
     -->
     <property name="repo.user" value="mdscp"/>
-    <property name="repo.hostname" value="repo.infr.ukfederation.org.uk"/>
+    <property name="repo.hostname" value="jenkins.infr.ukfederation.org.uk"/>
     <property name="repo.path" value="/tmp"/>
     <property name="repo.url" value="${repo.user}@${repo.hostname}:${repo.path}"/>
 
