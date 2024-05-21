@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Note we define a default initialization method at this level just so we don't have to define it
+    on almost every single bean.
+-->
+<beans default-init-method="initialize"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <!-- Import the Standard bean definition resource. -->
+    <!-- See https://shibboleth.atlassian.net/wiki/spaces/MA1/pages/3162439683/Standard+bean+definition+resource -->
+    <import resource="classpath:net/shibboleth/metadata/beans.xml"/>
+
+    <!-- This bean MUST be called "conversionService" to work properly. -->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean parent="mda.StringToDurationConverter"/>
+                <bean parent="mda.StringToIPRangeConverter"/>
+                <bean parent="mda.BooleanToPredicateConverter"/>
+                <bean parent="mda.StringBooleanToPredicateConverter"/>
+                <bean parent="mda.StringToResourceConverter"/>
+            </set>
+        </property>
+    </bean>
+
+    <!-- Define files/URLs we'll use in this config -->
+
+    <!-- Schema files for the schemas we wish to validate against. -->
+    <bean id="xml-schemaFile" class="java.lang.String">
+        <constructor-arg value="path/to/schema/xml.xsd"/>
+    </bean>
+    <bean id="xml-dsig-core-schemaFile" class="java.lang.String">
+        <constructor-arg value="path/to/schema/xmldsig-core-schema.xsd"/>
+    </bean>
+    <bean id="xenc-schemaFile" class="java.lang.String">
+        <constructor-arg value="path/to/schema/xenc-schema.xsd"/>
+    </bean>
+    <bean id="saml-assertion-schemaFile" class="java.lang.String">
+        <constructor-arg value="path/to/schema/saml-schema-assertion-2.0.xsd"/>
+    </bean>
+    <bean id="saml-md-schemaFile" class="java.lang.String">
+        <constructor-arg value="path/to/schema/saml-schema-metadata-2.0.xsd"/>
+    </bean>
+
+    <bean id="incommonMdUrl" class="java.lang.String">
+        <constructor-arg value="https://mdq.incommon.org/entities"/>
+    </bean>
+    <bean id="incommonCertFile" class="java.io.File">
+        <constructor-arg value="path/to/input/inc-md-cert-mdq.pem"/>
+    </bean>
+    <bean id="ukMdUrl" class="java.lang.String">
+        <constructor-arg value="http://metadata.ukfederation.org.uk/ukfederation-metadata.xml"/>
+    </bean>
+    <bean id="ukCertFile" class="java.io.File">
+        <constructor-arg value="path/to/input/ukfederation-2014.pem"/>
+    </bean>
+    <bean id="localMetadataDirectory" class="java.io.File">
+        <constructor-arg value="path/to/input/entities"/>
+    </bean>
+    <bean id="signingKeyFile" class="java.io.File">
+        <constructor-arg value="path/to/secrets/private-key.pem"/>
+    </bean>
+    <bean id="allEntitiesOutputFile" class="java.io.File">
+        <constructor-arg value="path/to/output/all-metadata.xml"/>
+    </bean>
+    <bean id="idpEntitiesOutputFile" class="java.io.File">
+        <constructor-arg value="path/to/output/idp-metadata.xml"/>
+    </bean>
+    <bean id="spEntitiesOutputFile" class="java.io.File">
+        <constructor-arg value="path/to/output/sp-metadata.xml"/>
+    </bean>
+
+    <!-- Define some beans we'll use throughout this config -->
+
+    <bean id="parserPool" parent="mda.BasicParserPool"/>
+    <bean id="httpClientBuilder" parent="mda.HttpClientBuilder"
+          p:connectionDisregardTLSCertificate="true"/>
+    <bean id="httpClient" factory-bean="httpClientBuilder" factory-method="buildClient"/>
+    <bean id="domSerializer" parent="mda.DOMElementSerializer"/>
+    <util:list id="errorStatusClass">
+        <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
+    </util:list>
+
+    <bean id="logItemErrors" parent="mda.StatusMetadataLoggingStage"
+          p:id="logItemErrors" p:selectionRequirements-ref="errorStatusClass"/>
+
+    <bean id="removeErrorItems" parent="mda.ItemMetadataFilterStage"
+          p:id="removeErrorItems" p:selectionRequirements-ref="errorStatusClass"/>
+
+    <!--
+        Define a composite stage that is going to be used to check validUntil, disassemble the
+        EntitiesDescriptor, and schema validate each EntityDescriptor.
+    -->
+    <bean id="terminateOnInvalidSignature" parent="mda.ItemMetadataTerminationStage"
+        p:id="terminateOnInvalidSignature" p:selectionRequirements-ref="errorStatusClass"/>
+
+    <bean id="validateValidUntil" parent="mda.ValidateValidUntilStage"
+        p:id="validateValidUntil"/>
+
+    <bean id="disassembleEntitiesDescriptor" parent="mda.EntitiesDescriptorDisassemblerStage"
+        p:id="disassembleEntitiesDescriptor"/>
+
+    <bean id="validateSchema" parent="mda.XMLSchemaValidationStage"
+        p:id="validateSchema">
+        <property name="schemaResources">
+            <util:list>
+                <!--
+                    List schemas in order so that schemas used by others
+                    appear before them in the list.
+                -->
+                <bean class="org.springframework.core.io.FileSystemResource">
+                    <constructor-arg>
+                        <bean class="java.io.File">
+                            <constructor-arg ref="xml-schemaFile"/>
+                        </bean>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.springframework.core.io.FileSystemResource">
+                    <constructor-arg>
+                        <bean class="java.io.File">
+                            <constructor-arg ref="xml-dsig-core-schemaFile"/>
+                        </bean>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.springframework.core.io.FileSystemResource">
+                    <constructor-arg>
+                        <bean class="java.io.File">
+                            <constructor-arg ref="xenc-schemaFile"/>
+                        </bean>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.springframework.core.io.FileSystemResource">
+                    <constructor-arg>
+                        <bean class="java.io.File">
+                            <constructor-arg ref="saml-assertion-schemaFile"/>
+                        </bean>
+                    </constructor-arg>
+                </bean>
+                <bean class="org.springframework.core.io.FileSystemResource">
+                    <constructor-arg>
+                        <bean class="java.io.File">
+                            <constructor-arg ref="saml-md-schemaFile"/>
+                        </bean>
+                    </constructor-arg>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="commonProcessing" parent="mda.CompositeStage"
+        p:id="commonProcessing">
+        <property name="stages">
+            <util:list>
+                <ref bean="logItemErrors"/>
+                <ref bean="terminateOnInvalidSignature"/>
+                <ref bean="validateValidUntil"/>
+                <ref bean="disassembleEntitiesDescriptor"/>
+                <ref bean="validateSchema"/>
+                <!--
+                    Extract entityID attributes as ItemIDs so that we can
+                    remove duplicates when we merge.
+                -->
+                <bean id="extractIDs"
+                    p:id="extractIDs"
+                    parent="mda.EntityDescriptorItemIdPopulationStage"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <!-- Define the pipeline for reading in and performing initial processing on InCommon metadata -->
+
+    <bean id="readIncommonMetadta" parent="mda.DOMResourceSourceStage"
+        p:id="readIncommonMetadta" p:parserPool-ref="parserPool">
+        <property name="DOMResource">
+            <bean parent="mda.HTTPResource">
+                <constructor-arg ref="httpClient"/>
+                <constructor-arg ref="incommonMdUrl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="validateIncommonSignature" parent="mda.XMLSignatureValidationStage"
+        p:id="validateIncommonSignature">
+        <property name="verificationCertificate">
+            <bean parent="mda.X509CertificateFactoryBean">
+                <property name="resource">
+                    <bean class="org.springframework.core.io.FileSystemResource">
+                        <constructor-arg ref="incommonCertFile"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="incommonInput" parent="mda.SimplePipeline"
+        p:id="incommonInput">
+        <property name="stages">
+            <util:list>
+                <ref bean="readIncommonMetadta"/>
+                <ref bean="validateIncommonSignature"/>
+                <ref bean="commonProcessing"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <!-- Define the pipeline for reading in and performing initial processing on UK metadata -->
+
+    <bean id="readUkMetadata" parent="mda.DOMResourceSourceStage"
+        p:id="readUkMetadata" p:parserPool-ref="parserPool">
+        <property name="DOMResource">
+            <bean parent="mda.HTTPResource">
+                <constructor-arg ref="httpClient"/>
+                <constructor-arg ref="ukMdUrl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="validateUkSignature" parent="mda.XMLSignatureValidationStage"
+        p:id="validateUkSignature">
+        <property name="verificationCertificate">
+            <bean parent="mda.X509CertificateFactoryBean">
+                <property name="resource">
+                    <bean class="org.springframework.core.io.FileSystemResource">
+                        <constructor-arg ref="ukCertFile"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="ukInput" parent="mda.SimplePipeline"
+        p:id="ukInput">
+        <property name="stages">
+            <util:list>
+                <ref bean="readUkMetadata"/>
+                <ref bean="validateUkSignature"/>
+                <ref bean="commonProcessing"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <!-- Define the pipeline for reading in local metadata and performing initial processing on it-->
+
+    <bean id="readLocalMetadata" parent="mda.DOMFilesystemSourceStage"
+        p:id="readLocalMetadata" p:parserPool-ref="parserPool" p:source-ref="localMetadataDirectory"/>
+
+    <bean id="localInput" parent="mda.SimplePipeline"
+        p:id="localInput">
+        <property name="stages">
+            <util:list>
+                <ref bean="readLocalMetadata"/>
+                <ref bean="commonProcessing"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <!--
+        Pipeline that will produce an EntitiesDescriptor containing all entities, add a valid until
+        restriction to it, sign it, and write it out to a file.
+    -->
+
+    <bean id="buildEntitiesDecriptor" parent="mda.EntitiesDescriptorAssemblerStage"
+        p:id="buildEntitiesDecriptor"/>
+
+    <bean id="addValidUntil" parent="mda.SetValidUntilStage"
+        p:id="addValidUntil" p:validityDuration="P28D"/>
+
+    <bean id="generateContentReferenceId" parent="mda.GenerateIdStage">
+        <property name="id" value="generateContentReferenceId"/>
+    </bean>
+
+    <bean id="signEntitiesDescriptor" parent="mda.XMLSignatureSigningStage"
+        p:id="signEntitiesDescriptor">
+        <property name="privateKey">
+            <bean parent="mda.PrivateKeyFactoryBean">
+                <property name="resource">
+                    <bean class="org.springframework.core.io.FileSystemResource">
+                        <constructor-arg ref="signingKeyFile"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="serializeAll" parent="mda.SerializationStage"
+        p:id="serializeAll" p:outputFile-ref="allEntitiesOutputFile" p:serializer-ref="domSerializer"/>
+
+    <bean id="outputAll" parent="mda.SimplePipeline"
+        p:id="outputAll" >
+        <property name="stages">
+            <util:list>
+                <ref bean="buildEntitiesDecriptor"/>
+                <ref bean="addValidUntil"/>
+                <ref bean="generateContentReferenceId"/>
+                <ref bean="signEntitiesDescriptor"/>
+                <ref bean="serializeAll"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <!--
+        Pipeline that will produce an EntitiesDescriptor containing IdP entities, add a valid until
+        restriction to it, sign it, and write it out to a file.
+    -->
+
+    <bean id="retainIdPs" parent="mda.EntityRoleFilterStage"
+        p:id="retainIdPs" p:keepingRoles="true">
+        <property name="designatedRoles">
+            <util:list>
+                <bean class="javax.xml.namespace.QName">
+                    <constructor-arg value="urn:oasis:names:tc:SAML:2.0:metadata"/>
+                    <constructor-arg value="IDPSSODescriptor"/>
+                </bean>
+                <bean class="javax.xml.namespace.QName">
+                    <constructor-arg value="urn:oasis:names:tc:SAML:2.0:metadata"/>
+                    <constructor-arg value="AttributeAuthorityDescriptor"/>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="serializeIdPs" parent="mda.SerializationStage"
+        p:id="serializeIdPs" p:outputFile-ref="idpEntitiesOutputFile" p:serializer-ref="domSerializer"/>
+
+    <bean id="outputIdPs" parent="mda.SimplePipeline"
+        p:id="outputIdPs">
+        <property name="stages">
+            <util:list>
+                <ref bean="retainIdPs"/>
+                <ref bean="buildEntitiesDecriptor"/>
+                <ref bean="addValidUntil"/>
+                <ref bean="generateContentReferenceId"/>
+                <ref bean="signEntitiesDescriptor"/>
+                <ref bean="serializeIdPs"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <!--
+        Pipeline that will produce an EntitiesDescriptor containing SP entities, add a valid until
+        restriction to it, sign it, and write it out to a file.
+    -->
+    <bean id="retainSPs" parent="mda.EntityRoleFilterStage"
+        p:id="retainSPs" p:keepingRoles="true">
+        <property name="designatedRoles">
+            <util:list>
+                <bean class="javax.xml.namespace.QName">
+                    <constructor-arg value="urn:oasis:names:tc:SAML:2.0:metadata"/>
+                    <constructor-arg value="SPSSODescriptor"/>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+    <bean id="serializeSPs" parent="mda.SerializationStage"
+        p:id="serializeSPs" p:outputFile-ref="spEntitiesOutputFile" p:serializer-ref="domSerializer"/>
+
+    <bean id="outputSPs" parent="mda.SimplePipeline"
+        p:id="outputSPs">
+        <property name="stages">
+            <util:list>
+                <ref bean="retainSPs"/>
+                <ref bean="buildEntitiesDecriptor"/>
+                <ref bean="addValidUntil"/>
+                <ref bean="generateContentReferenceId"/>
+                <ref bean="signEntitiesDescriptor"/>
+                <ref bean="serializeSPs"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <!--
+        Merge the entities collected from each input source using a merge
+        strategy which removes duplicates.
+    -->
+    <bean id="mergeInputs" parent="mda.PipelineMergeStage"
+        p:id="mergeInputs">
+        <property name="collectionMergeStrategy">
+            <bean parent="mda.DeduplicatingItemIdMergeStrategy"/>
+        </property>
+        <property name="mergedPipelines">
+            <util:list>
+                <!--
+                    The order of pipelines in this list determines precedence
+                    for the DeduplicatingItemIdMergeStrategy; sources earlier
+                    in the list take precedence. Duplicate entities from later
+                    sources are discarded.
+                -->
+                <ref bean="localInput"/>
+                <ref bean="ukInput"/>
+                <ref bean="incommonInput"/>
+            </util:list>
+        </property>
+    </bean>
+
+    <!--
+        A predicate for matching everything.
+    -->
+    <bean id="matchEverything" class="com.google.common.base.Predicates" factory-method="alwaysTrue"/>
+
+    <bean id="generateOutputs" parent="mda.PipelineDemultiplexerStage"
+        p:id="generateOutputs" p:waitingForPipelines="true">
+        <property name="pipelinesAndStrategies">
+            <util:list>
+                <bean parent="mda.PipelineAndStrategy">
+                    <constructor-arg ref="outputAll"/>
+                    <constructor-arg ref="matchEverything"/>
+                </bean>
+                <bean parent="mda.PipelineAndStrategy">
+                    <constructor-arg ref="outputIdPs"/>
+                    <constructor-arg ref="matchEverything"/>
+                </bean>
+                <bean parent="mda.PipelineAndStrategy">
+                    <constructor-arg ref="outputSPs"/>
+                    <constructor-arg ref="matchEverything"/>
+                </bean>
+            </util:list>
+        </property>
+    </bean>
+
+    <!--
+        Main pipeline that merges all our sources together, logs and removes any items with errors,
+        then outputs three files: one containing everything, one containing only IdPs, and one
+        containing only SPs.  Each file has a validUntil restriction placed on it and is signed.
+    -->
+    <bean id="main" parent="mda.SimplePipeline"
+        p:id="main">
+        <property name="stages">
+            <util:list>
+                <ref bean="mergeInputs"/>
+                <ref bean="logItemErrors"/>
+                <ref bean="removeErrorItems"/>
+                <ref bean="generateOutputs"/>
+            </util:list>
+        </property>
+    </bean>
+
+</beans>

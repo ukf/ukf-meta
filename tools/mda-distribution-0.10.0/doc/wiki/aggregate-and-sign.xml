@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-init-method="initialize"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Import the Standard bean definition resource. -->
+    <!-- See https://shibboleth.atlassian.net/wiki/spaces/MA1/pages/3162439683/Standard+bean+definition+resource -->
+    <import resource="classpath:net/shibboleth/metadata/beans.xml"/>
+
+    <!-- First, we define the stages for our pipeline. -->
+
+    <!-- Import each XML document in the given directory as a separate item for processing. -->
+    <bean id="source" parent="mda.DOMFilesystemSourceStage">
+        <property name="id" value="source"/>
+        <property name="parserPool">
+            <bean parent="mda.BasicParserPool"/>
+        </property>
+        <property name="source">
+            <bean class="java.io.File">
+                <constructor-arg value="path/to/input/entities"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="removeInvalidContactPerson" parent="mda.ContactPersonFilterStage">
+        <property name="id" value="removeInvalidContactPerson"/>
+        <property name="keepingTypes" value="false"/>
+    </bean>
+
+    <bean id="removeOrganization" parent="mda.RemoveOrganizationStage">
+        <property name="id" value="removeOrganization"/>
+    </bean>
+
+    <bean id="createEntitiesDescriptor" parent="mda.EntitiesDescriptorAssemblerStage">
+        <property name="id" value="createEntitiesDescriptor"/>
+    </bean>
+
+    <bean id="generateContentReferenceId" parent="mda.GenerateIdStage">
+        <property name="id" value="generateContentReferenceId" />
+    </bean>
+
+    <bean id="signMetadata" parent="mda.XMLSignatureSigningStage">
+        <property name="id" value="signMetadata"/>
+        <property name="privateKey">
+            <bean parent="mda.PrivateKeyFactoryBean">
+                <property name="resource">
+                    <bean class="org.springframework.core.io.FileSystemResource">
+                        <constructor-arg>
+                            <bean class="java.io.File">
+                                <constructor-arg value="path/to/secrets/private-key.pem"/>
+                            </bean>
+                        </constructor-arg>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="serialize" parent="mda.SerializationStage">
+        <property name="id" value="serializeIdPs"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="path/to/output/aggregate-signed.xml"/>
+            </bean>
+        </property>
+        <property name="serializer">
+            <bean id="domSerializer" parent="mda.DOMElementSerializer" />
+        </property>
+    </bean>
+
+    <!-- Next we define a pipeline with all the stages in it -->
+    <bean id="main" parent="mda.SimplePipeline">
+        <property name="id" value="main"/>
+        <property name="stages">
+            <list>
+                <ref bean="source"/>
+                <ref bean="removeInvalidContactPerson"/>
+                <ref bean="removeOrganization"/>
+                <ref bean="createEntitiesDescriptor"/>
+                <ref bean="generateContentReferenceId"/>
+                <ref bean="signMetadata"/>
+                <ref bean="serialize"/>
+            </list>
+        </property>
+    </bean>
+</beans>

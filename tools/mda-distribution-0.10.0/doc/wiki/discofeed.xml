@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- Import the Standard bean definition resource. -->
+    <!-- See https://shibboleth.atlassian.net/wiki/spaces/MA1/pages/3162439683/Standard+bean+definition+resource -->
+    <import resource="classpath:net/shibboleth/metadata/beans.xml"/>
+
+    <!-- Default Shibboleth component bean id property from Spring bean id -->
+    <bean parent="mda.IdentifiableBeanPostProcessor" lazy-init="false"/>
+
+    <bean id="main" parent="mda.SimplePipeline">
+        <property name="stages">
+            <list>
+
+                <!-- Acquire the metadata aggregate. -->
+                <bean id="source" parent="mda.DOMFilesystemSourceStage">
+                    <property name="parserPool">
+                        <bean parent="mda.BasicParserPool"/>
+                    </property>
+                    <property name="source">
+                        <bean class="java.io.File">
+                            <constructor-arg value="path/to/input/aggregate.xml"/>
+                        </bean>
+                    </property>
+                </bean>
+
+                <!-- Disassemble into individual entities. -->
+                <bean id="disassemble" parent="mda.EntitiesDescriptorDisassemblerStage"/>
+
+                <!-- Manipulate the entities being processed: for example, remove some. -->
+                <bean id="removeEntities" parent="mda.EntityFilterStage">
+                    <property name="designatedEntities">
+                        <list>
+                            <value>https://idp.shibboleth.net/idp/shibboleth</value>
+                            <value>https://example.com/idp</value>
+                        </list>
+                    </property>
+                </bean>
+
+                <!-- Serialise as a discovery feed into an output file. -->
+                <bean id="serialize" parent="mda.SerializationStage">
+                    <property name="serializer">
+                        <bean id="discogen" parent="mda.DiscoFeedCollectionSerializer"
+                            p:prettyPrinting="true"
+                            p:includingLegacyDisplayNames="true"/>
+                    </property>
+                    <property name="outputFile">
+                        <bean class="java.io.File">
+                            <constructor-arg value="path/to/output/discofeed.json"/>
+                        </bean>
+                    </property>
+                </bean>
+
+            </list>
+        </property>
+    </bean>
+
+</beans>

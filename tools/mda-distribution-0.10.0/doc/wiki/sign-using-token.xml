@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-init-method="initialize"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Import the Standard bean definition resource. -->
+    <!-- See https://shibboleth.atlassian.net/wiki/spaces/MA1/pages/3162439683/Standard+bean+definition+resource -->
+    <import resource="classpath:net/shibboleth/metadata/beans.xml"/>
+
+    <!-- First, we define the stages for our pipeline -->
+    <bean id="source" parent="mda.DOMFilesystemSourceStage">
+        <property name="id" value="source"/>
+        <property name="parserPool">
+            <bean parent="mda.BasicParserPool"/>
+        </property>
+        <property name="source">
+            <bean class="java.io.File">
+                <constructor-arg value="path/to/input/aggregate.xml"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="generateContentReferenceId" parent="mda.GenerateIdStage">
+        <property name="id" value="generateContentReferenceId" />
+    </bean>
+
+    <bean id="signMetadata" parent="mda.XMLSignatureSigningStage">
+        <property name="id" value="signMetadata"/>
+        <property name="certificates">
+            <bean parent="mda.X509CertificateFactoryBean">
+                <property name="resource" value="file:path/to/secrets/self-signed.pem"/>
+            </bean>
+        </property>
+        <property name="privateKey">
+            <bean parent="mda.PKCS11PrivateKeyFactoryBean">
+                <property name="pkcs11Config" value="path/to/input/pkcs11-softhsm.cfg"/>
+                <property name="keyPassword" value="12341234"/>
+                <property name="keyAlias" value="key10"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="serialize" parent="mda.SerializationStage">
+        <property name="id" value="serializeIdPs"/>
+        <property name="outputFile">
+            <bean class="java.io.File">
+                <constructor-arg value="path/to/output/signed-with-token.xml"/>
+            </bean>
+        </property>
+        <property name="serializer">
+            <bean id="domSerializer" parent="mda.DOMElementSerializer"/>
+        </property>
+    </bean>
+
+    <!-- Next we define a pipeline with all the stages in it -->
+    <bean id="main" parent="mda.SimplePipeline">
+        <property name="id" value="main"/>
+        <property name="stages">
+            <list>
+                <ref bean="source"/>
+                <ref bean="generateContentReferenceId" />
+                <ref bean="signMetadata"/>
+                <ref bean="serialize" />
+            </list>
+        </property>
+    </bean>
+
+</beans>
