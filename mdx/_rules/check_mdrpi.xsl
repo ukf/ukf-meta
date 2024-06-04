@@ -39,7 +39,7 @@
         </xsl:call-template>
     </xsl:template>
     <xsl:template match="md:Extensions[mdrpi:RegistrationInfo]
-        [not(parent::md:EntityDescriptor)][not(parent::md:EntitiesDescriptor)]">
+        [not((parent::md:EntityDescriptor) or (parent::md:EntitiesDescriptor))]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">RegistrationInfo must only appear within Extensions of EntityDescriptor or EntitiesDescriptor</xsl:with-param>
         </xsl:call-template>
@@ -74,7 +74,7 @@
 
         registrationInstant values MUST be expressed in the UTC timezone using the 'Z' timezone identifier.
     -->
-    <xsl:template match="mdrpi:RegistrationInfo[@registrationInstant]
+    <xsl:template match="mdrpi:RegistrationInfo[@registrationInstant] 
         [substring(@registrationInstant, string-length(@registrationInstant)) != 'Z']">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
@@ -126,7 +126,7 @@
         </xsl:call-template>
     </xsl:template>
     <xsl:template match="md:Extensions[mdrpi:PublicationInfo]
-        [not(parent::md:EntityDescriptor)][not(parent::md:EntitiesDescriptor)]">
+        [not((parent::md:EntityDescriptor) or (parent::md:EntitiesDescriptor))]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">PublicationInfo must only appear within Extensions of EntityDescriptor or EntitiesDescriptor</xsl:with-param>
         </xsl:call-template>
@@ -162,8 +162,7 @@
         Restrict the elements in this namespace which can appear directly within md:Extensions
         to the two defined container elements.  This will catch mis-spelled containers.
     -->
-    <xsl:template match="md:Extensions/mdrpi:*
-        [not(local-name()='RegistrationInfo')][not(local-name()='PublicationInfo')]">
+    <xsl:template match="md:Extensions/mdrpi:*[not(local-name()='RegistrationInfo') and not(local-name()='PublicationInfo')]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
                 <xsl:text>misspelled or misplaced mdrpi element within md:Extensions: </xsl:text>
