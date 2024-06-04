@@ -194,6 +194,7 @@
     <property name="orchestrator.user" value="jenkins"/>
     <property name="orchestrator.hostname" value="orchestrator.infr.ukfederation.org.uk"/>
     <property name="orchestrator.path" value="${shared.ws.dir}/build"/>
+    <property name="orchestrator.port" value="22"/>
     <property name="orchestrator.url" value="${orchestrator.user}@${orchestrator.hostname}:${orchestrator.path}"/>
 
     <!--
@@ -2222,7 +2223,7 @@
 
     <target name="fs.scp.unsigned.files.to.orchestrator">
         <echo>SCPing unsigned files and stats file from output dir to orchestrator's build dir.</echo>
-        <scp failonerror="true" remoteTodir="${orchestrator.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+        <scp failonerror="true" remoteTodir="${orchestrator.url}" port="${orchestrator.port}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
             <fileset dir="${output.dir}">
                 <include name="${mdaggr.prod.unsigned}"/>
                 <include name="${mdaggr.wayf.unsigned}"/>
