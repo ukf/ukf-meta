@@ -60,8 +60,7 @@
     -->
     <xsl:template match="md:SPSSODescriptor
         [contains(@protocolSupportEnumeration, 'urn:oasis:names:tc:SAML:2.0:protocol')]
-        [not(md:KeyDescriptor[descendant::ds:X509Data][@use='encryption'])]
-        [not(md:KeyDescriptor[descendant::ds:X509Data][not(@use)])]">
+        [not((md:KeyDescriptor[descendant::ds:X509Data and @use='encryption']) or ((md:KeyDescriptor[descendant::ds:X509Data and not(@use)])))]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">SAML 2.0 SP has no encryption key</xsl:with-param>
         </xsl:call-template>
