@@ -37,7 +37,7 @@
 			[not(md:Extensions/mdrpi:RegistrationInfo/mdrpi:RegistrationPolicy)]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
-                <xsl:text>SP asserts R&amp;S entity category but has no RegistrationPolicy element.</xsl:text>
+                <xsl:text>SP asserts Research and Scholarship entity category but has no RegistrationPolicy element.</xsl:text>
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
@@ -57,7 +57,7 @@
                         [not(md:Extensions/mdrpi:RegistrationInfo/mdrpi:RegistrationPolicy)]">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
-                <xsl:text>IdP supports R&amp;S entity category but has no RegistrationPolicy element.</xsl:text>
+                <xsl:text>IdP supports Research and Scholarship entity category but has no RegistrationPolicy element.</xsl:text>
             </xsl:with-param>
         </xsl:call-template>
     </xsl:template>
