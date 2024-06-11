@@ -60,41 +60,6 @@
     </bean>
 
     <!--
-        statistics.charting
-
-        Stand-alone statistics generation for charting.
-    -->
-    <bean id="statistics.charting" parent="mda.SimplePipeline">
-        <property name="stages">
-            <list>
-                <ref bean="uk_registeredEntities"/>
-
-                <!-- Apply flow constraints for this flow. -->
-                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
-                    p:flowName="statistics"/>
-
-                <ref bean="assemble"/>
-                <bean parent="mda.XSLTransformationStage"
-                    p:XSLResource="classpath:uk/statistics-charting.xsl">
-                    <property name="transformParameters">
-                        <map>
-                            <entry key="memberDocument" value-ref="uk_membersDocument"/>
-                        </map>
-                    </property>
-                </bean>
-                <bean parent="mda.SerializationStage">
-                    <property name="serializer" ref="serializer"/>
-                    <property name="outputFile">
-                        <bean parent="File">
-                            <constructor-arg value="${output.dir}/statistics-charting.html"/>
-                        </bean>
-                    </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
-
-    <!--
         sp_mdui_test
 
         Generates a page of links to discovery services, for each SP that
