@@ -23,10 +23,9 @@
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     xmlns:math="http://exslt.org/math"
     xmlns:date="http://exslt.org/dates-and-times"
-    xmlns:dyn="http://exslt.org/dynamic"
     xmlns:set="http://exslt.org/sets"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    exclude-result-prefixes="xsl alg ds init md mdattr mdui saml xsi members ukfedlabel math date dyn set idpdisc"
+    exclude-result-prefixes="xsl alg ds init md mdattr mdui saml xsi members ukfedlabel math date set idpdisc"
     version="1.0">
 
     <xsl:output method="html" omit-xml-declaration="yes"/>
@@ -83,11 +82,6 @@
 
         <xsl:variable name="federationMemberEntityCount"
             select="count($entities[md:Extensions/ukfedlabel:UKFederationMember])"/>
-
-        <xsl:variable name="memberEntities"
-            select="dyn:closure($members/members:Name, '$entities[md:Organization/md:OrganizationName = current()]')"/>
-        <xsl:variable name="memberEntityCount"
-            select="dyn:sum($memberNames, 'count($entities[md:Organization/md:OrganizationName = current()])')"/>
 
         <xsl:variable name="idps.artifact"
             select="$idps[md:IDPSSODescriptor[md:ArtifactResolutionService]]"/>
