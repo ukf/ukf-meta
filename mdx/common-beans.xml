@@ -1276,37 +1276,7 @@
                 <ref bean="CHECK_std"/>
                 <ref bean="check_namespaces"/>
 
-                <bean id="checkCertificates" parent="mda.X509ValidationStage">
-                    <property name="validators">
-                        <list>
-                            <!-- Error on DSA keys. -->
-                            <bean p:id="DSA" parent="ukf.X509DSADetector"/>
-
-                            <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean p:id="RSAKeyLength" parent="mda.X509RSAKeyLengthValidator"
-                                p:warningBoundary="0" p:errorBoundary="2048"/>
-                            <!-- Error on small RSA public exponents. -->
-                            <bean p:id="RSAExponent" parent="mda.X509RSAExponentValidator"/>
-                            <!-- Error on keys vulnerable to ROCA. -->
-                            <bean p:id="ROCA" parent="ukf.X509ROCAValidator"/>
-
-                            <!--
-                                Debian weak key blacklists.
-
-                                Don't need to check for keys below our minimum key size.
-                            -->
-                            <ref bean="debian.2048"/>
-                            <ref bean="debian.4096"/>
-
-                            <!--
-                                Compromised key blacklists.
-
-                                Again, don't need to check for keys below our minimum key size.
-                            -->
-                            <ref bean="compromised.2048"/>
-                        </list>
-                    </property>
-                </bean>
+                <ref bean="check_standard_certificates"/>
 
             </list>
         </property>

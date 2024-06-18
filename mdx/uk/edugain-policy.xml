@@ -67,69 +67,7 @@
 
                     Perform detailed scope checking.
                 -->
-                <bean id="checkScopes" parent="inc.stage_parent"
-                    class="uk.org.iay.incommon.mda.dom.saml.shib.ScopeValidationStage">
-                    <property name="validators">
-                        <list>
-                            <bean p:id="empty" parent="inc.RejectStringRegexValidator"
-                                p:regex="" p:message="scope element must not be empty"/>
-                            <bean p:id="whiteSpace" parent="inc.RejectStringRegexValidator"
-                                p:regex=".*\s.*" p:message="scope '%s' includes white space"/>
-
-                            <!--
-                                Explicitly accept domains which, although they
-                                fall afoul of the public suffic heuristic, are
-                                nevertheless known to be legitimately used as
-                                security domains.
-                            -->
-                            <bean p:id="mil.no" parent="inc.AcceptStringValueValidator"
-                                p:value="mil.no"/>
-
-                            <bean p:id="domainName" parent="inc.AsDomainNameStringValidator"
-                                p:message="scope is not a valid domain name: %s">
-                                <property name="validators">
-                                    <list>
-                                        <!-- DNS name validators -->
-                                        <bean p:id="publicSuffix" parent="inc.RejectDomainNamePublicSuffixValidator"
-                                            p:message="scope is a public suffix: '%s'"/>
-                                        <bean p:id="noPublicSuffix" parent="inc.RejectDomainNameNotUnderPublicSuffixValidator"
-                                            p:message="scope is not under a public suffix: '%s'"/>
-                                    </list>
-                                </property>
-                            </bean>
-                        </list>
-                    </property>
-                    <property name="regexpValidators">
-                        <list>
-                            <bean p:id="empty" parent="inc.RejectStringRegexValidator"
-                                p:regex="" p:message="regex scope element must not be empty"/>
-                            <bean p:id="whiteSpace" parent="inc.RejectStringRegexValidator"
-                                p:regex=".*\s.*" p:message="regex scope '%s' includes white space"/>
-                            <bean p:id="endAnchor" parent="inc.RejectStringRegexValidator"
-                                p:regex=".*[^$]" p:message="regex scope '%s' does not end with an anchor ('$')"/>
-                            <bean p:id="literalTail" parent="inc.AsLiteralTailStringValidator"
-                                p:message="regular expression '%s' does not end with a literal tail">
-                                <property name="validators">
-                                    <!-- validators to apply to the literal tail -->
-                                    <list>
-                                        <bean p:id="domainName" parent="inc.AsDomainNameStringValidator"
-                                            p:message="literal tail is not a valid domain name: %s">
-                                            <property name="validators">
-                                                <list>
-                                                    <!-- DNS name validators for the literal tail -->
-                                                    <bean p:id="publicSuffix" parent="inc.RejectDomainNamePublicSuffixValidator"
-                                                        p:message="literal tail is a public suffix: '%s'"/>
-                                                    <bean p:id="noPublicSuffix" parent="inc.RejectDomainNameNotUnderPublicSuffixValidator"
-                                                        p:message="literal tail is not under a public suffix: '%s'"/>
-                                                </list>
-                                            </property>
-                                        </bean>
-                                    </list>
-                                </property>
-                            </bean>
-                        </list>
-                    </property>
-                </bean>
+                <ref bean="check_edugain_scopes"/>
 
                 <!--
                     ***************************************************
@@ -154,7 +92,76 @@
                     Checks against the UKf-specific list of compromised RSA keys.
                 -->
                 <ref bean="check_ukf_compromised"/>
-                    
+
+            </list>
+        </property>
+    </bean>
+
+    <!--
+        check_edugain_scopes
+
+        eduGAIN-specific rules for Scope elements.
+    -->
+    <bean id="check_edugain_scopes" p:id="checkScopes" parent="inc.stage_parent"
+        class="uk.org.iay.incommon.mda.dom.saml.shib.ScopeValidationStage">
+        <property name="validators">
+            <list>
+                <bean p:id="empty" parent="inc.RejectStringRegexValidator"
+                    p:regex="" p:message="scope element must not be empty"/>
+                <bean p:id="whiteSpace" parent="inc.RejectStringRegexValidator"
+                    p:regex=".*\s.*" p:message="scope '%s' includes white space"/>
+
+                <!--
+                    Explicitly accept domains which, although they
+                    fall afoul of the public suffic heuristic, are
+                    nevertheless known to be legitimately used as
+                    security domains.
+                -->
+                <bean p:id="mil.no" parent="inc.AcceptStringValueValidator"
+                    p:value="mil.no"/>
+
+                <bean p:id="domainName" parent="inc.AsDomainNameStringValidator"
+                    p:message="scope is not a valid domain name: %s">
+                    <property name="validators">
+                        <list>
+                            <!-- DNS name validators -->
+                            <bean p:id="publicSuffix" parent="inc.RejectDomainNamePublicSuffixValidator"
+                                p:message="scope is a public suffix: '%s'"/>
+                            <bean p:id="noPublicSuffix" parent="inc.RejectDomainNameNotUnderPublicSuffixValidator"
+                                p:message="scope is not under a public suffix: '%s'"/>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="regexpValidators">
+            <list>
+                <bean p:id="empty" parent="inc.RejectStringRegexValidator"
+                    p:regex="" p:message="regex scope element must not be empty"/>
+                <bean p:id="whiteSpace" parent="inc.RejectStringRegexValidator"
+                    p:regex=".*\s.*" p:message="regex scope '%s' includes white space"/>
+                <bean p:id="endAnchor" parent="inc.RejectStringRegexValidator"
+                    p:regex=".*[^$]" p:message="regex scope '%s' does not end with an anchor ('$')"/>
+                <bean p:id="literalTail" parent="inc.AsLiteralTailStringValidator"
+                    p:message="regular expression '%s' does not end with a literal tail">
+                    <property name="validators">
+                        <!-- validators to apply to the literal tail -->
+                        <list>
+                            <bean p:id="domainName" parent="inc.AsDomainNameStringValidator"
+                                p:message="literal tail is not a valid domain name: %s">
+                                <property name="validators">
+                                    <list>
+                                        <!-- DNS name validators for the literal tail -->
+                                        <bean p:id="publicSuffix" parent="inc.RejectDomainNamePublicSuffixValidator"
+                                            p:message="literal tail is a public suffix: '%s'"/>
+                                        <bean p:id="noPublicSuffix" parent="inc.RejectDomainNameNotUnderPublicSuffixValidator"
+                                            p:message="literal tail is not under a public suffix: '%s'"/>
+                                    </list>
+                                </property>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
             </list>
         </property>
     </bean>
