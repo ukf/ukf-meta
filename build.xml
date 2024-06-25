@@ -2222,20 +2222,25 @@
     </target>
 
     <target name="fs.scp.unsigned.files.to.orchestrator">
-        <echo>SCPing unsigned files and stats file from output dir to orchestrator's build dir.</echo>
-        <scp failonerror="true" remoteTodir="${orchestrator.url}" port="${orchestrator.port}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdaggr.prod.unsigned}"/>
-                <include name="${mdaggr.wayf.unsigned}"/>
-                <include name="${mdaggr.cdsall.unsigned}"/>
-                <include name="${mdaggr.test.unsigned}"/>
-                <include name="${mdaggr.back.unsigned}"/>
-                <include name="${mdaggr.export.unsigned}"/>
-                <include name="${mdaggr.export.preview.unsigned}"/>
-                <include name="${mdaggr.wugen.unsigned}"/>
-                <include name="${mdaggr.stats}"/>
-            </fileset>
-        </scp>
+        <echo>Copying unsigned files and stats file from output dir to orchestrator's build dir.</echo>
+        <exec executable="rsync" dir="${output.dir}" failonerror="true">
+            <arg value="-a"/>
+            <!-- use ssh with default identity and known_hosts -->
+            <arg value="-e"/>
+            <arg value="ssh -p ${orchestrator.port}"/>
+            <!-- the input files -->
+            <arg value="${mdaggr.prod.unsigned}"/>
+            <arg value="${mdaggr.wayf.unsigned}"/>
+            <arg value="${mdaggr.cdsall.unsigned}"/>
+            <arg value="${mdaggr.test.unsigned}"/>
+            <arg value="${mdaggr.back.unsigned}"/>
+            <arg value="${mdaggr.export.unsigned}"/>
+            <arg value="${mdaggr.export.preview.unsigned}"/>
+            <arg value="${mdaggr.wugen.unsigned}"/>
+            <arg value="${mdaggr.stats}"/>
+            <!-- remote directory must be last argument -->
+            <arg value="${orchestrator.url}"/>
+        </exec>
     </target>
 
     <target name="fs.scp.unsigned.files.to.keymaster">
@@ -2272,12 +2277,17 @@
     </target>
 
     <target name="fs.scp.mdqcache.to.repo">
-        <echo>SCPing mdq cache from orchestrator's build dir to a temp directory on repo.</echo>
-        <scp failonerror="true" remoteTodir="${repo.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdq.cache}"/>
-            </fileset>
-        </scp>
+        <echo>Copying mdq cache from orchestrator's build dir to a temp directory on repo.</echo>
+        <exec executable="rsync" dir="${output.dir}" failonerror="true">
+            <arg value="-a"/>
+            <!-- use ssh with default identity and known_hosts -->
+            <arg value="-e"/>
+            <arg value="ssh"/>
+            <!-- the input files -->
+            <arg value="${mdq.cache}"/>
+            <!-- remote directory must be last argument -->
+            <arg value="${repo.url}"/>
+        </exec>
     </target>
 
     <target name="fs.scp.mdqcache.from.repo">
