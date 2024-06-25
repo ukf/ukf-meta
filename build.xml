@@ -1259,7 +1259,10 @@
     -->
     <target name="jenkins.triggerjob.publish">
         <echo>Triggering Jenkins publication Job.</echo>
-        <get src="${jenkins.url.to.trigger.publication}" dest="${temp.dir}/get.out"/>
+        <!-- we do not use <get> here because it does not uses system proxy settings -->
+        <exec executable="curl" dir="${output.dir}" failonerror="true">
+            <arg value="${jenkins.url.to.trigger.publication}"/>
+        </exec>
     </target>
 
     <!--
