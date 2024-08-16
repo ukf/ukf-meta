@@ -60,31 +60,6 @@
     </bean>
 
     <!--
-        sp_mdui_test
-
-        Generates a page of links to discovery services, for each SP that
-        has mdui:uiinfo metadata.
-    -->
-    <bean id="sp_mdui_test" parent="mda.SimplePipeline">
-        <property name="stages">
-            <list>
-                <ref bean="uk_registeredEntities"/>
-                <ref bean="assemble"/>
-                <bean id="process" parent="mda.XSLTransformationStage"
-                    p:XSLResource="classpath:uk/sp_mdui_test.xsl"/>
-                <bean id="serialize" parent="mda.SerializationStage">
-                    <property name="serializer" ref="serializer"/>
-                    <property name="outputFile">
-                        <bean parent="File">
-                            <constructor-arg value="${mdx.dir}/uk/temp.html"/>
-                        </bean>
-                    </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
-
-    <!--
         ***********************
         ***                 ***
         ***   V E R I F Y   ***
