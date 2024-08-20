@@ -598,7 +598,7 @@
                 <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
                     p:flowName="statistics"/>
 
-                <ref bean="assemble"/>
+                <ref bean="uk_assemble"/>
                 <ref bean="uk_generateStatistics"/>
                 <ref bean="uk_serializeStatistics"/>
             </list>

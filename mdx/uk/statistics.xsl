@@ -1780,7 +1780,6 @@
                 <xsl:if test="($show != 0) or ($n &lt;= $show.max)">
                     <ul>
                         <xsl:for-each select="$entities">
-                            <xsl:sort select="@ID"/>
                             <li>
                                 <xsl:value-of select="@ID"/>:
                                 <code><xsl:value-of select="@entityID"/></code>
