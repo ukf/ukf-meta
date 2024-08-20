@@ -1726,16 +1726,6 @@
                         <include name="*.jar"/>
                     </fileset>
 
-                    <!--
-                        Use Xalan as our XML processor.
-                        Note: this is not the old endorsement mechanism,
-                        despite the directory name. Instead, we just load
-                        it via the classpath.
-                    -->
-                    <fileset dir="${tools.dir}/xalan/impl">
-                        <include name="*.jar"/>
-                    </fileset>
-
                 </classpath>
                 <syspropertyset>
                     <propertyset refid="mda.properties"/>
