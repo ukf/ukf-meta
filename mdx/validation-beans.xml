@@ -701,7 +701,13 @@
         check_reqattr
     -->
     <bean id="check_reqattr" parent="mda.XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_reqattr.xsl"/>
+        p:XSLResource="classpath:_rules/check_reqattr.xsl">
+        <property name="transformAttributes">
+            <map>
+                <entry key="jdk.xml.xpathExprOpLimit" value="0"/>
+            </map>
+        </property>
+    </bean>
 
     <!--
         check_saml2int
