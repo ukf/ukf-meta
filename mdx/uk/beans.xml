@@ -577,7 +577,7 @@
         p:XSLResource="classpath:uk/statistics.xsl">
         <property name="transformParameters">
             <map>
-                <entry key="memberDocument" value-ref="uk_membersDocument"/>
+                <entry key="memberDocumentLocation" value="${members.dir}/members.xml"/>
                 <entry key="now_ISO" value-ref="now_ISO"/>
             </map>
         </property>
