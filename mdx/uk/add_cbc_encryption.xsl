@@ -9,17 +9,17 @@
     <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
     <xsl:template match="//md:KeyDescriptor
-		[parent::md:SPSSODescriptor]
-		[not(@use='signing')]
-                [not(
-			md:EncryptionMethod[@Algorithm='http://www.w3.org/2009/xmlenc11#aes128-gcm'] or
-			md:EncryptionMethod[@Algorithm='http://www.w3.org/2009/xmlenc11#aes192-gcm'] or
-			md:EncryptionMethod[@Algorithm='http://www.w3.org/2009/xmlenc11#aes256-gcm'] or
-			md:EncryptionMethod[@Algorithm='http://www.w3.org/2001/04/xmlenc#aes128-cbc'] or
-			md:EncryptionMethod[@Algorithm='http://www.w3.org/2001/04/xmlenc#aes192-cbc'] or
-			md:EncryptionMethod[@Algorithm='http://www.w3.org/2001/04/xmlenc#aes256-cbc'] or
-			md:EncryptionMethod[@Algorithm='http://www.w3.org/2001/04/xmlenc#tripledes-cbc']
-	)]">
+        [parent::md:SPSSODescriptor and
+          not(@use='signing') and
+          not(
+            md:EncryptionMethod[@Algorithm='http://www.w3.org/2009/xmlenc11#aes128-gcm'] or
+            md:EncryptionMethod[@Algorithm='http://www.w3.org/2009/xmlenc11#aes192-gcm'] or
+            md:EncryptionMethod[@Algorithm='http://www.w3.org/2009/xmlenc11#aes256-gcm'] or
+            md:EncryptionMethod[@Algorithm='http://www.w3.org/2001/04/xmlenc#aes128-cbc'] or
+            md:EncryptionMethod[@Algorithm='http://www.w3.org/2001/04/xmlenc#aes192-cbc'] or
+            md:EncryptionMethod[@Algorithm='http://www.w3.org/2001/04/xmlenc#aes256-cbc'] or
+            md:EncryptionMethod[@Algorithm='http://www.w3.org/2001/04/xmlenc#tripledes-cbc']
+        )]">
 
 
 
