@@ -39,22 +39,7 @@
         <property name="stages">
             <list>
                 <ref bean="uk_registeredEntities"/>
-
-                <!--
-                    The rest of the pipeline is a duplicate of the
-                    uk_statisticsPipeline bean definition. It would
-                    be better to use that, but Pipeline isn't a thing
-                    that can appear within another Pipeline at
-                    present (MDA 0.9.x).
-                -->
-
-                <!-- Apply flow constraints for this flow. -->
-                <bean id="flowConstraints" parent="ukf.FlowConstraintApplyingStage"
-                    p:flowName="statistics"/>
-                
-                <ref bean="assemble"/>
-                <ref bean="uk_generateStatistics"/>
-                <ref bean="uk_serializeStatistics"/>
+                <ref bean="uk_statisticsPipeline"/>
             </list>
         </property>
     </bean>
