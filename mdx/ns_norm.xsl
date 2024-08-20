@@ -104,7 +104,7 @@
 
 
     <xsl:template match="md:*">
-        <xsl:element name="{local-name()}" namespace="urn:oasis:names:tc:SAML:2.0:metadata">
+        <xsl:element name="{local-name()}">
             <xsl:apply-templates select="node()|@*"/>
         </xsl:element>
     </xsl:template>
