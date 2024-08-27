@@ -1463,10 +1463,6 @@
         <echo>Verifying metadata held at ${md.dist.host-ne-01.name}</echo>
         <VFY.remote.checksum.only i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.checksum.only i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.wayf.signed}"
-            checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.checksum.only i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
-            checksum="${mdaggr.cdsall.signed.checksum}"/>
         <VFY.remote.checksum.only i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
         <VFY.remote.checksum.only i="http://${md.dist.host-ne-01.name}${md.dist.path.name}${mdaggr.back.signed}"
@@ -1481,10 +1477,6 @@
         <echo>Verifying metadata held at ${md.dist.host-ne-02.name}</echo>
         <VFY.remote.checksum.only i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.checksum.only i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.wayf.signed}"
-            checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.checksum.only i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
-            checksum="${mdaggr.cdsall.signed.checksum}"/>
         <VFY.remote.checksum.only i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
         <VFY.remote.checksum.only i="http://${md.dist.host-ne-02.name}${md.dist.path.name}${mdaggr.back.signed}"
@@ -1499,10 +1491,6 @@
         <echo>Verifying metadata held at ${md.dist.host-we-01.name}</echo>
         <VFY.remote.checksum.only i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.checksum.only i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.wayf.signed}"
-            checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.checksum.only i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
-            checksum="${mdaggr.cdsall.signed.checksum}"/>
         <VFY.remote.checksum.only i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
         <VFY.remote.checksum.only i="http://${md.dist.host-we-01.name}${md.dist.path.name}${mdaggr.back.signed}"
@@ -1517,10 +1505,6 @@
         <echo>Verifying metadata held at ${md.dist.host-we-02.name}</echo>
         <VFY.remote.checksum.only i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.prod.signed}"
             checksum="${mdaggr.prod.signed.checksum}"/>
-        <VFY.remote.checksum.only i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.wayf.signed}"
-            checksum="${mdaggr.wayf.signed.checksum}"/>
-        <VFY.remote.checksum.only i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.cdsall.signed}"
-            checksum="${mdaggr.cdsall.signed.checksum}"/>
         <VFY.remote.checksum.only i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.test.signed}"
             checksum="${mdaggr.test.signed.checksum}"/>
         <VFY.remote.checksum.only i="http://${md.dist.host-we-02.name}${md.dist.path.name}${mdaggr.back.signed}"
