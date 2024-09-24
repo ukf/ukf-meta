@@ -40,7 +40,7 @@
     xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"
 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    exclude-result-prefixes="md xenc"
+    exclude-result-prefixes="md"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
@@ -111,27 +111,6 @@
         <xsl:attribute name="remd:{local-name()}" namespace="http://refeds.org/metadata">
             <xsl:value-of select="."/>
         </xsl:attribute>
-    </xsl:template>
-
-
-    <!--
-        ***************************************
-        ***                                 ***
-        ***   X E N C   N A M E S P A C E   ***
-        ***                                 ***
-        ***************************************
-    -->
-
-
-    <!--
-        xenc:*
-
-        Normalise namespace to not use a prefix.
-    -->
-    <xsl:template match="xenc:*">
-        <xsl:element name="{local-name()}" namespace="http://www.w3.org/2001/04/xmlenc#">
-            <xsl:apply-templates select="node()|@*"/>
-        </xsl:element>
     </xsl:template>
 
 
