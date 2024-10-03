@@ -2852,10 +2852,15 @@
         <echo>Running generate.html.orgnamescope XSLT</echo>
         <exec executable="xsltproc" failonerror="true">
             <arg value="--output" />
-            <arg value="${build.dir}/orgnamescope.html" />
+            <arg value="${build.dir}/orgnamescope-temp.html" />
             <arg value="${utilities.dir}/orgnamescope.xsl" />
             <arg value="${aggregates.dir}/ukfederation-metadata.xml" />
         </exec>
+        <exec executable="cat" failonerror="true" output="${build.dir}/orgnamescope.html">
+           <arg value="${utilities.dir}/templates/orgnamescope-top.html" />
+           <arg value="${build.dir}/orgnamescope-temp.html" />
+           <arg value="${utilities.dir}/templates/orgnamescope-tail.html" />
+       </exec>
         <exec executable="perl" failonerror="true">
             <arg value="${utilities.dir}/bodge-eacute.pl" />
             <arg value="${build.dir}/orgnamescope.html" />
@@ -2873,10 +2878,15 @@
         <echo>Running generate.html.members XSLT</echo>
         <exec executable="xsltproc" failonerror="true">
             <arg value="--output" />
-            <arg value="${build.dir}/dml.html" />
+            <arg value="${build.dir}/dml-temp.html" />
             <arg value="${utilities.dir}/memberlist.xsl" />
             <arg value="${members.dir}/members.xml" />
         </exec>
+        <exec executable="cat" failonerror="true" output="${build.dir}/dml.html">
+           <arg value="${utilities.dir}/templates/dml-top.html" />
+           <arg value="${build.dir}/dml-temp.html" />
+           <arg value="${utilities.dir}/templates/dml-tail.html" />
+       </exec>
         <exec executable="perl" failonerror="true">
             <arg value="${utilities.dir}/bodge-eacute.pl" />
             <arg value="${build.dir}/dml.html" />
@@ -2907,10 +2917,15 @@
         <echo>Running generate.html.uai XSLT</echo>
         <exec executable="xsltproc" failonerror="true">
             <arg value="--output" />
-            <arg value="${build.dir}/uai.html" />
+            <arg value="${build.dir}/uai-temp.html" />
             <arg value="${utilities.dir}/ua-idp.xsl" />
             <arg value="${aggregates.dir}/ukfederation-metadata.xml" />
         </exec>
+        <exec executable="cat" failonerror="true" output="${build.dir}/uai.html">
+           <arg value="${utilities.dir}/templates/uai-top.html" />
+           <arg value="${build.dir}/uai-temp.html" />
+           <arg value="${utilities.dir}/templates/uai-tail.html" />
+       </exec>
     </target>
 
     <!--

@@ -11,7 +11,7 @@
     
     <xsl:template match="md:EntitiesDescriptor">
         
-<h3>Federation Identity Providers Asserting User Accountability</h3>
+<h1>Federation Identity Providers Asserting User Accountability</h1>
 
 <p>The following IdPs assert user accountability (in accordance with section six of the <a href="https://www.ukfederation.org.uk/doc/rules-of-membership">UK federation's rules of membership</a>):</p>
 <br />
