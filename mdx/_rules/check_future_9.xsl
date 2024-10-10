@@ -13,7 +13,6 @@
     xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-    xmlns:set="http://exslt.org/sets"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 
     <!--

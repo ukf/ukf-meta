@@ -9,9 +9,6 @@
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
 
-    xmlns:exsl="http://exslt.org/common"
-    extension-element-prefixes="exsl"
-
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

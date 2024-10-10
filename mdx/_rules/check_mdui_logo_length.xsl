@@ -11,7 +11,6 @@
     xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui"
-    xmlns:set="http://exslt.org/sets"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
 

@@ -14,8 +14,6 @@
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
     xmlns:shibmd="urn:mace:shibboleth:metadata:1.0"
-    xmlns:dyn="http://exslt.org/dynamic"
-    xmlns:set="http://exslt.org/sets"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
