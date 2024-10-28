@@ -332,7 +332,6 @@
                 <ref bean="check_uk_urlenc"/>
                 <ref bean="check_future"/>
                 <ref bean="check_imported"/>
-                <ref bean="check_vhosts"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <!-- If there are no errors, log any warnings. -->
