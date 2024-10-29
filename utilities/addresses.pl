@@ -9,6 +9,8 @@
 open(EXTRAS, "../../ukf-data/members/extra_addresses.txt") || die "could not open extra addresses file";
 while (<EXTRAS>) {
 	chomp;	# remove \n
+	s/\s*$//g; # remove trailing whitespace
+	s/^\s*//g; # remove leading whitespace
 	next if /^#/;
 	$extras{$_} = 1 unless $_ eq '';
 }
