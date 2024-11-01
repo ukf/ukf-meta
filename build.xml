@@ -2439,6 +2439,11 @@
                             <include name="randssps.html"/>
                         </fileset>
                     </scp>
+                    <scp failonerror="true" remoteTodir="${www.url.stats}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+                        <fileset dir="${aggregates.dir}">
+                            <include name="${mdaggr.stats}"/>
+                        </fileset>
+                    </scp>
                 </then>
         </if>
     </target>
