@@ -188,19 +188,32 @@
     <target name="fs.copy.unsigned.aggregates.to.node">
         <echo>Copying unsigned aggregates from orchestrator ${build.dir} to ${node.build.dir.url}</echo>
         <exec executable="rsync" dir="${build.dir}" failonerror="true">
-            <arg value="-a"/>
+            <arg value="-av"/>
+            <arg value="--delete"/>
+            <arg value="--delete-excluded"/>
             <!-- use ssh with default identity and known_hosts -->
             <arg value="-e"/>
             <arg value="ssh"/>
             <!-- the input files -->
+            <arg value="--include"/>
             <arg value="${md.prod.unsigned}"/>
+            <arg value="--include"/>
             <arg value="${md.test.unsigned}"/>
+            <arg value="--include"/>
             <arg value="${md.export.unsigned}"/>
+            <arg value="--include"/>
             <arg value="${md.export.preview.unsigned}"/>
+            <arg value="--include"/>
             <arg value="${md.back.unsigned}"/>
+            <arg value="--include"/>
             <arg value="${md.wayf.unsigned}"/>
+            <arg value="--include"/>
             <arg value="${md.cdsall.unsigned}"/>
+            <arg value="--include"/>
             <arg value="${md.wugen.unsigned}"/>
+            <arg value="--exclude"/>
+            <arg value="*"/>
+            <arg value="${build.dir}/"/>
             <!-- remote directory must be last argument -->
             <arg value="${node.build.dir.url}"/>
         </exec>
