@@ -197,6 +197,7 @@
     <bean id="uk_int_edugain_importPipeline" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
+                <ref bean="check_validUntil"/>
                 <ref bean="int_edugain_productionEntities"/>
 
                 <!--
