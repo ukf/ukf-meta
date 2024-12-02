@@ -211,9 +211,11 @@
     <property name="www.user" value="wwwscp"/>
     <property name="www.hostname" value="www-ne-01.infr.ukfederation.org.uk"/>
     <property name="www.path.stats" value="/var/www/www-prod/html/fed"/>
-    <property name="www.path.members" value="/var/www/externals"/>
+    <property name="www-prod.path.members" value="/var/www/www-prod/html/fed"/>
+    <property name="www-stg.path.members" value="/var/www/www-stg/html/fed"/>
+    <property name="www-prod.url.members" value="${www.user}@${www.hostname}:${www-prod.path.members}"/>
+    <property name="www-stg.url.members" value="${www.user}@${www.hostname}:${www-stg.path.members}"/>
     <property name="www.url.stats" value="${www.user}@${www.hostname}:${www.path.stats}"/>
-    <property name="www.url.members" value="${www.user}@${www.hostname}:${www.path.members}"/>
 
     <!--
         Repo properties.
@@ -2426,8 +2428,16 @@
             <equals arg1="${env}" arg2="prod"/>
                 <then>
                     <echo>Pushing HTML files to web site.</echo>
-                    <echo>-> Web1</echo>
-                    <scp failonerror="true" remoteTodir="${www.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+                    <echo>-> Web1 www-prod</echo>
+                    <scp failonerror="true" remoteTodir="${www-prod.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
+                        <fileset dir="${build.dir}">
+                            <include name="orgnamescope.html"/>
+                            <include name="uai.html"/>
+                            <include name="dml.html"/>
+                        </fileset>
+                    </scp>
+                    <echo>-> Web2 www-stg</echo>
+                    <scp failonerror="true" remoteTodir="${www-stg.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
                         <fileset dir="${build.dir}">
                             <include name="orgnamescope.html"/>
                             <include name="uai.html"/>
