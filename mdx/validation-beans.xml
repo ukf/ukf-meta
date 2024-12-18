@@ -786,6 +786,7 @@
                 <ref bean="md-ServiceName"/>
                 <ref bean="md-SurName"/>
                 <ref bean="md-TelephoneNumber"/>
+                <ref bean="md-NameIDFormat" />
 
                 <ref bean="mdui-Description"/>
                 <ref bean="mdui-DisplayName"/>
