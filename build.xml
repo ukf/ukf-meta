@@ -226,6 +226,20 @@
     <property name="repo.url" value="${repo.user}@${repo.hostname}:${repo.path}"/>
 
     <!--
+        ***********************************************
+        ***                                         ***
+        ***   E D U G A I N   P R O P E R T I E S   ***
+        ***                                         ***
+        ***********************************************
+    -->
+
+    <!--
+        eduGAIN aggregate location properties.
+    -->
+    <property name="edugain.production.aggregate.url" value="https://mds.edugain.org/edugain-v2.xml"/>
+    <property name="edugain.beta.aggregate.url" value="http://mds.edugain.org/edugain-v1-beta.xml"/>
+
+    <!--
         *******************************************************
         ***                                                 ***
         ***   F I L E   S Y S T E M   P R O P E R T I E S   ***
@@ -1686,6 +1700,8 @@
     <property name="mda.validUntil.aggregate.days" value="${validUntil.aggregate.days}"/>
     <property name="mda.validUntil.aggregate.duration" value="${validUntil.aggregate.duration}"/>
     <property name="mda.validUntil.perEntity.duration" value="${validUntil.perEntity.duration}"/>
+    <property name="mda.edugain.production.aggregate.url" value="${edugain.production.aggregate.url}"/>
+    <property name="mda.edugain.beta.aggregate.url" value="${edugain.beta.aggregate.url}"/>
 
     <!--
         Build a property set of all the properties to be passed through, with
