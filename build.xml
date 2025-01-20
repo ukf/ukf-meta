@@ -528,7 +528,7 @@
     <target name="process.create-aggregates" depends="
         api.unpause,
         git.data.masterbranch.checkout,
-        flow.aggregates.generate,
+        samlmd.aggregates.generate,
         fs.scp.unsigned.files.to.orchestrator,
         jenkins.triggerjob.signing">
         <echo>Stage 2 Success: Unsigned aggregates created, copied to orchestrator. Message sent to start signing.</echo>
