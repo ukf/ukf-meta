@@ -1697,7 +1697,7 @@
     <property name="mda.mdx.dir" value="${mdx.dir}"/>
     <property name="mda.members.dir" value="${members.dir}"/>
     <property name="mda.output.dir" value="${output.dir}"/>
-    <property name="mda.output.edugain.download" value="${output.dir}/edugain-download.xml"/>
+    <property name="mda.output.edugain.download" value="${shared.ws.dir}/edugain-download.xml"/>
     <property name="mda.sign.keyAlias" value="${sign.uk.keyAlias}"/>
     <property name="mda.sign.pkcs11Config" value="${sign.uk.pkcs11Config}"/>
     <property name="mda.mdq.output" value="${mdq.output.dir}"/>
