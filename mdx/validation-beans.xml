@@ -405,6 +405,33 @@
         </property>
     </bean>
 
+    <!--
+        *********************************************************************************************************
+        ***                                                                                                   ***
+        ***   R E F E D S   P E R S O N A L I Z E D,   A N O N Y M O U S,   A N D   P S E U D O N Y M O U S   ***
+        ***   E N T I T Y   C A T E G O R Y  S P E C I F I C A T I O N                                        ***
+        ***                                                                                                   ***
+        *********************************************************************************************************
+    -->
+
+    <!--
+        check_ec_anonymous
+    -->
+    <bean id="check_mdattr_ec_anonymous" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_mdattr_ec_anonymous.xsl"/>
+
+    <!--
+        check_ec_personalized
+    -->
+    <bean id="check_mdattr_ec_personalized" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_mdattr_ec_personalized.xsl"/>
+
+    <!--
+        check_ec_pseudonymous
+    -->
+    <bean id="check_mdattr_ec_pseudonymous" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_mdattr_ec_pseudonymous.xsl"/>
+
 
     <!--
         ***********************************************************
@@ -850,6 +877,9 @@
                 <ref bean="check_incmd"/>
                 <ref bean="check_init"/>
                 <ref bean="check_mdattr"/>
+                <ref bean="check_mdattr_ec_anonymous"/>
+                <ref bean="check_mdattr_ec_personalized"/>
+                <ref bean="check_mdattr_ec_pseudonymous"/>
                 <ref bean="check_mdiop"/>
                 <ref bean="check_mdrpi"/>
                 <ref bean="check_mdui"/>
