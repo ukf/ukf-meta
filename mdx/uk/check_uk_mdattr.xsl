@@ -82,6 +82,9 @@
         [. != 'http://refeds.org/category/hide-from-discovery']
         [. != 'http://refeds.org/category/research-and-scholarship']
         [. != 'http://www.geant.net/uri/dataprotection-code-of-conduct/v1']
+        [. != 'https://refeds.org/category/personalized']
+        [. != 'https://refeds.org/category/anonymous']
+        [. != 'https://refeds.org/category/pseudonymous']
         ">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
@@ -99,6 +102,9 @@
         [. != 'http://refeds.org/category/research-and-scholarship']
         [. != 'http://www.geant.net/uri/dataprotection-code-of-conduct/v1']
         [. != 'https://refeds.org/category/code-of-conduct/v2']
+        [. != 'https://refeds.org/category/personalized']
+        [. != 'https://refeds.org/category/anonymous']
+        [. != 'https://refeds.org/category/pseudonymous']
         ">
         <xsl:call-template name="error">
             <xsl:with-param name="m">
