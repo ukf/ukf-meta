@@ -1273,6 +1273,10 @@
         <echo>Triggering Jenkins publication Job.</echo>
         <!-- we do not use <get> here because it does not uses system proxy settings -->
         <exec executable="curl" dir="${output.dir}" failonerror="true">
+            <!-- force curl to return a failure status code when an HTTP server error is returned-->
+            <arg value="--fail"/>
+            <!-- reduce verbosity-->
+            <arg value="-s"/>
             <arg value="${jenkins.url.to.trigger.publication}"/>
         </exec>
     </target>
