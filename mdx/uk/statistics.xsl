@@ -1582,6 +1582,17 @@
                 select="set:difference($entities.openathens.in, $entities.openathens)"/>
 
             <!--
+                Classify Shibboleth 5 entities.
+            -->
+            <xsl:variable name="entities.shib.5.in" select="$entities.openathens.out"/>
+            <xsl:variable name="entities.shib.5"
+                select="$entities.shib.5.in[
+                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '5']
+                ]"/>
+            <xsl:variable name="entities.shib.5.out"
+                select="set:difference($entities.shib.5.in, $entities.shib.5)"/>
+
+            <!--
                 Classify Shibboleth 4 entities.
             -->
             <xsl:variable name="entities.shib.4.in" select="$entities.openathens.out"/>
@@ -1673,6 +1684,12 @@
             -->
 
             <xsl:call-template name="entity.breakdown.by.software.line">
+                <xsl:with-param name="entities" select="$entities.shib.5"/>
+                <xsl:with-param name="name">Shibboleth 5.x</xsl:with-param>
+                <xsl:with-param name="total" select="$entityCount"/>
+            </xsl:call-template>
+
+            <xsl:call-template name="entity.breakdown.by.software.line">
                 <xsl:with-param name="entities" select="$entities.shib.4"/>
                 <xsl:with-param name="name">Shibboleth 4.x</xsl:with-param>
                 <xsl:with-param name="total" select="$entityCount"/>
@@ -1690,7 +1707,7 @@
                 <xsl:with-param name="total" select="$entityCount"/>
             </xsl:call-template>
 
-            <xsl:variable name="entities.shib" select="$entities.shib.2 | $entities.shib.3 | $entities.shib.4"/>
+            <xsl:variable name="entities.shib" select="$entities.shib.2 | $entities.shib.3 | $entities.shib.4 | $entities.shib.5"/>
             <xsl:call-template name="entity.breakdown.by.software.line">
                 <xsl:with-param name="entities" select="$entities.shib"/>
                 <xsl:with-param name="name">Shibboleth combined</xsl:with-param>
