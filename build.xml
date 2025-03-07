@@ -548,23 +548,6 @@
     </target>
 
     <!--
-        Stage 3.1 of md process: create the signed aggregates / update and copy to keymaster
-
-        Runs on: orchestrator
-
-        Process:
-            * Git: Make sure all repos up to date
-            * Git: Push tooling repos to keymaster
-            * SCP: Copy files to keymaster
-    -->
-    <target name="process.sign-aggregates.prepare.and.scp" depends="
-        git.pull.all,
-        git.orchestrator.push.tooling.to.keymaster,
-        fs.scp.unsigned.files.to.keymaster">
-        <echo>Stage 3.1 Success: Aggregates send to keymaster for processing.</echo>
-    </target>
-
-    <!--
         Stage 3.2 of md process: create the signed aggregates / sign
 
         Runs on: keymaster
@@ -627,20 +610,6 @@
     </target>
 
     <!--
-        Stage 4.2 of md process: Copy files from keymaster, push.
-
-        Runs on: orchestrator
-
-        Process:
-            * SCP: Copy files from keymaster
-    -->
-    <target name="process.create-mdq-cache.scp.and.push" depends="
-        fs.scp.signed.files.from.keymaster,
-        fs.scp.mdqcache.from.keymaster">
-        <echo>Stage 4.2 Success: Signed products retrieved from keymaster.</echo>
-    </target>
-
-    <!--
         Stage 5 of md process: Create Tag on products repository, push all to repo (incl. SCPing mdq cache)
 
         Runs on: orchestrator
@@ -678,15 +647,10 @@
           * Slack: Send notification to UKf channel
     -->
     <target name="process.publish" depends="
-        fs.scp.mdqcache.from.repo,
         git.pull.all,
         git.data.merge.masterintoimmediate,
         git.data.merge.immediateintodeferred,
         git.data.allbranches.pushtoorigin,
-        scp.githook,
-        publish.mdqcache,
-        publish.md,
-        publish.otherfiles,
         samlmd.aggregates.verify.remote,
         samlmd.mdq.verify.remote,
         azure.purgecdn,
@@ -1236,19 +1200,6 @@
             <arg value="UKf_${DATE_UTC}_${TIME_UTC}"/>
         </exec>
     </target>
-
-    <!--
-        Commit unsigned files to local products repository
-    -->
-    <target name="git.orchestrator.push.tooling.to.keymaster">
-        <echo>Pushing the latest tooling repository to keymaster.</echo>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
-            <arg value="push"/>
-            <arg value="keymaster"/>
-            <arg value="master"/>
-        </exec>
-    </target>
-
 
     <!--
         *****************************************
@@ -2221,39 +2172,6 @@
         </exec>
     </target>
 
-    <target name="fs.scp.unsigned.files.to.keymaster">
-        <echo>SCPing unsigned aggregates from orchestrator's output dir to keymaster's build.dir.</echo>
-        <scp failonerror="true" remoteTodir="${keymaster.url}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdaggr.prod.unsigned}"/>
-                <include name="${mdaggr.wayf.unsigned}"/>
-                <include name="${mdaggr.cdsall.unsigned}"/>
-                <include name="${mdaggr.test.unsigned}"/>
-                <include name="${mdaggr.back.unsigned}"/>
-                <include name="${mdaggr.export.unsigned}"/>
-                <include name="${mdaggr.export.preview.unsigned}"/>
-                <include name="${mdaggr.wugen.unsigned}"/>
-            </fileset>
-        </scp>
-    </target>
-
-    <target name="fs.scp.signed.files.from.keymaster">
-        <echo>SCPing signed aggregates from keymaster's output dir into orchestrator's aggregates dir.</echo>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.prod.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.wayf.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.cdsall.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.test.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.back.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.export.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.export.preview.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdaggr.wugen.signed}" todir="${aggregates.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-    </target>
-
-    <target name="fs.scp.mdqcache.from.keymaster">
-        <echo>SCPing mdq cache from keymaster's output dir to a directory on orchestrator.</echo>
-        <scp failonerror="true" remoteFile="${keymaster.url}/${mdq.cache}" todir="${output.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
-    </target>
-
     <target name="fs.scp.mdqcache.to.repo">
         <echo>Copying mdq cache from orchestrator's build dir to a temp directory on repo.</echo>
         <exec executable="rsync" dir="${output.dir}" failonerror="true">
@@ -2266,11 +2184,6 @@
             <!-- remote directory must be last argument -->
             <arg value="${repo.url}"/>
         </exec>
-    </target>
-
-    <target name="fs.scp.mdqcache.from.repo">
-        <echo>SCPing mdq cache from temp directory on repo to output.dir on aggr.</echo>
-        <scp failonerror="true" remoteFile="${repo.url}/${mdq.cache}" todir="${output.dir}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"/>
     </target>
 
     <!--
@@ -2307,138 +2220,6 @@
         ***                                         ***
         ***********************************************
     -->
-
-    <target name="scp.githook">
-        <!--
-            Metadata servers have a post-receive githook to fix up outputs of metadata aggregation.
-            Not needed for CDI because githook included in the container already.
-        -->
-        <echo>Pushing post-receive githook to MD dist.</echo>
-        <echo>-> MD-NE-01</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:${md.githook.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${githook.dir}">
-                <include name="${post-receive-githook}"/>
-            </fileset>
-        </scp>
-        <sshexec
-            username="${md.user}" host="${md.dist.host-ne-01.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
-            command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
-            failonerror="true"
-        />
-        <echo>-> MD-NE-02</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-02.name}:${md.githook.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${githook.dir}">
-                <include name="${post-receive-githook}"/>
-            </fileset>
-        </scp>
-        <sshexec
-            username="${md.user}" host="${md.dist.host-ne-02.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
-            command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
-            failonerror="true"
-        />
-        <echo>-> MD-WE-01</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-01.name}:${md.githook.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${githook.dir}">
-                <include name="${post-receive-githook}"/>
-            </fileset>
-        </scp>
-        <sshexec
-            username="${md.user}" host="${md.dist.host-we-01.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
-            command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
-            failonerror="true"
-        />
-        <echo>-> MD-WE-02</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-02.name}:${md.githook.path}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${githook.dir}">
-                <include name="${post-receive-githook}"/>
-            </fileset>
-        </scp>
-        <sshexec
-            username="${md.user}" host="${md.dist.host-we-02.name}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts"
-            command="/usr/bin/chmod a+x ${md.githook.path}/${post-receive-githook}"
-            failonerror="true"
-        />
-    </target>
-
-    <target name="publish.md">
-        <!--
-            Push metadata files for the UK Federation to the MD dist servers
-        -->
-        <echo>Pushing UK Federation metadata files to MD dist.</echo>
-        <echo>-> MD-NE-01</echo>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
-            <arg value="push"/>
-            <arg value="md-ne-01"/>
-            <arg value="master"/>
-        </exec>
-        <echo>-> MD-NE-02</echo>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
-            <arg value="push"/>
-            <arg value="md-ne-02"/>
-            <arg value="master"/>
-        </exec>
-        <echo>-> MD-WE-01</echo>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
-            <arg value="push"/>
-            <arg value="md-we-01"/>
-            <arg value="master"/>
-        </exec>
-        <echo>-> MD-WE-02</echo>
-        <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
-            <arg value="push"/>
-            <arg value="md-we-02"/>
-            <arg value="master"/>
-        </exec>
-    </target>
-
-    <target name="publish.mdqcache">
-        <!--
-            Push mdq cache tar to the MD dist servers
-        -->
-        <echo>Pushing UK Federation mdq cache to MD dist.</echo>
-        <echo>-> MD-NE-01</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdq.cache}"/>
-            </fileset>
-        </scp>
-        <echo>-> MD-NE-02</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-ne-02.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdq.cache}"/>
-            </fileset>
-        </scp>
-        <echo>-> MD-WE-01</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-01.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdq.cache}"/>
-            </fileset>
-        </scp>
-        <echo>-> MD-WE-02</echo>
-        <scp failonerror="true" remoteTodir="${md.user}@${md.dist.host-we-02.name}:/tmp" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-            <fileset dir="${output.dir}">
-                <include name="${mdq.cache}"/>
-            </fileset>
-        </scp>
-    </target>
-
-    <target name="publish.otherfiles">
-        <!--
-            Push other files for the UK Federation to the web server - but only when in prod env!
-        -->
-        <if>
-            <equals arg1="${env}" arg2="prod"/>
-                <then>
-                    <echo>Pushing UK Federation other files to web site.</echo>
-                    <echo>-> Web1</echo>
-                    <scp failonerror="true" remoteTodir="${www.url.stats}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-                        <fileset dir="${aggregates.dir}">
-                            <include name="${mdaggr.stats}"/>
-                        </fileset>
-                    </scp>
-                </then>
-        </if>
-    </target>
 
     <target name="publish.generated.html">
         <!--
