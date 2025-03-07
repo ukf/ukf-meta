@@ -2230,31 +2230,51 @@
                 <then>
                     <echo>Pushing HTML files to web site.</echo>
                     <echo>-> Web1 www-prod</echo>
-                    <scp failonerror="true" remoteTodir="${www-prod.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-                        <fileset dir="${build.dir}">
-                            <include name="orgnamescope.html"/>
-                            <include name="uai.html"/>
-                            <include name="dml.html"/>
-                        </fileset>
-                    </scp>
+                    <exec executable="rsync" dir="${build.dir}" failonerror="true">
+                        <arg value="-a"/>
+                        <!-- use ssh with default identity and known_hosts -->
+                        <arg value="-e"/>
+                        <arg value="ssh"/>
+                        <!-- the input files -->
+                        <arg value="orgnamescope.html"/>
+                        <arg value="uai.html"/>
+                        <arg value="dml.html"/>
+                        <!-- remote directory must be last argument -->
+                        <arg value="${www-prod.url.members}"/>
+                    </exec>
                     <echo>-> Web2 www-stg</echo>
-                    <scp failonerror="true" remoteTodir="${www-stg.url.members}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-                        <fileset dir="${build.dir}">
-                            <include name="orgnamescope.html"/>
-                            <include name="uai.html"/>
-                            <include name="dml.html"/>
-                        </fileset>
-                    </scp>
-                    <scp failonerror="true" remoteTodir="${www.url.stats}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-                        <fileset dir="${build.dir}">
-                            <include name="randssps.html"/>
-                        </fileset>
-                    </scp>
-                    <scp failonerror="true" remoteTodir="${www.url.stats}" keyfile="~/.ssh/id_rsa" knownhosts="~/.ssh/known_hosts">
-                        <fileset dir="${aggregates.dir}">
-                            <include name="${mdaggr.stats}"/>
-                        </fileset>
-                    </scp>
+                    <exec executable="rsync" dir="${build.dir}" failonerror="true">
+                        <arg value="-a"/>
+                        <!-- use ssh with default identity and known_hosts -->
+                        <arg value="-e"/>
+                        <arg value="ssh"/>
+                        <!-- the input files -->
+                        <arg value="orgnamescope.html"/>
+                        <arg value="uai.html"/>
+                        <arg value="dml.html"/>
+                        <!-- remote directory must be last argument -->
+                        <arg value="${www-stg.url.members}"/>
+                    </exec>
+                    <exec executable="rsync" dir="${build.dir}" failonerror="true">
+                        <arg value="-a"/>
+                        <!-- use ssh with default identity and known_hosts -->
+                        <arg value="-e"/>
+                        <arg value="ssh"/>
+                        <!-- the input files -->
+                        <arg value="randssps.html"/>
+                        <!-- remote directory must be last argument -->
+                        <arg value="${www.url.stats}"/>
+                    </exec>
+                    <exec executable="rsync" dir="${aggregates.dir}" failonerror="true">
+                        <arg value="-a"/>
+                        <!-- use ssh with default identity and known_hosts -->
+                        <arg value="-e"/>
+                        <arg value="ssh"/>
+                        <!-- the input files -->
+                        <arg value="${mdaggr.stats}"/>
+                        <!-- remote directory must be last argument -->
+                        <arg value="${www.url.stats}"/>
+                    </exec>
                 </then>
         </if>
     </target>
