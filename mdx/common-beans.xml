@@ -372,14 +372,16 @@
         Bean names are generally constructed from the 2-letter
         ISO country code, underscore, and the federation acronym.
 
+        We do not include a candidate federations without registrationAuthority
+
         The list is ordered by bean name.
     -->
     <bean id="al_rash_registrar"         parent="String" c:_="https://eduid.rash.al"/>
     <bean id="am_afire_registrar"        parent="String" c:_="https://aai.asnet.am"/>
-    <bean id="ar_mate_registrar"         parent="String" c:_="http://www.federacionmate.gob.ar"/>
+    <bean id="ar_mate_registrar"         parent="String" c:_="http://www.federacionmate.gob.ar"/><!-- Removed -->
     <bean id="at_aconet_registrar"       parent="String" c:_="http://eduid.at"/>
     <bean id="au_aaf_registrar"          parent="String" c:_="https://aaf.edu.au"/>
-    <bean id="az_sciencenet_registrar"   parent="String" c:_="http://edugain.azsciencenet.az"/>
+    <bean id="az_sciencenet_registrar"   parent="String" c:_="https://edugain.azsciencenet.az"/>
     <bean id="bd_tigerfed_registrar"     parent="String" c:_="https://tigerfed.net.bd"/>
     <bean id="be_belnet_registrar"       parent="String" c:_="http://federation.belnet.be/"/>
     <bean id="bg_bif_registrar"          parent="String" c:_="https://bif.bren.bg"/>
@@ -399,6 +401,7 @@
     <bean id="ec_minga_registrar"        parent="String" c:_="https://minga.cedia.org.ec"/>
     <bean id="ee_taat_registrar"         parent="String" c:_="http://taat.edu.ee"/>
     <bean id="es_sir_registrar"          parent="String" c:_="http://www.rediris.es/"/>
+    <bean id="et_efis_registrar"         parent="String" c:_="https://ethernet.edu.et/"/>
     <bean id="fi_haka_registrar"         parent="String" c:_="http://www.csc.fi/haka"/>
     <bean id="fr_renater_registrar"      parent="String" c:_="https://federation.renater.fr/"/>
     <bean id="ge_gif_registrar"          parent="String" c:_="https://mtd.gif.grena.ge"/>
@@ -409,46 +412,50 @@
     <bean id="ie_edugate_registrar"      parent="String" c:_="http://www.heanet.ie"/>
     <bean id="il_iif_registrar"          parent="String" c:_="http://iif.iucc.ac.il"/>
     <bean id="in_infed_registrar"        parent="String" c:_="http://inflibnet.ac.in"/>
+    <bean id="int_eduidafrica_registrar" parent="String" c:_="https://www.eduid.africa/"/>
+    <bean id="int_redclara_registrar"    parent="String" c:_="https://mds.redclara.net/"/>
     <bean id="ir_irfed_registrar"        parent="String" c:_="https://irfed.ir/"/>
-    <bean id="it_gridp_registrar"        parent="String" c:_="http://gridp.garr.it"/>
+    <bean id="it_gridp_registrar"        parent="String" c:_="http://gridp.garr.it"/><!-- Removed -->
     <bean id="it_idem_registrar"         parent="String" c:_="http://www.idem.garr.it/"/>
     <bean id="jp_gakunin_registrar"      parent="String" c:_="https://www.gakunin.jp"/>
-    <bean id="kr_kafe_registrar"         parent="String" c:_="http://kafe.kreonet.net"/>
+    <bean id="ke_rafiki_registrar"       parent="String" c:_="https://rafiki.ke"/>
     <bean id="kg_krena_registrar"        parent="String" c:_="https://www.kif.kg"/>
-    <bean id="lb_life_registrar"         parent="String" c:_="http://life.aub.edu.lb"/><!-- A guess -->
+    <bean id="kr_kafe_registrar"         parent="String" c:_="http://kafe.kreonet.net"/>
+    <bean id="lb_life_registrar"         parent="String" c:_="http://life.aub.edu.lb"/><!-- No reg_auth -->
     <bean id="lk_liaf_registrar"         parent="String" c:_="https://liaf.ac.lk"/>
     <bean id="lt_litnet_registrar"       parent="String" c:_="https://fedi.litnet.lt"/>
     <bean id="lu_eduid_registrar"        parent="String" c:_="http://eduid.lu"/>
-    <bean id="lv_laife_registrar"        parent="String" c:_="http://laife.lanet.lv/"/>
+    <bean id="lv_laife_registrar"        parent="String" c:_="https://idp.laife.lv/"/>
     <bean id="ma_eduidm_registrar"       parent="String" c:_="https://eduidm.ma"/>
     <bean id="md_leaf_registrar"         parent="String" c:_="http://federations.renam.md/"/>
-    <bean id="me_eduid_registrar"        parent="String" c:_="http://mren.ac.me"/><!-- A guess -->
+    <bean id="me_eduid_registrar"        parent="String" c:_="http://mren.ac.me"/><!-- Removed -->
     <bean id="mk_aaiedumk_registrar"     parent="String" c:_="https://rr.aaiedu.mk"/>
     <bean id="mt_ricerca_registrar"      parent="String" c:_="https://id.ricerka.net.mt"/>
-    <bean id="mw_maren_registrar"        parent="String" c:_="https://maren.ac.mw"/><!-- A guess -->
-    <bean id="my_sifulan_registrar"      parent="String" c:_="https://sifulan.my"/>
+    <bean id="mw_maren_registrar"        parent="String" c:_="https://maren.ac.mw"/>
     <bean id="mx_fenix_registrar"        parent="String" c:_="http://www.fenix.org.mx"/>
+    <bean id="my_sifulan_registrar"      parent="String" c:_="https://sifulan.my"/>
     <bean id="mz_cafmoz_registrar"       parent="String" c:_="http://cafmoz.morenet.ac.mz"/>
-    <bean id="nl_surfconext_registrar"   parent="String" c:_="http://www.surfconext.nl/"/>
     <bean id="ng_eduidng_registrar"      parent="String" c:_="https://www.eduid.ng"/>
+    <bean id="nl_surfconext_registrar"   parent="String" c:_="http://www.surfconext.nl/"/>
     <bean id="no_feide_registrar"        parent="String" c:_="http://feide.no/"/>
     <bean id="nz_tuakiri_registrar"      parent="String" c:_="https://tuakiri.ac.nz/"/>
-    <bean id="om_omankid_registrar"      parent="String" c:_="https://www.trc.gov.om/trcweb/"/>
+    <bean id="om_omankid_registrar"      parent="String" c:_="https://www.trc.gov.om/trcweb/"/><!-- Suspended -->
     <bean id="om_omren_registrar"        parent="String" c:_="http://www.omren.om"/>
     <bean id="pk_pkifed_registrar"       parent="String" c:_="https://pkifed.pk"/>
     <bean id="pl_pionier_registrar"      parent="String" c:_="https://aai.pionier.net.pl"/>
     <bean id="pt_rctsaai_registrar"      parent="String" c:_="https://www.fccn.pt"/>
     <bean id="ro_edunetid_registrar"     parent="String" c:_="http://eduid.roedu.net"/>
-    <bean id="rs_amres_registrar"        parent="String" c:_="http://amres.ac.rs/"/><!-- A guess -->
-    <bean id="ru_fedurus_registrar"      parent="String" c:_="http://arbicon.ru"/>
-    <bean id="ru_runnet_registrar"       parent="String" c:_="http://runnet.ru/"/>
+    <bean id="rs_amres_registrar"        parent="String" c:_="https://federacija.iamres.ac.rs/"/>
+    <bean id="ru_fedurus_registrar"      parent="String" c:_="http://arbicon.ru"/><!-- Removed -->
+    <bean id="ru_runnet_registrar"       parent="String" c:_="http://runnet.ru/"/><!-- Removed -->
     <bean id="sa_maeen_registrar"        parent="String" c:_="https://www.maeen.sa"/>
     <bean id="se_swamid_registrar"       parent="String" c:_="http://www.swamid.se/"/>
     <bean id="sg_sgaf_registrar"         parent="String" c:_="https://www.singaren.net.sg"/>
     <bean id="si_arnes_registrar"        parent="String" c:_="http://aai.arnes.si"/>
     <bean id="sk_safeid_registrar"       parent="String" c:_="http://safeid.sk"/>
+    <bean id="so_sif_registrar"          parent="String" c:_="http://somaliren.org"/>
     <bean id="th_thaiidf_registrar"      parent="String" c:_="http://idf.thairen.net.th"/>
-    <bean id="tj_tarena_registrar"       parent="String" c:_="http://www.tidf.tj/"/>
+    <bean id="tj_tarena_registrar"       parent="String" c:_="https://tidf.tj/"/>
     <bean id="tr_yetkim_registrar"       parent="String" c:_="https://yetkim.org.tr/"/>
     <bean id="ua_peano_registrar"        parent="String" c:_="https://peano.uran.ua"/>
     <bean id="ug_rif_registrar"          parent="String" c:_="https://www.renu.ac.ug"/>
@@ -474,6 +481,8 @@
             a display name constructed from the country code, a hyphen,
             and a federation acronym.
 
+            We will use 'INT-' as a prefix for federations with scope wider than 1 country
+
             The ordering here is as on the eduGAIN status page:
 
             https://technical.edugain.org/status
@@ -485,11 +494,11 @@
         <entry key-ref="am_afire_registrar"           value="AM"/>
         <entry key-ref="dz_arnaai_registrar"          value="DZ"/>
         <entry key-ref="si_arnes_registrar"           value="SI"/>
+        <entry key-ref="az_sciencenet_registrar"      value="AZ"/>
         <entry key-ref="be_belnet_registrar"          value="BE"/>
         <entry key-ref="bg_bif_registrar"             value="BG"/>
-        <entry key-ref="ca_caf_registrar"             value="CA"/>
         <entry key-ref="br_cafe_registrar"            value="BR"/>
-        <entry key-ref="mz_cafmoz_registrar"          value="MZ"/>
+        <entry key-ref="ca_caf_registrar"             value="CA"/>
         <entry key-ref="cn_carsi_registrar"           value="CN-CARSI"/>
         <entry key-ref="cl_cofre_registrar"           value="CL"/>
         <entry key-ref="co_colfire_registrar"         value="CO"/>
@@ -497,22 +506,26 @@
         <entry key-ref="cy_cynet_registrar"           value="CY"/>
         <entry key-ref="de_dfnaai_registrar"          value="DE"/>
         <entry key-ref="ie_edugate_registrar"         value="IE"/>
+        <entry key-ref="lu_eduid_registrar"           value="LU"/>
+        <entry key-ref="int_eduidafrica_registrar"    value="INT-EDUIDAFRICA"/>
         <entry key-ref="cz_eduid_registrar"           value="CZ"/>
         <entry key-ref="hu_eduid_registrar"           value="HU"/>
-        <entry key-ref="lu_eduid_registrar"           value="LU"/>
         <entry key-ref="ng_eduidng_registrar"         value="NG"/>
         <entry key-ref="ma_eduidm_registrar"          value="MA"/>
+        <entry key-ref="et_efis_registrar"            value="ET"/>
         <entry key-ref="by_febas_registrar"           value="BY"/>
-        <entry key-ref="ru_fedurus_registrar"         value="RU-FEDURUS"/>
+        <entry key-ref="ru_fedurus_registrar"         value="RU-FEDURUS"/><!-- Removed -->
         <entry key-ref="no_feide_registrar"           value="NO"/>
         <entry key-ref="mx_fenix_registrar"           value="MX"/>
-        <entry key-ref="fr_renater_registrar"         value="FR"/>
         <entry key-ref="zm_fidern_registrar"          value="ZM"/>
+        <entry key-ref="int_redclara_registrar"       value="INT-REDCLARA"/>
+        <entry key-ref="fr_renater_registrar"         value="FR"/>
         <entry key-ref="jp_gakunin_registrar"         value="JP"/>
         <entry key-ref="ge_gif_registrar"             value="GE"/>
         <entry key-ref="gr_grnet_registrar"           value="GR"/>
         <entry key-ref="fi_haka_registrar"            value="FI"/>
         <entry key-ref="hk_hkaf_registrar"            value="HK"/>
+        <entry key-ref="rs_amres_registrar"           value="RS"/>
         <entry key-ref="it_idem_registrar"            value="IT"/>
         <entry key-ref="us_incommon_registrar"        value="US"/>
         <entry key-ref="in_infed_registrar"           value="IN"/>
@@ -522,27 +535,29 @@
         <entry key-ref="kg_krena_registrar"           value="KG"/>
         <entry key-ref="lv_laife_registrar"           value="LV"/>
         <entry key-ref="md_leaf_registrar"            value="MD"/>
-        <entry key-ref="lt_litnet_registrar"          value="LT"/>
         <entry key-ref="lk_liaf_registrar"            value="LK"/>
-        <entry key-ref="ar_mate_registrar"            value="AR"/>
+        <entry key-ref="lt_litnet_registrar"          value="LT"/>
+        <entry key-ref="sa_maeen_registrar"           value="SA"/>
+        <entry key-ref="ar_mate_registrar"            value="AR"/><!-- Removed -->
         <entry key-ref="ec_minga_registrar"           value="EC"/>
-        <entry key-ref="om_omankid_registrar"         value="OM-KID"/>
+        <entry key-ref="om_omankid_registrar"         value="OM-KID"/><!-- Suspended -->
         <entry key-ref="om_omren_registrar"           value="OM-REN"/>
         <entry key-ref="ua_peano_registrar"           value="UA"/>
         <entry key-ref="pl_pionier_registrar"         value="PL"/>
         <entry key-ref="pk_pkifed_registrar"          value="PK"/>
+        <entry key-ref="ke_rafiki_registrar"          value="KE"/>
         <entry key-ref="al_rash_registrar"            value="AL"/>
         <entry key-ref="pt_rctsaai_registrar"         value="PT"/>
-        <entry key-ref="mt_ricerca_registrar"         value="MT"/>
         <entry key-ref="ug_rif_registrar"             value="UG"/>
+        <entry key-ref="mt_ricerca_registrar"         value="MT"/>
         <entry key-ref="ro_edunetid_registrar"        value="RO"/>
-        <entry key-ref="ru_runnet_registrar"          value="RU-RUNNET"/>
-        <entry key-ref="sa_maeen_registrar"           value="SA"/>
+        <entry key-ref="ru_runnet_registrar"          value="RU-RUNNET"/><!-- Removed -->
         <entry key-ref="sk_safeid_registrar"          value="SK"/>
         <entry key-ref="za_safire_registrar"          value="ZA"/>
-        <entry key-ref="sg_sgaf_registrar"            value="SG"/>
         <entry key-ref="my_sifulan_registrar"         value="MY"/>
+        <entry key-ref="sg_sgaf_registrar"            value="SG"/>
         <entry key-ref="es_sir_registrar"             value="ES"/>
+        <entry key-ref="so_sif_registrar"             value="SO"/>
         <entry key-ref="nl_surfconext_registrar"      value="NL"/>
         <entry key-ref="se_swamid_registrar"          value="SE"/>
         <entry key-ref="ch_switchaai_registrar"       value="CH"/>
@@ -555,13 +570,12 @@
         <entry key-ref="tr_yetkim_registrar"          value="TR"/>
 
         <!-- eduGAIN voting-only members -->
-        <entry key-ref="it_gridp_registrar"           value="IT-GRIDP"/>
+        <entry key-ref="it_gridp_registrar"           value="IT-GRIDP"/><!-- Removed -->
 
         <!-- eduGAIN candidates -->
-        <entry key-ref="az_sciencenet_registrar"      value="AZ"/>
-        <entry key-ref="me_eduid_registrar"           value="ME"/>
-        <entry key-ref="rs_amres_registrar"           value="RS"/>
-        <entry key-ref="lb_life_registrar"            value="LB"/>
+        <entry key-ref="mz_cafmoz_registrar"          value="MZ"/>
+        <entry key-ref="me_eduid_registrar"           value="ME"/><!-- Removed -->
+        <entry key-ref="lb_life_registrar"            value="LB"/><!-- No reg_auth -->
         <entry key-ref="mw_maren_registrar"           value="MW"/>
         <entry key-ref="tj_tarena_registrar"          value="TJ"/>
     </util:map>
