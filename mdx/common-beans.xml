@@ -396,7 +396,7 @@
         <!-- eduGAIN production members -->
         <entry value="AL"                  key="https://eduid.rash.al"/><!--RASH-->
         <entry value="AM"                  key="https://aai.asnet.am"/><!--AFIRE-->
-        <entry value="AT"                  key="http://eduid.at"/><!--ACOnet Identity Federation-->
+        <entry value="AT"                  key-ref="at_aconet_registrar"/><!--ACOnet Identity Federation-->
         <entry value="AU"                  key="https://aaf.edu.au"/><!--AAF-->
         <entry value="AZ"                  key="https://edugain.azsciencenet.az"/><!--AzScienceNet Identity Federation-->
         <entry value="BD"                  key="https://tigerfed.net.bd"/><!--TIGERfed-->
@@ -467,8 +467,8 @@
         <entry value="TR"                  key="https://yetkim.org.tr/"/><!--YETKİM-->
         <entry value="UA"                  key="https://peano.uran.ua"/><!--PEANO-->
         <entry value="UG"                  key="https://www.renu.ac.ug"/><!--RIF-->
-        <entry value="UK"                  key="http://ukfederation.org.uk"/><!--UK federation-->
-        <entry value="US"                  key="https://incommon.org"/><!--InCommon-->
+        <entry value="UK"                  key-ref="uk_ukf_registrar"/><!--UK federation-->
+        <entry value="US"                  key-ref="us_incommon_registrar"/><!--InCommon-->
         <entry value="ZA"                  key="https://safire.ac.za"/><!--SAFIRE-->
         <entry value="ZM"                  key="https://fidern.ac.zm"/><!--FIDERN-->
         <!-- eduGAIN candidate members-->
