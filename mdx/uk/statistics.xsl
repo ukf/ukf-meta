@@ -81,6 +81,10 @@
         <xsl:variable name="dualEntities" select="$entities[md:IDPSSODescriptor][md:SPSSODescriptor]"/>
         <xsl:variable name="dualEntityCount" select="count($dualEntities)"/>
 
+        <xsl:variable name="shibEntities" select="$entities[md:Extensions/ukfedlabel:Software[starts-with(@name, 'Shibboleth')]]"/>
+        <xsl:variable name="shibEntities.sps" select="$entities[md:Extensions/ukfedlabel:Software[@name='Shibboleth-sp']]"/>
+        <xsl:variable name="shibEntities.idps" select="$entities[md:Extensions/ukfedlabel:Software[@name='Shibboleth-idp']]"/>
+
         <xsl:variable name="federationMemberEntityCount"
             select="count($entities[md:Extensions/ukfedlabel:UKFederationMember])"/>
 
@@ -437,7 +441,8 @@
                 </ul>
 
                 <xsl:call-template name="entity.breakdown.by.software">
-                    <xsl:with-param name="entities" select="$entities"/>
+                    <xsl:with-param name="shibEntities" select="$shibEntities"/>
+                    <xsl:with-param name="entities" select="set:difference($entities, $shibEntities)"/>
                 </xsl:call-template>
 
                 <xsl:call-template name="keydescriptor.breakdown">
@@ -613,7 +618,8 @@
                 </ul>
 
                 <xsl:call-template name="entity.breakdown.by.software">
-                    <xsl:with-param name="entities" select="$idps"/>
+                    <xsl:with-param name="shibEntities" select="$shibEntities.idps"/>
+                    <xsl:with-param name="entities" select="set:difference($idps, $shibEntities.idps)"/>
                 </xsl:call-template>
 
                 <xsl:call-template name="keydescriptor.breakdown">
@@ -833,7 +839,8 @@
                 </ul>
 
                 <xsl:call-template name="entity.breakdown.by.software">
-                    <xsl:with-param name="entities" select="$sps"/>
+                    <xsl:with-param name="shibEntities" select="$shibEntities.sps"/>
+                    <xsl:with-param name="entities" select="set:difference($sps, $shibEntities.sps)"/>
                 </xsl:call-template>
 
                 <xsl:call-template name="keydescriptor.breakdown">
@@ -1054,11 +1061,14 @@
                     The software used by the entity, if known, is included at the end of the listing within
                     brackets [like this].
                 </p>
-                <xsl:variable name="nosaml2.sps" select="$sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                <xsl:variable name="nosaml2.shibEntities.sps" select="$shibEntities.sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
                     'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
+                <xsl:variable name="nosaml2.sps" select="set:difference($sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                    'urn:oasis:names:tc:SAML:2.0:protocol'))]], $nosaml2.shibEntities.sps)"/>
+                <xsl:variable name="nosaml2.shibEntities.sps.count" select="count($nosaml2.shibEntities.sps)"/>
                 <xsl:variable name="nosaml2.sps.count" select="count($nosaml2.sps)"/>
                 <p>
-                    SPs: <xsl:value-of select="$nosaml2.sps.count"/>
+                    SPs: <xsl:value-of select="$nosaml2.sps.count + $nosaml2.shibEntities.sps.count"/>
                 </p>
                 <ul>
                     <xsl:for-each select="$nosaml2.sps">
@@ -1083,16 +1093,20 @@
                     </xsl:for-each>
                 </ul>
                 <xsl:call-template name="entity.breakdown.by.software">
-                    <xsl:with-param name="entities" select="$sps[md:SPSSODescriptor[not(contains(@protocolSupportEnumeration,
-                        'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
+                    <xsl:with-param name="shibEntities" select="$nosaml2.shibEntities.sps"/>
+                    <xsl:with-param name="entities" select="set:difference($nosaml2.sps, $nosaml2.shibEntities.sps)"/>
                 </xsl:call-template>
 
                 <h3>Identity Providers Without SAML 2.0 Support</h3>
-                <xsl:variable name="nosaml2.idps" select="$idps[md:IDPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                <xsl:variable name="nosaml2.shibEntities.idps" select="$shibEntities.idps[md:IDPSSODescriptor[not(contains(@protocolSupportEnumeration,
                     'urn:oasis:names:tc:SAML:2.0:protocol'))]]"/>
+                <xsl:variable name="nosaml2.idps" select="set:difference($idps[md:IDPSSODescriptor[not(contains(@protocolSupportEnumeration,
+                    'urn:oasis:names:tc:SAML:2.0:protocol'))]],$nosaml2.shibEntities.idps)"/>
+                <xsl:variable name="nosaml2.shibEntities.idps.count" select="count($nosaml2.shibEntities.idps)"/>
                 <xsl:variable name="nosaml2.idps.count" select="count($nosaml2.idps)"/>
+
                 <p>
-                    IdPs: <xsl:value-of select="$nosaml2.idps.count"/>
+                    IdPs: <xsl:value-of select="$nosaml2.idps.count + $nosaml2.shibEntities.idps.count"/>
                 </p>
                 <xsl:if test="$nosaml2.idps.count != 0">
                     <ul>
@@ -1119,7 +1133,8 @@
                     </ul>
                 </xsl:if>
                 <xsl:call-template name="entity.breakdown.by.software">
-                    <xsl:with-param name="entities" select="$nosaml2.idps"/>
+                    <xsl:with-param name="shibEntities" select="$nosaml2.shibEntities.idps"/>
+                    <xsl:with-param name="entities" select="set:difference($nosaml2.idps, $nosaml2.shibEntities.idps)"/>
                 </xsl:call-template>
 
             </body>
@@ -1500,7 +1515,8 @@
     -->
     <xsl:template name="entity.breakdown.by.software">
         <xsl:param name="entities"/>
-        <xsl:variable name="entityCount" select="count($entities)"/>
+        <xsl:param name="shibEntities"/>
+        <xsl:variable name="entityCount" select="count($entities) + count($shibEntities)"/>
         <p>
             Breakdown by software used:
         </p>
@@ -1584,10 +1600,10 @@
             <!--
                 Classify Shibboleth 5 entities.
             -->
-            <xsl:variable name="entities.shib.5.in" select="$entities.openathens.out"/>
+            <xsl:variable name="entities.shib.5.in" select="$shibEntities"/>
             <xsl:variable name="entities.shib.5"
                 select="$entities.shib.5.in[
-                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '5']
+                md:Extensions/ukfedlabel:Software[@version = '5']
                 ]"/>
             <xsl:variable name="entities.shib.5.out"
                 select="set:difference($entities.shib.5.in, $entities.shib.5)"/>
@@ -1595,10 +1611,10 @@
             <!--
                 Classify Shibboleth 4 entities.
             -->
-            <xsl:variable name="entities.shib.4.in" select="$entities.openathens.out"/>
+            <xsl:variable name="entities.shib.4.in" select="$entities.shib.5.out"/>
             <xsl:variable name="entities.shib.4"
                 select="$entities.shib.4.in[
-                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '4']
+                md:Extensions/ukfedlabel:Software[@version = '4']
                 ]"/>
             <xsl:variable name="entities.shib.4.out"
                 select="set:difference($entities.shib.4.in, $entities.shib.4)"/>
@@ -1609,7 +1625,7 @@
             <xsl:variable name="entities.shib.3.in" select="$entities.shib.4.out"/>
             <xsl:variable name="entities.shib.3"
                 select="$entities.shib.3.in[
-                md:Extensions/ukfedlabel:Software[@name='Shibboleth'][@version = '3']
+                md:Extensions/ukfedlabel:Software[@version = '3']
                 ]"/>
             <xsl:variable name="entities.shib.3.out"
                 select="set:difference($entities.shib.3.in, $entities.shib.3)"/>
@@ -1630,7 +1646,7 @@
             <!--
                 Classify Athens Gateway entities
             -->
-            <xsl:variable name="entities.gateways.in" select="$entities.shib.2.out"/>
+            <xsl:variable name="entities.gateways.in" select="$entities.openathens.out"/>
             <xsl:variable name="entities.gateways"
                 select="$entities.gateways.in[md:Extensions/ukfedlabel:Software/@name='Eduserv Gateway']"/>
             <xsl:variable name="entities.gateways.out"
