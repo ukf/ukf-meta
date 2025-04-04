@@ -34,7 +34,7 @@
     <xsl:template match="init:RequestInitiator[@Binding]
         [@Binding!='urn:oasis:names:tc:SAML:profiles:SSO:request-init']">
         <xsl:call-template name="error">
-            <xsl:with-param name="m">incorrect Binding value on RequestInitiator</xsl:with-param>
+            <xsl:with-param name="m">incorrect Binding value on RequestInitiator, must be urn:oasis:names:tc:SAML:profiles:SSO:request-init</xsl:with-param>
         </xsl:call-template>
     </xsl:template>
 
