@@ -21,7 +21,7 @@
         Import channel-specific beans.
     -->
     <import resource="classpath:uk/beans.xml"/>
-    <import resource="classpath:uk/blacklist.xml"/>
+    <import resource="file:${blocklists.dir}/allimport-blocklist.xml"/>
 
     <!--
         Import beans from other channels.
