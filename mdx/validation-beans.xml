@@ -582,6 +582,14 @@
         p:keylistResource="classpath:net/shibboleth/metadata/keylists/rsa/compromised-2048.txt"/>
 
     <!--
+        List of known compromised 4096-bit keys, e.g., "dummy" keys shipped with
+        SAML products that are sometimes deployed by accident.
+    -->
+    <bean id="compromised.4096" parent="mda.X509RSAOpenSSLKeylistValidator"
+        p:keySize="4096"
+        p:keylistResource="classpath:net/shibboleth/metadata/keylists/rsa/compromised-4096.txt"/>
+
+    <!--
         check_standard_certificates
 
         Perform a group of standard checks on X.509 certificates.
@@ -614,6 +622,7 @@
                     Again, don't need to check for keys below our minimum key size.
                 -->
                 <ref bean="compromised.2048"/>
+                <ref bean="compromised.4096"/>
             </list>
         </property>
     </bean>

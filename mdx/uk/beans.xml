@@ -514,6 +514,7 @@
                                 Again, don't need to check for keys below our minimum key size.
                             -->
                             <ref bean="compromised.2048"/>
+                            <ref bean="compromised.4096"/>
 
                             <!--
                                 Check against UKf-specific list of compromised RSA keys.
