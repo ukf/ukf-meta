@@ -816,6 +816,7 @@
     <bean id="check_saml_strings" parent="mda.SAMLStringElementCheckingStage">
         <property name="elementNames">
             <set>
+                <ref bean="md-AttributeProfile"/>
                 <ref bean="md-Company"/>
                 <ref bean="md-GivenName"/>
                 <ref bean="md-OrganizationDisplayName"/>
