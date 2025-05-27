@@ -265,7 +265,7 @@
                 <ref bean="checkSchemas"/>
 
                 <!--
-                    Standard checks (i.e., CHECK_std), with some exclusions.
+                    Standard checks (i.e., old CHECK_std), with some exclusions.
 
                     check_saml2meta is excluded so that the "FILL IN" boilerplate on
                     OrganizationURL is not flagged.

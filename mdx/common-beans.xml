@@ -1166,7 +1166,43 @@
                 <ref bean="uk_add_cbc_encryption"/>
 
                 <ref bean="checkSchemas"/>
-                <ref bean="CHECK_std"/>
+                <!-- was CHECK_std -->
+                <ref bean="check_adfs"/>
+                <ref bean="check_algsupport"/>
+                <ref bean="check_bindings"/>
+                <ref bean="check_cr"/>
+                <ref bean="check_entityid_prefix"/>
+                <ref bean="check_hoksso"/>
+                <ref bean="check_idpdisc"/>
+                <ref bean="check_idp_tls"/>
+                <ref bean="check_incmd"/>
+                <ref bean="check_init"/>
+                <ref bean="check_mdattr"/>
+                <ref bean="check_mdattr_ec_anonymous"/>
+                <ref bean="check_mdattr_ec_personalized"/>
+                <ref bean="check_mdattr_ec_pseudonymous"/>
+                <ref bean="check_mdiop"/>
+                <ref bean="check_mdrpi"/>
+                <ref bean="check_mdui"/>
+                <ref bean="check_misc"/>
+                <ref bean="check_rands"/>
+                <ref bean="check_coco_v2"/>
+                <ref bean="check_reqattr"/>
+                <ref bean="check_saml1"/>
+                <ref bean="check_saml2"/>
+                <ref bean="check_saml2_lang"/>
+                <ref bean="check_saml2int"/>
+                <ref bean="check_saml2meta"/>
+                <ref bean="check_saml2meta_urlattrs"/>
+                <ref bean="check_saml2meta_urls"/>
+                <ref bean="check_saml_strings"/>
+                <ref bean="check_shib_noregscope"/>
+                <ref bean="check_shibboleth"/>
+                <ref bean="check_sirtfi"/>
+                <ref bean="check_sp_tls"/>
+                <ref bean="check_uk_algorithms"/>
+                <ref bean="check_uk_trust"/>
+                <!-- end of old CHECK_std -->
                 <ref bean="check_namespaces"/>
 
                 <ref bean="check_standard_certificates"/>
