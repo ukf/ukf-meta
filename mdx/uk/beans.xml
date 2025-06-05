@@ -319,6 +319,15 @@
 
 
     <!--
+        check_uk_mdui
+
+        If an entity has mdui:UIInfo, then that must include at least an
+        mdui:DisplayName
+    -->
+    <bean id="check_uk_mdui" parent="mda.XSLValidationStage"
+          p:XSLResource="classpath:uk/check_uk_mdui.xsl"/>
+
+    <!--
         check_uk_mdui_dn_en_present
 
         If an entity has mdui:UIInfo, then that must include at least an
@@ -469,6 +478,7 @@
                 <ref bean="check_uk_extensions"/>
                 <ref bean="check_uk_mdrps"/>
                 <ref bean="check_uk_urlenc"/>
+                <ref bean="check_uk_mdui"/>
                 <ref bean="check_uk_mdui_dn_en_present"/>
                 <ref bean="check_uk_mdui_dn_en_match"/>
                 <ref bean="check_uk_rands"/>
