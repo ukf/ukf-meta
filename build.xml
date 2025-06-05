@@ -1251,41 +1251,6 @@
     </target>
 
     <!--
-        Runs the stats-generate script for yesterday
-    -->
-    <target name="stats.daily">
-        <echo>Triggering daily stats job</echo>
-        <exec executable="bash" failonerror="true" outputproperty="stats.daily.output">
-            <arg value="${utilities.dir}/stats-generate.sh"/>
-            <arg value="day"/>
-        </exec>
-        <SLACK.send conf="${tools.slacktee.config}/repo-jenkins.conf" colour="good" channel="ukf-stats"
-            message="${stats.daily.output}"/>
-    </target>
-
-    <!--
-        Runs the stats-generate script for the previous month
-    -->
-    <target name="stats.monthly">
-        <echo>Triggering monthly stats job</echo>
-        <exec executable="bash" failonerror="true">
-            <arg value="${utilities.dir}/stats-generate.sh"/>
-            <arg value="month"/>
-        </exec>
-    </target>
-
-    <!--
-        Runs the stats-generate script for the previous year
-    -->
-    <target name="stats.yearly">
-        <echo>Triggering yearly stats job</echo>
-        <exec executable="bash" failonerror="true">
-            <arg value="${utilities.dir}/stats-generate.sh"/>
-            <arg value="year"/>
-        </exec>
-    </target>
-
-    <!--
         ****************************************************
         ***                                              ***
         ***    S A M L   M D   V E R I F I C A T I O N   ***
