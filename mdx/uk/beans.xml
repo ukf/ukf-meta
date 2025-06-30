@@ -483,6 +483,7 @@
                 <ref bean="check_uk_mdui_dn_en_match"/>
                 <ref bean="check_uk_rands"/>
                 <ref bean="check_dup_display"/>
+                <ref bean="check_imported"/>
 
                 <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
