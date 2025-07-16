@@ -397,10 +397,14 @@
     <bean id="check_coco_v2_support" parent="mda.XSLValidationStage"
         p:XSLResource="classpath:_rules/check_coco_v2_support.xsl"/>
 
+    <bean id="check_coco_v2_ec" parent="mda.XSLValidationStage"
+          p:XSLResource="classpath:_rules/check_coco_v2_ec.xsl"/>
+
     <bean id="check_coco_v2" parent="mda.CompositeStage">
         <property name="stages">
             <list>
                 <ref bean="check_coco_v2_support"/>
+                <ref bean="check_coco_v2_ec"/>
             </list>
         </property>
     </bean>
