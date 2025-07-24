@@ -1164,6 +1164,7 @@
                 <ref bean="stripEmptyExtensions"/>
                 <ref bean="strip_mdui_logo_length"/>
                 <ref bean="uk_add_cbc_encryption"/>
+                <ref bean="fix_geolocationHint"/>
 
                 <ref bean="checkSchemas"/>
                 <!-- was CHECK_std -->

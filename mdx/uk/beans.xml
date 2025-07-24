@@ -32,6 +32,15 @@
 
 
     <!--
+        fix_geolocationHint
+
+        Remove spaces from the interior of mdui:GeolocationHint values
+    -->
+    <bean id="fix_geolocationHint" parent="mda.XSLTransformationStage"
+        p:XSLResource="classpath:uk/fix_geolocationHint.xsl"/>
+
+
+    <!--
         uk_stripAdminContacts
 
         Remove any md:ContactPerson elements with contactType of "administrative".
