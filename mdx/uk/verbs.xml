@@ -23,6 +23,11 @@
     <import resource="classpath:uk/beans.xml"/>
 
     <!--
+        Import UK federation registration policy for new metadata.
+    -->
+    <import resource="classpath:uk/policy-registration.xml"/>
+
+    <!--
         ***************************************
         ***                                 ***
         ***   V E R B   P I P E L I N E S   ***
@@ -38,7 +43,7 @@
     <bean id="statistics" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
-                <ref bean="uk_registeredEntities"/>
+                <ref bean="policy.uk_registeredEntities"/>
                 <ref bean="uk_statisticsPipeline"/>
             </list>
         </property>
@@ -60,7 +65,7 @@
                     per-entity checks and terminates if
                     any of them fail.
                 -->
-                <ref bean="uk_registeredEntities"/>
+                <ref bean="policy.uk_registeredEntities"/>
 
                 <!--
                     Now build an aggregate so that we can perform
@@ -86,7 +91,7 @@
     <bean id="checkPorts" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
-                <ref bean="uk_registeredEntities"/>
+                <ref bean="policy.uk_registeredEntities"/>
 
                 <!--
                     The next five stages ensure that any errors are reported
@@ -122,7 +127,7 @@
     <bean id="checkFuture" parent="mda.SimplePipeline">
         <property name="stages">
             <list>
-                <ref bean="uk_registeredEntities"/>
+                <ref bean="policy.uk_registeredEntities"/>
 
                 <!--
                     The next five stages ensure that any errors are reported
@@ -143,7 +148,7 @@
 
                 <!--
                     Additional X.509 certificate checks, over and above those
-                    performed in uk_registeredEntities.
+                    performed in policy.uk_registeredEntities.
                 -->
                 <bean id="checkCertificates" parent="mda.X509ValidationStage">
                     <property name="validators">
@@ -196,152 +201,6 @@
         </property>
     </bean>
 
-    <!--
-        import
-
-        Pipeline to import a metadata fragment file.
-
-        For now, just the head of that pipeline.
-    -->
-    <bean id="import.metadata" parent="mda.SimplePipeline">
-        <property name="stages">
-            <list>
-                <!-- fetch the input file -->
-                <ref bean="fetchImportMetadata"/>
-                <ref bean="populateItemIds"/>
-
-                <!--
-                    Strip all elements and attributes that are in namespaces
-                    we don't accept from registrants.
-                -->
-                <bean id="whitelistImportedNamespaces" parent="mda.NamespacesStrippingStage"
-                    p:keeping="true">
-                    <property name="namespaces">
-                        <set>
-                            <ref bean="alg_namespace"/>
-                            <ref bean="ds_namespace"/>
-                            <ref bean="hoksso_namespace"/>
-                            <ref bean="idpdisc_namespace"/>
-                            <ref bean="init_namespace"/>
-                            <ref bean="md_namespace"/>
-                            <ref bean="mdattr_namespace"/>
-                            <ref bean="mdrpi_namespace"/>
-                            <ref bean="mdui_namespace"/>
-                            <ref bean="remd_namespace"/>
-                            <ref bean="saml_namespace"/>
-                            <ref bean="shibmd_namespace"/>
-                            <ref bean="xenc_namespace"/>
-                            <ref bean="xml_namespace"/>
-                        </set>
-                    </property>
-                </bean>
-
-                <!-- perform schema validation and stop immediately if this fails -->
-                <ref bean="checkSchemas"/>
-                <ref bean="errorTerminatingFilter"/>
-
-                <!-- fix mailto: in contacts -->
-                <ref bean="uk_fix_mailto"/>
-
-                <!-- transform into a fragment using our local conventions -->
-                <bean id="importTransform" parent="mda.XSLTransformationStage"
-                    p:XSLResource="classpath:uk/import.xsl">
-                    <property name="transformParameters">
-                        <map>
-                            <entry key="now_ISO" value-ref="now_ISO"/>
-                            <entry key="now_date_ISO" value-ref="now_date_ISO"/>
-                        </map>
-                    </property>
-                </bean>
-
-                <!-- Normalise the text in ds:X509Certificate elements. -->
-                <ref bean="wrapX509Certificates"/>
-
-                <!-- normalise namespaces in a specific way -->
-                <bean id="normalizeFragment" parent="mda.XSLTransformationStage"
-                    p:XSLResource="classpath:uk/ns_norm_fragment.xsl"/>
-
-                <!-- check the transformed input -->
-                <ref bean="checkSchemas"/>
-
-                <!--
-                    Standard checks (i.e., old CHECK_std), with some exclusions.
-
-                    check_saml2meta is excluded so that the "FILL IN" boilerplate on
-                    OrganizationURL is not flagged.
-                -->
-                <ref bean="check_adfs"/>
-                <ref bean="check_algsupport"/>
-                <ref bean="check_bindings"/>
-                <ref bean="check_cr"/>
-                <ref bean="check_entityid_prefix"/>
-                <ref bean="check_hoksso"/>
-                <ref bean="check_idpdisc"/>
-                <ref bean="check_idp_tls"/>
-                <ref bean="check_init"/>
-                <ref bean="check_mdiop"/>
-                <ref bean="check_mdrpi"/>
-                <ref bean="check_mdui"/>
-                <ref bean="check_misc"/>
-                <ref bean="check_reqattr"/>
-                <ref bean="check_saml1"/>
-                <ref bean="check_saml2"/>
-                <ref bean="check_saml2_lang"/>
-                <ref bean="check_saml2int"/>
-                <!-- <ref bean="check_saml2meta"/> -->
-                <ref bean="check_shib_noregscope"/>
-                <ref bean="check_shibboleth"/>
-                <ref bean="check_sp_tls"/>
-                <ref bean="check_uk_trust"/>
-
-                <bean id="checkCertificates" parent="mda.X509ValidationStage">
-                    <property name="validators">
-                        <list>
-                            <!-- Error on DSA keys. -->
-                            <bean p:id="DSA" parent="mda.X509DSADetector"/>
-
-                            <!-- Error on RSA key length less than 2048 bits. -->
-                            <bean p:id="RSAKeyLength" parent="mda.X509RSAKeyLengthValidator"
-                                p:warningBoundary="0" p:errorBoundary="2048"/>
-                            <!-- Error on small RSA public exponents. -->
-                            <bean p:id="RSAExponent" parent="mda.X509RSAExponentValidator"/>
-                            <!-- Error on keys vulnerable to ROCA. -->
-                            <bean p:id="ROCA" parent="mda.X509ROCAValidator"/>
-
-                            <!--
-                                Debian weak key lists.
-
-                                Don't need to check for keys below our minimum key size.
-                            -->
-                            <ref bean="debian.2048"/>
-                            <ref bean="debian.4096"/>
-
-                            <!--
-                                Compromised key lists.
-
-                                Again, don't need to check for keys below our minimum key size.
-                            -->
-                            <ref bean="compromised.2048"/>
-                            <ref bean="compromised.4096"/>
-                        </list>
-                    </property>
-                </bean>
-
-                <ref bean="check_uk_extensions"/>
-                <ref bean="check_uk_mdrps"/>
-                <ref bean="check_uk_urlenc"/>
-                <ref bean="check_future"/>
-                <ref bean="check_imported"/>
-                <ref bean="errorTerminatingFilter"/>
-
-                <!-- If there are no errors, log any warnings. -->
-                <ref bean="warningAnnouncer"/>
-
-                <!-- write output file -->
-                <ref bean="serializeImportedMetadata"/>
-            </list>
-        </property>
-    </bean>
 
     <!--
         #################################################

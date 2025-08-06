@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+        Registered Entity Policy.
+
+        Applies policy to registered entities.
+
+    -->
+     <!--
+        Fetch and process the registered entities as a collection.
+    -->
+    <bean id="policy.uk_registeredEntities" parent="mda.CompositeStage">
+        <property name="stages">
+            <list>
+                <ref bean="uk_fetchFragmentFiles"/>
+                <ref bean="uk_processFragment"/>
+
+                <!--
+                    Make all three potential scope lists equivalent (on the entity, on
+                    the IDPSSODescriptor and on the AttributeAuthority).
+                -->
+                <bean id="scopes_copy" parent="mda.XSLTransformationStage"
+                    p:XSLResource="classpath:uk/scopes_copy.xsl"/>
+
+                <!--
+                    Inject scopes "pushed" to entities from the members.xml file.
+                -->
+                <bean id="scopes_inject" parent="ukf.ScopeInjectionStage"
+                    p:members-ref="uk_members"/>
+
+                <ref bean="uk_add_cbc_encryption"/>
+
+                <!--
+                    Remove entity-level Scope elements, leaving only the ones associated
+                    with role descriptors.
+                -->
+                <bean id="stripEntityScopes" parent="mda.XSLTransformationStage"
+                    p:XSLResource="classpath:uk/entity_scopes.xsl"/>
+
+                <ref bean="populateItemIds"/>
+                <ref bean="uk_populateIds"/>
+                <bean id="uk_populateFlowConstraints"
+                    parent="ukf.EntityDescriptorFlowConstraintPopulationStage"/>
+                <ref bean="uk_default_regauth"/>
+                <ref bean="populateRegistrationAuthorities"/>
+
+                <ref bean="checkSchemas"/>
+                <!-- was CHECK_std -->
+                <ref bean="check_adfs"/>
+                <ref bean="check_algsupport"/>
+                <ref bean="check_bindings"/>
+                <ref bean="check_cr"/>
+                <ref bean="check_entityid_prefix"/>
+                <ref bean="check_hoksso"/>
+                <ref bean="check_idpdisc"/>
+                <ref bean="check_idp_tls"/>
+                <ref bean="check_init"/>
+                <ref bean="check_mdattr"/>
+                <ref bean="check_mdattr_ec_anonymous"/>
+                <ref bean="check_mdattr_ec_personalized"/>
+                <ref bean="check_mdattr_ec_pseudonymous"/>
+                <ref bean="check_mdiop"/>
+                <ref bean="check_mdrpi"/>
+                <ref bean="check_mdui"/>
+                <ref bean="check_misc"/>
+                <ref bean="check_rands"/>
+                <ref bean="check_coco_v2"/>
+                <ref bean="check_reqattr"/>
+                <ref bean="check_saml1"/>
+                <ref bean="check_saml2"/>
+                <ref bean="check_saml2_lang"/>
+                <ref bean="check_saml2_sp_signedrequests"/>
+                <ref bean="check_saml2int"/>
+                <ref bean="check_saml2meta"/>
+                <ref bean="check_saml2meta_urlattrs"/>
+                <ref bean="check_saml2meta_urls"/>
+                <ref bean="check_saml_strings"/>
+                <ref bean="check_shib_noregscope"/>
+                <ref bean="check_shibboleth"/>
+                <ref bean="check_sirtfi"/>
+                <ref bean="check_sp_tls"/>
+                <ref bean="check_uk_algorithms"/>
+                <ref bean="check_uk_trust"/>
+                <!-- end of old CHECK_std -->
+                <ref bean="check_ukfedlabel"/>
+                <ref bean="check_ukreg"/>
+                <ref bean="check_uk_email"/>
+                <ref bean="check_owner"/>
+                <ref bean="check_uk_keydesc_key"/>
+                <ref bean="check_uk_mdattr"/>
+                <ref bean="check_uk_extensions"/>
+                <ref bean="check_uk_mdrps"/>
+                <ref bean="check_uk_urlenc"/>
+                <ref bean="check_uk_mdui"/>
+                <ref bean="check_uk_mdui_dn_en_present"/>
+                <ref bean="check_uk_mdui_dn_en_match"/>
+                <ref bean="check_uk_rands"/>
+                <ref bean="check_dup_display"/>
+                <ref bean="check_imported"/>
+
+                <bean id="checkCertificates" parent="mda.X509ValidationStage">
+                    <property name="validators">
+                        <list>
+                            <!-- Error on DSA keys. -->
+                            <bean p:id="DSA" parent="mda.X509DSADetector"/>
+
+                            <!-- Error on RSA key length less than 2048 bits. -->
+                            <bean p:id="RSAKeyLength" parent="mda.X509RSAKeyLengthValidator"
+                                p:warningBoundary="0" p:errorBoundary="2048"/>
+                            <!-- Error on small RSA public exponents. -->
+                            <bean p:id="RSAExponent" parent="mda.X509RSAExponentValidator"/>
+                            <!-- Error on keys vulnerable to ROCA. -->
+                            <bean p:id="ROCA" parent="mda.X509ROCAValidator"/>
+
+                            <!--
+                                Debian weak key lists.
+
+                                Don't need to check for keys below our minimum key size.
+                            -->
+                            <ref bean="debian.2048"/>
+                            <ref bean="debian.4096"/>
+
+                            <!--
+                                Compromised key lists.
+
+                                Again, don't need to check for keys below our minimum key size.
+                            -->
+                            <ref bean="compromised.2048"/>
+                            <ref bean="compromised.4096"/>
+
+                            <!--
+                                Check against UKf-specific list of compromised RSA keys.
+                            -->
+                            <ref bean="compromised.ukf"/>
+                        </list>
+                    </property>
+                </bean>
+
+                <!-- failure of any check on registered metadata is fatal -->
+                <ref bean="errorTerminatingFilter"/>
+            </list>
+        </property>
+    </bean>
+
+    </beans>

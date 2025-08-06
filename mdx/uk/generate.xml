@@ -36,7 +36,17 @@
     <!--
         Import UK federation ingress policy for eduGAIN.
     -->
-    <import resource="classpath:uk/edugain-policy.xml"/>
+    <import resource="classpath:uk/policy-edugain.xml"/>
+
+    <!--
+        Import UK federation registered entities policy.
+    -->
+    <import resource="classpath:uk/policy-registered-entity.xml"/>
+
+    <!--
+        Import UK federation publication policy.
+    -->
+    <import resource="classpath:uk/policy-publication.xml"/>
 
     <!--
         *****************************
@@ -77,26 +87,6 @@
             </list>
         </property>
     </bean>
-
-    <!--
-        checkPublishable
-
-        Check an aggregate metadata document for publishability.  This is applied during
-        all UK publication flows prior to any signature step.  It is not applied to
-        export flows, for which we desire the closest possible correspondence to
-        the registered metadata.
-    -->
-    <bean id="checkPublishable" parent="mda.CompositeStage">
-        <property name="stages">
-            <list>
-                <ref bean="checkSchemas"/>
-                <ref bean="check_aggregate"/>
-                <ref bean="check_filtered"/>
-                <ref bean="check_namespaces"/>
-            </list>
-        </property>
-    </bean>
-
 
     <!--
         *****************************************
@@ -208,7 +198,7 @@
                 <ref bean="removeUKEntities"/>
                 <ref bean="removeBlacklistedEntities"/>
                 <ref bean="standardImportActions"/>
-                <ref bean="edugainPolicy"/>
+                <ref bean="policy.edugain"/>
 
                 <!--
                     Silently remove entities which are marked as
@@ -266,7 +256,7 @@
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- production aggregate MUST pass publishability test -->
-                <ref bean="checkPublishable"/>
+                <ref bean="policy.checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="serializeUnsignedProductionAggregate"/>
@@ -335,7 +325,7 @@
                 <ref bean="uk_normaliseNamespaces"/>
 
                 <!-- WAYF aggregate MUST pass publishability test -->
-                <ref bean="checkPublishable"/>
+                <ref bean="policy.checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="serializeUnsignedWayfAggregate"/>
@@ -574,7 +564,7 @@
                 <ref bean="uk_normaliseFallback"/>
 
                 <!-- fallback aggregate MUST pass publishability test -->
-                <ref bean="checkPublishable"/>
+                <ref bean="policy.checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="serializeUnsignedFallbackAggregate"/>
@@ -630,7 +620,7 @@
                 <ref bean="uk_normaliseTest"/>
 
                 <!-- test aggregate MUST pass publishability test -->
-                <ref bean="checkPublishable"/>
+                <ref bean="policy.checkPublishable"/>
                 <ref bean="errorTerminatingFilter"/>
 
                 <ref bean="serializeUnsignedTestAggregate"/>
@@ -883,7 +873,7 @@
                 <!--
                     Acquire metadata for all UK-registered entities.
                 -->
-                <ref bean="uk_registeredEntities"/>
+                <ref bean="policy.uk_registeredEntities"/>
 
                 <!--
                     *******************************************************

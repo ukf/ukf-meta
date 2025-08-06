@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!--
-        edugainPolicy
+        policy.edugain
 
         Applies policy to entities sourced from eduGAIN.
 
@@ -42,7 +42,7 @@
               release mentioned there
 
     -->
-    <bean id="edugainPolicy" parent="mda.CompositeStage">
+    <bean id="policy.edugain" parent="mda.CompositeStage">
         <property name="stages">
             <list>
 

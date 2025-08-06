@@ -2262,7 +2262,7 @@
     <target name="import.metadata">
         <echo>Importing metadata from ${entities.dir}/import.xml</echo>
         <delete file="${entities.dir}/imported.xml" quiet="true" verbose="false"/>
-        <CHANNEL.do channel="uk" verb="import.metadata"/>
+        <CHANNEL.do channel="uk" verb="policy.registration"/>
         <echo>Imported metadata to ${entities.dir}/imported.xml</echo>
         <fixcrlf file="${entities.dir}/imported.xml" encoding="UTF-8"/>
     </target>

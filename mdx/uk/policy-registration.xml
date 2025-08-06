@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    default-lazy-init="true"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--
+        Registration Policy.
+
+        Applies policy to imported metadata 
+
+    -->
+     <bean id="policy.registration" parent="mda.CompositeStage">
+        <property name="stages">
+            <list>
+                <!-- fetch the input file -->
+                <ref bean="fetchImportMetadata"/>
+                <ref bean="populateItemIds"/>
+
+                <!--
+                    Strip all elements and attributes that are in namespaces
+                    we don't accept from registrants.
+                -->
+                <bean id="whitelistImportedNamespaces" parent="mda.NamespacesStrippingStage"
+                    p:keeping="true">
+                    <property name="namespaces">
+                        <set>
+                            <ref bean="alg_namespace"/>
+                            <ref bean="ds_namespace"/>
+                            <ref bean="hoksso_namespace"/>
+                            <ref bean="idpdisc_namespace"/>
+                            <ref bean="init_namespace"/>
+                            <ref bean="md_namespace"/>
+                            <ref bean="mdattr_namespace"/>
+                            <ref bean="mdrpi_namespace"/>
+                            <ref bean="mdui_namespace"/>
+                            <ref bean="remd_namespace"/>
+                            <ref bean="saml_namespace"/>
+                            <ref bean="shibmd_namespace"/>
+                            <ref bean="xenc_namespace"/>
+                            <ref bean="xml_namespace"/>
+                        </set>
+                    </property>
+                </bean>
+
+                <!-- perform schema validation and stop immediately if this fails -->
+                <ref bean="checkSchemas"/>
+                <ref bean="errorTerminatingFilter"/>
+
+                <!-- fix mailto: in contacts -->
+                <ref bean="uk_fix_mailto"/>
+
+                <!-- transform into a fragment using our local conventions -->
+                <bean id="importTransform" parent="mda.XSLTransformationStage"
+                    p:XSLResource="classpath:uk/import.xsl">
+                    <property name="transformParameters">
+                        <map>
+                            <entry key="now_ISO" value-ref="now_ISO"/>
+                            <entry key="now_date_ISO" value-ref="now_date_ISO"/>
+                        </map>
+                    </property>
+                </bean>
+
+                <!-- Normalise the text in ds:X509Certificate elements. -->
+                <ref bean="wrapX509Certificates"/>
+
+                <!-- normalise namespaces in a specific way -->
+                <bean id="normalizeFragment" parent="mda.XSLTransformationStage"
+                    p:XSLResource="classpath:uk/ns_norm_fragment.xsl"/>
+
+                <!-- check the transformed input -->
+                <ref bean="checkSchemas"/>
+
+                <!--
+                    Standard checks (i.e., old CHECK_std), with some exclusions.
+
+                    check_saml2meta is excluded so that the "FILL IN" boilerplate on
+                    OrganizationURL is not flagged.
+                -->
+                <ref bean="check_adfs"/>
+                <ref bean="check_algsupport"/>
+                <ref bean="check_bindings"/>
+                <ref bean="check_cr"/>
+                <ref bean="check_entityid_prefix"/>
+                <ref bean="check_hoksso"/>
+                <ref bean="check_idpdisc"/>
+                <ref bean="check_idp_tls"/>
+                <ref bean="check_init"/>
+                <ref bean="check_mdiop"/>
+                <ref bean="check_mdrpi"/>
+                <ref bean="check_mdui"/>
+                <ref bean="check_misc"/>
+                <ref bean="check_reqattr"/>
+                <ref bean="check_saml1"/>
+                <ref bean="check_saml2"/>
+                <ref bean="check_saml2_lang"/>
+                <ref bean="check_saml2int"/>
+                <!-- <ref bean="check_saml2meta"/> -->
+                <ref bean="check_shib_noregscope"/>
+                <ref bean="check_shibboleth"/>
+                <ref bean="check_sp_tls"/>
+                <ref bean="check_uk_trust"/>
+
+                <bean id="checkCertificates" parent="mda.X509ValidationStage">
+                    <property name="validators">
+                        <list>
+                            <!-- Error on DSA keys. -->
+                            <bean p:id="DSA" parent="mda.X509DSADetector"/>
+
+                            <!-- Error on RSA key length less than 2048 bits. -->
+                            <bean p:id="RSAKeyLength" parent="mda.X509RSAKeyLengthValidator"
+                                p:warningBoundary="0" p:errorBoundary="2048"/>
+                            <!-- Error on small RSA public exponents. -->
+                            <bean p:id="RSAExponent" parent="mda.X509RSAExponentValidator"/>
+                            <!-- Error on keys vulnerable to ROCA. -->
+                            <bean p:id="ROCA" parent="mda.X509ROCAValidator"/>
+
+                            <!--
+                                Debian weak key lists.
+
+                                Don't need to check for keys below our minimum key size.
+                            -->
+                            <ref bean="debian.2048"/>
+                            <ref bean="debian.4096"/>
+
+                            <!--
+                                Compromised key lists.
+
+                                Again, don't need to check for keys below our minimum key size.
+                            -->
+                            <ref bean="compromised.2048"/>
+                            <ref bean="compromised.4096"/>
+                        </list>
+                    </property>
+                </bean>
+
+                <ref bean="check_uk_extensions"/>
+                <ref bean="check_uk_mdrps"/>
+                <ref bean="check_uk_urlenc"/>
+                <ref bean="check_future"/>
+                <ref bean="check_imported"/>
+                <ref bean="errorTerminatingFilter"/>
+
+                <!-- If there are no errors, log any warnings. -->
+                <ref bean="warningAnnouncer"/>
+
+                <!-- write output file -->
+                <ref bean="serializeImportedMetadata"/>
+            </list>
+        </property>
+    </bean>
+
+    </beans>

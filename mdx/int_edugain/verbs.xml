@@ -30,7 +30,7 @@
     <!--
         Import UK federation ingress policy for eduGAIN.
     -->
-    <import resource="classpath:uk/edugain-policy.xml"/>
+    <import resource="classpath:uk/policy-edugain.xml"/>
 
     <bean id="serializeImported" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
@@ -60,7 +60,7 @@
             <list>
                 <ref bean="int_edugain_productionEntities"/>
                 <ref bean="standardImportActions"/>
-                <ref bean="edugainPolicy"/>
+                <ref bean="policy.edugain"/>
                 <ref bean="standardImportTail"/>
                 <ref bean="serializeImported"/>
             </list>
@@ -109,7 +109,7 @@
                 <ref bean="disassemble"/>
 
                 <ref bean="standardImportActions"/>
-                <ref bean="edugainPolicy"/>
+                <ref bean="policy.edugain"/>
                 <ref bean="warningAndErrorAnnouncer"/>
                 <ref bean="errorTerminator"/>
             </list>
@@ -131,7 +131,7 @@
                     p:designatedEntities-ref="int_edugain_verify_blacklist"/>
 
                 <ref bean="standardImportActions"/>
-                <ref bean="edugainPolicy"/>
+                <ref bean="policy.edugain"/>
                 <ref bean="errorTerminatingFilter"/>
             </list>
         </property>
@@ -151,7 +151,7 @@
 
                 <!-- remove all entities which still have errors -->
                 <ref bean="standardImportActions"/>
-                <ref bean="edugainPolicy"/>
+                <ref bean="policy.edugain"/>
                 <ref bean="errorRemover"/>
 
                 <!-- remove all entities *other* than the ones in the blacklist -->
@@ -199,7 +199,7 @@
                 <ref bean="disassemble"/>
 
                 <ref bean="standardImportActions"/>
-                <ref bean="edugainPolicy"/>
+                <ref bean="policy.edugain"/>
 
                 <ref bean="warningAndErrorAnnouncer"/>
                 <ref bean="errorTerminator"/>

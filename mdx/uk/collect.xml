@@ -22,6 +22,11 @@
     -->
     <import resource="classpath:uk/beans.xml"/>
 
+    <!--
+        Import UK federation registered entities policy.
+    -->
+    <import resource="classpath:uk/policy-registered-entity.xml"/>
+
     <bean id="serializeCollected" parent="mda.SerializationStage">
         <property name="serializer" ref="serializer"/>
         <property name="outputFile">
