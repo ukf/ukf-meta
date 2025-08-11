@@ -54,6 +54,21 @@
                 <bean parent="mda.XSLTransformationStage"
                     p:XSLResource="classpath:uk/mdq_validity.xsl"/>
 
+                <!--
+                    Add PublicationInfo to per-entity metadata.
+                -->
+                <bean parent="mda.XSLTransformationStage"
+                    p:XSLResource="classpath:uk/mdq_add_publication_info.xsl">
+                    <property name="transformParameters">
+                        <map>
+                            <entry key="publisher" value-ref="uk_federation_uri"/>
+                            <entry key="now_ISO" value-ref="now_ISO"/>
+                        </map>
+                    </property>
+                </bean>
+
+
+
                 <!-- Break down into individual entities. -->
                 <ref bean="disassemble"/>
 
