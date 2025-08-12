@@ -870,6 +870,7 @@
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="pull"/>
+            <arg value="--ff-only"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
@@ -877,6 +878,7 @@
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="pull"/>
+            <arg value="--ff-only"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="checkout"/>
@@ -884,15 +886,19 @@
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.data}" failonerror="true">
             <arg value="pull"/>
+            <arg value="--ff-only"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.products}" failonerror="true">
             <arg value="pull"/>
+            <arg value="--ff-only"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling}" failonerror="true">
             <arg value="pull"/>
+            <arg value="--ff-only"/>
         </exec>
         <exec executable="${git.executable}" dir="${shared.ws.dir}/${git.repo.project.tooling.config}" failonerror="true">
             <arg value="pull"/>
+            <arg value="--ff-only"/>
         </exec>
     </target>
 
