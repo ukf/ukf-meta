@@ -347,22 +347,6 @@
         </property>
     </bean>
 
-
-    <!--
-        *******************************************************************
-        ***                                                             ***
-        ***   I N C O M M O N   F E D E R A T I O N   M E T A D A T A   ***
-        ***                                                             ***
-        *******************************************************************
-    -->
-
-    <!--
-        check_incmd
-    -->
-    <bean id="check_incmd" parent="mda.XSLValidationStage"
-        p:XSLResource="classpath:_rules/check_incmd.xsl"/>
-
-
     <!--
         ***********************************************************
         ***                                                     ***

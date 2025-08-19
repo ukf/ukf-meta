@@ -278,7 +278,6 @@
                 <ref bean="check_hoksso"/>
                 <ref bean="check_idpdisc"/>
                 <ref bean="check_idp_tls"/>
-                <ref bean="check_incmd"/>
                 <ref bean="check_init"/>
                 <ref bean="check_mdiop"/>
                 <ref bean="check_mdrpi"/>
