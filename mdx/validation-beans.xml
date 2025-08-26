@@ -331,6 +331,24 @@
     </bean>
 
     <!--
+        check_mdui_geolocationhint
+
+        Check GeolocationHint format of mdui:GeolocationHint elements.
+    -->
+    <bean id="check_mdui_geolocationhint" parent="mda.StringElementValidationStage">
+        <property name="elementName" ref="mdui-GeolocationHint"/>
+        <property name="validators">
+            <list>
+                <bean parent="mda.AcceptStringRegexValidator"
+                      p:regex="^geo:-?\d+(\.\d+)?,-?\d+(\.\d+)?(,-?\d+(\.\d+)?)?(;u=\d+(\.\d+)?)?$" />
+                <!-- If none of the above validators succeed, then reject with the following -->
+                <bean id="reject" parent="mda.RejectAllValidator"
+                      p:message="GeolocationHint must be RFC5870 URI starting with 'geo:'"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--
         check_mdui
 
         Composite check for the MDUI specification.
@@ -343,6 +361,7 @@
                 <ref bean="check_mdui_logo_length"/>
                 <ref bean="check_mdui_logo_url"/>
                 <ref bean="check_mdui_urls"/>
+                <ref bean="check_mdui_geolocationhint"/>
             </list>
         </property>
     </bean>
