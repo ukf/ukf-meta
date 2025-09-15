@@ -247,8 +247,6 @@
             <arg value="${node.build.dir.url}/${md.export.signed}"/>
             <arg value="${node.build.dir.url}/${md.export.preview.signed}"/>
             <arg value="${node.build.dir.url}/${md.back.signed}"/>
-            <arg value="${node.build.dir.url}/${md.wayf.signed}"/>
-            <arg value="${node.build.dir.url}/${md.cdsall.signed}"/>
             <arg value="${node.build.dir.url}/${md.wugen.signed}"/>
             <!-- bring them back to orchestrator working directory -->
             <arg value="${aggregates.dir}"/>
