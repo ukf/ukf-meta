@@ -28,6 +28,11 @@
     <import resource="classpath:uk/policy-registration.xml"/>
 
     <!--
+        Import UK federation registered entities policy.
+    -->
+    <import resource="classpath:uk/policy-registered-entity.xml"/>
+
+    <!--
         ***************************************
         ***                                 ***
         ***   V E R B   P I P E L I N E S   ***
@@ -61,7 +66,7 @@
         <property name="stages">
             <list>
                 <!--
-                    uk_registeredEntities performs all
+                    policy.uk_registeredEntities performs all
                     per-entity checks and terminates if
                     any of them fail.
                 -->
