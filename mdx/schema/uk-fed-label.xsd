@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     targetNamespace="http://ukfederation.org.uk/2006/11/label"
-    version="2020-02-13"
+    version="2025-10-01"
     elementFormDefault="qualified">
 
     <annotation>
@@ -193,14 +193,12 @@
                     values of flowName to just those names.
                 </documentation>
             </annotation>
-            <enumeration value="cdsall"/>
             <enumeration value="export"/>
             <enumeration value="export-preview"/>
             <enumeration value="fallback"/>
             <enumeration value="production"/>
             <enumeration value="statistics"/>
             <enumeration value="test"/>
-            <enumeration value="wayf"/>
         </restriction>
     </simpleType>
 
