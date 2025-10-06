@@ -674,7 +674,7 @@
                     Additional rules excluding entities from the aggregate.
 
                     The basic rule (expressed in uk_exportSelector) is that
-                    entities are excluded if they do not have the ExportOptOut label.
+                    entities are included if they do not have the ExportOptOut label.
                     Additional rules below are applied to entities which do not
                     have the ExportOptIn label: in other words, a rule in this section
                     can always be overridden by an explicit ExportOptIn.
