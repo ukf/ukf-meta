@@ -59,3 +59,8 @@ perform-test:
     #  on the thinned input data.
     #
     - ant -Denv=ci-thin flow.uk.collect
+
+    #
+    # Run the policy-registration pipeline to apply policy to thinned imported metadata.
+    #
+    - ant -Denv=ci-thin import.metadata
