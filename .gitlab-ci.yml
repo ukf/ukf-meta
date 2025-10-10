@@ -53,3 +53,9 @@ perform-test:
     # Run the full generate pipeline on the thinned input data.
     #
     - ant -Denv=ci-thin flow.aggregates.generate
+
+    #
+    # Run the collect pipeline to collect all entities registered with the UK federation registrar
+    #  on the thinned input data.
+    #
+    - ant -Denv=ci-thin flow.uk.collect
