@@ -1179,6 +1179,7 @@
                 <ref bean="check_mdui"/>
                 <ref bean="check_misc"/>
                 <ref bean="check_rands"/>
+                <ref bean="check_coco_v1"/>
                 <ref bean="check_coco_v2"/>
                 <ref bean="check_reqattr"/>
                 <ref bean="check_saml1"/>

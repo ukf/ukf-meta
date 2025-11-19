@@ -392,6 +392,30 @@
     <!--
         ******************************************************************
         ***                                                            ***
+        ***   R E F E D S   C o C o   v1   S P E C I F I C A T I O N   ***
+        ***                                                            ***
+        ******************************************************************
+    -->
+
+    <bean id="check_coco_v1_support" parent="mda.XSLValidationStage"
+        p:XSLResource="classpath:_rules/check_coco_v1_support.xsl"/>
+
+    <bean id="check_coco_v1_ec" parent="mda.XSLValidationStage"
+          p:XSLResource="classpath:_rules/check_coco_v1_ec.xsl"/>
+
+    <bean id="check_coco_v1" parent="mda.CompositeStage">
+        <property name="stages">
+            <list>
+                <ref bean="check_coco_v1_support"/>
+                <ref bean="check_coco_v1_ec"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <!--
+        ******************************************************************
+        ***                                                            ***
         ***   R E F E D S   C o C o   v2   S P E C I F I C A T I O N   ***
         ***                                                            ***
         ******************************************************************
