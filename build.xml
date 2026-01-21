@@ -379,12 +379,19 @@
         Note that this value is often overridden in production contexts (see, for example,
         prod.properties) to give the production environment extra headroom. The value is
         kept lower here so that we'll get warnings in development before the production
-        environment is affected.
+        environment is affected. We typically allow 512m headroom.
 
-		The overrides for production environments should be updated in step with the
-		value here whenever this is necessary.
+        The overrides for production environments should be updated in step with the
+        value here whenever this is necessary.
+
+        Here's an example. As java.max.memory is set to 2048m here, prod.properties should
+        be set to 2560m. When the memory requirements grow too big for the default below
+        (either getting out of memory errors or the JVM slows down with garbage collection)
+        then increase your local build.properties until you're back in the safe zone.
+        Lock this in by updating the value below & prod.properties accordingly.
+
     -->
-    <property name="java.max.memory" value="1536m"/>
+    <property name="java.max.memory" value="2048m"/>
 
 
     <!--
