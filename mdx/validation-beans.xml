@@ -292,6 +292,9 @@
                 <bean p:id="nbs" parent="mda.RejectStringRegexValidator"
                     p:regex=".*\u00a0.*"
                     p:message="mdui:Logo contains non-breaking space" />
+                <bean p:id="non-rfc3986" parent="mda.RejectStringRegexValidator"
+                    p:regex=".*[^A-Za-z0-9\-._~:/?#\[\]@!$&amp;'()*+,;=%].*"
+                    p:message="mdui:Logo contains invalid characters per RFC 3986" />
                 <!-- Accept data: URLs with no further scrutiny. -->
                 <bean parent="mda.AcceptStringRegexValidator"
                     p:regex="data:.*"/>
