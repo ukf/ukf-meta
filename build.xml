@@ -1239,6 +1239,14 @@
         <exec executable="curl" dir="${output.dir}" failonerror="true">
             <!-- force curl to return a failure status code when an HTTP server error is returned-->
             <arg value="--fail"/>
+            <!-- retry 3 times on transient errors-->
+            <arg value="--retry"/>
+            <arg value="3"/>
+            <!-- wait 10 seconds between retries -->
+            <arg value="--retry-delay"/>
+            <arg value="10"/>
+            <!-- consider connection refused as a transient error for retries -->
+            <arg value="--retry-connrefused"/>
             <!-- reduce verbosity-->
             <arg value="-s"/>
             <arg value="${jenkins.url.to.trigger.publication}"/>
