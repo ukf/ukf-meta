@@ -35,6 +35,14 @@
 
         <!--
             Collect the REFEDS security contacts for this entity.
+
+            SIRTFI v2 specification represents a security contact using the standard SAML:
+                contactType="other"
+            together with the REFEDS extension attribute:
+                remd:contactType="http://refeds.org/metadata/contactType/security"
+
+            See:
+                https://refeds.org/wp-content/uploads/2022/08/Sirtfi-v2.pdf
         -->
         <xsl:variable name="securityContacts"
             select="md:ContactPerson
