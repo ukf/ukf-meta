@@ -1755,30 +1755,6 @@
         ***********************************
     -->
 
-    <macrodef name="SLACK.send">
-        <attribute name="conf"/>
-        <attribute name="colour" default="none"/>
-        <attribute name="channel"/>
-        <attribute name="message"/>
-        <sequential>
-            <if>
-                <equals arg1="@{colour}" arg2="none"/>
-                <then>
-                    <exec executable="bash" failonerror="true">
-                        <arg value="-c"/>
-                        <arg value="echo -e '@{message}' | ${tools.slacktee}/bin/slacktee.sh -p --config @{conf} -c @{channel}"/>
-                    </exec>
-                </then>
-                <else>
-                    <exec executable="bash" failonerror="true">
-                        <arg value="-c"/>
-                        <arg value="echo -e '@{message}' | ${tools.slacktee}/bin/slacktee.sh -p --config @{conf} -a @{colour} -c @{channel}"/>
-                    </exec>
-                </else>
-            </if>
-        </sequential>
-    </macrodef>
-
     <!--
         Send success notification to slack channel
     -->
@@ -1794,8 +1770,18 @@
                     <arg value="${git.repo.project.data}"/>
                     <arg value="${git.repo.project.products}"/>
                 </exec>
-                <SLACK.send conf="${tools.slacktee.config}/aggr-ant.conf" colour="good" channel="ukf-events-publish"
-                    message="${diff.between.publications}"/>
+
+                <exec executable="${tools.slacktee}/bin/slacktee.sh"
+                      failonerror="true"
+                      inputstring="${diff.between.publications}">
+                    <arg value="-p"/>
+                    <arg value="--config"/>
+                    <arg value="${tools.slacktee.config}/aggr-ant.conf"/>
+                    <arg value="-a"/>
+                    <arg value="good"/>
+                    <arg value="-c"/>
+                    <arg value="ukf-events-publish"/>
+                </exec>
             </then>
         </if>
     </target>
