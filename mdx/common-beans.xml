@@ -1103,6 +1103,31 @@
     </bean>
 
     <!--
+       Strip all elements and attributes that are in namespaces
+       other than the ones we accept from partners.
+    -->
+    <bean id="whitelistImportedNamespaces" parent="mda.NamespacesStrippingStage" p:keeping="true">
+        <property name="namespaces">
+            <set>
+                <ref bean="alg_namespace"/>
+                <ref bean="ds_namespace"/>
+                <ref bean="hoksso_namespace"/>
+                <ref bean="idpdisc_namespace"/>
+                <ref bean="init_namespace"/>
+                <ref bean="md_namespace"/>
+                <ref bean="mdattr_namespace"/>
+                <ref bean="mdrpi_namespace"/>
+                <ref bean="mdui_namespace"/>
+                <ref bean="remd_namespace"/>
+                <ref bean="saml_namespace"/>
+                <ref bean="shibmd_namespace"/>
+                <ref bean="xenc_namespace"/>
+                <ref bean="xml_namespace"/>
+            </set>
+        </property>
+    </bean>
+
+    <!--
         standardImportActions
 
         Standard actions performed on any metadata import channel.  Assumes that the
@@ -1118,32 +1143,7 @@
             <list>
                 <ref bean="populateItemIds"/>
                 <ref bean="populateRegistrationAuthorities"/>
-
-                <!--
-                    Strip all elements and attributes that are in namespaces
-                    other than the ones we accept from partners.
-                -->
-                <bean id="whitelistImportedNamespaces" parent="mda.NamespacesStrippingStage"
-                    p:keeping="true">
-                    <property name="namespaces">
-                        <set>
-                            <ref bean="alg_namespace"/>
-                            <ref bean="ds_namespace"/>
-                            <ref bean="hoksso_namespace"/>
-                            <ref bean="idpdisc_namespace"/>
-                            <ref bean="init_namespace"/>
-                            <ref bean="md_namespace"/>
-                            <ref bean="mdattr_namespace"/>
-                            <ref bean="mdrpi_namespace"/>
-                            <ref bean="mdui_namespace"/>
-                            <ref bean="remd_namespace"/>
-                            <ref bean="saml_namespace"/>
-                            <ref bean="shibmd_namespace"/>
-                            <ref bean="xenc_namespace"/>
-                            <ref bean="xml_namespace"/>
-                        </set>
-                    </property>
-                </bean>
+                <ref bean="whitelistImportedNamespaces"/>
 
                 <!--
                     Stages that modify metadata come first, so that
