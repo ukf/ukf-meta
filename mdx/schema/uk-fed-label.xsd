@@ -2,7 +2,7 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:ukfedlabel="http://ukfederation.org.uk/2006/11/label"
     targetNamespace="http://ukfederation.org.uk/2006/11/label"
-    version="2025-10-01"
+    version="2026-07-07"
     elementFormDefault="qualified">
 
     <annotation>
@@ -73,15 +73,12 @@
         <complexType>
             <complexContent>
                 <extension base="ukfedlabel:basicLabel">
-                    <attribute name="orgID" type="ukfedlabel:orgIDType" use="optional">
+                    <attribute name="orgID" type="ukfedlabel:orgIDType" use="required">
                         <annotation>
                             <documentation>
-                                The orgID attribute is described as "optional" in this schema
-                                so that it can be omitted in published metadata. However, it
-                                is mandatory in entity fragment files.
-
-                                orgID can become a mandatory attribute if we ever stop
-                                publishing UKFederationMember labels.
+                                orgID is a mandatory attribute as we stopped
+                                publishing UKFederationMember labels. It
+                                is also mandatory in entity fragment files.
                             </documentation>
                         </annotation>
                     </attribute>
