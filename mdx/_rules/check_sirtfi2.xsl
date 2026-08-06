@@ -9,6 +9,13 @@
         https://refeds.org/wp-content/uploads/2022/08/Sirtfi-v2.pdf
 
 -->
+
+<!--
+    Invalid SIRTFI assertions are treated as warnings rather than errors
+    so that metadata processing can continue and the invalid REFEDS SIRTFI
+    entity attribute can be removed.
+    See ukf/ukf-meta#516
+-->
 <xsl:stylesheet version="1.0"
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute"
@@ -45,7 +52,7 @@
                 https://refeds.org/wp-content/uploads/2022/08/Sirtfi-v2.pdf
         -->
         <xsl:variable name="securityContacts"
-            select="md:ContactPerson
+                      select="md:ContactPerson
             [@contactType='other']
             [@remd:contactType='http://refeds.org/metadata/contactType/security']"/>
 
@@ -53,8 +60,12 @@
             There must be at least one REFEDS security contact.
         -->
         <xsl:if test="count($securityContacts) = 0">
-            <xsl:call-template name="error">
+            <xsl:call-template name="warning">
                 <xsl:with-param name="m">Sirtfi version 2 requires a REFEDS security contact</xsl:with-param>
+            </xsl:call-template>
+
+            <xsl:call-template name="error">
+                <xsl:with-param name="m">strip-invalid-sirtfi</xsl:with-param>
             </xsl:call-template>
         </xsl:if>
 
@@ -64,13 +75,21 @@
         -->
         <xsl:for-each select="$securityContacts">
             <xsl:if test="not(md:GivenName)">
-                <xsl:call-template name="error">
+                <xsl:call-template name="warning">
                     <xsl:with-param name="m">Sirtfi version 2 requires a REFEDS security contact to have a GivenName</xsl:with-param>
+                </xsl:call-template>
+
+                <xsl:call-template name="error">
+                    <xsl:with-param name="m">strip-invalid-sirtfi</xsl:with-param>
                 </xsl:call-template>
             </xsl:if>
             <xsl:if test="not(md:EmailAddress)">
-                <xsl:call-template name="error">
+                <xsl:call-template name="warning">
                     <xsl:with-param name="m">Sirtfi version 2 requires a REFEDS security contact to have an EmailAddress</xsl:with-param>
+                </xsl:call-template>
+
+                <xsl:call-template name="error">
+                    <xsl:with-param name="m">strip-invalid-sirtfi</xsl:with-param>
                 </xsl:call-template>
             </xsl:if>
         </xsl:for-each>
@@ -84,8 +103,12 @@
                 [@Name='urn:oasis:names:tc:SAML:attribute:assurance-certification']
                 /saml:AttributeValue[.='https://refeds.org/sirtfi'])
             ">
-            <xsl:call-template name="error">
+            <xsl:call-template name="warning">
                 <xsl:with-param name="m">Sirtfi version 2 requires the entity to also support the original Sirtfi entity attribute</xsl:with-param>
+            </xsl:call-template>
+
+            <xsl:call-template name="error">
+                <xsl:with-param name="m">strip-invalid-sirtfi</xsl:with-param>
             </xsl:call-template>
         </xsl:if>
 

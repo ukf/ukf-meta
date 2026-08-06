@@ -813,6 +813,77 @@
     </bean>
 
     <!--
+        stripInvalidSirtfi
+
+        Remove the entity attribute for invalid sirtfi
+    -->
+
+    <bean id="strip-invalid-sirtfi" parent="mda.SplitMergeStage">
+
+        <!-- select entities with SIRTFI warning -->
+        <property name="selectionStrategy">
+            <bean parent="ukf.StatusMetadataCheckingStrategy">
+                <constructor-arg value="#{T(net.shibboleth.metadata.ErrorStatus)}"/>
+                <constructor-arg value="strip-invalid-sirtfi"/>
+                <constructor-arg value="true"/>
+            </bean>
+        </property>
+
+        <!--
+            The pipeline for selected (invalid SIRTFI) items removes entities matching specific rules.
+        -->
+        <property name="selectedItemPipeline">
+            <bean id="selectedItemPipeline" parent="mda.SimplePipeline">
+                <property name="stages">
+                    <list>
+                        <!-- Remove Status Metadata -->
+                        <bean parent="ukf.StatusMetadataFilteringStage">
+                            <property name="message" value="strip-invalid-sirtfi"/>
+                            <property name="exactMatch" value="true"/>
+                            <property name="selectionRequirements">
+                                <list>
+                                    <value>#{T(net.shibboleth.metadata.ErrorStatus)}</value>
+                                </list>
+                            </property>
+                        </bean>
+                        
+                        <!-- Remove the SIRTFI entity attribute -->
+                        <bean id="entityAttributes" parent="mda.EntityAttributeFilteringStage"
+                              p:keeping="false">
+                            <property name="rules">
+                                <list>
+                                    <ref bean="SIRTFI.entity.attribute.matcher"/>
+                                    <ref bean="SIRTFIv2.entity.attribute.matcher"/>
+                                </list>
+                            </property>
+                        </bean>
+
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!--
+        strip-invalid-sirtfi must be run after check_sirtfi
+    -->
+    <bean id="check_and_strip_sirtfi" parent="mda.CompositeStage">
+        <property name="stages">
+            <list>
+                <ref bean="check_sirtfi"/>
+                <ref bean="strip-invalid-sirtfi"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="SIRTFI.entity.attribute.matcher" parent="mda.AssuranceCertificationMatcher"
+          c:_="https://refeds.org/sirtfi"/>
+
+    <bean id="SIRTFIv2.entity.attribute.matcher" parent="mda.AssuranceCertificationMatcher"
+          c:_="https://refeds.org/sirtfi2"/>
+
+    <!--
         *****************************************************
         ***                                               ***
         ***   S H I B B O L E T H   E X T E N S I O N S   ***
@@ -1159,6 +1230,7 @@
                 <ref bean="uk_add_cbc_encryption"/>
                 <ref bean="fix_geolocationHint"/>
 
+                <ref bean="check_and_strip_sirtfi"/>
                 <ref bean="checkSchemas"/>
                 <!-- was CHECK_std -->
                 <ref bean="check_adfs"/>
@@ -1193,7 +1265,6 @@
                 <ref bean="check_saml_strings"/>
                 <ref bean="check_shib_noregscope"/>
                 <ref bean="check_shibboleth"/>
-                <ref bean="check_sirtfi"/>
                 <ref bean="check_sp_tls"/>
                 <ref bean="check_uk_algorithms"/>
                 <ref bean="check_uk_trust"/>
