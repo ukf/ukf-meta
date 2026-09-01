@@ -81,7 +81,7 @@
 
         Verifies that entities being imported from eduGAIN match our checks.
         Intended to be run from Jenkins once a week. Errors on the verification
-        blacklist are ignored, so that we only need to deal with each entity
+        blocklist are ignored, so that we only need to deal with each entity
         entering an error state once.
     -->
     <bean id="verify" parent="mda.SimplePipeline">
@@ -89,9 +89,9 @@
             <list>
                 <ref bean="int_edugain_productionEntities"/>
                 <ref bean="removeUKEntities"/>
-                <bean id="removeBlacklistedEntities" parent="mda.EntityFilterStage"
+                <bean id="removeBlocklistedEntities" parent="mda.EntityFilterStage"
                     p:keepingEntities="false"
-                    p:designatedEntities-ref="int_edugain_verify_blacklist"/>
+                    p:designatedEntities-ref="int_edugain_verify_blocklist"/>
 
                 <!--
                     Sort the remaining entities by entity ID, so that any errors
@@ -126,9 +126,9 @@
             <list>
                 <ref bean="int_edugain_productionEntities"/>
                 <ref bean="removeUKEntities"/>
-                <bean id="removeBlacklistedEntities" parent="mda.EntityFilterStage"
+                <bean id="removeBlocklistedEntities" parent="mda.EntityFilterStage"
                     p:keepingEntities="false"
-                    p:designatedEntities-ref="int_edugain_verify_blacklist"/>
+                    p:designatedEntities-ref="int_edugain_verify_blocklist"/>
 
                 <ref bean="standardImportActions"/>
                 <ref bean="policy.edugain"/>
@@ -141,7 +141,7 @@
         verify.recovered
 
         Looks for eduGAIN entities which *were* in an error state, as shown by
-        their inclusion in our verification blacklist, but have now recovered.
+        their inclusion in our verification blocklist, but have now recovered.
     -->
     <bean id="verify.recovered" parent="mda.SimplePipeline">
         <property name="stages">
@@ -154,10 +154,10 @@
                 <ref bean="policy.edugain"/>
                 <ref bean="errorRemover"/>
 
-                <!-- remove all entities *other* than the ones in the blacklist -->
-                <bean id="removeAllButBlacklistedEntities" parent="mda.EntityFilterStage"
+                <!-- remove all entities *other* than the ones in the blocklist -->
+                <bean id="removeAllButBlocklistedEntities" parent="mda.EntityFilterStage"
                     p:keepingEntities="true"
-                    p:designatedEntities-ref="int_edugain_verify_blacklist"/>
+                    p:designatedEntities-ref="int_edugain_verify_blocklist"/>
 
                 <!-- flag up any remaining entities -->
                 <bean id="check_recovered" parent="mda.XSLValidationStage"
@@ -172,7 +172,7 @@
         verify.all
 
         Same as verify, but not making use of the validation
-        blacklist. Can be used to check up on blacklisted entities.
+        blocklist. Can be used to check up on blocklisted entities.
 
         Output also includes any warnings attached to entities, although
         these do not result in an error termination.

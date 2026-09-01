@@ -639,7 +639,7 @@
                 <bean p:id="ROCA" parent="mda.X509ROCAValidator"/>
 
                 <!--
-                    Debian weak key blacklists.
+                    Lists of Debian weak keys.
 
                     Don't need to check for keys below our minimum key size.
                 -->
@@ -647,7 +647,7 @@
                 <ref bean="debian.4096"/>
 
                 <!--
-                    Compromised key blacklists.
+                    Lists of compromised keys.
 
                     Again, don't need to check for keys below our minimum key size.
                 -->

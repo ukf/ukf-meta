@@ -15,8 +15,8 @@
     <!--
         Import additional channel-local beans.
     -->
-    <import resource="file:${edugain.dir}/entity-blacklist.xml"/>
-    <import resource="file:${edugain.dir}/verify-blacklist.xml"/>
+    <import resource="file:${edugain.dir}/entity-blocklist.xml"/>
+    <import resource="file:${edugain.dir}/verify-blocklist.xml"/>
 
     <!--
         Location of various resources.
@@ -83,11 +83,11 @@
     </bean>
 
     <!--
-        Remove blacklisted entities.
+        Remove blocklisted entities.
     -->
-    <bean id="int_edugain_removeBlacklistedEntities" parent="mda.EntityFilterStage"
+    <bean id="int_edugain_removeBlocklistedEntities" parent="mda.EntityFilterStage"
         p:keepingEntities="false"
-        p:designatedEntities-ref="int_edugain_entity_blacklist"/>
+        p:designatedEntities-ref="int_edugain_entity_blocklist"/>
 
     <!--
         Fetch the production entities as a collection.
@@ -109,7 +109,7 @@
 
                 <ref bean="disassemble"/>
 
-                <ref bean="int_edugain_removeBlacklistedEntities"/>
+                <ref bean="int_edugain_removeBlocklistedEntities"/>
             </list>
         </property>
     </bean>

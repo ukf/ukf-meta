@@ -161,15 +161,15 @@
     </bean>
 
     <!--
-        removeBlacklistedEntities
+        removeBlocklistedEntities
 
-        Filter out entities which are included in our global import blacklist.
+        Filter out entities which are included in our global import blocklist.
     -->
-    <bean id="removeBlacklistedEntities" parent="mda.EntityFilterStage"
+    <bean id="removeBlocklistedEntities" parent="mda.EntityFilterStage"
         p:keepingEntities="false"
-        p:designatedEntities-ref="importEntityBlacklist"/>
+        p:designatedEntities-ref="importEntityBlocklist"/>
 
-    <bean id="entityAttributes.blacklist" parent="mda.EntityAttributeFilteringStage">
+    <bean id="entityAttributes.blocklist" parent="mda.EntityAttributeFilteringStage">
         <property name="keeping" value="false"/>
         <property name="rules">
             <list>
@@ -193,10 +193,10 @@
                 <!--
                     Entity Attribute policy for entities from eduGAIN participants.
                 -->
-                <ref bean="entityAttributes.blacklist"/>
+                <ref bean="entityAttributes.blocklist"/>
 
                 <ref bean="removeUKEntities"/>
-                <ref bean="removeBlacklistedEntities"/>
+                <ref bean="removeBlocklistedEntities"/>
                 <ref bean="standardImportActions"/>
                 <ref bean="policy.edugain"/>
 
